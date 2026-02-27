@@ -1,0 +1,48 @@
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cursor/
+
+# Sensitive Information
+# Add patterns for any files containing sensitive data
+**/credentials/
+**/secrets/
+**/*-private.md
+**/*-confidential.md
+.env
+.env.local
+
+# Temporary Files
+*.tmp
+*.temp
+*.log
+*.bak
+*-WIP.md
+*-draft-delete-me.md
+
+# Python
+venv/
+.venv/
+
+# Build/Cache
+node_modules/
+.cache/
+dist/
+build/
+
+# Personal Notes (if you want to keep private notes locally)
+# Uncomment if you want private notes that don't sync
+# **/private-notes/
+# **/*-personal.md
