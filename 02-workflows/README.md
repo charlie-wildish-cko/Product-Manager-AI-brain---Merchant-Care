@@ -38,6 +38,15 @@ Step-by-step guide for writing clear, actionable product requirements.
 **Output**: PRD, user stories, or concise specs depending on scope
 
 
+### 👥 **document-review-panel.md** - Document Review Panel
+
+Structured multi-perspective review using nine personas (PM, Engineering/Tech lead, Operations agent, CPO, COO, Product Data Scientist, Zendesk Administrator, Content Strategist, VP of Product). Persona definitions: `01-knowledge-base/processes/review-panel-personas.md`. Use to refine PRDs, reports, and memos before sharing.
+
+**When to use**: Before finalising PRDs, status reports, or c-suite memos
+
+**Key steps**: Apply each persona’s lens and questions; note gaps and edits; revise. Can be run solo (checklist), with AI (simulated panel), or with real reviewers.
+
+
 ### 📢 **stakeholder-updates.md** - Stakeholder Communication
 
 Framework for creating effective regular updates for stakeholders.
@@ -135,6 +144,10 @@ As you develop reliable processes, document them here:
 ```
 
 ## Complementary Resources
+
+### Frameworks
+- **Rumelt Strategy Kernel** (`01-knowledge-base/strategy/rumelt-strategy-kernel.md`) — for product/roadmap strategy, prioritisation, and executive narrative (Diagnosis → Guiding Policy → Coherent Actions).
+- **Socratic questioning for PRDs** (`01-knowledge-base/processes/socratic-questioning-prds.md`) — for sharpening requirements and PRD review (problem clarity, solution validation, success criteria, scope, strategic fit).
 
 ### Templates
 See `03-templates/` for document templates referenced in workflows

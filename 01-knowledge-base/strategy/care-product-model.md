@@ -19,11 +19,13 @@
 | **6\. Governance (this is more Ops, less Product)** | **Scheduling SLA Management** **Quality Assurance (QA)** | The operating principles, processes, and metrics (SLA, QA) that ensure consistent delivery of service speed and quality, and compliance with regulatory or internal standards. | CSAT (AI Agent and Agent) SLA adherence Internal QA scores | Zendesk SLAs Support CSAT survey QA in Zendesk | We have a 90%+ CSAT We meet 95% SLA Full automated, QA scores of 90%+ |
 
 
-## B2C Launch Considerations (2027+)
+## B2C — Current State and Launch Considerations
 
 > Sourced from competitive analysis of Monzo, Revolut, Starling, Zilch, and Klarna. Full research: `B2C Fintech Support Competitive Analysis.md`.
 
-Four considerations from the competitive landscape that are not yet captured in the 2030 model and should inform B2C product design decisions before the 2027 wallet launch.
+**B2C support exists today in seed form.** Remember Me — Checkout.com's consumer card-saving product (via Flow) — is live. Consumers contact support via a webform on the Remember Me portal; tickets flow into the **Checkout Consumer** Zendesk brand. Volume is <10 tickets/week. There is no AI Agent, no formal SLA framework, and no tier structure for these contacts. The Checkout Consumer brand is the foundation for the Braavos support model, but requires significant configuration expansion before the 2027 launch.
+
+Four considerations from the competitive landscape that are not yet captured in the 2030 model and should inform B2C product design decisions before the 2027 Braavos wallet launch.
 
 ### 1. Agentic Commerce Liability
 

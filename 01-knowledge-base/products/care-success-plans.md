@@ -5,42 +5,44 @@
 >
 > **Stripe benchmark**: [stripe.com/support-plans](https://stripe.com/support-plans) — reviewed February 2026. Key gaps identified and mapped below.
 
-
 ## Overview
 
-A three-tier support model for B2B merchants, replacing the current one-size-fits-all approach. Tiers are determined by Salesforce CRM fields (Tier, Incentive Rating, SAT designation) and reflect a combination of current net revenue, revenue potential, and strategic brand value. See **Tier Assignment Logic** below for the exact rules.
+A support model with three Merchant segments (Standard, Enterprise, Premium) for B2B merchants, replacing the current one-size-fits-all approach. Merchant segment is determined by Salesforce CRM fields (Tier, Incentive Rating, SAT designation) and reflects a combination of current net revenue, revenue potential, and strategic brand value. See **Tier Assignment Logic** below for the exact rules.
 
-The goal is to match or exceed Stripe's support plan model — combining **context-aware resolution** (knowing the merchant's integration and history), **proactive health monitoring**, and a **named technical partner** at the top tiers.
+The goal is to match or exceed Stripe's support plan model — combining **context-aware resolution** (knowing the merchant's integration and history), **proactive health monitoring**, and a **named technical partner** in the top Merchant segments.
+
+## Segment  definitions ( using Salesforce data)
+
+Merchant segment (support plan) is determined by three fields in Salesforce CRM:
 
 
-## Tier Assignment Logic (Salesforce)
+| Field                       | Values                   | Meaning                                                                                                                         |
+| --------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Tier**                    | 1 (highest) → 5 (lowest) | Current net revenue contribution / TPV processed through Checkout. Tier 1–4 merchants have an Account Manager; Tier 5 does not. |
+| **Incentive Rating**        | Gold > Silver > Bronze   | Revenue potential — highest NR potential or best opportunity to increase share of wallet.                                       |
+| **Account Owner Territory** | SAT                      | Strategic Account Treatment — brands with high strategic value regardless of current revenue (e.g. Sony, Netflix, Spotify).     |
 
-Support plan tier is determined by three fields in Salesforce CRM:
-
-| Field | Values | Meaning |
-| --- | --- | --- |
-| **Tier** | 1 (highest) → 5 (lowest) | Current net revenue contribution / TPV processed through Checkout. Tier 1–4 merchants have an Account Manager; Tier 5 does not. |
-| **Incentive Rating** | Gold > Silver > Bronze | Revenue potential — highest NR potential or best opportunity to increase share of wallet. |
-| **Account Owner Territory** | SAT | Strategic Account Treatment — brands with high strategic value regardless of current revenue (e.g. Sony, Netflix, Spotify). |
 
 ### Assignment rules
 
-| Support plan | Salesforce criteria |
-| --- | --- |
-| **Premium** | Account Owner Territory = `SAT` **or** (Tier = `1` **and** Incentive Rating = `Gold`) |
+
+| Support plan   | Salesforce criteria                                                                                                         |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **Premium**    | Account Owner Territory = `SAT` **or** (Tier = `1` **and** Incentive Rating = `Gold`)                                       |
 | **Enterprise** | Tier = `1` (not Gold) **or** Incentive Rating = `Gold` (not Tier 1) **or** (Tier = `2` **and** Incentive Rating = `Silver`) |
-| **Standard** | All remaining merchants — typically Incentive Rating = `Bronze` and Tier = `3`, `4`, or `5` |
+| **Standard**   | All remaining merchants — typically Incentive Rating = `Bronze` and Tier = `3`, `4`, or `5`                                 |
+
 
 > **Note**: SAT designation alone qualifies a merchant for Premium regardless of Tier or Incentive Rating, reflecting that strategic brand value is treated as equivalent to top-revenue performance for support purposes.
 
-
-## The Tiers
+## Merchant segments
 
 ### Premium
 
 **Salesforce criteria**: Account Owner Territory = `SAT` **or** (Tier = `1` and Incentive Rating = `Gold`)
 
 **Merchant profile**: Highest-revenue merchants (Tier 1, Gold incentive rating) and strategic brands (SAT) regardless of current revenue. Two distinct sub-profiles:
+
 - **High-revenue (Tier 1 / Gold)**: Mission-critical operations, high TPV, zero tolerance for downtime. Mature self-built tooling, heavy API/webhook usage, complex bespoke setups.
 - **Strategic (SAT)**: Recognisable consumer brands (e.g. Netflix, Spotify) whose presence has commercial and reputational value beyond current NR. May have lower TPV today but have strong growth or partnership potential. Have a named Account Manager.
 
@@ -63,15 +65,15 @@ Both profiles warrant the highest-touch support model. All Premium merchants hav
 - Platform-defined optimisations: connected account verifications, onboarding, payout optimisations (for ISV/Platform merchants)
 - API availability reporting
 
-
 ### Enterprise
 
 **Salesforce criteria**: Tier = `1` (not Gold) **or** Incentive Rating = `Gold` (not Tier 1) **or** (Tier = `2` and Incentive Rating = `Silver`)
 
 **Merchant profile**: Three distinct sub-profiles, all with meaningful revenue or growth potential but below the Premium threshold:
+
 - **Tier 1 / non-Gold**: Established high-TPV merchants who don't yet have Gold incentive rating — significant current revenue but lower growth potential or share-of-wallet opportunity than Gold.
 - **Gold / non-Tier 1**: High revenue-potential merchants (Gold incentive rating) who are not yet Tier 1 — strong candidates for growing their Checkout share of wallet; may be earlier in their payments journey.
-- **Tier 2 / Silver**: Mid-tier merchants with moderate current revenue and meaningful upside. Growing operations, established payment flows. Have an Account Manager.
+- **Tier 2 / Silver**: Mid-TPV merchants with moderate current revenue and meaningful upside. Growing operations, established payment flows. Have an Account Manager.
 
 All Enterprise merchants have an Account Manager.
 
@@ -89,12 +91,11 @@ All Enterprise merchants have an Account Manager.
 - Essential optimisations: fraud, disputes, and operational support
 - Essential platform optimisations: risk, onboarding, and operational support (for ISV/Platform merchants)
 
-
 ### Standard
 
 **Salesforce criteria**: Incentive Rating = `Bronze` and Tier = `3`, `4`, or `5` — all merchants not qualifying for Premium or Enterprise.
 
-**Merchant profile**: Long-tail merchants with lower current revenue and limited growth potential in the near term. Tier 3–5, Bronze incentive rating. Tier 3–4 merchants have an Account Manager; Tier 5 merchants do not. Rely primarily on the Dashboard and self-service tooling. Lower payment flow complexity and API usage than higher tiers.
+**Merchant profile**: Long-tail merchants with lower current revenue and limited growth potential in the near term. Tier 3–5, Bronze incentive rating. Tier 3–4 merchants have an Account Manager; Tier 5 merchants do not. Rely primarily on the Dashboard and self-service tooling. Lower payment flow complexity and API usage than higher Merchant segments.
 
 **Key benefits**:
 
@@ -104,7 +105,6 @@ All Enterprise merchants have an Account Manager.
 - Self-service tools
 - Developer-to-developer priority routing (1 developer profile)
 - Real-time merchant health alerts — essential API alerts
-
 
 ### Checkout Payfac — Direct Sub-Merchant Support *(New, TBC)*
 
@@ -116,21 +116,22 @@ All Enterprise merchants have an Account Manager.
 - May offer premium add-ons (faster SLAs, live chat) for a fee
 - Consumer Duty considerations may apply
 
+### B2C Consumer
 
-### B2C Consumer *(2027+)*
+**Segments**: Remember Me (card-saving product, live today) + Braavos Neobank (2027+)
 
-**Segments**: Remember Me (card-saving product) + Braavos Neobank
+**Remember Me — live today**: Consumers contact support via a webform on the Remember Me portal (card saving feature within Flow). Tickets flow into the **Checkout Consumer** Zendesk brand. Volume is <10 tickets/week. No formal tier structure, AI Agent, or SLA framework yet — this is the seed of the B2C support model.
 
-**Key differences from B2B**:
+**Braavos and full B2C model — 2027+. Key differences from B2B**:
 
 - AI Agent primary channel
-- Phone mandatory (regulatory requirement likely)
+- Phone mandatory (regulatory requirement for banking product)
 - Business-hours human coverage
 - Likely requires BPO for first-line contact handling
 - SLA within hours
+- Complaint handling as a distinct regulated function (Consumer Duty, 8-week FRL, FOS referral rights)
 
-
-## Feature Comparison by Tier
+## Feature Comparison by Merchant segment
 
 
 | Feature                                   | Standard             | Enterprise                      | Premium                         |
@@ -148,7 +149,6 @@ All Enterprise merchants have an Account Manager.
 | **Dedicated Slack / IM**                  | —                    | —                               | 24×7                            |
 
 
-
 ## SLA Matrix
 
 
@@ -164,7 +164,6 @@ All Enterprise merchants have an Account Manager.
 
 > **Stripe comparison**: Stripe's Growth tier has a 6-hour priority email SLA; Premium and Enterprise have 4-hour. Their business-critical response SLA is 15 minutes across all paid tiers. Checkout's SLAs are broadly comparable or stronger.
 
-
 ## Channel Entitlements
 
 
@@ -179,7 +178,6 @@ All Enterprise merchants have an Account Manager.
 | Dedicated Slack / IM | —              | —          | 24×7      |
 
 
-
 ## Phase II Features (FY26)
 
 
@@ -191,8 +189,7 @@ All Enterprise merchants have an Account Manager.
 
 **Named Support Engineer**: Dedicated technical partner for complex issues and proactive monitoring. Owns high-impact cases — day-to-day tickets handled by pooled support. Equivalent to Stripe's "Technical Account Manager" (TAM).
 
-**Health Reviews**: Data-led reviews surfacing friction in a merchant's payment flow, with optimisation recommendations and optional deep-dive sessions. Stripe offers this at Premium and Enterprise tiers with continuous optimisation and proactive insights.
-
+**Health Reviews**: Data-led reviews surfacing friction in a merchant's payment flow, with optimisation recommendations and optional deep-dive sessions. Stripe offers this at Premium and Enterprise with continuous optimisation and proactive insights.
 
 ## Roadmap Dependencies
 
@@ -208,16 +205,14 @@ Several features in the plan depend on 2026 deliverables being live. See `2026 d
 | Platform optimisations              | Platform support channels             | Q1                                     |
 
 
-
 ## Ticket Distribution (2025 baseline)
 
 
-| Tier       | % of tickets |
-| ---------- | ------------ |
-| Premium    | 31%          |
-| Enterprise | 33%          |
-| Standard   | 36%          |
-
+| Merchant segment | % of tickets | % of merchants |
+| ---------------- | ------------ | -------------- |
+| Premium          | 31%          | 5%             |
+| Enterprise       | 33%          | 20%            |
+| Standard         | 36%          | 75%            |
 
 
 ## Problem This Solves
@@ -225,19 +220,17 @@ Several features in the plan depend on 2026 deliverables being live. See `2026 d
 - No defined support plans → inconsistent, ad hoc service experience
 - Different merchants offered different channels without a strategic framework
 - Merchants unaware of what they're entitled to → misaligned expectations
-- One-size-fits-all SLO applied uniformly regardless of merchant tier or issue priority
-
+- One-size-fits-all SLO applied uniformly regardless of Merchant segment or issue priority
 
 ## Key Risks
 
 
-| Risk                                  | Mitigation                                                                                    |
-| ------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Internal misalignment on entitlements | Cross-functional enablement pack + mandatory training for frontline teams                     |
-| Merchant perception as a downgrade    | Proactive comms emphasising enhancements; grandfather existing expectations where appropriate |
-| SKU/catalogue friction for Sales      | Include plans in all commercial proposals with pricing logic                                  |
-| Standard tier feels underserved       | Continue self-service and AI investment; monitor CSAT/NPS across all tiers                    |
-
+| Risk                                        | Mitigation                                                                                    |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Internal misalignment on entitlements       | Cross-functional enablement pack + mandatory training for frontline teams                     |
+| Merchant perception as a downgrade          | Proactive comms emphasising enhancements; grandfather existing expectations where appropriate |
+| SKU/catalogue friction for Sales            | Include plans in all commercial proposals with pricing logic                                  |
+| Standard Merchant segment feels underserved | Continue self-service and AI investment; monitor CSAT/NPS across all Merchant segments        |
 
 
 ## Competitor Benchmark
@@ -245,22 +238,21 @@ Several features in the plan depend on 2026 deliverables being live. See `2026 d
 
 | Feature                       | Stripe                                                  | Adyen                                                               | Worldpay                   | Checkout.com (target)                                        |
 | ----------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------ |
-| **Support tiers**             | 4 (Standard + Growth + Premium + Enterprise)            | Account-led; platform merchants have mandated 3-tier internal model | Merchant-type segmentation | 3-tier (Standard / Enterprise / Premium)                     |
+| **Support tiers**             | 4 (Standard + Growth + Premium + Enterprise)            | Account-led; platform merchants have mandated 3-tier internal model | Merchant-type segmentation | 3 Merchant segments (Standard / Enterprise / Premium)        |
 | **Named TAM / Engineer**      | Scaled TAM (Premium), embedded TAM (Enterprise)         | Account Manager for escalations                                     | Account Manager            | Named Support Engineer (Phase II, Enterprise+)               |
 | **Context-aware support**     | ✅ Growth+ — agents know your integration history        | —                                                                   | —                          | ✅ Q1 via Merchant 360 context                                |
-| **Developer routing**         | 1–4 developer profiles by tier                          | —                                                                   | —                          | 1–4 developer profiles (target)                              |
+| **Developer routing**         | 1–4 developer profiles by tier                          | —                                                                   | —                          | 1–4 developer profiles by Merchant segment (target)          |
 | **Health alerts**             | API alerts (all tiers); + performance trends (Premium+) | Webhooks (merchant-managed)                                         | —                          | Proactive notifications (roadmap)                            |
 | **Health reviews**            | Continuous (Premium+), custom (Enterprise)              | —                                                                   | —                          | Quarterly (Enterprise) / Monthly (Premium)                   |
 | **Flash sale / peak support** | ✅ Enterprise only                                       | —                                                                   | ✅ High-TPS gaming vertical | ✅ Premium (target)                                           |
 | **Dedicated Slack**           | ✅ Enterprise only                                       | —                                                                   | —                          | ✅ Premium                                                    |
 | **Live Chat**                 | ✅ All customers 24/7                                    | —                                                                   | —                          | Business hours (Standard); 24×5 (Enterprise); 24×7 (Premium) |
-| **Phone**                     | ✅ All customers 24/7                                    | Critical only                                                       | ✅ 24/7 multiple lines      | P1 all tiers                                                 |
+| **Phone**                     | ✅ All customers 24/7                                    | Critical only                                                       | ✅ 24/7 multiple lines      | P1 all Merchant segments                                     |
 | **Platform optimisations**    | ✅ Premium+                                              | Mandated on platform                                                | —                          | Q1 (ISV identification); full optimisations Phase II         |
 | **Monetised premium tier**    | ✅ (subscription / contract)                             | Contract-based                                                      | Bespoke                    | Bespoke / minimum billing                                    |
 
 
 **Target**: Match Stripe's Growth tier at our Enterprise level; match Stripe's Premium/Enterprise at our Premium level. Key Checkout differentiators to maintain: video callback, stronger SLAs at Premium, and proactive health reviews at Enterprise (Stripe only offers this at Premium+).
-
 
 **Last Updated**: February 2026
 **Owner**: Charlie Wildish

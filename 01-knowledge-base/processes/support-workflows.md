@@ -30,7 +30,7 @@
 3. **AM/TAM on behalf of merchant** (~8–10% of annual contact volume):
    - Account Managers (AMs) and Technical Account Managers (TAMs) raise tickets to Care on behalf of their merchants
    - **Current state**: Submitted via email — unstructured; requires manual identification and context extraction
-   - **In progress**: A structured AM/TAM submission form is being built (replaces email)
+   - **In progress**: Internal form built in **Retool**, used by AM/TAM/Solution engineers (mostly). User enters: merchant email (optional, or pick for updates only), email CCs, client and entity from dropdowns linked to merchant database, description/query type, and can upload files. Submissions go straight to Zendesk (ticket created), map directly to merchant data stored as organisations, and **avoid Dispatch**. **Goal**: replace email submission from these users completely by **Q3**. Ideally superseded by **Sonar** in H2 2026.
    - **Later 2026**: **Sonar** — internal AI agent in Slack available to all Checkout staff (built by central AI team); will interact with the support intake process and can escalate to Zendesk if needed. Internal-facing only, distinct from Fin (customer-facing)
    - Tickets must be attributed to the merchant represented, not to the AM/TAM themselves — SLA, routing, and org reporting are all based on the merchant identity
 

@@ -1,6 +1,6 @@
 # Platform Customer Segment
 
-> Part of the broader merchant segment model — see `01-knowledge-base/products/merchant-segments.md` for the full picture.
+> Part of the broader customer segment model — see `01-knowledge-base/products/customer-segments.md` for the full picture.
 
 ## What is a Platform?
 

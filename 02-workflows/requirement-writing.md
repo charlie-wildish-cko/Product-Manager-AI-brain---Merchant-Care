@@ -48,6 +48,10 @@ Before writing any requirements, deeply understand the problem you're solving.
 - Solution looking for a problem
 - Unclear who benefits
 
+### Sharpen with Socratic questions
+
+Use 3–5 questions from [Socratic questioning for PRDs](../01-knowledge-base/processes/socratic-questioning-prds.md) to validate problem, solution, success criteria, scope, and strategic fit before you lock the requirements. Pick the most relevant from each category (problem clarity, solution validation, success criteria, constraints & trade-offs, strategic fit). Quality over quantity.
+
 
 ## Step 2: Define Goals & Success
 
@@ -98,6 +102,8 @@ For each metric:
 - **Target**: Goal to hit
 - **Timeline**: When to measure
 - **Threshold**: Minimum acceptable improvement
+
+**See also:** For product or roadmap-level strategy (prioritisation, competitive response, executive narrative), use [Rumelt's Strategy Kernel](../01-knowledge-base/strategy/rumelt-strategy-kernel.md): Diagnosis → Guiding Policy → Coherent Actions.
 
 
 ## Step 3: Identify Users & Use Cases
@@ -378,6 +384,9 @@ Explicitly state what you're NOT doing.
 - Go-to-market considerations
 
 ### Review & Iterate
+
+**Optional: Run the Document Review Panel**  
+Before sharing, refine the doc using the five reviewer personas (PM, Engineering/Tech lead, Operations agent, CPO, COO). See [document-review-panel.md](document-review-panel.md) for persona lenses and questions. You can run the panel yourself (checklist), with AI (“apply the Review Panel to this PRD”), or with real reviewers assigned to personas.
 
 **Questions to ask reviewers**:
 - Is anything unclear or ambiguous?

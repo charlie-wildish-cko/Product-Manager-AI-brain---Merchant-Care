@@ -8,21 +8,19 @@
 
 ## Executive Summary
 
-When a new end-user contacts support, the preferred method of identifying their organisation is a direct lookup against Salesforce or their authenticated Dashboard identity. However, not every user will be found this way — contacts may be unknown in Salesforce, or may reach out via channels where Dashboard identity is unavailable. Domain mapping is the **fallback mechanism**: if a user cannot be identified via Salesforce or Dashboard, their email domain is checked against configured org records to assign them automatically.
-
-This PRD covers the process and tooling to implement domain mapping as a reliable fallback for **Premium and Enterprise merchants on our Care Success Plan**, embed it into the merchant onboarding workflow for that tier, and maintain it with minimal ongoing overhead. Standard tier merchants are out of scope.
+Primary identification is Salesforce or Dashboard lookup. When that fails, domain mapping is the **fallback**: match the user’s email domain to configured org records and auto-assign. This PRD covers implementing and embedding domain mapping for Premium and Enterprise (Care Success Plan), with minimal ongoing overhead. Standard is out of scope.
 
 
 ## Problem
 
 **What problem are we solving, and who has it?**  
-When primary identification (Salesforce or Dashboard lookup) fails, a new end-user from a Premium or Enterprise merchant has no automatic fallback — they land as unassigned in Zendesk, requiring manual triage and increasing the risk of misrouted tickets and incorrect SLA application. This affects CX agents (who investigate and assign manually), Care Operations and Operational Excellence (whose account-level reporting is degraded by unassigned users), Zendesk admins (whose routing logic depends on org assignment being correct at ticket creation), and Premium/Enterprise merchants (who experience slower or incorrectly routed tickets with direct SLA implications).
+When Salesforce/Dashboard lookup fails, Premium/Enterprise users land unassigned — manual triage, misrouting, wrong SLA. Affects: CX agents (manual assign), Care Ops/Op Ex (degraded reporting), Zendesk admins (routing depends on org), merchants (slower/wrong routing).
 
 **How are they solving it today?**  
-There is no systematic solution. Domain mapping exists in Zendesk but has not been configured as a standard practice. Some organisations may have domains set on an ad-hoc basis; others do not. The result is inconsistent — dependent on who created the org and whether they happened to add a domain.
+No system. Domain mapping exists in Zendesk but isn’t standard; some orgs have domains set ad hoc, many don’t.
 
 **Why solve this now?**  
-With new product lines (including Blue EMI) creating additional Zendesk organisations, and routing logic increasingly dependent on org assignment, the cost of inconsistency is growing. Implementing this now — as a standard part of org creation — prevents the problem compounding further and improves the reliability of all downstream routing and reporting.
+New orgs (e.g. Blue EMI) and routing logic increase reliance on org assignment. Embedding domain mapping at org creation prevents the gap growing and stabilises routing and reporting.
 
 
 ## Goals & Success Metrics
@@ -128,7 +126,7 @@ This hierarchy is enforced naturally by Zendesk's behaviour: domain mapping does
 
 ### Principle
 
-Embed domain mapping configuration into the moment where context already exists — org creation — rather than treating it as a separate ongoing process. The person creating the org knows the merchant's domain; requiring it at that step adds near-zero overhead and ensures the fallback is always in place.
+Require domain at org creation; the creator has the context. Near-zero overhead, fallback always in place.
 
 ### Org Creation Flow (with domain mapping embedded)
 
@@ -200,11 +198,8 @@ A maintained document (or Zendesk org tag) recording:
 
 ## Out of Scope
 
-- **Standard tier merchants** — domain mapping is not applied to Standard Care Success Plan merchants; this is a deliberate scope decision, not a gap to close later
-- **Automated org creation at merchant onboarding** — this PRD assumes orgs are created manually or via existing processes; automation is a separate workstream
-- **Changes to routing triggers or SLA policies** — domain mapping is an input to routing; changes to routing logic itself are out of scope
-- **Multi-entity merchant handling beyond exception documentation** — the detailed solution for contacts spanning multiple Checkout entities (e.g. Blue EMI) is covered in the Blue EMI PRD
-- **Consumer/B2C user management** — this PRD covers B2B merchant organisations only
+- Standard tier (deliberate); automated org creation at onboarding; routing/SLA logic changes
+- Multi-entity handling beyond exception list (see Blue EMI PRD); Consumer/B2C
 
 
 ## Launch Plan
@@ -215,7 +210,7 @@ A maintained document (or Zendesk org tag) recording:
 - **Phase 4 — Process Embedding**: Update org creation runbook/checklist. Brief Care Operations and Operational Excellence teams. Document: how to add a domain to an org, triage path for unassigned users, agent guidance, exception list ownership. Estimated effort: 0.5 day.
 - **Phase 5 — First Quarterly Audit**: Run 90 days after Phase 4; confirm process is being followed and catch any gaps.
 
-**Rollback**: Domain mapping is additive and non-destructive. Removing a domain from the org record stops future auto-assignment. Incorrectly assigned users can be manually reassigned. No Zendesk triggers or routing rules are changed as part of this work — rollback risk is low.
+**Rollback**: Additive. Remove domain → no future auto-assign; wrong assignments fixed manually. No trigger/routing changes; low risk.
 
 
 ## Risks, Dependencies & Open Questions

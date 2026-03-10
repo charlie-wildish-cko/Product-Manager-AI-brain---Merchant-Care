@@ -13,7 +13,7 @@ High-level strategic frameworks and source documents
 
 ### 📦 `products/`
 Product reference documentation
-- `merchant-segments.md` - All merchant segments and their support model
+- `customer-segments.md` - All customer segments and their support model
 - `care-success-plans.md` - Tier model (Standard / Enterprise / Premium) + Stripe benchmark
 - `platform-segment.md` - Platform / ISV deep-dive (primary 2026 focus)
 - `reflex.md` - Reflex: AI-powered support contact insights product
@@ -28,9 +28,11 @@ Checkout.com business context and data references (in `01-knowledge-base/` root,
 ### 🔄 `processes/`
 Internal support processes and workflows
 - `support-workflows.md` - Standard ticket handling procedures
+- `agent-toolkit-zendesk.md` - Agent toolkit in Zendesk (user profile, payment tool, Dispatch search)
 - `ai-agent-operations.md` - Fin AI Agent operations and improvement process
 - `incident-response.md` - How to handle service incidents
 - `known-challenges.md` - Known operational challenges and workarounds
+- `review-panel-personas.md` - Six reviewer personas (PM, Eng, Ops, CPO, COO, Data Scientist) for document review and stakeholder comms; used by the Document Review Panel workflow
 - `US Platforms - support needs - 2025_07_17.md` - Transcript: US sales team interview on Platform segment support challenges (onboarding, terminations, payout visibility, payment lifecycle)
 
 ### 💳 `payment-domain/`
@@ -41,6 +43,10 @@ Payment industry knowledge and PSP concepts
 ### 📊 `metrics/`
 KPIs and measurement frameworks
 - `kpi-definitions.md` - All metrics organised by Care Flywheel domain
+- `support_contacts_flat_table_2025_metric_definitions.md` - Count and derived metric definitions for support contacts flat table (full-year and last-6m)
+- `Q4_2025_metrics_handover.md` - Q4 2025 Fin metrics: formulas and how to compute (Total support contacts, Fin involved, Fin involvement/resolution rates)
+- `q4_2025_metrics.py` - Script to compute Q4 2025 Fin metrics from the flat table CSV
+- `support_contacts_flat_table_2025.csv`, `support_contacts_flat_table_2025_last_6m.csv`, `support_contacts_flat_table_2025_q4.csv` - Canonical data for volume and involvement metrics
 
 ### 🗄️ `bigquery-queries/`
 Saved SQL query library for Zendesk ticket analysis

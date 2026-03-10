@@ -8,8 +8,9 @@
 | Care product flywheel model | `01-knowledge-base/strategy/care-product-model.md` |
 | Scaling principles to 2030 | `01-knowledge-base/strategy/support-scale-principles.md` |
 | Competitor support benchmarks | `01-knowledge-base/strategy/competitive-support-audit-2026.md` |
+| Strategy frameworks (Rumelt) | `01-knowledge-base/strategy/rumelt-strategy-kernel.md` |
 | Support tier model (SLAs, channels) | `01-knowledge-base/products/care-success-plans.md` |
-| All merchant segments | `01-knowledge-base/products/merchant-segments.md` |
+| All customer segments | `01-knowledge-base/products/customer-segments.md` |
 | Platform / ISV segment detail | `01-knowledge-base/products/platform-segment.md` |
 | Reflex — contact insights product | `01-knowledge-base/products/reflex.md` |
 | Checkout.com company overview + P&L context | `01-knowledge-base/checkout-business-context.md` |
@@ -17,12 +18,15 @@
 | Data sources & access | `01-knowledge-base/data-sources.md` |
 | Team names (for PRDs / docs) | `01-knowledge-base/teams.md` |
 | Support process docs | `01-knowledge-base/processes/` |
+| Socratic questioning for PRDs | `01-knowledge-base/processes/socratic-questioning-prds.md` |
 | Fin AI Agent operations | `01-knowledge-base/processes/ai-agent-operations.md` |
 | Payment concepts explained | `01-knowledge-base/payment-domain/` |
 | How to analyze tickets | `02-workflows/ticket-analysis.md` |
 | How to do integrated analysis | `02-workflows/integrated-analysis.md` |
 | How to write requirements | `02-workflows/requirement-writing.md` |
 | How to update stakeholders | `02-workflows/stakeholder-updates.md` |
+| Document review panel (refine PRDs/reports) | `02-workflows/document-review-panel.md` |
+| Draft, critique & refine before you review | `02-workflows/draft-critique-refine.md` |
 | PRD template | `03-templates/prd-template.md` |
 | User story template | `03-templates/user-story-template.md` |
 | Update template | `03-templates/stakeholder-update-template.md` |
@@ -40,6 +44,14 @@
 "Explain [payment concept] in simple terms"
 
 "Review this requirements doc - what's missing?"
+
+"Apply the Document Review Panel to this [PRD/report]"
+
+"Draft and refine a PRD for [feature]. Here's the brief: [paste]"
+
+"Draft and refine a C-suite memo on [topic] for CPO/COO"
+
+"Run draft-critique-refine on a stakeholder update. Here's what happened: [summary]"
 
 "Draft a stakeholder update. Here's what happened: [summary]"
 
@@ -154,7 +166,7 @@ Cmd/Ctrl + K       → Open AI chat
 
 ## 📞 Key Stakeholders
 
-> Update this section in `.cursor/rules/context.md` with your actual stakeholders
+> Update this section in `.cursor/rules/context.mdc` with your actual stakeholders
 
 - **Support Leadership**: [Names]
 - **Engineering Leads**: [Names]

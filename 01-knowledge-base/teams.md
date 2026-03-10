@@ -40,7 +40,7 @@ The Commercial team owns merchant relationships across the full lifecycle — fr
 AMs and TAMs raise tickets to the Care team on behalf of their merchants. This is a distinct contact pattern from direct merchant submissions:
 
 - **Current state**: Tickets submitted via email — unstructured, requiring manual identification and context extraction by Care agents
-- **In progress**: A structured form for AM/TAM ticket submission is being built by Charlie's team (replaces email)
+- **In progress**: Internal **Retool** form (AM/TAM/Solution engineers, mostly): merchant email optional / pick-for-updates, CCs, client/entity from merchant-DB dropdowns, description/query type, file upload. Creates Zendesk tickets directly, maps to orgs, avoids Dispatch. **Goal**: replace email submission from these users completely by **Q3**. Ideally superseded by Sonar in H2 2026.
 - **Later in 2026 (planned)**: **Sonar** — an internal AI agent in Slack, built by the central AI team, available to all Checkout staff. Relevant here because AMs and TAMs will be able to use it to answer queries and escalate to Zendesk if needed. Internal-facing only; distinct from Fin, which is customer-facing
 
 When an AM or TAM raises a ticket, the ticket must be attributed to the merchant they represent — not to the AM/TAM themselves. This is an important distinction for SLA assignment, routing, and org-level reporting.

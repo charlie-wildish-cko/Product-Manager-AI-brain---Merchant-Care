@@ -473,6 +473,8 @@ Be specific about asks:
 
 **Don't forget follow-up**: Track what you commit to do
 
+**For CPO/COO-facing updates or reports**: Consider running the [Document Review Panel](document-review-panel.md) (PM, Engineering, Ops, CPO, COO personas) to catch gaps and sharpen the narrative before sending.
+
 
 ## Troubleshooting Common Issues
 

@@ -19,3 +19,6 @@ Deep research report into customer support strategies at Checkout.com's key comp
 The full source proposal for the three-tier B2B support model (Standard, Enterprise, Premium). Includes the level structure, problem statement, SLA definitions, channel entitlements, Phase II features, competitor benchmark, and risks.
 
 > For the structured reference version of the care plans (updated with Stripe benchmark), see `../products/care-success-plans.md`
+
+### `rumelt-strategy-kernel.md`
+Rumelt's Strategy Kernel (Diagnosis → Guiding Policy → Coherent Actions). Use for product/roadmap strategy, prioritisation, competitive response, and executive narrative. Includes good vs bad strategy hallmarks, PM applications, template, and Netflix example.

@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-> 2-3 sentences: What are we building and why? What's the expected impact?
+> 2-3 sentences: What are we building and why? What's the expected impact? If there's one thing you want everyone (including support/ops) to remember, state it. Keep sections as short as clarity allows; prefer bullets and tables over long prose.
 
 [Brief description that anyone can understand]
 
@@ -24,8 +24,12 @@
 **Why solve this now?**  
 [Urgency, business impact, strategic importance]
 
+**One sentence support can use** (optional): [e.g. for playbooks/macros: "We're doing X so that [outcome]."]
+
 
 ## Goals & Success Metrics
+
+> For each metric: define numerator/denominator and source of truth so we can compare over time. Who owns reporting and at what cadence? Can support/ops use it to make decisions? If any metric maps to what support will see (e.g. ticket volume, resolution rate), note it.
 
 | Metric | Current State | Target | Timeline |
 |--------|--------------|--------|----------|
@@ -93,6 +97,8 @@
 - **[Components/systems]**: [What is affected]
 - **[Scoping]**: [Anything engineering should know before scoping]
 
+**Error states & support** (if relevant): What messages or states will the customer (and support agent) see when something fails? Runbook or escalation path needed? What should go in the support KB or internal docs so agents can troubleshoot?
+
 
 ## Out of Scope
 
@@ -104,11 +110,24 @@
 **Why**: [Brief explanation]
 
 
+## Support & operations impact
+
+> What do agents need to know or do differently? What training, playbooks, or tool changes before go-live? Likely customer questions and suggested answers? Handoffs/escalation path? Impact on Zendesk, macros, or internal KB? (Omit if not relevant.)
+
+- **Agent impact**: [What changes for frontline]
+- **Training / playbooks / tools**: [What's needed before launch]
+- **Customer-facing**: [Likely questions, suggested answers, or comms]
+- **Handoffs / escalation**: [Who, when, what to include]
+- **Tools**: [Zendesk, Jira, KB, macros — any changes]
+
+
 ## Launch Plan
 
 - [ ] **Phase 1**: [e.g., Internal testing, Week 1]
 - [ ] **Phase 2**: [e.g., Beta with select merchants, Week 2-3]
 - [ ] **Phase 3**: [e.g., GA, Week 4]
+
+**Support/ops readiness**: What needs to be in place before go-live (training, playbooks, tools, comms)? When is ops ready?
 
 **Rollback**: [How we revert if things go wrong]
 
@@ -131,6 +150,10 @@
 - [ ] [Question] *(Owner: [Name])*
 - [ ] [Question] *(Owner: [Name])*
 
+*Optional*: What would we cut or delay if we had to protect support capacity or customer trust?
+
+**Review panel** (optional before share): See `02-workflows/document-review-panel.md`. Run through PM, Engineering, Ops, CPO, COO, Product Data Scientist, Zendesk Administrator, Content Strategist, and VP of Product lenses and note any changes made.
+
 
 ## Timeline
 
@@ -140,6 +163,7 @@
 | Design Complete | [Date] | [Name] | ⏳ |
 | Engineering Kickoff | [Date] | [Name] | ⏳ |
 | Dev Complete | [Date] | [Name] | ⏳ |
+| Support/ops ready | [Date] | [Name] | ⏳ |
 | Launch | [Date] | [Name] | ⏳ |
 
 

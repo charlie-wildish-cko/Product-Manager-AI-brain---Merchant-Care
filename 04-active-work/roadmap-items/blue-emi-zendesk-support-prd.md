@@ -8,19 +8,19 @@
 
 ## Executive Summary
 
-Blue EMI is a separate business entity through which a subset of Checkout.com merchants will process payments. These merchants have a Blue EMI Client ID distinct from their existing Checkout Client ID and must be handled as separate customers in Zendesk. This PRD covers the configuration and tooling required to route, triage, and manage Blue EMI support tickets correctly — including branded webforms, email identity, Zendesk organisation setup, and safeguards against routing failures.
+Blue EMI is a separate entity; its merchants have a distinct Client ID and must be handled as separate customers in Zendesk. This PRD covers the Zendesk configuration and tooling to route, triage, and manage Blue EMI tickets: Dashboard webform, email identity, org setup, and safeguards against misrouting. For programme context (Interim vs Zendesk Build vs End State), see the [scoping one-pager](blue-emi-support-scoping-one-pager.md).
 
 
 ## Problem
 
 **What problem are we solving, and who has it?**  
-Blue EMI merchants process payments under a different legal entity and hold a separate client ID. If support tickets from these merchants enter Zendesk without being associated to their Blue EMI identity, they will be miscategorised against their Checkout entity — causing routing errors, incorrect SLA application, and confused agent handling. We also cannot assume a merchant's email uniquely identifies their entity: the same contact may hold both a Checkout and a Blue EMI client relationship. This affects Blue EMI merchants (who need to raise support tickets for Blue EMI activity), CX agents (who need correct entity context to triage and respond), and CX Operations (who need clean reporting and queues for Blue EMI support volume).
+Tickets from Blue EMI merchants that aren’t tied to their Blue EMI identity get miscategorised as Checkout — wrong routing, SLA, and agent context. The same email can be both Checkout and Blue EMI; we can’t infer entity from email alone. Affected: Blue EMI merchants (need a support path), CX agents (need correct org to triage), CX Ops (need clean Blue EMI queues and reporting).
 
 **How are they solving it today?**  
-There is no current solution. Blue EMI is a new entity. Without deliberate Zendesk configuration, inbound tickets would either fail to be submitted (no channel exists) or land in Checkout's existing support queue with no entity context.
+None. Blue EMI is new. Without this config, tickets would either have no channel or land in the Checkout queue with no entity.
 
 **Why solve this now?**  
-Blue EMI merchants will begin onboarding in 2026. Support infrastructure must be in place before the first merchant goes live to avoid unrouted tickets, manual triage, and SLA breaches from day one.
+Blue EMI onboarding starts in 2026. Support must be ready at first go-live to avoid unrouted tickets, manual triage, and SLA breaches.
 
 
 ## Goals & Success Metrics
@@ -29,26 +29,11 @@ Blue EMI merchants will begin onboarding in 2026. Support infrastructure must be
 | --- | --- | --- | --- |
 | % of Blue EMI tickets with a valid Blue EMI Client ID | N/A (no channel) | 100% | At launch |
 | % of Blue EMI tickets correctly routed to Blue EMI queue | N/A | 100% | At launch |
-| Direct-email-to-webform redirect bounce rate | N/A | <5% of inbound attempts (aim to eliminate via no-publish policy) | 3 months post-launch |
+| % of new-ticket attempts that arrive via direct email and receive auto-reply (no manual triage) | N/A | Aim to minimise via no-publish policy; target &lt;5% of Blue EMI ticket volume created via direct email (rest via Dashboard) | 3 months post-launch |
 | Agent mislabelling of Blue EMI vs Checkout tickets | N/A | 0 | Ongoing |
 
 
 ## User Stories
-
-### Merchant: Submitting a ticket (public webform)
-
-**As a** Blue EMI merchant who is not logged into the Dashboard,  
-**I want** to submit a support ticket via a public webform where I enter my Blue EMI Client ID,  
-**So that** my ticket reaches the right support team with the correct entity context.
-
-**Acceptance Criteria**:
-
-- Webform is accessible without authentication
-- Blue EMI Client ID is a mandatory field — form cannot be submitted without it
-- Client ID is validated against known Blue EMI organisations before submission
-- On submission, ticket is created in Zendesk with the correct Blue EMI org assigned
-- Merchant receives a branded confirmation email from the Blue EMI support address
-
 
 ### Merchant: Submitting a ticket (Dashboard webform)
 
@@ -86,7 +71,7 @@ Blue EMI merchants will begin onboarding in 2026. Support infrastructure must be
 **Acceptance Criteria**:
 
 - Inbound email without a Blue EMI Client ID triggers an auto-reply within seconds
-- Auto-reply clearly directs the merchant to the public webform URL and includes an emergency P0 escalation path
+- Auto-reply clearly directs the merchant to log in to the Blue EMI Dashboard to submit a ticket, and includes an emergency P0 escalation path
 - The ticket is automatically closed/suspended and does not enter the active queue
 
 
@@ -117,20 +102,21 @@ Blue EMI merchants will begin onboarding in 2026. Support infrastructure must be
 #### Must Have (P0)
 
 - Dedicated Blue EMI ticket form in Zendesk with Blue EMI Client ID as a mandatory custom field
-- Public-facing webform powered by this form, accessible without authentication
 - Dashboard-embedded webform that pre-populates Blue EMI Client ID from session
 - Zendesk Multibrand configuration for Blue EMI (separate brand, email identity, templates)
 - Blue EMI support email address (e.g. `support@blueemi.com`) configured with correct DKIM/SPF
 - Zendesk Organisation per Blue EMI client, with Blue EMI Client ID stored as org external ID or custom org field
 - Trigger: on ticket creation via email channel with empty Blue EMI Client ID → auto-reply and close ticket
 - Trigger: on ticket creation via Blue EMI form → auto-assign to correct Blue EMI organisation
+- **Checkout brand**: Trigger on inbound email to support@checkout.com — if requester email matches a Blue EMI client, auto-reply (wrong channel; use Blue EMI Dashboard) and close ticket; do not create Checkout ticket
 - Dedicated agent view/queue for Blue EMI tickets (filtered by `blue_emi` tag or brand)
 - Blue EMI Client ID field visible in ticket layout for agents
+- **Agent Toolkit** (User Profile search and Payment Tool) must support Blue EMI Client IDs and Blue EMI data sources so agents can look up Blue EMI clients and query Blue EMI payment context
+- Blue EMI complaints received and routed under the Blue EMI entity (dedicated complaints address and/or routing to Blue EMI brand in Zendesk)
 
 #### Should Have (P1)
 
-- Client ID validation on public webform (live API call to confirm ID exists before form submits)
-- Auto-reply for bounced email includes URL to public webform and emergency P0 escalation path
+- Auto-reply for bounced email includes link to Blue EMI Dashboard login and emergency P0 escalation path
 - Blue EMI branding applied to all outbound email notifications (confirmation, agent replies, CSAT)
 - Alert/notification to CX Ops when a ticket arrives with an unrecognised Blue EMI Client ID
 - Separate CSAT survey configuration for Blue EMI (distinct from Checkout CSAT)
@@ -142,26 +128,12 @@ Blue EMI merchants will begin onboarding in 2026. Support infrastructure must be
 - Reporting dashboard separating Blue EMI ticket volume, SLA performance, and CSAT from Checkout
 
 **Constraints**:
-- **Security**: Blue EMI Client ID validation must not expose the existence or non-existence of other client IDs to unauthenticated users — return a generic validation error on failure
 - **Compliance**: Ticket data for Blue EMI merchants must be handled in line with applicable data residency and retention requirements for the Blue EMI entity
-- **Availability**: Webform must be available 24×7; form submission failures must degrade gracefully with a clear error message and fallback contact path
-- **Performance**: Client ID validation on public webform should return within 2 seconds
-- **Integrations**: Zendesk Multibrand enabled; internal Blue EMI Client ID validation API; email DNS configuration (DKIM/SPF); Dashboard webform session integration; Zendesk trigger and webhook configuration for org auto-assignment
+- **Availability**: Dashboard webform must be available 24×7; form submission failures must degrade gracefully with a clear error message and fallback contact path
+- **Integrations**: Zendesk Multibrand enabled; email DNS configuration (DKIM/SPF); Dashboard webform session integration; Zendesk trigger and webhook configuration for org auto-assignment
 
 
 ## Approach
-
-### Merchant Flow — Public Webform
-
-```
-1. Merchant navigates to Blue EMI public support webform URL
-2. Merchant enters: Blue EMI Client ID (validated), topic, subject, description
-3. On submit: Client ID validated against known orgs
-   - Invalid ID → inline error, form not submitted
-   - Valid ID → ticket created in Zendesk
-4. Merchant receives branded confirmation email from support@blueemi.com
-5. Merchant can reply to that email to continue the thread
-```
 
 ### Merchant Flow — Dashboard Webform
 
@@ -179,75 +151,119 @@ Blue EMI merchants will begin onboarding in 2026. Support infrastructure must be
 1. Merchant emails support@blueemi.com directly (new ticket attempt)
 2. Zendesk trigger fires: channel = email, Blue EMI Client ID field = empty
 3. Auto-reply sent within seconds:
-   "To submit a support request please use our form at [URL] and include your 
-    Blue EMI Client ID. For urgent payment issues (P0), contact us via [escalation path]."
+   "To submit a support request please log in to the Blue EMI Dashboard at [URL].
+    For urgent payment issues (P0), contact us via [escalation path]."
 4. Ticket status set to Closed
 5. Ticket does not appear in active agent queue
 ```
 
+### Merchant contact scenarios
+
+| Who | Channel | Behaviour |
+|-----|---------|-----------|
+| **Checkout merchant** | Emails support@checkout.com | Zendesk links to Checkout client/org as today; ticket handled in Checkout queue. |
+| **Blue EMI merchant** | Emails support@checkout.com | If sender is matched to a **Blue EMI client**, **reject**: auto-reply that this is not the right channel, with instructions to submit via the Blue EMI Dashboard (and escalation path if urgent). Ticket closed; does not enter Checkout queue. |
+| **Blue EMI merchant** | Submits via Blue EMI Dashboard | Ticket created in Zendesk linked to **Blue EMI client/org only**; Blue EMI queue and branding. |
+| **Checkout merchant** | Submits via Checkout Dashboard | Ticket created in Zendesk linked to **Checkout client/org only**; Checkout queue and branding. |
+| **Checkout AM** | Uses internal support form; picks Checkout or Blue client | Ticket maps to the **relevant client/org in Zendesk** (Checkout or Blue EMI depending on selection). |
+| **Checkout AM** | Emails support@checkout.com about a Blue client | **Plan to block** AM email submissions for Blue clients from Q2/Q3 — AMs must use the internal form and select Blue client. Until block is in place: wrong-channel handling or manual triage (TBC). |
+
+*Dual-entity merchants:* Channel and submission path set identity. Email to support@checkout.com from a known Blue EMI client → wrong-channel reply and close (Checkout-side trigger), not a Checkout ticket.
+
 ### Key UX Decisions
 
-- **Blue EMI Client ID is mandatory and validated on the public webform, not optional** — without it, tickets cannot be routed correctly; a soft field would inevitably produce unrouted tickets. (Alternative considered: optional field with agent follow-up — rejected due to SLA risk and agent overhead.)
-- **Dashboard webform pre-populates Client ID from session** — eliminates entry errors for logged-in merchants; improves submission speed. (Alternative: manual entry even in dashboard — rejected as unnecessary friction.)
-- **Direct email bounced to webform, not manually triaged** — manual triage of email tickets without Client ID is unsustainable; auto-reply gives merchant immediate path forward.
+- **Dashboard webform only** — submission requires Blue EMI Dashboard login; Client ID always pre-populated from session.
+- **Client ID pre-populated, not editable** — prevents wrong-entity submissions.
+- **Direct email → auto-reply to use Dashboard** — no manual triage of email without Client ID.
+- **Blue EMI sender to support@checkout.com → rejected** — wrong-channel reply and close so Checkout queue stays clean.
+- **AM email for Blue clients → block from Q2/Q3** — AMs must use internal form and select Blue client; behaviour until block TBC.
+- **Complaints** — Blue EMI complaints must be received and routed under the Blue EMI entity (e.g. dedicated complaints address and routing to Blue EMI brand in Zendesk, not Checkout).
 
 ### Zendesk Configuration
 
-- **Multibrand**: New Blue EMI brand with dedicated help centre, ticket form, and email identity
-- **Custom Ticket Field**: `blue_emi_client_id` — text field, required on the Blue EMI form
-- **Custom Org Field**: `blue_emi_client_id` on Organisation records (used for matching)
-- **Organisations**: One Zendesk org per Blue EMI client; Blue EMI Client ID stored as org external ID or custom field
-- **Triggers**:
-  - `[Blue EMI] Set org from Client ID`: fires on new ticket from Blue EMI form → webhook to match org → update ticket org
-  - `[Blue EMI] Bounce direct email`: fires on new ticket via email channel with empty `blue_emi_client_id` → auto-reply → close
-- **Views**: `Blue EMI — Open`, `Blue EMI — Pending`, `Blue EMI — Recently Solved`
-- **Email identity**: `Blue EMI Support <support@blueemi.com>` — DKIM/SPF configured
+| Element | Detail |
+|--------|--------|
+| Multibrand | Blue EMI brand: help centre, ticket form, email identity |
+| Ticket field | `blue_emi_client_id` — required on Blue EMI form |
+| Org field | `blue_emi_client_id` on Organisation (matching) |
+| Orgs | One org per Blue EMI client; Client ID = org external ID or custom field |
+| Triggers | Set org from Client ID (form → webhook); Bounce direct email (empty Client ID → auto-reply → close) |
+| Views | Blue EMI — Open, Pending, Recently Solved |
+| Email | `Blue EMI Support <support@blueemi.com>` — DKIM/SPF |
 
-### Technical Notes
+**Technical**: `GET /internal/blue-emi/clients/{client_id}` for validation; Zendesk `PUT /tickets/{id}` for org; Multibrand enabled; Blue EMI domain DNS for DKIM/SPF.
 
-- `GET /internal/blue-emi/clients/{client_id}` — validates a Blue EMI Client ID exists; used by public webform before submission
-- Zendesk API `PUT /tickets/{id}` — used by webhook/trigger to set organisation on ticket creation
-- Zendesk Suite (Multibrand capability) must be confirmed as enabled on account
-- Blue EMI email domain DNS management required for DKIM/SPF setup
+
+## End State options
+
+*Aligned with the [scoping one-pager](blue-emi-support-scoping-one-pager.md) phase **End State** (end of 2026, ~20 merchants).*
+
+End State may go in one of two directions:
+
+| Option | Description |
+|--------|-------------|
+| **Full Care support** | Checkout/Care continues to support Blue EMI merchants in Zendesk (current plan). This is intended to be **temporary** until Blue EMI takes over. |
+| **Blue EMI support** | Blue EMI eventually takes on full support for Blue EMI merchants in **another system** (TBC). Checkout would no longer handle Blue EMI tickets in Zendesk. |
+
+*Open question:* Will Checkout still be supporting Blue EMI in Zendesk at End State, or will Blue EMI have moved to their own support system by then? This PRD describes the **Full Care support** path; the Blue EMI-owned support path is TBC and would be a separate scope.
 
 
 ## Out of Scope
 
-- **Blue EMI ticket inbox in the Merchant Dashboard** — desirable but a separate piece of work
-- **Automated Zendesk org creation at Blue EMI onboarding** — v1 assumes orgs are manually created or bulk-imported; automation is a P2 improvement
-- **Blue EMI Live Chat channel** — not part of v1 support channel strategy
-- **Blue EMI AI Agent (Fin)** — not in scope; human support via webform only for v1
-- **Consumer/B2C Blue EMI support** — this PRD covers B2B merchants only
+- Public unauthenticated webform; Blue EMI ticket inbox in Dashboard; automated org creation at onboarding (P2)
+- Blue EMI Live Chat; Fin on Blue EMI (v1 = human support via webform only)
+- Consumer/B2C Blue EMI support (B2B only)
 
 
 ## Launch Plan
 
-- **Phase 1 — Zendesk Configuration**: Set up Multibrand, email identity, org structure, ticket form, triggers, views (internal only)
-- **Phase 2 — Integration & Validation**: Connect webform Client ID validation API; test trigger logic end-to-end with test organisations; UAT with CX Ops
-- **Phase 3 — Dashboard Webform**: Embed pre-populated form in Blue EMI Merchant Dashboard; test session handoff
-- **Phase 4 — Soft Launch**: First Blue EMI merchants onboarded; CX agents briefed (training session, runbook for unrecognised Client IDs, Blue EMI queue and views signed off by CX Ops lead, escalation path for P0/P1 issues documented); monitor queue and routing
-- **Phase 5 — GA**: Full Blue EMI merchant base supported; reporting baseline established
+*Phases align with the [scoping one-pager](blue-emi-support-scoping-one-pager.md): **Interim** → **Zendesk Build** → **End State**.*
 
-**Rollback**: If routing triggers malfunction at launch, a manual fallback process is documented for CX Ops: agents check the `blue_emi_client_id` field and manually set the organisation. Public webform can be taken offline temporarily with a maintenance message if the Client ID validation API is unavailable.
+### Interim (March 2026)
+
+**Scale (from one-pager):** 1 merchant · ~5 tickets/week
+
+No Zendesk build in this phase; support is Commercial-owned (Slack channel, AM escalation). This PRD’s work prepares for Zendesk Build: Zendesk configuration and Dashboard webform development can run in parallel so they are ready when the first merchant migrates off Interim.
+
+### Zendesk Build (Q2 2026)
+
+**Scale (from one-pager):** 5 merchants · ~10–15 tickets/week
+
+- **Zendesk configuration**: Multibrand, email identity, org structure, ticket form, triggers, views (internal only)
+- **Dashboard webform & integration**: Embed pre-populated form in Blue EMI Merchant Dashboard; test session handoff and Client ID pre-population; test trigger logic end-to-end with test organisations; UAT with CX Ops
+- **Soft launch**: First Blue EMI merchants migrate to webform; CX agents briefed (training, runbook for unrecognised Client IDs, Blue EMI queue and views signed off by CX Ops lead, escalation path for P0/P1 documented); monitor queue and routing
+
+### End State (end of 2026, target)
+
+**Scale (from one-pager):** ~20 merchants · ~40–50 tickets/week
+
+Full Blue EMI merchant base supported via Zendesk (if **Full Care support**); reporting baseline established. See [End State options](#end-state-options) for Full Care vs Blue EMI-owned support.
+
+**Rollback**: Documented fallback: agents set org from `blue_emi_client_id`. If webform is down, auto-reply points merchants to P0 escalation path.
 
 
 ## Risks, Dependencies & Open Questions
 
 **Dependencies**:
 
+*Critical for any Zendesk work:*
+
 | Dependency | Owner | Status | Risk if Delayed |
 | --- | --- | --- | --- |
-| Zendesk Multibrand enabled on account | Zendesk Admins | TBC | Blocks all brand separation |
+| Merchant data available for Blue EMI merchants, in same location as Checkout merchant data | Engineering / Data | TBC | Blocks org matching, Agent Toolkit, support@checkout.com rejection logic; no reliable Zendesk build without it |
+| Clear flag that a merchant is Blue EMI vs Checkout (e.g. in merchant/org data or identity store) | Engineering / Data | TBC | Cannot route, triage, or report correctly; blocks triggers and views |
+| Zendesk Multibrand enabled on account | Zendesk Admins | Confirmed ✓ | N/A |
 | Blue EMI email domain and DNS setup | Blue EMI Programme / IT | TBC | Blocks branded email sending |
-| Internal Blue EMI Client ID validation API | Engineering | TBC | Blocks public webform validation; workaround: accept unvalidated ID + trigger fallback queue |
+| Internal Blue EMI Client ID validation API | Engineering | TBC | May block org-matching on ticket creation; workaround: manual org assignment by agent |
 | Zendesk org creation for all Blue EMI clients | Zendesk Admins | TBC | Blocks org auto-assignment; tickets land in catch-all |
-| Dashboard webform session integration | Dashboard Engineering | TBC | Blocks pre-populated form; merchants use public form as fallback |
+| Dashboard webform session integration | Dashboard Engineering | TBC | Blocks pre-populated form; no merchant-facing ticket channel until resolved |
+| Checkout-side: match requester email to Blue EMI client (for support@checkout.com rejection) | Engineering / Zendesk Admins | TBC | Blocks wrong-channel rejection; Blue EMI merchants could land in Checkout queue |
 
 **Risks**:
 
 | Risk | Likelihood | Impact | Mitigation |
 | --- | --- | --- | --- |
-| Merchant submits incorrect Client ID | Medium | High — ticket misrouted or unrouted | Client ID validation on public webform; clear field label and helper text |
+| Merchant submits with wrong Client ID pre-populated (e.g. session error) | Low | High — ticket misrouted | Session integrity in Dashboard; merchant can confirm Client ID before submit; agent alert on unmatched org |
 | Blue EMI org not yet created in Zendesk when ticket arrives | Medium | High — ticket lands in catch-all | Alert to Care Operations on unmatched ID; documented manual triage SLA |
 | Same email exists under Checkout and Blue EMI orgs | High — expected | Medium | Trigger explicitly sets org from Client ID field, overriding user default; Zendesk Enterprise multi-org membership |
 | Merchant discovers and uses support email directly for new requests | Medium | Low-Medium | Auto-reply redirect; no-publish policy for email address; P0 path included in bounce message |
@@ -257,10 +273,13 @@ Blue EMI merchants will begin onboarding in 2026. Support infrastructure must be
 **Open questions**:
 
 - [ ] What is the Blue EMI support email domain? (e.g. `support@blueemi.com`) *(Owner: Blue EMI Programme — blocks email identity and DNS setup)*
-- [ ] Does an internal API exist to validate Blue EMI Client IDs, or does one need to be built? *(Owner: Engineering — determines whether public webform validation is available at launch or deferred)*
+- [ ] Does an internal API exist to validate Blue EMI Client IDs, or does one need to be built? *(Owner: Engineering — needed for Zendesk org-matching webhook on ticket creation)*
 - [ ] Will Blue EMI use the same SLA tiers as Checkout (Standard / Enterprise / Premium), or have separate SLA definitions? *(Owner: Care Leadership — determines whether existing Zendesk SLA policies apply or new ones are needed)*
 - [ ] Is there an emergency/P0 contact channel for Blue EMI merchants (phone, dedicated email)? *(Owner: Blue EMI Programme / Care Operations — needed for the email bounce auto-reply and merchant help article)*
 - [ ] How are new Blue EMI clients onboarded into Zendesk as organisations — manual, bulk import, or automated? *(Owner: Zendesk Admins — determines org creation process and whether automation is needed sooner)*
+- [ ] Will End State be Full Care support (Checkout in Zendesk, temporary) or will Blue EMI have taken over support in another system by then? *(Owner: Blue EMI Programme / Care Leadership — affects long-term scope and reporting)*
+- [ ] Block AM email to support@checkout.com for Blue clients: target Q2 or Q3? How to detect AM vs merchant (e.g. internal domain)? Behaviour until block is in place — wrong-channel auto-reply or manual triage? *(Owner: Care Ops / Zendesk Admins)*
+- [ ] Do Blue EMI merchants have (or will they have) Salesforce records used for tiering? If not, how will SLA tier be determined in Zendesk? *(Owner: Commercial / Care Ops — affects SLA policies and reporting; see scoping one-pager challenge “No Tiering data”)*
 
 
 ## Timeline
@@ -269,15 +288,16 @@ Blue EMI merchants will begin onboarding in 2026. Support infrastructure must be
 | --- | --- | --- | --- |
 | PRD Complete | Feb 2026 | Charlie Wildish | 🔄 Draft |
 | Open questions resolved | TBC | Multiple | ⏳ |
-| Zendesk configuration complete | TBC | Zendesk Admins | ⏳ |
-| Client ID validation API ready | TBC | Engineering | ⏳ |
-| UAT with Care Operations | TBC | Care Operations | ⏳ |
-| Dashboard webform integration | TBC | Dashboard Engineering | ⏳ |
-| Agent training | TBC | Care Operations Lead | ⏳ |
-| First merchant go-live | TBC | Blue EMI Programme | ⏳ |
+| Zendesk configuration complete | Q2 2026 (target) | Zendesk Admins | ⏳ |
+| UAT with Care Operations | Q2 2026 (target) | Care Operations | ⏳ |
+| Dashboard webform integration | Q2 2026 (target) | Dashboard Engineering | ⏳ |
+| Agent training | Before first merchant | Care Operations Lead | ⏳ |
+| First merchant go-live | March 2026 | Blue EMI Programme | ⏳ |
 
 
 ## Appendix
 
+- [Scoping one-pager](blue-emi-support-scoping-one-pager.md) — Programme phases (Interim, Zendesk Build, End State), scale, agent impact, merchant scenarios
+- [How Blue EMI differs from Checkout (Project Moon context)](../01-knowledge-base/payment-domain/How Blue EMI differs from Checkout (Project Moon context).md) — Blue EMI vs Checkout entity and identifiers
 - `01-knowledge-base/products/checkout-products.md` — Support Ticket Inbox and Zendesk channel overview
 - `01-knowledge-base/products/care-success-plans.md` — SLA tiers and channel entitlements

@@ -16,25 +16,27 @@ This workspace serves as:
 ```
 Charlie PM brain/
 ├── .cursor/rules/                        # AI context (role, domain, style, stakeholders)
-│   ├── context.md                        # Role, team, goals, flywheel model, care tiers
-│   ├── customer-support.md               # Support structure, channels, SLAs
-│   ├── payment-domain.md                 # PSP fundamentals and terminology
-│   └── communication-style.md            # Writing style by audience
+│   ├── context.mdc                       # Role, team, goals, flywheel model, care tiers
+│   ├── customer-support.mdc              # Support structure, channels, SLAs
+│   ├── payment-domain.mdc                # PSP fundamentals and terminology
+│   └── communication-style.mdc           # Writing style by audience
 │
 ├── 01-knowledge-base/                    # Domain knowledge and reference
 │   ├── strategy/                         # Strategic frameworks and source docs
 │   │   ├── care-product-model.md         # The Care Product flywheel (6-domain model)
 │   │   ├── support-scale-principles.md   # Scaling principles to 2030
 │   │   ├── competitive-support-audit-2026.md # Competitor support benchmarks (Stripe, Adyen, etc.)
-│   │   └── care-success-plans-proposal.md# Source proposal for support tiers
+│   │   ├── care-success-plans-proposal.md    # Source proposal for support tiers
+│   │   └── rumelt-strategy-kernel.md         # Strategy Kernel (Diagnosis → Guiding Policy → Coherent Actions)
 │   ├── products/                         # Product reference docs
-│   │   ├── merchant-segments.md          # All segments overview
+│   │   ├── customer-segments.md         # All segments overview
 │   │   ├── care-success-plans.md         # Tier model (Standard/Enterprise/Premium)
 │   │   ├── platform-segment.md           # Platform/ISV deep-dive (primary 2026 focus)
 │   │   ├── reflex.md                     # Reflex — AI contact insights product
 │   │   └── checkout-products.md          # Checkout.com product overview
 │   ├── processes/                        # Support process documentation
 │   │   ├── support-workflows.md          # Ticket handling procedures
+│   │   ├── socratic-questioning-prds.md  # Socratic questions to sharpen PRDs
 │   │   ├── ai-agent-operations.md        # Fin AI Agent operations
 │   │   ├── incident-response.md          # Incident response process
 │   │   └── known-challenges.md           # Known operational challenges
@@ -99,6 +101,10 @@ Charlie PM brain/
 
 🔗 **Work with data sources** → See `01-knowledge-base/data-sources.md`
 
+🎯 **Frame product/roadmap strategy** → Use `01-knowledge-base/strategy/rumelt-strategy-kernel.md`
+
+✏️ **Sharpen PRD or feature thinking** → Use `01-knowledge-base/processes/socratic-questioning-prds.md`
+
 🔄 **Do integrated analysis** → Follow `02-workflows/integrated-analysis.md`
 
 ### Working with Claude
@@ -132,10 +138,10 @@ Claude has context about:
 
 Rules that give Claude context about your work:
 
-- **context.md**: Your role, responsibilities, stakeholders
-- **payment-domain.md**: PSP and payment processing fundamentals
-- **customer-support.md**: Support processes, escalations, metrics
-- **communication-style.md**: How to communicate with different audiences
+- **context.mdc**: Your role, responsibilities, stakeholders
+- **payment-domain.mdc**: PSP and payment processing fundamentals
+- **customer-support.mdc**: Support processes, escalations, metrics
+- **communication-style.mdc**: How to communicate with different audiences
 
 **When to update**: When your role changes, new processes are added, or you join new teams
 
@@ -149,12 +155,16 @@ The 2026 product roadmap organised by goal (reduce contact rate / reduce cost of
 
 Centralized reference information organized by topic:
 
+**strategy/** - Strategic frameworks and source docs
+- Care Product flywheel, scaling principles, competitor audit
+- Rumelt Strategy Kernel (Diagnosis → Guiding Policy → Coherent Actions) for product/roadmap strategy
+
 **products/** - Checkout.com products and features
 - Starter doc for product info (add your specific product details)
 - Subdirectories for feature specs and integration guides
 
 **processes/** - Internal workflows and procedures
-- Support ticket handling workflows
+- Support ticket handling workflows, Socratic questioning for PRDs, review panel personas
 - Incident response processes
 - Release and deployment procedures
 

@@ -8,23 +8,19 @@
 
 ## Executive Summary
 
-Fin AI Agent currently operates only within the authenticated Merchant Dashboard, where user identity is verified and payment data can be returned safely. The majority of merchant support contacts arrive via email — an unauthenticated channel — leaving Fin unable to perform payment data lookups for the highest-volume inbound channel. At least 50% of queries are about one or more specific payments, identified by Payment ID or Reference. This is the dominant query pattern on email and the single largest addressable opportunity for AI resolution rate improvement.
-
-This PRD defines the authentication approach and data access policy required to extend Fin's data lookup capability to email-originated Zendesk tickets, with payment-by-ID lookup as the primary use case. Fin has a native email verification code flow — it can send a verification code to confirm a user has access to their inbox — which removes the need to build a custom OTP service. The work is therefore primarily configuration, policy definition, and integration with the user identification infrastructure rather than net-new engineering.
+Fin today only runs in the authenticated Dashboard; email is unauthenticated so Fin can’t do payment lookups there. At least 50% of email queries are payment-by-ID/Reference — the biggest lever for AI resolution. This PRD defines auth and data access so Fin can safely return payment data on email. Fin’s native verification-code flow removes the need for custom OTP; work is mainly config, policy, and integration with identification infrastructure.
 
 
 ## Problem
 
 **What problem are we solving, and who has it?**  
-Fin can answer generic documentation questions over email today, but cannot perform payment data lookups because it cannot verify who is asking. At least 50% of inbound email queries are about one or more specific payments — a merchant provides a Payment ID or Reference and asks what happened. These are exactly the queries Fin could resolve with data access. Instead, every one routes to a human agent. This is the single largest driver of the gap between current and target AI resolution rates on email. The problem affects merchant ops teams (who wait for human agents to answer questions Fin could resolve), CX agents (who handle automatable queries at cost), Care Operations and Operational Excellence (whose AI resolution rate is structurally capped while email remains data-locked), and Premium/Enterprise merchants specifically — email is a dedicated channel entitlement for these tiers only.
-
-**Important baseline**: Human agents already return payment data over email today. The marginal risk Fin introduces is automation at scale and the absence of human judgment — not a new category of data disclosure. The data policy for Fin must be calibrated against this existing practice.
+Fin can do FAQ over email but not payment lookups — it can’t verify who is asking. ~50% of email is payment-by-ID/Reference; all of that goes to humans. That’s the main gap to AI resolution on email. Affects: merchant ops (wait for agents), CX (handle automatable volume), Care Ops/Op Ex (capped resolution), Premium/Enterprise (email is their channel). **Baseline**: Agents already return payment data over email; Fin’s marginal risk is scale and no human judgment, not a new data class.
 
 **How are they solving it today?**  
-Email queries requiring payment data are routed entirely to human agents. There is no partial automation. Standard merchants are directed to the Dashboard and AI Agent; Premium and Enterprise (64% of current ticket volume) use email as their primary channel.
+All payment-data email → humans. No partial automation. Standard → Dashboard; Premium/Enterprise (bulk of volume) use email.
 
 **Why solve this now?**  
-Email is the primary channel for Premium and Enterprise merchants — the two tiers with the highest SLA obligations and the greatest commercial sensitivity. At least half of their email queries follow an identifiable, resolvable pattern (Payment ID lookup), and this is fully automatable if identity can be verified. This is the single highest-leverage investment available to move AI resolution rate on the highest-value segment. Additionally, the identification infrastructure being built for domain mapping and Salesforce/Dashboard lookup provides a foundation to build on now.
+Email is P/E’s primary channel; half of queries are payment lookup, automatable with verified identity. Identification work (domain mapping, Salesforce/Dashboard) is in flight — build on it now.
 
 
 ## Goals & Success Metrics
@@ -290,16 +286,18 @@ The email response is intentionally minimal — enough to answer the immediate q
 
 Deep linking to a specific payment requires the merchant to be authenticated. If not already logged in, the link should route them to the Dashboard login page and forward to the correct payment record.
 
-### Shared Inbox Consideration
+### Shared Inbox
 
-Agents already return payment data to shared merchant inboxes — this is the accepted practice today. Fin operating in the same way is consistent with the established baseline. The CC-based exclusion rules further reduce shared inbox risk by routing high-visibility threads (AM present, large CC list) to human agents. The remaining constraint is data minimisation: Fin returns the minimum necessary (status, outcome, Dashboard link) and never includes consumer PII or PANs.
+Agents already return payment data to shared inboxes; Fin aligns with that. CC exclusions route high-visibility threads to humans. Fin returns minimum data (status, outcome, Dashboard link); no consumer PII or PANs.
 
 ### Technical Components
 
-- **Authentication level classifier**: on ticket creation, run Salesforce + Dashboard + domain mapping lookup and tag the Zendesk ticket with the established auth level. Engineering build required.
-- **Fin native email verification flow**: Fin's built-in capability to send a verification code and confirm inbox access. No Engineering build required — this is Fin configuration. Security review required before using it to gate data access.
-- **Fin configuration layer**: Fin reads `fin_eligible` and `fin_auth_level` fields from the Zendesk ticket and applies involvement and data entitlement rules accordingly. Configuration only — no Engineering build required.
-- **Data return audit log**: all Fin data responses logged with ticket ID, timestamp, auth level, and data type classification. Engineering build required.
+| Component | Detail |
+|----------|--------|
+| Auth level classifier | Ticket creation → Salesforce + Dashboard + domain lookup → tag ticket. Engineering. |
+| Fin verification flow | Native verification code; config only; Security review before data gating. |
+| Fin config | Reads `fin_eligible`, `fin_auth_level`; applies rules. Config only. |
+| Audit log | Log all data responses (ticket, timestamp, level, type). Engineering. |
 
 ### APIs & Integrations
 
@@ -327,12 +325,8 @@ Agents already return payment data to shared merchant inboxes — this is the ac
 
 ## Out of Scope
 
-- **Changes to Fin's Dashboard behaviour** — Level 3 (authenticated Dashboard session) is unchanged by this PRD
-- **Standard tier merchants** — Standard merchants are directed to Dashboard and AI Agent; email is not a Standard channel entitlement
-- **Consumer / B2C support over email** — this PRD covers B2B merchant contacts only; consumer data policy is a separate workstream
-- **Voice or chat channel authentication** — this PRD is email-specific
-- **Full PAN or consumer PII return over any channel** — these are absolute limits, not in-scope trade-offs
-- **Mandating Dashboard accounts for merchant ops teams** — a dependency that would increase Level 2 identification rates, but solving it is out of scope here
+- Fin Dashboard behaviour (Level 3 unchanged); Standard tier (no email entitlement); Consumer/B2C; voice/chat auth
+- PAN/consumer PII return (hard limits); mandating Dashboard for ops (would help Level 2 but out of scope)
 
 
 ## Launch Plan
@@ -344,7 +338,7 @@ Agents already return payment data to shared merchant inboxes — this is the ac
 - **Phase 5 — Limited rollout**: Enable on a controlled set of email tickets (Premium/Enterprise only); monitor auth completion rates and escalation patterns.
 - **Phase 6 — Full rollout & monitoring**: Enable across all email tiers; establish ongoing audit log review cadence.
 
-**Rollback**: The data policy enforcement layer is the safety control. If Fin returns out-of-policy data, the immediate response is to disable Fin data return on email (revert to FAQ-only) while the issue is investigated. This is a Fin configuration change, not a code rollback.
+**Rollback**: Disable Fin data return on email (FAQ-only) via config; investigate. No code rollback.
 
 
 ## Risks, Dependencies & Open Questions

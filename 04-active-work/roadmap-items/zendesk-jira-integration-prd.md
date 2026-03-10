@@ -8,19 +8,19 @@
 
 ## Executive Summary
 
-Care agents currently have to log into both Zendesk and Jira to escalate tickets to Engineering, track progress, and relay updates back to merchants. This creates manual overhead, context-switching cost, and risks from incomplete handoffs. This PRD defines the integration between Zendesk and Jira Service Management (JSM) so that agents can create, link, and track Jira tickets entirely from within Zendesk — reducing the steps required to escalate and keeping Engineering informed of SLA urgency without requiring them to log into Zendesk.
+Agents today log into both Zendesk and Jira to escalate, track, and relay updates — manual overhead and incomplete handoffs. This PRD defines Zendesk–Jira Service Management (JSM) integration so agents create, link, and track Jira tickets from Zendesk; Engineering sees SLA urgency without logging into Zendesk.
 
 
 ## Problem
 
 **What problem are we solving, and who has it?**  
-When a Care agent determines that a merchant issue requires Engineering investigation, they must open Jira, manually create a ticket, copy across context (merchant name, Client ID, issue description), and then return to Zendesk to continue managing the merchant relationship. Progress on the Jira ticket is invisible in Zendesk — agents must check Jira separately to see Engineering updates, and must manually copy any Engineering comments into Zendesk before they can update the merchant. This affects all Care agents who escalate to Engineering, and is a direct source of delays, missed updates, and incomplete escalation context.
+Agents escalating to Engineering open Jira, create a ticket, copy context (Client ID, description), then return to Zendesk. Jira progress is invisible in Zendesk; agents re-check Jira and copy comments back. Result: delays, missed updates, incomplete context. Affects all agents who escalate.
 
 **How are they solving it today?**  
-Manual copy-paste between Zendesk and Jira. There is no integration. Agents log into both systems, duplicate information by hand, and rely on informal communication (e.g. Slack messages) to chase Engineering updates rather than tracking them systematically in Zendesk.
+Manual copy-paste; no integration. Agents duplicate info and chase updates via Slack instead of in Zendesk.
 
 **Why solve this now?**  
-The Engineering escalation workflow is a known friction point for Care agents. With JSM now established as the Engineering ticketing system, the integration infrastructure exists to make this connection. Solving this reduces agent effort on every escalation and improves the quality of information Engineering receives — fewer incomplete tickets means faster resolution for merchants.
+Escalation is a known friction point. JSM is in place; integration reduces agent effort and improves handoff quality for faster merchant resolution.
 
 
 ## Goals & Success Metrics
@@ -144,8 +144,7 @@ The Engineering escalation workflow is a known friction point for Care agents. W
 
 ## Approach
 
-**Implementation approach**:  
-The Zendesk Marketplace includes a native Jira app (built by Zendesk/Atlassian) that covers the majority of P0 and P1 requirements without custom Engineering build. Zendesk Admins configure the app and field mappings; Engineering / IT configure the JSM project to receive tickets in the correct format. This should be the starting point — custom development should only be considered if the native app cannot meet a specific requirement.
+**Implementation approach**: Start with the native Zendesk Marketplace Jira app (Zendesk/Atlassian) — it covers most P0/P1. Zendesk Admins configure app and field mappings; Engineering/IT configure JSM to receive tickets. Custom build only if the app can’t meet a requirement.
 
 **Agent flow — creating a new escalation**:
 
@@ -169,25 +168,17 @@ The Zendesk Marketplace includes a native Jira app (built by Zendesk/Atlassian) 
 4. Jira status and comments are now visible in the sidebar
 ```
 
-**Key UX decisions**:
+**Key UX decisions**: Jira comments → internal notes only in Zendesk; agents choose what to share. No auto-close of Jira on Zendesk close in v1; closure sends a comment; Engineering owns Jira lifecycle.
 
-- Jira comments are always internal notes in Zendesk — never surfaced to merchants automatically. Agents decide what to share. This is intentional: Engineering comments may contain technical detail or internal context not suitable for merchant communication.
-- Auto-close Jira on Zendesk close is not implemented in v1. Zendesk closure triggers a comment to Jira instead. Engineering owns the Jira ticket lifecycle.
-
-**Technical notes**:
-
-- Zendesk Admins: install and configure the Jira app from the Zendesk Marketplace; configure field mappings (Client ID, Client Name must map from Zendesk org fields to Jira custom fields); configure bi-directional comment sync
-- Engineering / IT: confirm the JSM project structure and custom fields required to receive escalations; confirm whether Jira Software (bug project) is a separate instance or same instance as JSM — this affects bug ticket tracking feasibility
-- The Zendesk SLA field passed to Jira needs to be determined: is this the SLA breach timestamp, time-remaining value, or a status label (e.g. "Breached / On track")? Zendesk Admins to confirm what field is accessible and appropriate to expose
+**Technical notes**: Zendesk Admins: install Jira app, map Client ID/Client Name from org fields, configure comment sync. Engineering/IT: confirm JSM structure and Jira Software vs JSM instance. Confirm which Zendesk SLA field is passed (breach time, time-remaining, or status label).
 
 
 ## Out of Scope
 
-- **Auto-close Jira ticket when Zendesk ticket closes** — excluded from v1. In a Many-to-One scenario, closing one Zendesk ticket must not close the shared Jira ticket. Engineering owns Jira ticket closure. A comment notification on Zendesk closure (P1) is the v1 substitute.
-- **Slack notifications** — out of scope until channel design and ownership are defined (see Open Questions)
-- **Reporting on Care-originated Jira tickets** — out of scope until the audience, metrics, and access model are defined
-- **Automated merchant updates from Jira comments** — Jira comments will never automatically become external replies; all merchant communication remains agent-controlled
-- **Jira-native SLA management** — Jira may have its own SLA configuration for Engineering teams; this is out of scope for this PRD, which only covers surfacing the Zendesk SLA in Jira as a read-only field
+- Auto-close Jira on Zendesk close (v1: comment on closure only; Engineering owns Jira closure)
+- Slack notifications; reporting on Care-originated Jira tickets (until scope defined)
+- Automated merchant updates from Jira comments (agent-controlled only)
+- Jira-native SLA (this PRD only surfaces Zendesk SLA in Jira as read-only)
 
 
 ## Launch Plan
@@ -197,7 +188,7 @@ The Zendesk Marketplace includes a native Jira app (built by Zendesk/Atlassian) 
 - **Phase 3 — UAT with Care Operations**: Broader agent group tests against live JSM project; validate that field pre-population is accurate and SLA field is displaying correctly.
 - **Phase 4 — Rollout**: Enable for all Care agents; brief on new workflow (particularly internal note policy for Jira comments).
 
-**Rollback**: The Jira app is additive — removing it from Zendesk reverts agents to the current manual process without affecting existing Zendesk or Jira data. Jira tickets already created are unaffected.
+**Rollback**: Remove Jira app → back to manual process; existing tickets unchanged.
 
 
 ## Risks, Dependencies & Open Questions

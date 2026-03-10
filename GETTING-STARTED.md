@@ -41,11 +41,11 @@ Your workspace is organized into 5 main directories:
 ### Day 1: Setup & Familiarization
 - [ ] Read through `README.md` (you're almost done!)
 - [ ] Browse the `01-knowledge-base/` to see what's available
-- [ ] Review `.cursor/rules/context.md` - does it accurately describe your role?
+- [ ] Review `.cursor/rules/context.mdc` - does it accurately describe your role?
 - [ ] Skim through available templates in `03-templates/`
 
 ### Day 2: Add Your Context
-- [ ] Update `.cursor/rules/context.md` with specific stakeholders and team details
+- [ ] Update `.cursor/rules/context.mdc` with specific stakeholders and team details
 - [ ] Add any existing product docs to `01-knowledge-base/products/`
 - [ ] Document any custom processes in `01-knowledge-base/processes/`
 - [ ] Create a list of key metrics you track in `01-knowledge-base/metrics/`
@@ -139,7 +139,7 @@ Don't customize yet—use the default structure to understand what works for you
 ### What to Customize
 
 **Definitely Customize**:
-- `.cursor/rules/context.md` - Make it specific to you
+- `.cursor/rules/context.mdc` - Make it specific to you
 - `01-knowledge-base/products/` - Add your actual products
 - `01-knowledge-base/processes/` - Document your real processes
 - Template headers and sections - Match your org's style
@@ -300,7 +300,7 @@ Don't document:
 ### "Claude doesn't understand my context"
 
 **Check**:
-- Have you updated `.cursor/rules/context.md`?
+- Have you updated `.cursor/rules/context.mdc`?
 - Are you providing enough context in your questions?
 - Have you added relevant domain knowledge to knowledge base?
 - Try being more specific in your requests

@@ -3,111 +3,135 @@
 **To**: CPO, COO  
 **From**: Charlie Wildish  
 **Date**: February 2026  
-**Topic**: Fin involvement rate is 9.2% today — structural gap, not a product gap. This is the plan to reach 80% by end of 2026.
+**Topic**: Fin involvement rate is 9.2% today - structural gap, not a product gap. This is the plan to reach 80% by end of 2026.
 
-## Summary
+## **Previous context:**
 
-Fin only runs on Dashboard chat, which accounts for 9.2% of contacts. The other 90% arrive via email and the Webform where Fin has never been deployed. Five levers across those channels get us to 80.9% at the end of 2026 — but only if: (1) data policy is approved for Fin on email, and (2) Standard merchants are redirected from email to Fin chat. Without data policy approval, Enterprise and Premium miss their targets; without the Standard redirect, the second-largest lever stalls.
+Modelling in the plan is based on volume for the new ++[Support plans/segments](https://docs.google.com/document/d/15OHpvfbfWVldFgKrJQB2L4dAJoWliuGKnQU2ZY0bZAc/edit?tab=t.sx7hqqinjh6q)++. Please familiarise with this if needed to see how these are calculated.
 
-## Where We Are Today
+**Metric definitions (context)**
 
-Fin involvement is **9.2%** (2,162 / 23,481 contacts; last 6 months). ~18.7% of contacts are structurally unreachable by Fin — internal CKO email and phone/Slack/IM channels — which sets the **hard ceiling at ~81%**. The 80% target sits just inside it.
+- **Fin involvement rate** — Share of all support contacts where Fin was the first touchpoint. Denominator = total support contacts (Zendesk tickets + Fin-only resolved); numerator = contacts where Fin participated (e.g. Dashboard chat, or email tickets with Fin as first responder once deployed). Unreachable channels (internal CKO email, phone, Slack/IM) stay in the denominator and set the ~81% ceiling.
+- **AI resolution rate** — Of contacts where Fin was involved, the share that Fin resolved without human escalation (Fin-resolved / Fin-involved).
+- **Overall AI resolution** — Share of all contacts resolved by Fin = involvement rate × resolution rate (e.g. 80% × 70% ≈ 56%).
 
+## **Summary**
 
-| Channel                         | % of contacts | Fin today               |
-| ------------------------------- | ------------- | ----------------------- |
-| Email (Merchant)                | 45.0%         | ❌ 0% — not deployed     |
-| Webform & API                   | 22.1%         | ❌ 0% — separate channel |
-| Account unlock form             | 4.9%          | ❌ 0% — not yet applied  |
-| Other (phone, Slack/IM, AM/TAM) | 9.5%          | ❌ Unreachable           |
-| Email (Internal / CKO)          | 9.2%          | ❌ Unreachable           |
-| Fin (Dashboard chat)            | 9.2%          | ✅ ~100%                 |
+**Why we're doing this:** Reduce Checkout's cost of support and provide a faster support experience to merchants. Fin only runs today on Dashboard chat, which accounts for 9-12% of contacts. The other ~90% arrive via email (small T3 involvement for Fin) and the Webform where Fin has not been deployed. Five levers across those channels get us to ~80% at the end of 2026, but only if: (1) security policy is approved for Fin on email sharing payments data, and (2) Standard merchants are redirected from email to Fin chat.
 
+## **What We Need**
 
-By tier: **Standard 16.9%, Enterprise 6.2%, Premium 4.0%.** Enterprise and Premium send >54% of their contacts via email — where Fin has no presence.
+1. **Approve policy for sharing payments data over email using Fin - Q2 (gates Phase 3, Q3).** We need a solution reviewed and approved by InfoSec and the Architecture Review Board. Required for Fin on email with payments data sharing (Phase 3). Without it, the Premium/Enterprise email lever is halved (+9.3 pp not +25.8 pp).
+2. **Align on ++[Standard email enforcement plan](https://docs.google.com/document/d/15OHpvfbfWVldFgKrJQB2L4dAJoWliuGKnQU2ZY0bZAc/edit?tab=t.916l0zwg5t1p)++ - Q1.** Standard will not be entitled to emailing us, but 26.6% of their contacts still arrive that way. Redirecting them to Fin chat is a policy and routing change; it requires a Zendesk trigger change (e.g. auto-reply/redirect to Dashboard, similar to Tier 4 email redirect in 2025), not Fin application build.
+3. **Agree the involvement target and achievable thresholds - Q1.** Agree the target for involvement and the thresholds we can reach (e.g. ~81% ceiling, 80% target). 18.7% of contacts (internal CKO email + phone/Slack/IM) are permanently unreachable and stay in the denominator.
 
-## Strategy: Drive Involvement First, Then Balance Resolution
+## **Where We Are Today**
 
-Getting Fin in front of more contacts immediately increases throughput and reveals where Fin fails — giving us the signal to invest in content, features, and data access. As involvement rises, resolution rate will dip because the query mix gets harder (email and Webform contacts are more complex than self-selected chat users). The plan accounts for this: **the target is 70% resolution rate at 80% involvement**, conditional on filling feature gaps, content, and data access in parallel.
+Fin involvement is ~**10-12%** (2,162 / 23,481 contacts; last 6 months). ~19% of contacts are structurally unreachable by Fin - internal CKO email and IM channels - which sets the **hard ceiling at ~81%** for now.
 
-**Involvement rate and resolution rate are tracked separately. This plan covers involvement.**
-
-**How involvement and resolution interact as we scale:**
+**Merchant segment context** (volume vs. merchant base): support volume is concentrated in the smaller segments.
 
 
-| Involvement rate       | Query mix                  | Assumed resolution rate | Overall AI resolution | Depends on                                              |
-| ---------------------- | -------------------------- | ----------------------- | --------------------- | ------------------------------------------------------- |
-| 10–15% (today)         | Chat-only                  | 60–70%                  | ~8–11%                | —                                                       |
-| 25–35%                 | + Standard redirect to Fin | 50–60%                  | ~13–21%               | Policy enforcement                                      |
-| 45–55%                 | + Webform migration        | 45–55%                  | ~20–30%               | Fin replicating Webform intake                          |
-| 65–75%                 | + Email (P/E)              | 40–55%                  | ~26–41%               | Data auth + feature gaps                                |
-| 78–82% (no investment) | Full mix                   | 35–45%                  | ~28–37%               | Nothing extra — but resolution is low                   |
-| **78–82% (target)**    | Full mix                   | **70%**                 | **~55–57%**           | Feature gaps filled, content in place, data access live |
+| Segment    | % of merchants | % of contacts |
+| ---------- | -------------- | ------------- |
+| Standard   | 75%            | 34.6%         |
+| Enterprise | 20%            | 28.6%         |
+| Premium    | 5%             | 20.7%         |
+
+
+
+|                                                    |                   |                         |
+| -------------------------------------------------- | ----------------- | ----------------------- |
+| **Channel**                                        | **% of contacts** | **Fin today**           |
+| Email (Merchant)                                   | 45.0%             | ✅ 1-2% - just T3        |
+| Merchant Webform                                   | 22%               | ❌ 0% - separate channel |
+| Dashboard Account unlock form                      | 5%                | ❌ 0% - not yet applied  |
+| Other (APAC IM mostly)                             | 9.5%              | ❌ Unreachable           |
+| Internal tickets from Checkout (mostly Commercial) | 8-9%              | ❌ Unreachable           |
+| Fin (Dashboard chat)                               | ~10%              | ✅ ~100%                 |
+
+
+## **Strategy: Drive Involvement First, then Resolution**
+
+**Why?** So we can learn more about how to increase resolution rate through greater data capture & problem definition.
+
+- **Involvement rate will rise before resolution rate does.** As Fin reaches email and Webform contacts, the query mix gets harder - email and Webform contacts are more complex than self-selected chat users. Resolution rate will dip. That is expected.
+- **The target is 70% resolution rate at 80% involvement** - but that requires filling self-serve feature gaps, content coverage, and data access to be delivered in parallel for Fin. Involvement rate and resolution rate are tracked separately. This plan covers involvement work only.
+
+**Estimated view on how involvement and resolution interact as we scale:**
+
+
+|                        |                                    |                             |                           |                                                                                  |
+| ---------------------- | ---------------------------------- | --------------------------- | ------------------------- | -------------------------------------------------------------------------------- |
+| **Involvement rate**   | **Query mix**                      | **Assumed resolution rate** | **Overall AI resolution** | **Depends on**                                                                   |
+| 10–15% (today)         | Chat-only                          | 60–70%                      | ~8–11%                    | -                                                                                |
+| 25–35%                 | + Standard segment redirect to Fin | 50–60%                      | ~13–21%                   | Policy enforcement                                                               |
+| 45–55%                 | + Webform migration                | 45–55%                      | ~20–30%                   | Fin replicating Webform intake                                                   |
+| 65–75%                 | + Email (Premium/Enterprise)       | 40–55%                      | ~26–40%                   | Payments data sharing + feature gaps filled                                      |
+| 78–82% (no investment) | Full mix                           | 35–45%                      | ~30–45%                   |                                                                                  |
+| **78–82% (target)**    | Full mix                           | **70%**                     | **~55–57%**               | More feature gaps filled, content in place, source of truth payments data access |
 
 
 *Overall AI resolution = involvement rate × resolution rate.*
 
-## The Five Levers
+**What is failure?** (1) Involvement rate cannot exceed 50%, or (2) Fin involvement materially harms merchant experience (e.g. sustained CSAT decline or material escalations from Commercial). In either case we reassess lever rollout and resolution investments before pushing involvement further. If we have to protect support capacity or customer trust, we phase lever rollout rather than compromise quality.
 
-At **96% Fin involvement per lever**, overall rate reaches **80.9%**. At 80% per lever: 69.0%. At 90%: 76.4%. The bar is high — all levers must execute.
-
-
-| Lever                                                                                         | Contacts   | % of total | Uplift at 96%     |
-| --------------------------------------------------------------------------------------------- | ---------- | ---------- | ----------------- |
-| **L1 — Fin on Email (Premium/Enterprise)**                                                    | 6,304      | 26.8%      | **+25.8 pp**      |
-| **L2 — Standard → Fin (Dashboard)** (enforce success plan: Standard has no email entitlement) | 4,878      | 20.8%      | **+19.9 pp**      |
-| **L3 — Webform → Fin chat** (Fin replicates Webform intake + routing)                         | 5,198      | 22.1%      | **+21.2 pp**      |
-| **L4 — Account unlock form → Fin**                                                            | 1,159      | 4.9%       | +4.7 pp           |
-| **L5 — Maintain Dashboard chat**                                                              | 2,162      | 9.2%       | (9.2 pp baseline) |
-| Unreachable (not a lever)                                                                     | 4,391      | 18.7%      | 0                 |
-| **Total**                                                                                     | **23,481** |            | **80.9%**         |
+## **The five levers to increase involvement rate**
 
 
-**Note — Fin on email as a Dashboard and self-serve bridge:** Fin email responses will include contextual links to the merchant's Dashboard and relevant self-serve resources. This serves two purposes: it increases Fin's resolution rate by directing merchants to the right tool; and it surfaces Dashboard and self-serve to Premium/Enterprise merchants who currently default to email, supporting longer-term channel shift. This is a design requirement for the email Fin UX, not a content add-on.
-
-**Critical assumption — data authentication (Lever 1):** ~64% of Premium/Enterprise email volume is Payments In and Payouts queries that require merchant/transaction data. Without data auth, Lever 1 is worth +9.3 pp not +25.8 pp, and Enterprise and Premium miss their targets.
-
-
-|                   | Lever 1 uplift | Enterprise after | Premium after |
-| ----------------- | -------------- | ---------------- | ------------- |
-| With data auth    | +25.8 pp       | 78.8%            | 78.2%         |
-| Without data auth | +9.3 pp        | 42.5%            | 24.9%         |
-
-
-## Phased Plan
+|                                                                                               |              |                |                   |
+| --------------------------------------------------------------------------------------------- | ------------ | -------------- | ----------------- |
+| **Lever**                                                                                     | **Contacts** | **% of total** | **Uplift**        |
+| **L1 - Fin on Email (Premium/Enterprise)**                                                    | 6,304        | 26.8%          | **+25.8 pp**      |
+| **L2 - Standard → Fin (Dashboard)** (enforce success plan: Standard has no email entitlement) | 4,878        | 20.8%          | **+19.9 pp**      |
+| **L3 - Webform → Fin chat** (Fin replicates Webform intake + routing)                         | 5,198        | 22.1%          | **+21.2 pp**      |
+| **L4 - Account unlock form → Fin**                                                            | 1,159        | 4.9%           | +4.7 pp           |
+| **L5 - Maintain Dashboard chat**                                                              | 2,162        | 9.2%           | (9.2 pp baseline) |
+| Unreachable (not a lever)                                                                     | 4,391        | 18.7%          | 0                 |
+| **Total**                                                                                     | **23,481**   |                | **80.9%**         |
 
 
-| Phase                         | Timing     | What                                                                                                        | Owner                        |
-| ----------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| **1 — Instrument**            | Q1 2026    | Live involvement rate dashboard by tier/channel; tag unreachable contacts; confirm denominator              | Engineering + Zendesk Admins |
-| **2a — Standard enforcement** | Q1–Q2 2026 | Stop accepting email from Standard; redirect to Fin chat. Policy change — no tech build. Fastest lever.     | Care Operations              |
-| **2b — Fin on email (P/E)**   | Q2 2026    | Launch Fin on Email (Merchant) for Enterprise and Premium. Gated on data policy sign-off + auth classifier. | Engineering + Legal/Security |
-| **3 — Webform migration**     | Q2–Q3 2026 | Fin chat replaces Webform as primary Dashboard support entry point. Dashboard Engineering dependency.       | Dashboard Engineering        |
-| **4 — Gap close**             | Q3 2026    | Assess rate vs target; address residual gaps                                                                | Charlie Wildish              |
-| **5 — Target review**         | Q4 2026    | Confirm 80% achieved or adjust                                                                              | Charlie Wildish              |
+**Sharing payments data is the critical dependency for Lever 1.** ~64% of Premium/Enterprise email volume is Payments In and Payouts queries that require merchant/transaction data. Without data auth, Lever 1 is worth +9.3 pp not +25.8 pp.
 
 
-## Key Assumptions
+|              |                    |                      |                   |
+| ------------ | ------------------ | -------------------- | ----------------- |
+|              | **Lever 1 uplift** | **Enterprise after** | **Premium after** |
+| With data    | +25.8 pp           | 78.8%                | 78.2%             |
+| Without data | +9.3 pp            | 42.5%                | 24.9%             |
 
-1. **96% lever execution required.** Lower rates (80%, 90%) yield 69.0% and 76.4% respectively — both miss target.
-2. **Data auth unlocks Lever 1.** Without it, E/P email is worth +9.3 pp not +25.8 pp. If delayed past Q2, the plan needs to be revisited.
-3. **Standard redirects successfully.** 26.6% of Standard contacts arrive via email today despite no email entitlement. Assumes redirecting to Fin chat captures most of them.
-4. **Fin replicates Webform.** Lever 3 requires Fin to replicate structured intake, ticket field population, and routing end-to-end. If it can't, a residual Webform population stays outside Fin's reach.
-5. **Ceiling is fixed at ~81%.** Email (Internal) + Other (18.7%) are permanently unreachable. Any growth in those channels tightens the ceiling.
-6. **Channel mix stays fixed.** The model holds last-6m channel proportions constant. If email share grows (e.g. Enterprise/Premium volume increases), levers 1–2 must convert more contacts and the 96% execution bar gets harder to hit. If email share falls, it gets easier. Review quarterly.
-7. **Fin (Dashboard) share doesn't grow organically.** The model treats Dashboard chat as a static 9.2% baseline. In practice, chat adoption may increase as Webform migration proceeds and Dashboard UX improves — any organic lift reduces pressure on the other levers. This is an upside not in the model; track monthly.
-8. **70% resolution at 80% involvement requires parallel investment.** Feature gaps, content coverage, and data access must be delivered in parallel — involvement rate alone does not get us there.
 
-## What We Need
+**Dashboard adoption driver for Lever 1:** Fin email responses will include contextual links to the merchant's Dashboard and relevant self-serve resources - increasing resolution rate and surfacing self-serve to Premium/Enterprise merchants who currently default to email.
 
-1. **Data policy decision (Security/Legal) — end Q1 2026.** Single biggest blocker. Without it, E/P email lever is halved and both tiers miss their targets.
-2. **Standard email enforcement alignment — Q1 2026.** Care Operations sign-off needed; Standard is not entitled to email, but 26.6% of their contacts still arrive that way.
-3. **Denominator confirmed with leadership — Q1 2026.** The ~81% ceiling must be understood before the 80% target is locked. Unreachable contacts stay in the denominator.
-4. **Dashboard Engineering scoped for Webform migration — Q2 2026.** The only lever not within Care Product's control. Must be in Dashboard team's H1 plan.
+## **Phased Plan**
 
----
+
+|                                                                          |            |                                                                                                                                                           |                           |
+| ------------------------------------------------------------------------ | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| **Phase**                                                                | **Timing** | **What**                                                                                                                                                  | **Owner**                 |
+| **1 - Standard enforcement**                                             | Q2 2026    | Stop accepting email from Standard; redirect to Fin chat. Policy + Zendesk trigger change (e.g. Tier 4-style redirect). Fastest lever.                    | Care Operations & Product |
+| **2 - Fin on email without payments data sharing & Account unlock form** | Q2 2026    | Launch Fin on email for Premium/Enterprise for non-Payments issues only (no sharing of payments data). + Account unlock form. Gated on auth classifier.   | Product                   |
+| **3 - Fin on email with payments data sharing**                          | Q3 2026    | Enable Fin to handle Payments In and Payouts on email. Gated on policy for sharing payments data (InfoSec + ARB) approved and auth solution built.        | Product                   |
+| **4 - Webform migration**                                                | Q3 2026    | Care Product owned. Fin chat replaces Webform as primary support entry point; coordinate with Dashboard Engineering for hosted-surface changes as needed. | Care Product              |
+| **5 - Gap close**                                                        | Q3 2026    | Assess rate vs target; address residual gaps                                                                                                              | Charlie Wildish           |
+| **6 - Target review**                                                    | Q4 2026    | Confirm 80% achieved or adjust                                                                                                                            | Charlie Wildish           |
+
+
+## **Key Assumptions**
+
+Three assumptions that would materially change the plan if wrong:
+
+1. **Data auth unlocks Lever 1.** Without it, Premium/Enterprise email is worth +9.3 pp not +25.8 pp. If delayed past Q2, the plan needs to be revisited.
+2. **Standard redirects successfully.** 26.6% of Standard contacts arrive via email today despite no email entitlement. The Zendesk trigger (e.g. auto-reply/redirect to Dashboard, like Tier 4 in 2025) must capture most of them for Lever 2 to deliver.
+3. **Fin replicates Webform end-to-end.** Lever 3 requires Fin to replicate structured intake, ticket field population, and routing. If it can't, a residual Webform population stays outside Fin's reach. (We considered AI answers inside the Webform; Fin doesn't support that. Intercom recommended Fin as primary entry - migration was chosen for that reason.)
+
+Supporting assumptions (tracked quarterly, not plan-breaking unless significantly wrong):
+
+- Channel mix holds at last-6m proportions. If email share grows, the 96% execution bar gets harder; if it falls, easier.
+- Dashboard chat baseline stays at ~9.2%. Any organic lift from Webform migration reduces pressure on other levers - upside not in the model.
+- The ~81% ceiling is fixed. Any growth in unreachable channels (internal email, phone, Slack/IM) tightens it.
 
 **Owner**: Charlie Wildish  
-**Next update**: Q1 2026 — after denominator confirmed and data policy decided  
+**Next update**: Q1 2026 - after denominator confirmed and policy for sharing payments data over email (Fin) decided  
 **Questions to**: Charlie Wildish  
 **Source data**: `support_contacts_flat_table_2025_last_6m.csv` (23,481 contacts, last 6 months)

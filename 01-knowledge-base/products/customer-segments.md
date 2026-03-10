@@ -1,6 +1,22 @@
-# Merchant Segments
+# Customer Segments
 
-> Overview of all customer segments supported by Checkout.com's Customer Support (Merchant Care) team.
+> Overview of all customer segments supported by Checkout.com's Customer Support (Merchant Care) team. Covers (1) **end customer personas** — who we design for and prioritise (B2B: Ops teams at the merchant; B2C: cardholders and Braavos end users) — and (2) **business segments** — Enterprise, Platform, Payfac, Issuing, Identity, B2C.
+
+## End merchant customer personas (Merchant Care context)
+
+**We solve for Ops teams at the merchant:** Support, Risk, and Finance. This is **B2B support only** — the personas and taxonomy below describe who contacts Merchant Care from our business (merchant) customers. B2C support (separate model) will serve **cardholders and end users of Project Braavos**. Who contacts us (and what they contact us about) is reflected in our taxonomy and in contact volumes — Case Types and Issue Types map to these three Ops domains. See `01-knowledge-base/processes/support-taxonomy.md` for the full taxonomy and volume view.
+
+Within our B2B merchants, the people who contact or could be served by Merchant Care fall into two broad **end merchant customer** segments. This framing clarifies who we design for and who we do not prioritise.
+
+| Segment | White glove servicing | Need | Pain points | Opportunities |
+|--------|------------------------|------|-------------|---------------|
+| **Merchant Ops teams (Support, Risk, Finance)** | Low | Solve transaction-based queries from their customers quickly; solve regional (e.g. MENA) transaction issues; swift response on complex transaction issues; visibility on Balance & Settlement payouts | Data gaps in Dashboard and data APIs for key data; diagnosing transaction issues not intuitive in Dashboard; unclear what they can/cannot do on Dashboard; lack of understanding of Balances logic; settlement traceability issues | Add payments data to Dashboard that covers typical support scenarios and expose to Finance; better education on payments (operational side); fix root causes to prevent failures; education on Balance behaviours and drivers; education on Settlements; better visibility of settlement delays in Dashboard. Swift response on complex issues: not an issue — handled by Merchant Care today or their AM. |
+| **Payments leaders & specialists** | High | Advice on how to optimise payment performance / acceptance rate | Tricky without AM/SE support | Self-serve tools for merchants without dedicated AM/SE — e.g. Payments Intelligent Search (Dashboard Analytics Product team). |
+
+- **Target segment for Care:** **Merchant Ops teams (Support, Risk, Finance)** — low white-glove expectation, high need for fast resolution, data visibility, and education. Our taxonomy and volumes reflect this: PAYMENTS (IN), PAYOUTS, FUNDS AND FEES, plus Fraud & Risk and Disputes, map to the queries these teams raise. Our product and content work should prioritise this persona.
+- **Not priority for Care:** **Payments leaders & specialists** — high white-glove expectation; optimise-for-performance advice is managed by Account teams (AM/SE). We do not prioritise this segment; self-serve tools for those without AM/SE sit with Dashboard Analytics Product.
+
+---
 
 ## Segment Summary
 
@@ -157,20 +173,26 @@ Merchants using Checkout.com's **Identity Verification (KYC/KYB)** product — t
 
 ## B2C Consumer *(2027+)*
 
+B2C support serves **cardholders and end users of Project Braavos** — a distinct model from B2B merchant Ops.
+
 > Competitive research: `01-knowledge-base/strategy/B2C Fintech Support Competitive Analysis.md` — benchmarks Monzo, Revolut, Starling, Zilch, and Klarna for support model design ahead of the 2027 launch.
 
 ### What They Are
-Two sub-segments under the B2C model being built for 2027+:
-- **Remember Me**: Users of Checkout.com's consumer card-saving product (personal-dashboard.checkout.com)
-- **Braavos Neobank**: Customers of Checkout.com's consumer neobank proposition
+Two sub-segments under the B2C model:
+- **Remember Me**: Users of Checkout.com's consumer card-saving product, accessed via Flow. **Live today** — consumers contact support via a webform on the Remember Me portal; tickets flow into the **Checkout Consumer** Zendesk brand. Volume is <10 tickets/week at this stage.
+- **Braavos Neobank**: Customers of Checkout.com's consumer neobank proposition — planned for 2027+
 
 ### Support Model
-- AI Agent as primary channel
-- Phone support mandatory (likely regulatory requirement)
-- Business-hours human coverage
-- Likely requires BPO partner for first-line contact handling
-- SLA within hours
-- Fundamentally different from B2B — simpler queries, much higher volume, consumer protection obligations
+- **Remember Me (live)**: Checkout Consumer Zendesk brand active. Low volume, simple queries (card saving, OTP, purchase history). No AI Agent deployed yet. No formal SLA or tier framework.
+- **Braavos (2027+, to be defined)**:
+  - AI Agent as primary channel
+  - Phone support mandatory (likely regulatory requirement for banking product)
+  - Business-hours human coverage
+  - Likely requires BPO partner for first-line contact handling
+  - SLA within hours
+  - Complaint handling as a distinct regulated function (Consumer Duty, 8-week FRL, FOS referral rights)
+  - Fundamentally different from B2B — simpler queries, much higher volume, consumer protection obligations
+- The Checkout Consumer Zendesk brand is the seed for the Braavos support model — it needs significant configuration expansion to meet Braavos volume and regulatory requirements
 
 
 ## Segment Strategy: Support Cost & Contact Rate

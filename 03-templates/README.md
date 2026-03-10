@@ -4,6 +4,19 @@ Reusable templates for common Product Management deliverables and documents.
 
 ## Available Templates
 
+### 🤝 **merchant-care-intro-template.md** – Merchant Care introduction briefing
+Reusable template for introducing Merchant Care to any new stakeholder or team. Has a fixed pre-written core (what Care is, the flywheel, the numbers, the strategy) and a structured audience lens section (four sub-sections: why it matters, domain intersections, 2026 relevance, how to work with us).
+
+**When to use**: Onboarding a new PM, engineer, or operations person who needs to understand what Care Product does and how it connects to their work.
+
+**Sections include**:
+- Part 1 (pre-written core): What Merchant Care is, the flywheel, key numbers, the strategy
+- Part 2 (audience lens): Why this matters to you, how our domains intersect, 2026 relevance, how to work with us
+- Reference examples for Product PM, Software Engineer, and Care Agent
+
+**Reference example of a completed instance**: `04-active-work/merchant-care-b2c-briefing.md`
+
+
 ### 📄 **c-suite-memo-template.md** – C-Suite internal memo
 Template for internal memos to COO, CPO, or other executives. Summary-first, punchy bold intros with colons, bullets throughout. No em dashes.
 
@@ -123,6 +136,9 @@ Adjust level of detail based on who will read it
 - Executives: Focus on business impact and high-level decisions
 - Engineering: Include technical details and specifications
 - Support: Emphasize how-to and practical implications
+
+### Publishing to Confluence
+If you sync a doc to Confluence, keep the body (content after front matter) under ~15 KB for reliable publish. Use a short "Confluence summary" section and put full detail below a separator or in linked docs.
 
 ## Template Maintenance
 
