@@ -86,6 +86,10 @@ For Leadership, Engineering, Slack, and Reports style: see `01-knowledge-base/pr
 - Column definitions: `01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md`
 - Case-type breakdown: `01-knowledge-base/processes/support-taxonomy.md`
 
+**Note:** Volume totals in `support-taxonomy.md` and the flat CSV will differ — the taxonomy doc draws on a broader dataset. Use the CSV for relative prioritisation and actuals; use the taxonomy doc for issue type structure.
+
+**To aggregate volumes from the CSV:** Use a Python script to sum `support_contacts` grouped by `case_type` and `issue_type` — rows are split by segment/channel/territory so individual rows are not totals.
+
 ---
 
 ## PRD Framework
@@ -125,6 +129,8 @@ title: Page Title
 ```
 Then say "publish to Confluence". Default space: `MTC` (Merchant Care Product).
 
+**Important:** When publishing, strip the leading `# H1 title` from the body. Confluence automatically renders the page title as an H1 — including it in the body creates a duplicate title.
+
 ---
 
 ## Stakeholders
@@ -156,6 +162,7 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 | Customer 360 | Centralised customer context across all Checkout sources | Merchant 360 |
 | Platform / ISV | Vertical SaaS businesses that embed Checkout payments as PayFacs for their Platform merchants | Sub-merchant (use "Platform merchant") |
 | Fin involvement rate | Contacts where Fin was first point of contact and the merchant did not subsequently submit a separate channel contact for the same issue | — |
+| Fin Procedures | Fin's equivalent of SOPs — define the steps Fin follows to resolve a specific contact type, including API calls, data retrieval, and response logic. Data integrations are accessed via Procedures, not ad hoc. Related deliverable: Improve Fin Resolution Through Procedures (Q2 2026) | — |
 
 **Unit cost benchmarks**: Fin costs $0.90/resolution; human agent ~$40/contact (44x difference). Use these when framing AI investment cases.
 

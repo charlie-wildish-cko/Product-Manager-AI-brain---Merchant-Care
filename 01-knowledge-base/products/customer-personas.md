@@ -38,18 +38,33 @@ Personas are grouped into two sets:
 - Transaction data in the Dashboard doesn't surface the context needed to diagnose a decline or refund failure
 - Unclear what she can resolve herself vs. what requires Checkout.com intervention
 - Fin deflects her with generic answers that don't resolve the specific issue
+- Error code labels (e.g. "policy") are ambiguous: unclear whether the policy originates from the issuing bank, Checkout, or internal merchant configuration
+- Support responds quickly but responses often aren't actionable ("contact your issuing bank" does not resolve the issue)
+- The same issue requires 3–4 separate ticket submissions before receiving a root cause answer
+- Dashboard features (analytics, reports, refund tools) are discovered by accident; there is no onboarding to tooling for new team members
+- Error code documentation is not linked from the Dashboard; users search externally to find it
+- The Dashboard overview does not support multi-dimensional filtering; analysis by currency, payment type, or corridor requires an Excel export
+- Frequent re-authentication is a friction point for heavy users who keep the Dashboard open throughout the day
 
 ### A day in the life
 
-Maria's team receives a query from a customer about a failed payment. She checks the Dashboard, finds the transaction, but can't tell why it declined. She submits a Zendesk ticket, waits for a response, and has to relay the answer back to her own customer. If Fin had resolved it at contact, the chain would have been cut short.
+Maria's team receives a query about a failed payment. She finds the transaction in the Dashboard but the decline code — "policy" — doesn't tell her whether the block is from the issuing bank, Checkout, or her own configuration. She Googles the error code to find documentation, raises a ticket, and receives a fast response that asks her to contact the customer's bank. She re-escalates, and two more ticket exchanges later gets the actual root cause. By the time she relays the answer to her customer, the goodwill has been eroded. If Fin had resolved it at contact with the right procedure, the chain would have been cut short.
 
 **Support expectation**: Low white-glove. Fast, correct, self-serve resolution.
 
-**Design implication**: Primary target for Fin AI deflection and Dashboard data improvements. Payments data availability and Fin Procedures content are the highest-leverage investments for this persona. Maps to: PAYMENTS (IN) at 42.8% of contact volume.
+**Design implication**: Primary target for Fin AI deflection and Dashboard data improvements. Payments data availability and Fin Procedures content are the highest-leverage investments for this persona. In-context error code documentation (linking decline codes to KB articles directly from the transaction detail page) addresses the support quality gap. Richer Dashboard filtering and session persistence for trusted devices are secondary improvements. Maps to: PAYMENTS (IN) at 42.8% of contact volume.
+
+### Key quotes (from interviews, 2025)
+
+> *"I raised this to the support team like three times… I didn't think that we got a satisfactory response."* (Plutus)
+
+> *"I had to Google Checkout API error code documentation."* (Plutus)
+
+> *"We are quite happy… we receive the most polite answers… but we need recommendations that actually solve the problem."* (Findo)
 
 ---
 
-## James — Payments Specialist
+## James — Payments Strategist
 
 **Segment**: Enterprise or Premium
 **Role**: Payments manager, treasury lead, or payments director at a large, sophisticated direct merchant. Manages payment performance and strategic decisions about routing, risk, and compliance.
@@ -93,14 +108,33 @@ James notices an acceptance rate drop in his internal reporting. He checks Check
 - Must re-explain the Platform structure (sub-merchant IDs, hierarchy) on every ticket
 - Fin has no understanding of the Platform model and cannot help with sub-merchant queries
 - Under time pressure: a restaurant that can't take payments during service is a crisis
+- Once a sub-merchant is approved and active, the Platform loses access to the onboarding form. Bank accounts, addresses, and compliance documents cannot be updated without raising a ticket to Checkout — context is frozen at activation
+- Identifier terminology ("sub-entity ID", "entity ID", "application ID", "merchant ID") is inconsistent across Checkout and Platform-side systems; Platforms don't know which ID to use
+- All "action required" items look identical in the dashboard regardless of severity. A compliance deadline that will suspend a sub-merchant and an administrative document update are indistinguishable, causing panic and wasted effort
+- Payout rejection status is not available via API; Platforms must manually check the portal and reconcile their orchestration system by hand
+- The same document is sometimes requested twice within weeks; document quality standards (photo format, borders, accepted file types) are not stated upfront, generating repeated back-and-forth with sub-merchants
+- Checkout's strict upfront KYC model is a competitive disadvantage: sub-merchants compare the onboarding experience with Stripe (account live in minutes, documents collected progressively post-transaction) and threaten to switch when friction is too high
+- The current list-based interface will not scale beyond a few dozen sub-merchants. There is no entity archival, no bulk actions, and no way to manage hundreds of sub-merchants without the list becoming unmanageable
 
 ### A day in the life
 
-A restaurant using Sunday cannot take payments during the dinner rush. The restaurant contacts Sunday's support team (Priya's team). Priya checks Sunday's internal dashboard, can't identify the root cause, and escalates to Checkout.com. She emails support@checkout.com, includes the restaurant's sub-merchant ID, and waits. The agent who picks it up doesn't recognise Sunday as a Platform and asks for clarification. By the time the ticket is routed correctly, the dinner service is over.
+A property management company using Guesty as their platform changed banks three months after going live. Priya's team tries to update the payout method in Checkout, but the onboarding form is locked post-approval. She raises a ticket to Checkout, waits 24 hours, and receives a response requesting the same documentation already submitted at onboarding. The sub-merchant's payouts are blocked while the ticket is open. Meanwhile, another sub-merchant's account shows "action required" — Priya can't tell without clicking through whether this is a suspension risk or a routine document refresh, so she stops what she's doing to investigate. Neither issue would have required a support ticket if the right tooling existed.
 
-**Support expectation**: Medium white-glove. Checkout.com should recognise her as a Platform contact, accept sub-merchant context at intake, and route to agents equipped to investigate at the sub-merchant level.
+**Support expectation**: Medium white-glove. Checkout must act as an informed L2 that understands the Platform's sub-merchant base — not just at intake, but throughout the merchant lifecycle.
 
-**Design implication**: Primary 2026 delivery focus. Platform identification, structured intake (Dashboard webform and email), sub-merchant lookup tooling, and Platform-aware Fin are the four builds that unblock this persona. Maps to: Platform support channels (Q1 2026 deliverable).
+**Design implication**: Primary 2026 delivery focus. Platform identification, structured intake (Dashboard webform and email), sub-merchant lookup tooling, and Platform-aware Fin are the four builds that unblock this persona. Post-approval sub-merchant management (update bank accounts, access frozen forms), payout rejection API/webhook, and action required prioritisation are the next layer of improvements. Progressive onboarding and scale tooling (bulk actions, entity archival) should be scoped for H2 2026 planning. Maps to: Platform support channels (Q1 2026 deliverable).
+
+### Key quotes (from interviews, 2025)
+
+> *"We don't get, via API, the status of payouts if they're rejected, so we have to manually check the status… then mark those manually in our orchestration platform."* (Guesty)
+
+> *"Once a venue is active on Checkout, I'm not gonna have access to any of their onboarding information anymore."* (Sunday)
+
+> *"If we have disputes and action required, I'm gonna panic every morning."* (Sunday)
+
+> *"I'm waiting for this email… I'm feeling that the next email they send might say: okay, we get rid of that, please let us go to Stripe."* (Golf Manager)
+
+> *"I'm stuck with this client. I cannot go on."* (Golf Manager — waiting on Checkout support response)
 
 ---
 
@@ -286,9 +320,9 @@ Alex tries to use a remembered card on checkout and the payment fails. She can't
 
 | Persona | Segment               | Primary Need                                                                              | Support Expectation   | 2026 Priority | Key Design Implication                                                                           |
 | --------- | ----------------------- | ------------------------------------------------------------------------------------------- | ----------------------- | --------------- | -------------------------------------------------------------------------------------------------- |
-| Maria   | Enterprise Standard   | Fast self-serve resolution for transaction queries                                        | Low white-glove       | High          | Fin deflection, Dashboard data                                                                   |
-| James   | Enterprise or Premium | Specialist handling for performance and reconciliation                                    | High white-glove      | Maintain      | Fast L2 escalation, data tooling                                                                 |
-| Priya   | Platform (ISV)        | Platform identification and sub-merchant context at intake                                | Medium white-glove    | Primary focus | Identification, structured intake, lookup tooling                                                |
+| Maria   | Enterprise Standard   | Fast self-serve resolution for transaction queries                                        | Low white-glove       | High          | Fin deflection, Dashboard data, in-context error code documentation, support quality not just speed |
+| James   | Enterprise or Premium | Strategic handling for performance optimisation and reconciliation                        | High white-glove      | Maintain      | Fast L2 escalation, data tooling                                                                 |
+| Priya   | Platform (ISV)        | Platform identification, sub-merchant context at intake, and post-approval lifecycle management | Medium white-glove    | Primary focus | Identification, structured intake, lookup tooling, post-approval form access, payout rejection API, action required prioritisation, scale tooling |
 | Tom     | Card Issuing          | Specialist L2 routing for issuing queries                                                 | Technical, low volume | Monitor       | Specialist routing, Fin KB articles (future)                                                     |
 | Oliver  | Internal — L1 agent  | Fast merchant ID, in-Zendesk knowledge retrieval, fewer tool switches                     | Internal tooling      | High          | Agent Consultant (knowledge retrieval), Agent Toolkit, Dashboard user search by name             |
 | Marcus  | Internal — AM/TAM    | Visibility into ticket status, formalised escalation route                                | Internal stakeholder  | Medium        | Internal ticket submission form                                                                  |
@@ -299,4 +333,4 @@ Alex tries to use a remembered card on checkout and the payment fails. She can't
 
 **Owner**: Charlie Wildish
 **Last Updated**: March 2026
-**Source files**: `customer-segments.md`, `platform-segment.md`, `support-taxonomy.md`, `agent-toolkit-zendesk.md`, `04-active-work/Agent interview transcripts/` (8 interviews, Aug–Sep 2024; researcher: Alcinda)
+**Source files**: `customer-segments.md`, `platform-segment.md`, `support-taxonomy.md`, `agent-toolkit-zendesk.md`, `04-active-work/Agent interview transcripts/` (8 interviews, Aug–Sep 2024; researcher: Alcinda); `04-active-work/merchant-interview-transcripts-2025/` (7 merchant interviews, Jun–Nov 2025: Plutus, Findo, Kiwi, Curve, Guesty, Sunday, Golf Manager)
