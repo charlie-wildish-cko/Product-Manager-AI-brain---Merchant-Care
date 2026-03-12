@@ -32,16 +32,27 @@ Template for internal memos to COO, CPO, or other executives. Summary-first, pun
 
 
 ### 📋 **prd-template.md** – Product Requirements Document
-Comprehensive template for documenting product features and requirements. Uses bullets with bold intros and colons; no em dashes.
+The official Checkout.com PRD template. Structured around merchant problems, business goals, and phased rollout.
 
 **When to use**: Starting a new feature or significant product change
 
 **Sections include**:
-- Executive summary and problem statement
-- Goals and success metrics
-- User stories and requirements
-- Technical approach
-- Launch plan and timeline
+- Executive Summary
+- Problem Space (problem statement, who is affected, evidence, why now)
+- Goals and Success Metrics (business goals, merchant goals, non-goals, metrics table)
+- Customer Segments & Needs (archetypes, user stories / jobs-to-be-done)
+- Proposed Solution & Scope (in scope / out of scope)
+- Alternatives Considered
+- Key Assumptions and Validation
+- Requirements (functional and non-functional, P0/P1/P2)
+- Design and User Experience
+- Pricing and Commercial Model
+- Instrumentation and Monitoring
+- Risks and Open Questions
+- Rollout Plan (phased: Pilot → Gradual Expansion → GA, with entry and success criteria)
+- Appendix
+
+**Reference example of a completed instance**: `03-templates/prd-template-example.md`
 
 
 ### 📝 **user-story-template.md** – User Story

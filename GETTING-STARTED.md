@@ -2,6 +2,8 @@
 
 Welcome! This guide will help you start using your AI-enhanced PM workspace effectively.
 
+**Principle:** All your work should relate back to strategy, goals and metrics at the top (strategic goals: reduce contact rate, reduce cost; north star metrics: contact rate, cost per contact; 2026 deliverables and flywheel domains). See `2026 deliverables.md` and `01-knowledge-base/metrics/kpi-definitions.md`. When drafting or reviewing anything, tie it to the relevant goal, deliverable, or metric.
+
 ## ⏱️ 5-Minute Quick Start
 
 ### 1. Understand What You Have (2 min)

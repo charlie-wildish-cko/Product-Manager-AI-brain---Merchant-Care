@@ -1,0 +1,152 @@
+﻿Product name,Product category,Product State,Product Pillar,Product Team,Product Configuration last modified,Marketecture
+Intelligent Acceptance,Intelligent Acceptance,,Payment Performance,Intelligent Acceptance,11/2/2026 10:33am,Boost
+Network Tokens,Network Tokens,General availability,Value Added Services,Value Added Services,3/2/2026 3:05pm,Boost
+Real-Time Account Updater,Real-Time Account Updater,Mixed availability,Value Added Services,Value Added Services,9/3/2026 11:27am,Boost
+Flow Web,Flow,General availability,Consumer,Flow (Mobile),10/3/2026 7:32pm,Connect
+Remember Me,Flow,General availability,Consumer,Flow (Web),19/2/2026 10:56am,Connect
+Flow Android SDK,"Flow,Mobile SDK",General availability,Consumer,Flow (Mobile),10/3/2026 7:32pm,Connect
+Flow iOS SDK,"Flow,Mobile SDK",General availability,Consumer,Flow (Mobile),10/3/2026 7:32pm,Connect
+Flow React Native SDK,"Flow,Mobile SDK",Don't sell,Consumer,Flow (Mobile),10/3/2026 7:32pm,Connect
+Hosted Payment Page,Hosted Payment Page,General availability,Consumer,Flow (Mobile),11/2/2026 10:29am,Connect
+Basis Theory,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:15pm,Connect
+BigCommerce,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:15pm,Connect
+BR-DGE,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:15pm,Connect
+Chargebee,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:15pm,Connect
+Chargify,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:16pm,Connect
+GIG,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:16pm,Connect
+Gr4vy,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:16pm,Connect
+Magento 2,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:16pm,Connect
+OpenCart,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:16pm,Connect
+Payrails,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:16pm,Connect
+Salesforce Commerce Cloud,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:16pm,Connect
+SAP Commerce Cloud,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:16pm,Connect
+Shopify (offsite),Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:16pm,Connect
+Shopify (onsite),Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:16pm,Connect
+Spreedly,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:16pm,Connect
+WooCommerce,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:17pm,Connect
+Zuora,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,24/2/2026 6:17pm,Connect
+Payment Links,Payments Links,General availability,Consumer,Flow (Mobile),11/2/2026 10:29am,Connect
+Airtable Product Catalogue,Internal products,Beta,Product Operations,Product Operations,27/2/2026 4:13pm,Internal products
+Notifications,Internal products,,Merchant Services,Reporting & Analytics,18/9/2025 11:30am,Internal products
+Balances,Business Account,General availability,Financial Experiences,Client Balances,19/2/2026 10:57am,Manage
+Corporate Cards,Business Account,Pilot,Emerging Products,Issuing Experience,24/12/2025 1:25pm,Manage
+Settlements,Business Account,Beta,Financial Experiences,Checkout Business Account,31/12/2025 9:12am,Manage
+Transfers,Business Account,Beta,Financial Experiences,Client Balances,13/12/2025 3:34pm,Manage
+Dashboard,Dashboard,,Merchant Services,Dashboard,8/12/2025 3:28pm,Manage
+Analytics Assistant,Reporting & Analytics,Beta,Merchant Services,Data Connectivity (Reports & Data Retrieval),9/3/2026 9:14am,Manage
+Dashboard Reports,Reporting & Analytics,General availability,Financial Experiences,Client Reporting,29/1/2026 11:11am,Manage
+Dashboard Reports (non-financial reports),Reporting & Analytics,,Merchant Services,Data Connectivity (Reports & Data Retrieval),29/1/2026 11:24am,Manage
+Predictive Interchange,Reporting & Analytics,Mixed availability,Financial Infrastructure,Cost of Sales,5/2/2026 5:00pm,Manage
+Reports API,Reporting & Analytics,General availability,Financial Experiences,Client Reporting,29/1/2026 11:11am,Manage
+Reports API (non-financial reports) ,Reporting & Analytics,,Merchant Services,Data Connectivity (Reports & Data Retrieval),29/1/2026 11:24am,Manage
+SFTP (non-financial reports),Reporting & Analytics,,Merchant Services,Data Connectivity (Reports & Data Retrieval),29/1/2026 11:24am,Manage
+SFTP Reports,Reporting & Analytics,General availability,Financial Experiences,Client Reporting,29/1/2026 11:11am,Manage
+Acquiring - Custom FX markup per currency pair,Treasury & FX,General availability,Financial Experiences,FX,1/7/2025 3:22pm,Manage
+Acquiring - Daily FX Rates,Treasury & FX,General availability,Financial Experiences,FX,1/7/2025 3:23pm,Manage
+Acquiring - FX Live Market Rates,Treasury & FX,General availability,Financial Experiences,FX,17/9/2025 1:29pm,Manage
+Acquiring - Scheme FX Rates,Treasury & FX,General availability,Financial Experiences,FX,16/10/2025 2:06pm,Manage
+Internal - Cash ladder reporting,Treasury & FX,,Financial Experiences,FX,13/12/2025 3:22pm,Manage
+Internal - FX Blotter reporting,Treasury & FX,General availability,Financial Experiences,FX,1/7/2025 3:23pm,Manage
+PTC - FX based on Scheme FX rates (VISA/MC only),Treasury & FX,General availability,Financial Experiences,FX,1/7/2025 3:23pm,Manage
+Authentication,Issuing,,,,30/1/2026 5:13pm,Move
+BIN Management,Issuing,,Emerging Products,Issuing Experience,5/2/2026 10:59pm,Move
+Card Product,Issuing,,Emerging Products,Issuing Experience,5/2/2026 11:00pm,Move
+Cardholder,Issuing,,Emerging Products,Issuing Experience,5/2/2026 11:00pm,Move
+Cards,Issuing,,Emerging Products,Issuing Experience,19/2/2026 10:59am,Move
+Digital Wallets,Issuing,,Emerging Products,Issuing Experience,5/2/2026 11:04pm,Move
+Entity Structure,Issuing,,Emerging Products,Issuing Card Management,18/2/2026 12:10pm,Move
+Fraud,Issuing,,,,30/1/2026 5:13pm,Move
+Issuing Region,Issuing,,,,30/1/2026 5:13pm,Move
+Physical card PIN,Issuing,,Emerging Products,Issuing Experience,19/2/2026 11:29am,Move
+Physical Cards,Issuing,,Emerging Products,Issuing Experience,5/2/2026 11:11pm,Move
+Reporting,Issuing,,Emerging Products,Issuing Card Management,17/2/2026 1:26pm,Move
+SCA Exemptions,Issuing,,,,30/1/2026 5:13pm,Move
+SCA Out of Scope,Issuing,,,,30/1/2026 5:13pm,Move
+Simulation,Issuing,,,,30/1/2026 5:13pm,Move
+Spending Controls,Issuing,,Emerging Products,Issuing Experience,19/2/2026 11:24am,Move
+Transactions,Issuing,,,,30/1/2026 5:13pm,Move
+Accel,Payment Methods,General availability,Core Network,CP London Visa,10/3/2026 4:32pm,Move
+ACH Direct Debit,Payment Methods,General availability,Core Network,APM London,26/1/2026 9:35am,Move
+AlipayCN,Payment Methods,Mixed availability,Core Network,APM London,27/10/2025 1:54pm,Move
+AlipayHK,Payment Methods,Mixed availability,Core Network,APM London,27/10/2025 1:54pm,Move
+Alma,Payment Methods,General availability,Core Network,APM London,11/10/2025 12:39pm,Move
+American Express - Collecting,Payment Methods,Mixed availability,"Core Network,Core Network","Payment Specialists,CP Berlin",19/2/2026 10:55am,Move
+American Express - Gateway,Payment Methods,Mixed availability,"Core Network,Core Network","Payment Specialists,CP Berlin",19/2/2026 10:55am,Move
+Apple Pay,Payment Methods,General availability,Value Added Services,Value Added Services,12/1/2026 12:10pm,Move
+Bacs,Payment Methods,Roadmap,Core Network,APM London,27/10/2025 1:54pm,Move
+Bancontact,Payment Methods,General availability,Core Network,APM London,6/1/2026 3:48pm,Move
+Benefit Payment Gateway,Payment Methods,General availability,Core Network,Alternative Payments Processing,18/7/2025 11:26am,Move
+BenefitPay,Payment Methods,Deprecated,Core Network,Alternative Payments Processing,11/8/2025 10:46am,Move
+Bizum,Payment Methods,Beta,Core Network,APM London,7/1/2026 9:43am,Move
+BLIK,Payment Methods,Roadmap,Core Network,Alternative Payments Processing,16/2/2026 11:03am,Move
+Boleto Bancario,Payment Methods,Deprecated,,,3/11/2025 1:17pm,Move
+Cartes Bancaires,Payment Methods,General availability,Core Network,Card Payments Processing,6/3/2026 7:46am,Move
+DANA,Payment Methods,Mixed availability,Core Network,APM London,10/12/2025 5:03pm,Move
+Diners Club International,Payment Methods,General availability,Core Network,Card Payments Processing,4/12/2025 2:35pm,Move
+Discover,Payment Methods,General availability,Core Network,Card Payments Processing,6/3/2026 7:46am,Move
+EFTPOS,Payment Methods,Roadmap,"Core Network,Core Network","Card Payments Processing,CP London MC",21/1/2026 11:37am,Move
+eps,Payment Methods,General availability,Core Network,Alternative Payments Processing,18/11/2025 3:46pm,Move
+Fawry,Payment Methods,Don't sell,Core Network,Alternative Payments Processing,11/10/2025 12:39pm,Move
+GCash,Payment Methods,Mixed availability,Core Network,APM London,11/8/2025 10:46am,Move
+Google Pay,Payment Methods,General availability,Value Added Services,Value Added Services,12/1/2026 12:11pm,Move
+iDEAL,Payment Methods,General availability,Core Network,Alternative Payments Processing,11/10/2025 12:39pm,Move
+Jaywan,Payment Methods,Roadmap,"Core Network,Core Network","CP Berlin,Card Payments Processing",6/3/2026 7:46am,Move
+JCB,Payment Methods,Mixed availability,Core Network,CP Berlin,6/3/2026 7:46am,Move
+KakaoPay,Payment Methods,Mixed availability,Core Network,APM London,9/9/2025 5:20pm,Move
+Klarna (Gateway),Payment Methods,Don't sell,Financial Experiences,Pricing and Billing,3/12/2025 2:25pm,Move
+Klarna BNPL (Collecting),Payment Methods,Mixed availability,Core Network,APM London,3/12/2025 2:25pm,Move
+Klarna Crypto,Payment Methods,Beta,Core Network,APM London,21/1/2026 11:23am,Move
+Klarna Debit Risk (Collecting),Payment Methods,Beta,Core Network,APM London,21/1/2026 11:25am,Move
+Knet,Payment Methods,General availability,Core Network,Alternative Payments Processing,13/2/2026 10:22am,Move
+Mada,Payment Methods,General availability,Core Network,CP Berlin,21/9/2025 4:46pm,Move
+Maestro,Payment Methods,Pilot,Core Network,CP London MC,19/2/2026 10:56am,Move
+Mastercard,Payment Methods,Mixed availability,"Core Network,Core Network","Card Payments Processing,CP London MC",6/3/2026 7:46am,Move
+MB Way,Payment Methods,General availability,Core Network,APM London,27/10/2025 1:54pm,Move
+MobilePay,Payment Methods,Beta,Core Network,APM London,2/3/2026 2:34pm,Move
+Multibanco,Payment Methods,General availability,Core Network,APM London,17/12/2025 11:05am,Move
+NYCE,Payment Methods,General availability,Core Network,CP London Visa,21/1/2026 10:59am,Move
+Octopus,Payment Methods,Beta,Core Network,APM London,6/1/2026 3:48pm,Move
+Omannet,Payment Methods,General availability,Core Network,CP Berlin,18/7/2025 11:26am,Move
+PayNow,Payment Methods,Beta,Core Network,Alternative Payments Processing,13/2/2026 10:22am,Move
+PayPal,Payment Methods,General availability,Core Network,APM London,15/12/2025 7:17pm,Move
+Pix,Payment Methods,Roadmap,Core Network,Core Network,6/3/2026 2:55pm,Move
+Przelewy24,Payment Methods,General availability,Core Network,APM London,11/10/2025 12:39pm,Move
+Pulse,Payment Methods,General availability,Core Network,CP London Visa,21/1/2026 11:00am,Move
+QPay,Payment Methods,General availability,Core Network,Alternative Payments Processing,13/2/2026 10:22am,Move
+Samsung Pay,Payment Methods,Roadmap,Value Added Services,Value Added Services,16/2/2026 4:35pm,Move
+SEPA Direct Debit B2B,Payment Methods,Beta,Core Network,APM London,3/3/2026 12:51pm,Move
+SEPA Direct Debit Core,Payment Methods,General availability,Core Network,APM London,3/3/2026 12:51pm,Move
+SeQura,Payment Methods,Beta,Core Network,APM London,27/10/2025 1:54pm,Move
+Sofort,Payment Methods,Deprecated,,,3/11/2025 1:18pm,Move
+STAR,Payment Methods,General availability,Core Network,CP London Visa,10/3/2026 4:32pm,Move
+STC Pay,Payment Methods,General availability,Core Network,APM London,27/10/2025 1:54pm,Move
+Swish,Payment Methods,Beta,Core Network,APM London,21/12/2025 2:20pm,Move
+Tabby (Collecting),Payment Methods,Beta,Core Network,Alternative Payments Processing,23/12/2025 8:56am,Move
+Tabby (Gateway),Payment Methods,Beta,Core Network,Alternative Payments Processing,23/12/2025 8:56am,Move
+Tamara (Collecting),Payment Methods,Beta,Core Network,Alternative Payments Processing,10/2/2026 12:15pm,Move
+Tamara (Gateway),Payment Methods,Beta,Core Network,Alternative Payments Processing,6/1/2026 8:58am,Move
+Touch 'n Go,Payment Methods,Mixed availability,Core Network,APM London,11/8/2025 10:46am,Move
+TrueMoney,Payment Methods,Mixed availability,Core Network,APM London,11/8/2025 10:46am,Move
+Twint,Payment Methods,Beta,Core Network,Alternative Payments Processing,24/2/2026 12:11pm,Move
+UnionPay - Gateway,Payment Methods,Beta,Core Network,CP Berlin,6/3/2026 1:15pm,Move
+Venmo,Payment Methods,General availability,Core Network,APM London,5/8/2025 1:12pm,Move
+Vipps,Payment Methods,Beta,Core Network,APM London,2/3/2026 2:34pm,Move
+Visa,Payment Methods,Mixed availability,"Core Network,Core Network","CP London Visa,Card Payments Processing",6/3/2026 7:46am,Move
+WeChat Pay CN,Payment Methods,Mixed availability,Core Network,APM London,11/10/2025 12:39pm,Move
+WeChat Pay HK,Payment Methods,Mixed availability,Core Network,APM London,11/10/2025 12:39pm,Move
+Wero,Payment Methods,Roadmap,Core Network,Alternative Payments Processing,15/12/2025 7:22pm,Move
+Bank Payouts,Payouts,Beta,Emerging Products,Bank Payouts,21/12/2025 9:54am,Move
+Card Payouts,Payouts,Mixed availability,Merchant Services,Card Payouts,10/2/2026 11:05am,Move
+Authentication,Authentication,General availability,Value Added Services,Value Added Services,20/1/2026 3:20pm,Protect
+Disputes,Disputes,Live,Merchant Services,Payment Infrastructure,11/3/2026 10:00am,Protect
+Pre-Disputes,Disputes,Live,Merchant Services,Payment Infrastructure,11/3/2026 10:00am,Protect
+Fraud Detection,Fraud Detection,General availability,Payment Performance,Fraud Detection Pro,14/11/2025 11:42am,Protect
+Fraud Detection Pro,Fraud Detection,General availability,Payment Performance,Fraud Detection Pro,14/11/2025 11:38am,Protect
+Business Screening,Identity Verification,Roadmap,Emerging Products,Identity Verification,20/2/2026 5:31pm,Protect
+Business Verification,Identity Verification,Roadmap,Emerging Products,Identity Verification,20/2/2026 5:31pm,Protect
+Face Authentication,Identity Verification,Beta,Emerging Products,Identity Verification,20/2/2026 5:31pm,Protect
+ID Document Verification,Identity Verification,Beta,Emerging Products,Identity Verification,25/2/2026 4:53pm,Protect
+Identity Verification,Identity Verification,Mixed availability,Emerging Products,Identity Verification,20/2/2026 5:31pm,Protect
+Forward API,Vault,Beta,Value Added Services,Value Added Services,2/3/2026 2:11pm,Protect
+Integrated Vault,Vault,Live,Value Added Services,Value Added Services,21/11/2025 3:59pm,Protect
+Standalone Vault,Vault,Beta,Value Added Services,Value Added Services,21/11/2025 3:59pm,Protect

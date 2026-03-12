@@ -39,13 +39,15 @@ In other words: Checkout is the engine room; Blue EMI is a branded, segregated f
 
 ## Support and identifiers
 
-**Key point for support:** Merchants under Blue EMI have **different identifiers** (client ID, entity ID, processing channel) from Checkout merchants. The same merchant can be:
+**Key point for support:** Blue EMI merchants process under the **same Checkout Client ID** as Checkout merchants. The distinguishing identifier is the **Entity ID** — Blue EMI merchants process under a distinct Blue EMI Entity (e.g. Blue EMI LT, UAB) with its own Entity ID, separate from Checkout entities.
 
-* **Checkout only** — one set of identifiers  
-* **Blue EMI only** — a different set of identifiers  
-* **Both** — Checkout identifiers and Blue EMI identifiers at the same time (same contact/company, two relationships)
+The same merchant can be:
 
-Support, routing, and tooling (e.g. Zendesk, ticketing, dashboards) must use the **correct identifier set for the context** of the request. You cannot assume one merchant = one client ID or one entity; email alone does not identify which relationship the ticket or query belongs to.
+* **Checkout only** — Checkout Client ID, Checkout entity
+* **Blue EMI only** — same Checkout Client ID, Blue EMI entity and Entity ID
+* **Both** — same Checkout Client ID, but separate Checkout and Blue EMI entities
+
+Support, routing, and tooling (e.g. Zendesk, ticketing, dashboards) must use the **Entity ID** to correctly attribute and route Blue EMI tickets. Email alone does not identify which entity a contact belongs to; the Entity ID is only automatically capturable via the Blue EMI Dashboard webform (dashboard.blueemi.com).
 
 ## Compliance, segregation and business-line separation
 
@@ -75,5 +77,5 @@ So compared to Checkout, you get very similar features from a product perspectiv
 * To Blue EMI clients, the experience is fully Blue EMI-branded, not Checkout-branded.  
 * Both use the same underlying technology, but Blue EMI is segregated for compliance, risk, and business reasons.  
 * Project Moon enables this white-label setup to unlock new markets and business lines.  
-* **Support:** Blue and Checkout use different client/entity/processing-channel identifiers; a merchant can be on Checkout, Blue, or both — support and routing must use the right identifier for the context.
+* **Support:** Blue EMI and Checkout merchants share the same Client ID. The distinguishing identifier for support routing is the **Entity ID** — Blue EMI merchants process under a distinct Blue EMI entity with its own Entity ID. A merchant can be on Checkout, Blue EMI, or both; support and routing must use the Entity ID to correctly attribute the contact.
 

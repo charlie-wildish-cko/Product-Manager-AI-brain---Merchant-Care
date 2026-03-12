@@ -1,0 +1,100 @@
+New Case Type,New Issue Type,New Reason,Old Case Type,Old Issue Type,Old Tag,Source
+Payments in,Transaction status (non 3DS & refunds),Declined / failed action,Transactions | Transactions | Transactions,Authorization failed | Void failed | Capture failed,case_transactions_issue_authorization_failure | case_transactions_issue_unable_to_void_payment | case_transactions_issue_unable_to_capture_payment,Merged + Moved | Renamed + Moved
+Payments in,Transaction status (non 3DS & refunds),Stuck in status / status enquiry,Transactions,Payment confirmation,case_transactions_issue_status_proof,Renamed + Moved
+Payments in,Transaction status (non 3DS & refunds),Missing or unrecognised transaction,,,,New
+Payments in,Transaction status (non 3DS & refunds),Customer charged twice,Transactions,Customer charged twice,case_transactions_issue_duplicate_transactions,Moved
+Payments in,Transaction status (non 3DS & refunds),"Proof of payment (ARN, RNN, bulk)",Transactions,Proof of payment,case_transactions_issue_refund_proof_schemes,Renamed + Moved
+Payments in,Transaction status (non 3DS & refunds),Failed but customer charged,Transactions,Customer charged after payment expired,case_transactions_issue_customer_charged_after_payment_expired,Renamed + Moved
+Payments in,Refunds,Refund failed / manual refund,Transactions,Refund failed,case_transactions_issue_refund,Renamed + Moved
+Payments in,Refunds,Refund proof,,,,New
+Payments in,Refunds,Refund reversal,Transactions,Refund or payout reversal,case_transactions_issue_incorrect_refund,Renamed + Moved
+Payments in,Refunds,Refund status enquiry,,,,New
+Payments in,Authentication (3DS),3DS decline,3D Secure (3DS) issues | 3D Secure (3DS) issues | 3D Secure (3DS) issues,3DS authentication failed | 3DS Page not loading | 3DS integration,case_3ds_issue_response_code_20151_-_20156 | case_3ds_issue_page_not_loading | case_3ds_issue_sdk_integration,Moved to Payments in
+Payments in,Authentication (3DS),Liability shift status,,,,New
+Payments in,Authentication (3DS),SCA / exemption issue,3D Secure (3DS) issues | 3D Secure (3DS) issues,3DS exemptions | Unintended 3DS upgrade,case_3ds_issue_3ds_exemptions | case_3ds_issue_unintended_3ds_upgrade,Moved to Payments in
+Payments in,Fraud & risk controls,Risk rules,Fraud detection | Fraud detection | Fraud detection,Risk strategy/ rules | Risk declines | Fraud Performance,case_fraud_issue_decline_list_risk_rules | case_fraud_issue_risk_declines | case_fraud_issue_fraud_performance,Moved to Payments in
+Payments in,Fraud & risk controls,Trustlist & decline list,Fraud detection,Risk lists,case_fraud_issue_whitelist,Moved to Payments in
+Payments in,Fraud & risk controls,AVS / CVV mismatch,,,,New
+Payments in,Fraud & risk controls,Velocity limit reached,,,,New
+Payments in,Disputes / chargebacks,Dispute status,Transactions,Disputes,case_transactions_issue_dispute,Renamed + Moved
+Payments in,Disputes / chargebacks,Dispute adjustment,,,,New
+Payments in,Disputes / chargebacks,Evidence help and submission,,,,New
+Payments in,Performance,Acceptance rate issue / optimisation,Acceptance rate | Acceptance rate,Low Approval Rate | Intelligent Acceptance,case_acceptance_performance_low_approval_rate | case_acceptance_performance_intelligent_acceptance,Moved to Payments in
+Payments in,Performance,All payments failing,Transactions,All payments failed,case_transactions_issue_all_transactions_failing,Moved
+Payouts,Bank payouts,Declined / failed bank payout,Transactions,Payout pending or declined,case_transactions_issue_payout_pending_or_declined,Moved to new case type
+Payouts,Bank payouts,Proof of bank payout,,,,New
+Payouts,Bank payouts,Bank payout stuck in pending or status inquiry,,,,New
+Payouts,Bank payouts,Bank payout returns,,,,New
+Payouts,Card payouts,Card payout stuck in pending or status inquiry,,,,New
+Payouts,Card payouts,Declined / failed card payout,,,,New
+Payouts,Card payouts,Proof of card payout,,,,New
+Payouts,Card payouts,Card payout reversal,,,,New
+Funds and fees,Settlements,Delayed / missing settlement,"Settlements, invoices and fees | Settlements, invoices and fees",Settlement not received | Payment not settled,case_settlements_issue_settlement_not_received | case_settlements_issue_have_i_been_settled_for_this_payment,Renamed | Renamed + Merged
+Funds and fees,Settlements,Reconciliation issue,"Settlements, invoices and fees",Reconciliation mismatch,case_settlements_issue_mismatch_in_reconciliation,Renamed
+Funds and fees,Balance,Balance confirmation,"Settlements, invoices and fees",Balance confirmation,case_settlements_issue_balance_confirmation,Renamed
+Funds and fees,Balance,Negative balance,,,,New
+Funds and fees,Balance,Balance top up,,,,New
+Funds and fees,Balance,Balance explanation,"Settlements, invoices and fees",Transfer or hold of funds,case_settlements_issue_transfer_or_hold_of_funds,Renamed
+Funds and fees,Billing & fees,Invoice request,"Settlements, invoices and fees",Invoice requests,case_settlements_issue_general_adjustments,Renamed
+Funds and fees,Billing & fees,Fee inquiry,"Settlements, invoices and fees",Adjustments and fees,case_settlements_issue_fees_charged_for_transaction,Renamed
+Technical issue,API credentials,Create / edit keys,Integration issues,Access or API keys,case_integration_issue_access_and_api_keys_issues,Renamed
+Technical issue,API credentials,Key scopes,,,,New
+Technical issue,API integration,API error 4XX / logic error,Integration issues,API or payload error,case_integration_issue_api,Renamed
+Technical issue,API integration,API error 5XX,,,,New
+Technical issue,API integration,Idempotency / timeout,,,,New
+Technical issue,Tokens,Network tokens,Integration issues,Network token requests,case_integration_issue_network_token_requests,Renamed
+Technical issue,Tokens,Token migration,Integration issues,Token migration,case_integration_issue_token_migration,Renamed
+Technical issue,Integration methods,Flow / frames,Integration issues,Flow or frames,case_integration_issue_flow,Renamed
+Technical issue,Integration methods,Payment links / hosted payment pages,Integration issues,HPP or payment links,case_integration_issue_hosted_payment_page,Renamed
+Technical issue,Integration methods,SDK issue,Integration issues,SDK integration,case_integration_issue_sdk_integration,Renamed
+Technical issue,Integration methods,E-commerce plugin,Integration issues,Ecommerce plugins,case_integration_issue_ecommerce_integration,Renamed
+Technical issue,Integration methods,Apple Pay / Google Pay,,,,New
+Technical issue,Webhooks,Webhook setup,Integration issues,Webhooks,case_integration_issue_webhook_not_working,Renamed
+Technical issue,Webhooks,Signature verification or delivery failure,,,,New
+Technical issue,Webhooks,Missing webhook data,,,,New
+Technical issue,Environment,Sandbox issue,3D Secure (3DS) issues | Integration issues,3DS test card issues | Test data errors (sandbox),case_3ds_issue_issues_with_test_cards_sandbox | case_integration_issue_test_account_error,Moved to Technical issue | Renamed
+Data and analytics,Reporting,Report not generated / missing,Reports,Report not generated,case_reports_issue_report_not_generated,Renamed
+Data and analytics,Reporting,Data mismatch / missing,Reports,Data mismatch,case_reports_issue_mismatch_missing_data,Renamed
+Data and analytics,Reporting,Custom report request,Reports,Custom reports,case_reports_issue_custom_report_needed,Renamed
+Data and analytics,Reporting,SFTP configuration,Integration issues,SFTP requests,case_integration_issue_sftp_requests,Moved to Data and analytics
+Platforms,Sub-merchant onboarding,Merchant activation and verification,,,,New
+Platforms,Sub-merchant onboarding,Doc upload error,,,,New
+Platforms,Transfers & splits,Transfer or split failed,,,,New
+Card issuing,Card management,Create / activate card,Card issuing,Create or activate card,case_issuing_create_or_activate_card,Renamed
+Card issuing,Card management,Revoke / suspend,Card issuing,Revoke or suspend cards,case_issuing_revoke_or_suspend_cards,Renamed
+Card issuing,Card management,Spend controls,,,,New
+Card issuing,Logistics,Physical card delivery,Card issuing,Physical cards,case_issuing_physical_cards,Renamed
+Card issuing,Issuing digital wallets,Apple Pay / Google Pay,,,,New
+Card issuing,Mobile app / SDK,Issuing SDK integration / upgrade,,,,New
+Card issuing,"Issuing transactions, money & reports",Issuing balance,Card issuing,Funding currency account,case_issuing_funding_currency_account,Renamed
+Card issuing,"Issuing transactions, money & reports",Issuing settlement & reconciliation,,,,New
+Card issuing,"Issuing transactions, money & reports",Issuing fees,Card issuing,Reporting and invoices,case_issuing_reporting_and_invoices,Renamed
+Card issuing,"Issuing transactions, money & reports",Issuing transaction declined / unexpected behavior,,,,New
+Account management & access,Login & access,Login error / MFA / SSO,Access and permissions | Access and permissions,Unable to log in | Single sign-on (SSO),case_access_issue_account_locked_out | case_access_issue_sso,Merged | Renamed + Merged
+Account management & access,Login & access,User permissions,Access and permissions | Access and permissions,User management | Permissions,case_access_issue_issue_with_adding_or_remove_user | case_access_issue_change_permissions,Merged | Renamed + Merged
+Account management & access,Login & access,Dashboard user audit evidence,,,,New
+Account management & access,Login & access,Dashboard error,Access and permissions,Dashboard error,case_access_issue_dashboard_error,Renamed
+Account management & access,Account changes,Pricing change,Configuration Changes,Pricing change request,case_configuration_issue_pricing_plan_changes,Renamed + Merged
+Account management & access,Account changes,Account settings update,Configuration Changes,Account settings change,case_configuration_issue_operational_change_request,Renamed + Merged
+Account management & access,Account changes,Terminations,Configuration Changes,Terminations,case_configuration_issue_account_termination_related,Merged
+Feedback,Product feedback,Feature request,General enquiry,New feature request,case_feedback_new_feature_requests,Renamed
+Feedback,Product feedback,Feature usage,General enquiry,Existing feature insights,case_feedback_existing_feature_insights,Renamed
+Compliance & audit,Compliance evidence,PCI / AOC request,Request for documentation,"PCI requests, contracts and pricing",case_rfd_issue_pci_dss_docs,Renamed
+Compliance & audit,Compliance evidence,Audit request,Request for documentation,Audit requests,case_rfd_issue_audit_requests,Renamed
+Compliance & audit,Compliance evidence,Sensitive data request,,,,New
+Compliance & audit,Other compliance,Other compliance docs,Request for documentation,Other,case_rfd_issue_other_documents,Renamed
+General,Inquiries,Sales inquiry,No action required,Sales Enquiry,case_no_action_required_issue_sales_enquiry,Renamed + Merged
+General,Inquiries,Spam / duplicate / no action / follow ups,No action required | No action required | No action required,No action required by Merchant Care | Duplicate | Spam,case_no_action_required_issue_by_merchant_care | case_no_action_required_issue_duplicate | case_no_action_required_issue_spam,Merged
+Identity verification,Verification and technical support,Verification inquiry,Identity Verification,Verification Inquiry,case_idv_issue_idv,Renamed (casing)
+Identity verification,"Security, privacy and compliance",Data privacy,Identity Verification,Data Privacy,case_idv_issue_data_privacy,Renamed (casing)
+Identity verification,Verification and technical support,Setup support,Identity Verification,Setup Support,case_idv_issue_setup_support,Renamed (casing)
+Identity verification,Verification and technical support,Technical & platform,Identity Verification,Technical & Platform,case_idv_issue_tech,Renamed (casing)
+Identity verification,"Security, privacy and compliance",Account & compliance,Identity Verification,Account & Compliance,case_idv_issue_account_management,Renamed (casing)
+Identity verification,Formal complaint,Formal complaint,Identity Verification,Formal Complaint,case_idv_issue_formal_complaint,Renamed (casing)
+Identity verification,"Security, privacy and compliance",Security,,,,New
+Identity verification,N/A,3rd party,Identity Verification,N/A::3rd Party,case_idv_issue_na_3rd_party,Renamed (casing)
+Identity verification,N/A,Automated,Identity Verification,N/A::Automated,case_idv_issue_na_automated,Renamed (casing)
+Identity verification,N/A,Follow up,Identity Verification,N/A::Follow Up,case_idv_issue_na_follow_up,Renamed (casing)
+Identity verification,N/A,Sales lead,Identity Verification,N/A::Sales Lead,case_idv_issue_na_sales_lead,Renamed (casing)
+Identity verification,N/A,Self resolved,Identity Verification,N/A::Self Resolved,case_idv_issue_na_self_resolved,Renamed (casing)
+Identity verification,N/A,Spam,Identity Verification,N/A::Spam,case_idv_issue_na_spam,Renamed (casing)

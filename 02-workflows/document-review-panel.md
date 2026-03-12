@@ -157,14 +157,14 @@ For "why this, why now" and strategic narrative, see [Rumelt's Strategy Kernel](
 **Lens**: Measurability, metric definitions, instrumentation, baselines, and reporting feasibility. *Assume data in the doc (metrics, numbers, tables) originated from the data scientist; this persona is reviewing that output for correctness and interpretability.*
 
 **What they look for**:
-- Are success metrics and targets defined with a clear numerator, denominator, and dimensions?
+- Are success metrics and targets defined with a clear numerator, denominator, and dimensions? For support volume or involvement, are **metric definitions and dimensions** (case_type, issue_type, channel, support_contacts, fin_only_resolved) consistent with [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) and the canonical [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv)?
 - Can we measure this with existing or planned data sources?
 - Are baselines established so we can track progress?
 - What could confound or break the measurement (definition drift, channel changes, missing instrumentation)?
 - Is reporting feasible (cadence, ownership, tooling) and usable by support/ops?
 
 **Questions they ask**:
-- Can we actually measure this? What’s the source of truth?
+- Can we actually measure this? What’s the source of truth—and is it the flat table and definitions doc where applicable?
 - Are we comparing apples to apples over time (consistent definitions)?
 - What’s the baseline today, and how do we know when we’ve hit the target?
 - What could make this metric misleading or uninterpretable?
@@ -177,7 +177,7 @@ For "why this, why now" and strategic narrative, see [Rumelt's Strategy Kernel](
 **Lens**: Configuration, tagging, routing, reporting, and agent tooling in Zendesk; taxonomy and config readiness before launch.
 
 **What they look for**:
-- Do we need new tags, fields, or ticket types? What’s the taxonomy?
+- Do we need new tags, fields, or ticket types? Does this change or add **Case Types / Issue Types / Reasons**? If yes, does it match [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) and do we need a taxonomy update and routing/config before go-live?
 - What triggers, routing, or views need to change before go-live?
 - How will we report on this in Zendesk (Explore, dashboards)—and is that in scope?
 - What internal KB articles or macros do agents need, and who’s writing them?
@@ -185,7 +185,7 @@ For "why this, why now" and strategic narrative, see [Rumelt's Strategy Kernel](
 - Does this align with existing tagging and reporting strategy?
 
 **Questions they ask**:
-- Do we need new tags, fields, or ticket types for this?
+- Do we need new tags, fields, or ticket types for this? What’s the taxonomy—and is it in [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md)?
 - What triggers, routing, or views need to change before launch?
 - How will we report on this in Zendesk—and is that in scope for this launch?
 - What KB articles or macros do agents need, and who’s responsible?
@@ -283,7 +283,7 @@ Use this when refining a document. Consider each persona and note any actions.
 
 ## Where This Fits in Your Workflows
 
-- **PRDs**: Run the panel after drafting (e.g. after [requirement-writing.md](requirement-writing.md) Step 9) and before “Document & Communicate” and stakeholder share.
+- **PRDs**: Run the panel after the first draft (e.g. after [requirement-writing.md](requirement-writing.md) Step 9) and before “Document & Communicate” and stakeholder share. **After applying panel feedback, run a condense pass**: shorten the PRD to match [03-templates/prd-template.md](../03-templates/prd-template.md) (section order, one table per section where the template specifies, move detailed model/tables to Appendix, preserve decisions and gates). Target: body ~250–350 lines. The [draft-critique-refine](../.cursor/skills/draft-critique-refine/SKILL.md) skill runs Draft → Critique (panel) → Refine → **Condense** for PRDs automatically.
 - **Reports and status updates**: Run before sending; especially useful for CPO/COO-facing updates (see [stakeholder-updates.md](stakeholder-updates.md)).
 - **C-suite memos**: Run before sending to CPO or COO (see `03-templates/c-suite-memo-template.md`).
 - **Ad hoc**: Use whenever you want a structured multi-perspective pass on any important doc.
@@ -292,6 +292,7 @@ Use this when refining a document. Consider each persona and note any actions.
 
 ## Tips & Best Practices
 
+- **Data and taxonomy**: When the doc cites support volume, involvement, or contact mix, the Zendesk Administrator and Product Data Scientist personas should check that taxonomy labels match [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) and that numbers are sourced from or consistent with the last-6m flat table and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md). That keeps PRDs, reports, and memos aligned with the canonical dataset.
 - **Order**: Running PM → Software Engineering → Product Designer → Ops → Zendesk Administrator → Content Strategist → Product Data Scientist → VP of Product → CPO → COO often works well (detail first, then UX and measurability, then strategy and ops leadership).
 - **Don’t over-edit**: Use the panel to find gaps and sharpen clarity; you don’t need to satisfy every hypothetical concern, only the ones that matter for this doc.
 - **Reuse**: Once you’ve run the panel on a doc type (e.g. PRDs), you’ll internalise many of the questions and can do a lighter pass next time.

@@ -167,9 +167,13 @@
 **Flywheel**: Handle + Orchestration (correct identification and routing for ISV contacts)
 **Related context**: `01-knowledge-base/products/platform-segment.md`
 
+**Future direction**: Embed the Fin AI Agent in the Platform's portal so they resolve merchant queries with Fin first and escalate to us only when needed. Vision: `01-knowledge-base/products/platform-embedded-ai-support-vision.md`.
+
 
 ### AI Agent 'Consultant'
 **Q1 (phase 1) → Q2 (phase 2)**
+
+Product context and capability set: `01-knowledge-base/products/agent-consultant.md`
 
 > As an Agent, I want proactive, data-driven advice and recommendations to optimise my responses to the merchant.
 

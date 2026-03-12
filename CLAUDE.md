@@ -1,0 +1,176 @@
+# CLAUDE.md — Charlie PM Brain
+
+Charlie Wildish is PM for Merchant Care (Customer Support) at Checkout.com, a global PSP.
+
+---
+
+## Starting a New Task
+
+When given a new task or topic without a clear output format:
+
+1. **Orient** — Check `04-active-work/` for existing work on the topic. If a file exists, read it before starting.
+2. **Anchor** — Check `2026 deliverables.md` to confirm the task maps to a named deliverable and quarter. If it doesn't, flag this before proceeding.
+3. **Clarify the output format** — PRD · memo · Slack update · stakeholder update · analysis · exploration
+4. **Draft** — Apply the relevant template and writing style. Ask one clarifying question at most before producing output.
+
+---
+
+## The One Principle
+
+> **All work must tie back to strategy. Never produce work that floats.**
+
+Every document, analysis, or recommendation must connect to:
+- A **strategic goal**: reduce contact rate · reduce cost of support
+- A **north star metric**: Contact rate (contacts per 1M transactions) · Cost per contact
+- A **guardrail metric**: Merchant CSAT (must not decline as we automate)
+- A **2026 deliverable**: a named initiative scoped to a specific quarter, listed in `2026 deliverables.md`
+- A **flywheel domain**: Input → Orchestration → Fuel → Agent Experience → Insight & Prevention → Governance
+
+---
+
+## Project Structure
+
+```
+01-knowledge-base/   # Reference docs — strategy, products, processes, payment domain, metrics
+02-workflows/        # Step-by-step process guides
+03-templates/        # Reusable document templates (PRD, memo, user story, etc.)
+04-active-work/      # Current sprint work, active PRDs, stakeholder updates, investigations
+05-archive/          # Completed work by year/quarter
+```
+
+---
+
+## Key Reference Files
+
+| Purpose | File |
+|---|---|
+| Strategic goals & 2026 roadmap | `2026 deliverables.md` |
+| Care Product flywheel model | `01-knowledge-base/strategy/care-product-model.md` |
+| Team structure & stakeholders | `01-knowledge-base/teams.md` |
+| Support workflows & operations | `01-knowledge-base/processes/support-workflows.md` |
+| Ticket taxonomy & contact volumes | `01-knowledge-base/processes/support-taxonomy.md` |
+| Merchant segments | `01-knowledge-base/products/customer-segments.md` |
+| Product catalogue (products, teams, pillars) | `01-knowledge-base/Checkout Products and teams.csv` |
+| Product definitions with contact risk tags | `01-knowledge-base/products/product-definitions.md` |
+| Platform segment model | `01-knowledge-base/products/platform-segment.md` |
+| Platform Embedded AI vision | `01-knowledge-base/products/platform-embedded-ai-support-vision.md` |
+| KPI definitions | `01-knowledge-base/metrics/kpi-definitions.md` |
+| PRD template | `03-templates/prd-template.md` |
+| PRD example | `03-templates/prd-template-example.md` |
+| Writing style by audience | `01-knowledge-base/processes/writing-style-guide.md` |
+
+---
+
+## Writing Style
+
+### Default (formal documents, PRDs, briefs)
+- Lead with the point — conclusion first, evidence after
+- Structured with headers and bullets
+- Short paragraphs (2–3 sentences), active voice, specific numbers
+- Always end with a clear next step or recommendation
+
+### Always avoid
+- Em dashes (`—`) as clause connectors
+- Hedging language ("may", "could potentially", "somewhat")
+- Burying the conclusion or leading with context instead of the point
+- Semicolons to connect clauses
+
+For Leadership, Engineering, Slack, and Reports style: see `01-knowledge-base/processes/writing-style-guide.md`.
+
+---
+
+## Data Rules
+
+**Always use real data; never use placeholder numbers:**
+- Source: `01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv`
+- Column definitions: `01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md`
+- Case-type breakdown: `01-knowledge-base/processes/support-taxonomy.md`
+
+---
+
+## PRD Framework
+
+Anchor in strategy first:
+
+1. Which **strategic goal** does this serve? (reduce contact rate / reduce cost)
+2. Which **2026 deliverable** does it map to?
+3. Which **flywheel domain** does it sit in?
+4. Which **metrics** will it move?
+5. Which **strategic lever** does it pull? (contact reduction, AI deflection, agent efficiency, self-service)
+
+Then use `03-templates/prd-template.md`. Quality rules are enforced in the template. For PRD sharpening, use Socratic questions from `01-knowledge-base/processes/socratic-questioning-prds.md`.
+
+---
+
+## Workflows & Skills
+
+### Document Review Panel
+Apply to any PRD, memo, or spec before finalising.
+- Workflow: `02-workflows/document-review-panel.md`
+- Personas: `01-knowledge-base/processes/review-panel-personas.md`
+
+### Draft → Critique → Refine
+Run for any significant document from scratch: Draft → Critique (panel) → Refine → Condense (PRDs: ~250–350 lines).
+- Workflow: `02-workflows/draft-critique-refine.md`
+
+### Publish to Confluence
+Add YAML front matter to any markdown file:
+```yaml
+---
+confluence_space_key: MTC
+confluence_page_id: <id if updating>
+confluence_parent_page_id: 8041431176  # PRDs folder
+title: Page Title
+---
+```
+Then say "publish to Confluence". Default space: `MTC` (Merchant Care Product).
+
+---
+
+## Stakeholders
+
+| Role | Relationship |
+|---|---|
+| VP of Product | Charlie's manager; approves roadmap |
+| Director of Operations | Decision-maker; owns support delivery |
+| Director of Operations Excellence | Decision-maker; owns quality & process |
+| Engineering Manager | Engineering counterpart |
+| Knowledge Manager | Collaborator; owns knowledge base |
+| Process Architect | Collaborator; owns support processes |
+| Content Strategist | Collaborator; owns agent-facing content |
+
+**Decision model**: Consultative. Consensus across Director of Operations, Director of Operations Excellence, Charlie, and VP of Product.
+
+---
+
+## Support Channels
+
+Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Intercom Fin). Priority tiers: P0–P3 across Standard / Enterprise / Premium.
+
+---
+
+## Product Terminology and Key Facts
+
+| Term | Use | Not |
+|---|---|---|
+| Customer 360 | Centralised customer context across all Checkout sources | Merchant 360 |
+| Platform / ISV | Vertical SaaS businesses that embed Checkout payments as PayFacs for their Platform merchants | Sub-merchant (use "Platform merchant") |
+| Fin involvement rate | Contacts where Fin was first point of contact and the merchant did not subsequently submit a separate channel contact for the same issue | — |
+
+**Unit cost benchmarks**: Fin costs $0.90/resolution; human agent ~$40/contact (44x difference). Use these when framing AI investment cases.
+
+**Team composition (2026 baseline)**: 1 PM (Charlie); 4 engineers + 1 EM (max span ~8 including ZD admins); 2 Zendesk admins; shared Product Data Scientist; part-time Data Engineer shared with wider teams. Fin administration is a shared responsibility across Product and Content with no dedicated owner.
+
+**Agent Consultant modes**: Autonomous (data lookups, knowledge retrieval, approved API calls, QA on closed tickets) vs Human-in-the-loop (refunds, reversals, 3rd-party API actions). Full list: `01-knowledge-base/products/agent-consultant.md`.
+
+**Reflex 2030 vision**: AI-generated action plan recommendations and fix PRs for engineering review, not autonomous deployment to production.
+
+**Reflex MCP (Q3 2026)**: Surfaces Reflex insights in engineering workflows. Insights available via data product regardless; MCP improves shareability.
+
+**B2C wallet launch (2027)**: Consumer Duty obligations apply from day one. Phone channel, complaint handling, and vulnerable customer identification in Fin must all be live at launch, not added post-launch.
+
+**Investment asks**: Team growth investment asks start 2027. The current team can deliver the 2026 B2B roadmap but cannot simultaneously build the 2027 B2C foundation.
+
+**Care capability model**: Full year-by-year product maturity (2026–2030) per flywheel stage is in `01-knowledge-base/strategy/care-capability-model.md`.
+
+**Platform segment (2026)**: Distinct B2B customer segment alongside Direct Merchants. Checkout is L2; Platform is L1 for its Platform merchants. US ISV launch in active delivery 2026. Platform Embedded AI (Fin in ISV portals) is a 2027 capability. Checkout-as-PayFac (2028+, unconfirmed) would make Checkout L1 for Platform merchants directly.

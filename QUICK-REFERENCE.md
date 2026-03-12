@@ -1,5 +1,7 @@
 # Quick Reference Card
 
+**Strategy at the top:** All work should relate back to strategy, goals and metrics — strategic goals (reduce contact rate, reduce cost), north star metrics (contact rate, cost per contact), 2026 deliverables, flywheel domains. Tie every doc or decision to the relevant goal, deliverable, or metric.
+
 ## 📂 Where to Find Things
 
 | I Need... | Location |
@@ -26,7 +28,7 @@
 | How to write requirements | `02-workflows/requirement-writing.md` |
 | How to update stakeholders | `02-workflows/stakeholder-updates.md` |
 | Document review panel (refine PRDs/reports) | `02-workflows/document-review-panel.md` |
-| Draft, critique & refine before you review | `02-workflows/draft-critique-refine.md` |
+| Draft, critique, refine & condense (PRDs) before you review | `02-workflows/draft-critique-refine.md` |
 | PRD template | `03-templates/prd-template.md` |
 | User story template | `03-templates/user-story-template.md` |
 | Update template | `03-templates/stakeholder-update-template.md` |

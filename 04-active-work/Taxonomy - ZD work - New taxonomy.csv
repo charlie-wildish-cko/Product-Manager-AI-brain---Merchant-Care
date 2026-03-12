@@ -1,0 +1,100 @@
+Level 1: Case Type,Level 2: Issue Type,Level 3: Reason
+Payments in,Transaction status (non 3DS & refunds),Declined / failed action
+Payments in,Transaction status (non 3DS & refunds),Stuck in status / status enquiry
+Payments in,Transaction status (non 3DS & refunds),Missing or unrecognised transaction
+Payments in,Transaction status (non 3DS & refunds),Customer charged twice
+Payments in,Transaction status (non 3DS & refunds),"Proof of payment (ARN, RNN, bulk)"
+Payments in,Transaction status (non 3DS & refunds),Failed but customer charged
+Payments in,Refunds,Refund failed / manual refund
+Payments in,Refunds,Refund proof
+Payments in,Refunds,Refund reversal
+Payments in,Refunds,Refund status enquiry
+Payments in,Authentication (3DS),3DS decline
+Payments in,Authentication (3DS),Liability shift status
+Payments in,Authentication (3DS),SCA / exemption issue
+Payments in,Fraud & risk controls,Risk rules
+Payments in,Fraud & risk controls,Trustlist & decline list
+Payments in,Fraud & risk controls,AVS / CVV mismatch
+Payments in,Fraud & risk controls,Velocity limit reached
+Payments in,Disputes / chargebacks,Dispute status
+Payments in,Disputes / chargebacks,Dispute adjustment
+Payments in,Disputes / chargebacks,Evidence help and submission
+Payments in,Performance,Acceptance rate issue / optimisation
+Payments in,Performance,All payments failing
+Payouts,Bank payouts,Declined / failed bank payout
+Payouts,Bank payouts,Proof of bank payout
+Payouts,Bank payouts,Bank payout stuck in pending or status inquiry
+Payouts,Bank payouts,Bank payout returns
+Payouts,Card payouts,Card payout stuck in pending or status inquiry
+Payouts,Card payouts,Declined / failed card payout
+Payouts,Card payouts,Proof of card payout
+Payouts,Card payouts,Card payout reversal
+Funds and fees,Settlements,Delayed / missing settlement
+Funds and fees,Settlements,Reconciliation issue
+Funds and fees,Balance,Balance confirmation
+Funds and fees,Balance,Negative balance
+Funds and fees,Balance,Balance top up
+Funds and fees,Balance,Balance explanation
+Funds and fees,Billing & fees,Invoice request
+Funds and fees,Billing & fees,Fee inquiry
+Technical issue,API credentials,Create / edit keys
+Technical issue,API credentials,Key scopes
+Technical issue,API integration,API error 4XX / logic error
+Technical issue,API integration,API error 5XX
+Technical issue,API integration,Idempotency / timeout
+Technical issue,Tokens,Network tokens
+Technical issue,Tokens,Token migration
+Technical issue,Integration methods,Flow / frames
+Technical issue,Integration methods,Payment links / hosted payment pages
+Technical issue,Integration methods,SDK issue
+Technical issue,Integration methods,E-commerce plugin
+Technical issue,Integration methods,Apple Pay / Google Pay
+Technical issue,Webhooks,Webhook setup
+Technical issue,Webhooks,Signature verification or delivery failure
+Technical issue,Webhooks,Missing webhook data
+Technical issue,Environment,Sandbox issue
+Data and analytics,Reporting,Report not generated / missing
+Data and analytics,Reporting,Data mismatch / missing
+Data and analytics,Reporting,Custom report request
+Data and analytics,Reporting,SFTP configuration
+Platforms,Sub-merchant onboarding,Merchant activation and verification
+Platforms,Sub-merchant onboarding,Doc upload error
+Platforms,Transfers & splits,Transfer or split failed
+Card issuing,Card management,Create / activate card
+Card issuing,Card management,Revoke / suspend
+Card issuing,Card management,Spend controls
+Card issuing,Logistics,Physical card delivery
+Card issuing,Issuing digital wallets,Apple Pay / Google Pay
+Card issuing,Mobile app / SDK,Issuing SDK integration / upgrade
+Card issuing,"Issuing transactions, money & reports",Issuing balance
+Card issuing,"Issuing transactions, money & reports",Issuing settlement & reconciliation
+Card issuing,"Issuing transactions, money & reports",Issuing fees
+Card issuing,"Issuing transactions, money & reports",Issuing transaction declined / unexpected behavior
+Account management & access,Login & access,Login error / MFA / SSO
+Account management & access,Login & access,User permissions
+Account management & access,Login & access,Dashboard user audit evidence
+Account management & access,Login & access,Dashboard error
+Account management & access,Account changes,Pricing change
+Account management & access,Account changes,Account settings update
+Account management & access,Account changes,Terminations
+Feedback,Product feedback,Feature request
+Feedback,Product feedback,Feature usage
+Compliance & audit,Compliance evidence,PCI / AOC request
+Compliance & audit,Compliance evidence,Audit request
+Compliance & audit,Compliance evidence,Sensitive data request
+Compliance & audit,Other compliance,Other compliance docs
+General,Inquiries,Sales inquiry
+General,Inquiries,Spam / duplicate / no action / follow ups
+Identity verification,Verification and technical support,Verification inquiry
+Identity verification,"Security, privacy and compliance",Data privacy
+Identity verification,Verification and technical support,Setup support
+Identity verification,Verification and technical support,Technical & platform
+Identity verification,"Security, privacy and compliance",Account & compliance
+Identity verification,Formal complaint,Formal complaint
+Identity verification,"Security, privacy and compliance",Security
+Identity verification,N/A,3rd party
+Identity verification,N/A,Automated
+Identity verification,N/A,Follow up
+Identity verification,N/A,Sales lead
+Identity verification,N/A,Self resolved
+Identity verification,N/A,Spam

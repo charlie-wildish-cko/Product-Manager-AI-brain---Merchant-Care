@@ -32,8 +32,15 @@ Useful for tickets that mention a specific payment or transaction; reduces conte
 
 ---
 
+## Agent Consultant
+
+The User Profile and Payment Tool (and future data and knowledge features) form part of or feed into the **Agent Consultant**, an AI-powered application that adds the AI layer: suggestions, summarisation, QA on closed tickets, and action-based capabilities (APIs/MCP) with human-in-the-loop. Full product context: [agent-consultant.md](../products/agent-consultant.md).
+
+---
+
 ## Related
 
 - [support-workflows.md](support-workflows.md) — Dispatch queue, email identification, triage
 - [known-challenges.md](known-challenges.md) — Why identification and Dispatch are hard
 - [support-taxonomy.md](support-taxonomy.md) — Case type / issue type / reason applied to tickets
+- [Agent Consultant](../products/agent-consultant.md) — Product vision and capability set

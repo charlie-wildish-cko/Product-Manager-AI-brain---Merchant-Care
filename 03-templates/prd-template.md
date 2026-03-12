@@ -1,172 +1,289 @@
-# [Feature Name] - Product Requirements Document
+# `**PRD: [Product/Feature Name]**`
 
-**Status**: Draft | In Review | Approved  
-**Owner**: [Your Name]  
-**Last Updated**: [Date]  
-**Stakeholders**: [List key stakeholders; see `01-knowledge-base/teams.md` for correct team names]
+`**Author:**` `[Your name]`
 
+`**Date:**` `[Date]`
 
-## Executive Summary
+`**Approvers:**` `[Who must approve this PRD]`
 
-> 2-3 sentences: What are we building and why? What's the expected impact? If there's one thing you want everyone (including support/ops) to remember, state it. Keep sections as short as clarity allows; prefer bullets and tables over long prose.
+`**Stage:**` `[Ideation / Discovery / Solution Design / Planning / Build]`
 
-[Brief description that anyone can understand]
+`**Status:**` `[Draft / In Review / Approved / In Progress / Shipped]`
 
+`**Last Updated:**` `[Date]`
 
-## Problem
+`**Stakeholders:**` `[List key stakeholders and reviewers]`
 
-**What problem are we solving, and who has it?**  
-[Describe the customer or business problem and the specific users/segments affected]
+> **TODO (delete on completion):** Fill the table below before writing any other section. Reference `2026 deliverables.md` and `01-knowledge-base/strategy/care-product-model.md`.
 
-**How are they solving it today?**  
-[Current workarounds, manual processes, or gaps]
+| Field | Value |
+|-------|--------|
+| **2026 deliverable** | [Name of the deliverable this PRD implements or supports] |
+| **Strategic goal** | Reduce contact rate · Reduce cost of support (pick one) |
+| **Flywheel domain** | 1. Input · 2. Orchestration · 3. Fuel · 4. Agent Experience · 5. Insight & Prevention · 6. Governance (pick one) |
+| **How it fits** | [1–2 sentences: how this initiative supports the deliverable and goal] |
 
-**Why solve this now?**  
-[Urgency, business impact, strategic importance]
+---
 
-**One sentence support can use** (optional): [e.g. for playbooks/macros: "We're doing X so that [outcome]."]
+## `**Executive Summary**`
 
+`*This is your elevator pitch. If an exec reads nothing else, they should understand what you're building and why it matters. Keep it to 3-4 sentences: the merchant problem, your solution, and the expected business impact. Include how this connects to our company strategy or pillar goals. For Care & Support work: state which 2026 deliverable and goal this supports.`*
 
-## Goals & Success Metrics
+## `**Problem Space*`*
 
-> For each metric: define numerator/denominator and source of truth so we can compare over time. Who owns reporting and at what cadence? Can support/ops use it to make decisions? If any metric maps to what support will see (e.g. ticket volume, resolution rate), note it.
+`*Describe the problem you're solving. Include who experiences it, how it affects them, and data that validates it's worth solving (data points from merchant conversations, feature requests, support tickets, etc).`*
 
-| Metric | Current State | Target | Timeline |
-|--------|--------------|--------|----------|
-| [Metric name] | [Baseline] | [Goal] | [When] |
-| [Metric name] | [Baseline] | [Goal] | [When] |
+`**Problem statement:`** `Crisp 1-2 sentences describing the core merchant need/problem`
 
+`**Who is affected:*`* `Merchant segments that show the most desire for this or feel this pain most acutely`
 
-## User Stories
+`**Evidence:**` `Real data that proves this matters. Merchant quotes, tickets, research links, etc. (Competitive context is captured separately below.)`
 
-**As a** [type of user],  
-**I want** [capability],  
-**So that** [benefit].
+`**Competitive context:**` `How do others address this problem, and how do we compare? Use this to validate the problem, inform "why now", and shape the solution.`
 
-**Acceptance Criteria**:
-- [ ] [Specific, testable condition]
-- [ ] [Another condition]
+- `**Who we compare to:**` `Direct competitors (e.g. other PSPs, support tools), adjacent players, or best-in-class in this capability`
+- `**How they address this:**` `How they solve the same problem — channels, features, positioning`
+- `**How we compare:**` `Gaps (where we lag), strengths (where we match or lead), differentiators we could lean on`
+- `**Implications:**` `What this means for our solution (must-have vs nice-to-have), positioning, or "why now"`
 
+`*Link to detailed competitive research in the Appendix if you have it.`*
 
-**As a** [another user type],  
-**I want** [another capability],  
-**So that** [another benefit].
+`**Why now:**` `What makes this worth the investment now? Triggers, mandates, opportunity cost, risks, competitive moves, etc.`
 
-**Acceptance Criteria**:
-- [ ] [Condition]
-- [ ] [Condition]
+`*(Avoid solution talk here. Focus on the pain and impact.)`*
 
-**Edge cases**:
-- [ ] What happens when [edge case]?
-- [ ] How do we handle [error condition]?
+## `**Goals and Success Metrics*`*
 
+`*Define business goals (what Checkout.com achieves) and merchant goals (what merchants achieve). Use specific, measurable targets. List what you're deliberately not solving for.`*
 
-## Requirements
+`**Care & Support:** Link business goals and success metrics to the north star (contact rate, cost per contact) and/or the relevant flywheel domain metrics. State which strategic lever you're pulling (contact reduction, AI deflection, agent efficiency, self-service). See `01-knowledge-base/metrics/kpi-definitions.md` and `01-knowledge-base/strategy/care-product-model.md`.`
 
-#### Must Have (P0)
-- [ ] [Critical requirement]
-- [ ] [Another critical requirement]
+`**Business Goals:`** `What Checkout.com aims to achieve (e.g. increase revenue, gain SoW, OKR alignment; for Care: reduce contact rate or cost per contact via [lever])`
 
-#### Should Have (P1)
-- [ ] [Important but not blocking]
+`**Merchant Goals:*`* `What our merchants want to accomplish (e.g. increase TAM, improve efficiency, etc.)`
 
-#### Nice to Have (P2)
-- [ ] [Enhancement for future consideration]
+`**Non-goals:**` `What you're explicitly not doing in this version`
 
-**Constraints**:
-- **Performance / Scalability**: [e.g. response time, concurrent user targets]
-- **Security / Compliance**: [e.g. PCI, GDPR, encryption requirements]
-- **Integrations**: [Systems, APIs, or webhooks this must interact with]
+`**Success metrics:**`
 
+`*Include a mix of business outcomes, merchant adoption, and product health. For each metric, explain why it matters, provide a baseline if available, set a clear target, and identify the data source. For Care & Support, include at least one metric tied to north star or flywheel domain (see kpi-definitions and care-product-model).`*
 
-## Approach
+> **Rule:** Every Baseline cell must contain a value or "TBC — establish by [date]". A bare TBC is not acceptable.
 
-**User flow**:
-```
-1. User starts at [location]
-2. User does [action]
-3. System responds with [result]
-```
+| `Metric`   | `Why it matters` | `Baseline` | `Target` | `Source` |
+| ---------- | ---------------- | ---------- | -------- | -------- |
+| `Metric 1` |                  |            |          |          |
+| `Metric 2` |                  |            |          |          |
+| `Metric 3` |                  |            |          |          |
 
-[Link to design files / mockups if available]
 
-**Key UX decisions**:
-- **[Decision]**: [Brief rationale]
+## `**Customer Segments & Needs*`*
 
-**Technical notes**:
-- **[Components/systems]**: [What is affected]
-- **[Scoping]**: [Anything engineering should know before scoping]
+`*Identify your target merchant archetypes, along with their key needs, pain points, and motivations. Consider bringing these to life through customer persona artefacts that illustrate their goals and behaviors.`*
 
-**Error states & support** (if relevant): What messages or states will the customer (and support agent) see when something fails? Runbook or escalation path needed? What should go in the support KB or internal docs so agents can troubleshoot?
+`**Customer segment(s):`** `Who needs this the most? Include business size, industry, geography, and any additional context that helps us understand the archetype better.`
 
+`**User Stories/Jobs-To-Be-Done**: List the main jobs or problems the product helps them solve.`
 
-## Out of Scope
+`*If you have multiple customer segments, indicate which user stories apply to which segment for clearer milestone planning.`*
 
-> Explicitly state what we're NOT doing in this version
+`Sample formats for user stories (use what works best for your product/feature):`
 
-- [ ] [Feature we considered but excluded]
-- [ ] [Related problem we'll address later]
+- `As a [merchant persona], I want to [do something], so that [benefit]`
+- `When [situation], I want to [motivation], so I can [outcome]`
 
-**Why**: [Brief explanation]
+## `**Proposed Solution & Scope`**
 
+*`Describe what you're building and why this approach solves the merchant problem. Focus on merchant value, not technical implementation. Define what's in scope and what's out of scope.`*
 
-## Support & operations impact
+`**Solution overview:`** `2-3 sentences on what you're building`
 
-> What do agents need to know or do differently? What training, playbooks, or tool changes before go-live? Likely customer questions and suggested answers? Handoffs/escalation path? Impact on Zendesk, macros, or internal KB? (Omit if not relevant.)
+> Alternatives evaluated: see Appendix.
 
-- **Agent impact**: [What changes for frontline]
-- **Training / playbooks / tools**: [What's needed before launch]
-- **Customer-facing**: [Likely questions, suggested answers, or comms]
-- **Handoffs / escalation**: [Who, when, what to include]
-- **Tools**: [Zendesk, Jira, KB, macros — any changes]
+`**What is in scope for this release and what is not.*`*
 
+- `**In scope:**` `Bullets of capability slices, not tasks`
+- `**Out of scope:**` `Bullets that might be assumed but are excluded`
 
-## Launch Plan
+## `**Requirements**`
 
-- [ ] **Phase 1**: [e.g., Internal testing, Week 1]
-- [ ] **Phase 2**: [e.g., Beta with select merchants, Week 2-3]
-- [ ] **Phase 3**: [e.g., GA, Week 4]
+`*Write requirements as testable behaviors. Each requirement should be verifiable. Include both merchant-facing and internal operational requirements.`*
 
-**Support/ops readiness**: What needs to be in place before go-live (training, playbooks, tools, comms)? When is ops ready?
+`*Consider splitting into functional and non-functional sections, and provide relative prioritization within each section.`*
 
-**Rollback**: [How we revert if things go wrong]
+*`Prioritise: Must have (P0), Should have (P1), Nice to have (P2)`*
 
+**Requirements by audience / domain**
 
-## Risks, Dependencies & Open Questions
+`*Add a table that groups requirements by who benefits or which domain they serve (e.g. Merchant, Care Ops / CX, Analytics & Reporting, Security & Compliance, Product / Platform). Use requirement IDs (FR-X, NFR-X) so readers can map from domain to the detailed list below. One row per domain; Purpose column summarises what that audience gets.*`
 
-**Risks**:
+| Domain | Requirement IDs | Purpose |
+|--------|-----------------|---------|
+| **Merchant** | [FR-X, NFR-X] | [Brief: what merchants get] |
+| **Care Ops / CX** | [FR-X, NFR-X] | [Brief: what agents, team leaders, Zendesk admins get] |
+| **Analytics & Reporting** | [FR-X, NFR-X] | [Brief: reporting, audit, dashboards] |
+| **Security & Compliance** | [FR-X, NFR-X] | [Brief: policy, data protection, audit] |
+| **Product / Platform** | [FR-X, NFR-X] | [Brief: engineering, config, tooling] |
 
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|------------|
-| [Risk description] | High/Med/Low | High/Med/Low | [How we'll address] |
+`*Adjust row labels to match your initiative (e.g. add Treasury, Sales, Implementations). Omit domains that do not apply.*`
 
-**Dependencies**:
+> **Gate vs requirement:** If a requirement depends on an open decision that has not been made, do not write it as a functional requirement. Capture it as an Open Question and reference it in the Rollout phase entry criteria. Promote it to the FR list only once the decision is made.
 
-| Dependency | Owner | Status | Risk if Delayed |
-|------------|-------|--------|-----------------|
-| [What we need] | [Who] | [Status] | [Impact] |
+### Functional requirements
 
-**Open questions**:
-- [ ] [Question] *(Owner: [Name])*
-- [ ] [Question] *(Owner: [Name])*
+*`Include merchant-facing capabilities and internal operational needs (treasury reconciliation, support tooling, compliance reporting, etc.). Focus on what needs to happen, not how it will be built. Use clear acceptance criteria.`*
 
-*Optional*: What would we cut or delay if we had to protect support capacity or customer trust?
+| ID | Area | Requirement | Priority |
+|----|------|-------------|----------|
+| **FR-0** | **Instrumentation** | **Key events defined in the Instrumentation section must be implemented, validated in staging, and confirmed firing before Phase 1 go-live.** *AC: All listed events fire correctly in staging; validated by [Data Scientist / Engineering] before Phase 1 entry.* | **P0** |
+| FR-1 | | | |
 
-**Review panel** (optional before share): See `02-workflows/document-review-panel.md`. Run through PM, Engineering, Ops, CPO, COO, Product Data Scientist, Zendesk Administrator, Content Strategist, and VP of Product lenses and note any changes made.
+### Non-Functional Requirements:
 
+*`List the non-functional requirements. Only include items that will be tested.`*
 
-## Timeline
+*`Consider format each requirement as:`*
 
-| Milestone | Date | Owner | Status |
-|-----------|------|-------|--------|
-| PRD Complete | [Date] | [Name] | ✅ / 🔄 / ⏳ |
-| Design Complete | [Date] | [Name] | ⏳ |
-| Engineering Kickoff | [Date] | [Name] | ⏳ |
-| Dev Complete | [Date] | [Name] | ⏳ |
-| Support/ops ready | [Date] | [Name] | ⏳ |
-| Launch | [Date] | [Name] | ⏳ |
+*`**FR-'X':`** `Short requirement sentence.`*
+`***Acceptance criteria:**` `Given [state], when [action], then [result].*`
 
+## `**Design and User Experience**`
 
-## Appendix
+**Design & UX:** `[Link to Figma]` — `[1-sentence description of key interaction or flow]`
 
-- [Links to research, design files, related PRDs, meeting notes]
+## `**Instrumentation and Monitoring**`
+
+`Define what data you'll collect and how. Focus on the events, properties, and validation needed to track your success metrics and maintain operational visibility.`
+
+`**Key events to instrument**: List critical events with clear names and properties. For Care & Support PRDs, always include:`
+
+- `contact_created: channel, case_type, issue_type, fin_involved (boolean), merchant_segment — use field names from` [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md)
+- `contact_resolved: resolved_by (fin / agent / merchant_self_serve), handle_time_seconds, fin_involved`
+- `[Additional events specific to this initiative]`
+
+`**Internal dashboards and monitoring**: What views you'll create for tracking`
+
+- `[Dashboard 1]: [What it shows and who uses it]`
+- `[Dashboard 2]: [What it shows and who uses it]`
+
+`**Validation approach**: How you'll verify instrumentation works correctly before and after launch`
+
+- `[Validation method, e.g., test contacts in staging, compare event counts to expected baseline]`
+- `Silent failure detection: define how you will know if events stop firing or are malformed (e.g. daily row count alert, null-field threshold alert). Name the owner and cadence.`
+
+## `**Risks, Assumptions, and Open Questions**`
+
+`*List what could go wrong, what you're assuming, and what you don't know yet. Include potential mitigations for each risk.*`
+
+`**Risks:**`
+
+- `Risk 1 and potential mitigation`
+- `Risk 2 and potential mitigation`
+
+`**Key assumptions:**`
+
+- `[Assumption 1 — and how you'll validate or monitor it]`
+- `[Assumption 2 — and how you'll validate or monitor it]`
+
+`**Open questions:**`
+
+- `Question 1 that needs answering [owner]`
+- `Question 2 that needs answering [owner]`
+
+## `**Rollout Plan**`
+
+`*Define your phased rollout approach. For each phase, specify entry criteria (what must be ready), success criteria (what must be true to move forward), and timeline.`*
+
+`***Rollout approach:*`* `[High-level strategy - why this phased approach, risk mitigation plan, rollback triggers]*`
+
+### `***Phase 1: [Pilot/Beta]**`*
+
+`***Purpose:**` `[What you're trying to validate in this phase]*`
+
+`***Entry criteria:**` `What must be ready to start this phase*`
+
+- `***Technical:**` `[e.g., Feature complete in sandbox, certifications received]*`
+- `***Operational:**` `[e.g., Support trained on beta process, escalation path defined]*`
+- `***Merchant:**` `[e.g., beta merchants identified and onboarded]*`
+- `*etc.`*
+
+`***Success criteria:*`* `What must be true to move to next phase*`
+
+- `*[e.g., Process X transactions with >Y% success rate]`*
+- `*[e.g., <N P1 incidents, all resolved within SLA]`*
+- *`[e.g., Beta merchants confirm production readiness]`*
+
+*`**Timeline:`** `[Phase start date] - [Phase end / decision point]`*
+
+### `***Phase 2: [Gradual Expansion]**`*
+
+`*Optional phase. Include if you have gradual expansion between beta and GA.`*
+
+`***Purpose:*`* `[What you're trying to validate in this phase]*`
+
+`***Entry criteria:**` `What must be ready to start this phase*`
+
+- `***Technical:**` `[e.g., Beta issues resolved, monitoring validated]*`
+- `***Operational:**` `[e.g., Extended support coverage in place]*`
+- `***Merchant:**` `[e.g., Next cohort of merchants ready]*`
+
+`***Success criteria:**` `What must be true to move to GA*`
+
+- `*[e.g., X merchants live processing Y volume]`*
+- `*[e.g., Maintain success rate and stability targets]`*
+
+*`**Timeline:`** `[Phase start date] - [Phase end / GA decision point]`*
+
+### `***Phase 3: General Availability**`*
+
+`***Purpose:*`* `[e.g., Launch to all eligible merchants]*`
+
+`***Entry criteria:**` `What must be ready for GA*`
+
+- `***Technical:**` `[e.g., All P0 requirements met, performance meets NFRs]*`
+- `***Operational:**` `[e.g., Runbooks published, 24/7 on-call staffed, treasury reconciliation tested]*`
+- `***Business:**` `[e.g., Legal/compliance approvals complete, contracts signed]*`
+- `***Merchant:**` `[e.g., Documentation published, communications ready]*`
+
+`***Success criteria:**` `[e.g., X merchants live within 30 days, maintain >Y% uptime]*`
+
+`**Definition of Done:**`
+
+`*What must be true to consider this launch-ready? Define technical, operational, merchant, and business criteria that must be met.`*
+
+- `**Technical:`** `[e.g., All P0 requirements delivered and tested, performance meets NFR targets]`
+- `**Operational:*`* `[e.g., support trained with runbooks published, monitoring and alerting configured]`
+- `**Merchant:**` `[e.g., beta merchants processing successfully, documentation published]`
+- `**Business:**` `[e.g., Legal/compliance approvals complete, go-to-market materials ready]`
+
+`**Timeline:**` `List target dates for the different phases.`
+
+`**Product Dependencies:**` `List what must be completed before launch. Cover cross-pillar product build dependencies including central teams such as One Finance, CoS Ops, legal/compliance activities (licensing, approvals, T&C changes), and external dependencies (scheme certification and approvals, third-party integrations). Include owners`
+
+`**Go-to-market:**` `Define how we'll take this to market and how our merchants will learn about this. Cover operational enablement (merchant care briefings and training, knowledge hub enhancements, runbooks, SoPs, etc.), sales enablement (sales briefing and training, collateral, etc.), merchant communications (email, dashboard prompts, documentation, etc.), marketing (blogs, press, case studies, etc.), and developer materials (API docs, SDK guides). Include owners for each activity`
+
+## `**Appendix**`
+
+`*Include supporting materials that provide context but aren't essential to the core PRD.`*
+
+`**Strategy and Research:`**
+
+- `Links to market sizing and opportunity analysis`
+- `Links to competitive analysis`
+- `Links to user research findings`
+
+`**Alternatives Considered:**`
+
+- `Option 1: Brief description and why rejected or deferred`
+- `Option 2: Brief description and why rejected or deferred`
+- `Why we chose this approach: Clear rationale for the proposed solution`
+
+`**Technical and Commercial:*`*
+
+- `Links to solution design documents`
+- `Links to commercial modeling and projections`
+
+`**Detailed Requirements:**`
+
+- `Links to granular user stories`
+- `Links to technical specifications`

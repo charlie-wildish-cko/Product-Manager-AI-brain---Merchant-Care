@@ -34,7 +34,7 @@ We think about the domain as a six-stage flywheel. Each stage enables the next, 
 
 | Stage | What it covers |
 |---|---|
-| **Input** | The channels merchants use to contact us, and the query taxonomy that classifies what they're asking |
+| **Input** | The channels merchants use to contact us, and the query taxonomy that classifies what they're asking. Canonical classification: [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) (Case Type → Issue Type → Reason). Canonical volume and involvement: [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md). |
 | **Orchestration** | Triage logic and routing rules: where the contact goes and who is best placed to answer it |
 | **Fuel** | The data and knowledge content that powers both AI and human agents to resolve issues accurately |
 | **Agent Experience** | The tooling human agents use inside Zendesk to investigate and resolve tickets |
@@ -44,6 +44,13 @@ We think about the domain as a six-stage flywheel. Each stage enables the next, 
 The flywheel spins faster as data quality improves and insights flow into fixes. The goal is not just to handle contacts well — it's to reduce the need for contacts in the first place.
 
 ### The numbers that matter
+
+We optimise for two north star metrics. Everything we build aims to move one or both in the right direction:
+
+- **Contact rate**: Support contacts per 1 million payment transactions. Target is to reduce it. Lower contact rate means better product quality, self-service, and content — fewer merchants need to contact us at all.
+- **Cost per contact**: Average cost to handle one support interaction. Target is to reduce it. Lower cost per contact means more efficient operations: better tooling, AI deflection, and agent productivity.
+
+The rest of the domain (Fin, routing, insights, tooling) exists to support these two outcomes.
 
 - **Fin AI Agent involvement is 9.2% today** across all contact channels. Target is 80% by end of 2026. The gap is structural: Fin only runs on Dashboard chat today; email (45% of contacts) and the webform (22%) have no AI deployed.
 - **Three merchant support tiers**: Standard, Enterprise, and Premium, assigned based on Salesforce CRM data (revenue, growth potential, strategic value). Each tier has defined SLAs, channel entitlements, and (for Enterprise/Premium) proactive support features.
@@ -106,7 +113,7 @@ Every feature your team ships generates support contacts. Whether those contacts
 **How our domains intersect**
 
 - **Insight & Prevention loop**: Reflex surfaces the top contact drivers per product area. Your backlog should be consuming this output — contact reduction is a product metric, not just a support ops metric.
-- **Query taxonomy**: When your product introduces a new flow or feature, we need to classify the support queries it generates. New query types that aren't in the taxonomy can't be routed, reported on, or resolved by AI. Flag new features to us before launch.
+- **Query taxonomy**: When your product introduces a new flow or feature, we need to classify the support queries it generates. New query types that aren't in the taxonomy can't be routed, reported on, or resolved by AI. The canonical taxonomy is [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md); for “how big is X?” we use the last-6m flat table and [metric definitions](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md). Flag new features to us before launch.
 - **Support model design**: If your feature affects a specific merchant tier or segment, the support model for that segment determines what channel, SLA, and agent knowledge is available. We need to align before you commit to a user-facing support experience.
 - **Fin AI Agent content**: Any new flow we want Fin to resolve needs content and data access. If your feature is launching and you want Fin to handle queries about it, we need to be in scope during your build, not after it.
 
@@ -120,7 +127,7 @@ Every feature your team ships generates support contacts. Whether those contacts
 
 - **New feature with support implications**: Ping Charlie Wildish before design is locked. Even a 30-minute conversation at the scoping stage prevents rework.
 - **Contact driver you want fixed**: Raise it with us directly or wait for the Reflex output. If it's urgent, share the Zendesk query data and we can triage.
-- **Taxonomy question** (what to call a new query type, how to classify it): Come to us — we own the taxonomy and the routing rules that depend on it.
+- **Taxonomy question** (what to call a new query type, how to classify it): Come to us — we own the taxonomy ([support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md)) and the routing rules that depend on it. For volume and involvement numbers, we use the last-6m flat table and metric definitions as the source of record.
 
 ---
 

@@ -52,6 +52,10 @@
 - Previous analysis for comparison
 - Product roadmap for context
 
+### Canonical volume and taxonomy (Care)
+- **Support taxonomy**: Use [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) as the standard schema. When exporting or slicing Zendesk data, align categories to **Case Type → Issue Type → Reason**. Note any unmapped tags or "Other" so analysis uses consistent labels.
+- **Last-6m flat table**: For volume, channel mix, segment, and Fin vs Zendesk splits, use [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) as the canonical source. Slice by case_type, issue_type, channel, support_segment, sales_territory, billing_region so frequency tables match how leadership already sees the data.
+
 
 ## Step 2: Quantitative Analysis
 
@@ -94,10 +98,12 @@ Use the template from `01-knowledge-base/metrics/kpi-definitions.md`
 
 ### Category Breakdown
 
-**Group tickets by**:
-1. **Primary category** (integration, payment, account, billing, etc.)
-2. **Sub-category** (specific issue type)
-3. **Product area** (API, dashboard, specific feature)
+**Group tickets by** (align to support taxonomy where possible):
+1. **Case Type** then **Issue Type** then **Reason** — use [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) so every analysis uses the same labels (e.g. PAYMENTS (IN), Refunds, Refund status enquiry).
+2. **Primary category** (integration, payment, account, billing, etc.) if your export uses legacy labels — map to taxonomy for reporting.
+3. **Product area** (API, dashboard, specific feature).
+
+**Baseline comparison**: Use the taxonomy’s summary counts and % of volume (from the last-6m flat table) as the baseline. Compare your analysis period to that mix (e.g. PAYMENTS 42.8%, AMA 16.9%) so you can state “PAYMENTS up 5% vs last-6m” or “Refunds within PAYMENTS driving the spike.”
 
 **Create frequency table**:
 | Category | Count | % of Total | Change vs Previous |
@@ -171,6 +177,8 @@ Capture specific merchant quotes that illustrate:
 
 ## Step 5: Root Cause Analysis
 
+**Prioritisation lens**: Use the **Prioritisation implications** section in [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) to decide where to dig. Focus root-cause work on high-leverage categories first (e.g. PAYMENTS (IN), ACCOUNT MANAGEMENT & ACCESS); treat TECHNICAL ISSUE as diagnostic/tooling, not content-only.
+
 ### For Each Top Issue, Ask
 
 **Is this a...**
@@ -226,6 +234,13 @@ Use 2x2 matrix: **Impact vs. Effort**
 - Edge cases affecting few merchants
 - Large effort for small benefit
 - Examples: Niche feature request
+
+### Contact reduction programme — escalation to product
+
+When escalating a contact driver to product or feeding the contact reduction programme:
+
+- **Taxonomy**: Use [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) to name the **Case Type** and **Issue Type** (and Reason if useful). Prioritise categories that the taxonomy flags as high-leverage (PAYMENTS, AMA, then PAYOUTS, FUNDS AND FEES). Escalation evidence should use the same labels so product and reporting stay aligned.
+- **Evidence pack**: Use [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) (and [metric definitions](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md)) to build the evidence pack. Filter by case_type, issue_type, and optionally segment, channel, region. Include: contact count in period, trend, Fin vs Zendesk split. That gives product a reproducible, consistent basis for “how big is this?” and for tracking impact after fixes.
 
 ### Generate Recommendations
 
@@ -404,9 +419,10 @@ For each recommendation:
 ## Quick Reference Checklist
 
 - [ ] Define scope and time period
-- [ ] Export ticket data with all required fields
+- [ ] Export ticket data with all required fields; align categories to support taxonomy (Case Type / Issue Type / Reason)
+- [ ] Use last-6m flat table and metric definitions for baseline volume and channel/segment splits
 - [ ] Calculate core metrics (volume, performance, quality)
-- [ ] Categorize tickets and identify top issues
+- [ ] Categorize tickets and identify top issues (compare to taxonomy baseline)
 - [ ] Read sample tickets for qualitative insights
 - [ ] Perform root cause analysis
 - [ ] Prioritize using impact vs. effort framework

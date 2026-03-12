@@ -190,6 +190,9 @@ Currently Fin is not designed for the Platform model. Gaps:
 - Fin can answer Platform-specific questions (e.g. "how do I check my sub-merchant's settlement status?")
 - Fin understands the L1/L2 boundary — what Sunday/Golfmanager/Guesty should resolve themselves vs. what requires Checkout.com investigation
 
+**Future channel: embedded AI in Platform portal**  
+We may offer Platforms a support component they embed in their internal portal, powered by the Fin AI Agent, so their support teams use Fin first (with access to our knowledge and data) and escalate to us only when needed. Merchants would still contact the Platform and get a response from the Platform; no direct interaction with Checkout.com. Full vision: `01-knowledge-base/products/platform-embedded-ai-support-vision.md`.
+
 
 ## Agent Knowledge Requirements
 

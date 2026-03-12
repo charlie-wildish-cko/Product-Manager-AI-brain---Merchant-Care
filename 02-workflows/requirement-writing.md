@@ -10,6 +10,30 @@
 - Planning a complex improvement or refactor
 - Documenting a request before adding to roadmap
 
+**PRD writing flow (Care & Support):** Anchor in strategy and goals first (which goal, which deliverable, which flywheel domain, which metrics). Then understand the problem, define goals and success metrics tied to north star and flywheel, then complete the rest of the PRD. See Step 0 and Step 2.
+
+
+## Step 0: Anchor in strategy and goals (Care & Support PRDs)
+
+Before writing a Care & Support PRD, fix the strategic context. This ensures the PRD supports the roadmap and uses the right success metrics.
+
+**Decide and document:**
+
+1. **Strategic goal** — Which of the two 2026 goals does this initiative support?
+   - **Reduce / maintain contact rate** (fewer contacts per 1M transactions)
+   - **Reduce cost of support** (lower cost per contact)
+
+2. **2026 deliverable** — Which deliverable in `2026 deliverables.md` does this PRD implement or support? Name it explicitly.
+
+3. **Flywheel domain** — Which of the six Care Product domains does this work sit in? (Defines which domain-level metrics apply.)
+   - 1. Input | 2. Orchestration | 3. Fuel | 4. Agent Experience | 5. Insight & Prevention | 6. Governance  
+   See `01-knowledge-base/strategy/care-product-model.md`.
+
+4. **North star and domain metrics** — Which north star metric (contact rate, cost per contact) and/or which flywheel domain metrics will this initiative move? Use these when you define success metrics in the PRD.  
+   See `01-knowledge-base/metrics/kpi-definitions.md` for north star definitions and strategic levers; care-product-model for metrics by domain.
+
+**Optional strategy check:** For "why this, why now" and exec narrative, use [Rumelt's Strategy Kernel](../01-knowledge-base/strategy/rumelt-strategy-kernel.md): ensure the initiative is a coherent action under the guiding policy, with a clear link to diagnosis.
+
 
 ## Step 1: Understand the Problem
 
@@ -26,13 +50,24 @@ Before writing any requirements, deeply understand the problem you're solving.
 
 ### Research Sources
 
-- [ ] **Support tickets**: What are customers reporting?
+- [ ] **Support tickets**: What are customers reporting? When the problem is support-driven, name the **Case Type** and **Issue Type** (and Reason if useful) from [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) (e.g. PAYMENTS (IN) → Refunds → Refund status enquiry). Use [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) to size the problem (e.g. “X contacts in last 6m in this case_type/issue_type, by segment/channel if relevant”).
 - [ ] **User interviews**: Direct feedback from affected users
 - [ ] **Analytics data**: Usage patterns and drop-off points
-- [ ] **Competitive analysis**: How do others solve this?
+- [ ] **Competitive analysis**: How do others solve this? (See Competitive analysis below.)
 - [ ] **Stakeholder input**: What do internal teams see?
 - [ ] **Sales feedback**: What's blocking deals?
 - [ ] **Technical constraints**: What's possible/practical?
+
+### Competitive analysis
+
+Use competitive context to validate the problem, inform "why now", and shape the solution. Capture:
+
+- **Who we compare to** — Direct competitors (other PSPs, support tools), adjacent players, or best-in-class in the capability (e.g. how leading B2C fintechs handle support if relevant).
+- **How they address this** — How do they solve the same problem or serve the same need? Channels, features, positioning, pricing if relevant.
+- **How we compare** — Gaps (where we lag), strengths (where we match or lead), and differentiators we could lean on.
+- **Implications** — What does this mean for our solution (must-have vs nice-to-have), positioning, or "why now" (e.g. competitors are investing here, or we have a window to differentiate).
+
+Document this in the PRD under **Competitive context** (Problem Space) and link to any detailed competitive research in the Appendix. Competitive context can also strengthen the strategy anchor (Step 0) and Alternatives Considered.
 
 ### Validate the Problem
 
@@ -98,12 +133,24 @@ Metrics:
 ### Set Targets
 
 For each metric:
-- **Baseline**: Current state
+- **Baseline**: Current state. For contact volume or involvement, use [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) so baselines match the canonical dataset (support_contacts, fin_only_resolved, channel, case_type, issue_type).
 - **Target**: Goal to hit
 - **Timeline**: When to measure
 - **Threshold**: Minimum acceptable improvement
 
-**See also:** For product or roadmap-level strategy (prioritisation, competitive response, executive narrative), use [Rumelt's Strategy Kernel](../01-knowledge-base/strategy/rumelt-strategy-kernel.md): Diagnosis → Guiding Policy → Coherent Actions.
+### Care & Support: tie to north star and flywheel metrics
+
+For Care & Support PRDs, business goals and success metrics should link explicitly to strategy:
+
+- **North star metrics** (from `01-knowledge-base/metrics/kpi-definitions.md`): **Contact rate** (contacts per 1M transactions) and **Cost per contact**. Every Care initiative should move one or both.
+- **Strategic levers** that move those north stars: Contact reduction, AI deflection, agent efficiency, self-service. State which lever this initiative pulls.
+- **Flywheel domain metrics**: Use the metrics for your initiative's domain (Input, Orchestration, Fuel, Agent Experience, Insight & Prevention, Governance) from `01-knowledge-base/strategy/care-product-model.md`. Include baseline and target for the domain metrics you can influence (e.g. AI resolution rate, AHT, content coverage).
+
+Avoid generic goals like "improve support". Use specific, measurable outcomes tied to north star or domain metrics (e.g. "Reduce cost per contact via agent efficiency by lowering AHT for Blue EMI tickets by 15%").
+
+### Optional: Strategy check (Rumelt)
+
+For exec summary and "why now", check that the initiative reads as a **coherent action** under the guiding policy (e.g. "we reduce cost by shifting volume to Fin and improving agent tools") and links to a clear **diagnosis** (e.g. "cost per contact is under pressure as volume grows"). See [Rumelt's Strategy Kernel](../01-knowledge-base/strategy/rumelt-strategy-kernel.md).
 
 
 ## Step 3: Identify Users & Use Cases
@@ -300,6 +347,8 @@ Each acceptance criterion should be:
 
 Explicitly state what you're NOT doing.
 
+**Care & Support — new query types**: If the feature introduces support contacts that don’t map to existing taxonomy, call out that new **Case Types / Issue Types / Reasons** may be needed (routing and reporting depend on them). See [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) and “Known gaps” (B2C, B2B banking, PLATFORMS) for the checklist when new products or flows launch.
+
 ### Why This Matters
 - Prevents scope creep
 - Sets clear expectations
@@ -386,7 +435,10 @@ Explicitly state what you're NOT doing.
 ### Review & Iterate
 
 **Optional: Run the Document Review Panel**  
-Before sharing, refine the doc using the five reviewer personas (PM, Engineering/Tech lead, Operations agent, CPO, COO). See [document-review-panel.md](document-review-panel.md) for persona lenses and questions. You can run the panel yourself (checklist), with AI (“apply the Review Panel to this PRD”), or with real reviewers assigned to personas.
+Before sharing, refine the doc using the reviewer personas (PM, Engineering/Tech lead, Operations agent, CPO, COO, and others). See [document-review-panel.md](document-review-panel.md) for persona lenses and questions. You can run the panel yourself (checklist), with AI (“apply the Review Panel to this PRD”), or with real reviewers assigned to personas.
+
+**After first draft and review panel: Condense (PRDs only)**  
+After incorporating panel feedback, run a **condense** pass so the PRD matches the template length and structure. Shorten to match [03-templates/prd-template.md](../03-templates/prd-template.md): section order, one success metrics table, one evidence/channel table in Problem Space, requirements by domain + FR/NFR, phased rollout with entry/success criteria; move detailed volume model, scenario tables, and full risk/dependency tables to the Appendix. Preserve all decisions, gates, and links. Target: body ~250–350 lines. The [draft-critique-refine](../.cursor/skills/draft-critique-refine/SKILL.md) skill does this automatically for PRDs (Draft → Critique → Refine → Condense).
 
 **Questions to ask reviewers**:
 - Is anything unclear or ambiguous?
@@ -409,10 +461,15 @@ Before sharing, refine the doc using the five reviewer personas (PM, Engineering
 
 Use template: `03-templates/prd-template.md`
 
+**Care & Support PRDs — strategy alignment checklist:**
+- [ ] **Roadmap alignment** block completed: 2026 deliverable, strategic goal (contact rate / cost), flywheel domain, how it fits
+- [ ] **Executive summary** ties to 2026 deliverable and goal
+- [ ] **Goals and success metrics** reference north star (contact rate, cost per contact) and/or flywheel domain metrics; baseline and target set; strategic lever stated
+
 **Include**:
 - Executive summary
 - Problem statement
-- Goals and metrics
+- Goals and metrics (north star / flywheel for Care & Support)
 - User stories
 - Requirements (functional & non-functional)
 - Design/UX approach
