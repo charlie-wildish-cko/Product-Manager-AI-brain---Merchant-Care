@@ -8,6 +8,26 @@ These personas are written with customer support impact in mind so review natura
 
 ---
 
+## When to Run Each Persona
+
+**Always run — every PRD:**
+- **Oliver** (Support Agent) — primary support lens
+- **Casey** (Operations) — ops readiness and capacity
+- **Imran** (Data Scientist) — metrics and measurability
+- **Preethy** (Content) — content dependencies
+- **Taylor** (VP of Product) — exec alignment
+
+**Conditional:**
+| Persona | Run when... |
+|---|---|
+| Sam — PM | PRD touches another product team's area or has cross-team scope |
+| Fraser — Engineering | PRD has technical depth (APIs, integrations, error handling) or is post-scoping |
+| Georgios — Designer | PRD includes any UI component (agent tools, merchant dashboard, webforms) |
+| Morgan — CPO | Big-bet, roadmap-level, or exec-facing doc |
+| Ajana — Zendesk Admin | PRD touches ticketing, routing, taxonomy, macros, or Zendesk config |
+
+---
+
 ### Persona 1: Sam — Product Manager
 
 **Role**: Senior Product Manager, owns a product area that generates steady support volume.

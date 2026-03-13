@@ -54,9 +54,11 @@ Every document, analysis, or recommendation must connect to:
 | Product definitions with contact risk tags | `01-knowledge-base/products/product-definitions.md` |
 | Platform segment model | `01-knowledge-base/products/platform-segment.md` |
 | Platform Embedded AI vision | `01-knowledge-base/products/platform-embedded-ai-support-vision.md` |
+| Customer personas (merchant + internal) | `01-knowledge-base/products/customer-personas.md` |
 | KPI definitions | `01-knowledge-base/metrics/kpi-definitions.md` |
 | PRD template | `03-templates/prd-template.md` |
 | PRD example | `03-templates/prd-template-example.md` |
+| Product strategy template | `03-templates/product-strategy-template.md` |
 | Writing style by audience | `01-knowledge-base/processes/writing-style-guide.md` |
 
 ---
@@ -81,6 +83,8 @@ For Leadership, Engineering, Slack, and Reports style: see `01-knowledge-base/pr
 
 ## Data Rules
 
+**Interview transcripts**: WEBVTT format. Stored in `04-active-work/merchant-interview-transcripts-2025/`. Two subfolders: `Direct merchants/` (Participant 2 is the merchant) and `Platforms/` (Alcinda Lee is the interviewer; other speakers are Platform ops users). Files are large — use Explore agents with chunked reads.
+
 **Always use real data; never use placeholder numbers:**
 - Source: `01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv`
 - Column definitions: `01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md`
@@ -104,6 +108,8 @@ Anchor in strategy first:
 
 Then use `03-templates/prd-template.md`. Quality rules are enforced in the template. For PRD sharpening, use Socratic questions from `01-knowledge-base/processes/socratic-questioning-prds.md`.
 
+For product strategy documents (1–3 year horizon, VP/Director audience): use `03-templates/product-strategy-template.md`. Framework: Rumelt's Strategy Kernel (Diagnosis → Guiding Policy → Coherent Actions) — reference doc at `01-knowledge-base/strategy/rumelt-strategy-kernel.md`.
+
 ---
 
 ## Workflows & Skills
@@ -112,6 +118,7 @@ Then use `03-templates/prd-template.md`. Quality rules are enforced in the templ
 Apply to any PRD, memo, or spec before finalising.
 - Workflow: `02-workflows/document-review-panel.md`
 - Personas: `01-knowledge-base/processes/review-panel-personas.md`
+- Always run 5 core personas (Oliver, Casey, Imran, Preethy, Taylor). Add conditional personas based on PRD type — see personas file for rules.
 
 ### Draft → Critique → Refine
 Run for any significant document from scratch: Draft → Critique (panel) → Refine → Condense (PRDs: ~250–350 lines).

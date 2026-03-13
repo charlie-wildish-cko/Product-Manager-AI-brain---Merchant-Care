@@ -11,34 +11,34 @@
 
 ## Quick View by Quarter
 
-| Q | Deliverable | Goal |
-|---|---|---|
-| Q1 | AI powered contextual answers on Dashboard | Reduce cost |
-| Q1 | Merchant context for Fin and Agents (phase 1) | Reduce cost |
-| Q1 | Platform support channels | Reduce cost |
-| Q1 | AI Agent 'Consultant' (phase 1) | Reduce cost |
-| Q1 | Contact reasons reporting — Reflex (phase 1) | Reduce contact rate |
-| Q2 | Dashboard onboarding experience | Reduce contact rate |
-| Q2 | Education Hub for merchants | Reduce contact rate |
-| Q2 | Improve Fin resolution through Procedures | Reduce cost |
-| Q2 | Merchant context for Fin and Agents (phase 2) | Reduce cost |
-| Q2 | Support model — Standard merchants | Reduce cost |
-| Q2 | Agent productivity tools (start) | Reduce cost |
-| Q2 | AI Agent 'Consultant' (phase 2) | Reduce cost |
-| Q2 | Contact reasons reporting — Reflex (phase 2) | Reduce contact rate |
-| Q3 | Replace webform with Fin | Reduce cost |
-| Q3 | Support model — Enterprise and Premium merchants | Reduce cost |
-| Q3 | Contact reasons reporting — Reflex MCP | Reduce contact rate |
-| Q2–Q4 | Agent productivity tools (ongoing) | Reduce cost |
-| Continuous | AI first resolution using Fin | Reduce cost |
-| Uncertain | Support-based proactive notifications | Reduce contact rate |
-| TBC | Centralised merchant ticket submission and visibility | Reduce contact rate |
+| Q | Deliverable | Goal | Jira |
+|---|---|---|---|
+| Q1 | AI powered contextual answers on Dashboard | Reduce cost | [MCD-561](https://checkout.atlassian.net/browse/MCD-561) |
+| Q1 | Merchant context for Fin and Agents (phase 1) | Reduce cost | [MCD-562](https://checkout.atlassian.net/browse/MCD-562) |
+| Q1 | Platform support channels | Reduce cost | [MCD-563](https://checkout.atlassian.net/browse/MCD-563) |
+| Q1 | AI Agent 'Consultant' (phase 1) | Reduce cost | [MCD-564](https://checkout.atlassian.net/browse/MCD-564) |
+| Q1 | Contact reasons reporting — Reflex (phase 1) | Reduce contact rate | [MCD-565](https://checkout.atlassian.net/browse/MCD-565) |
+| Q2 | Dashboard onboarding experience | Reduce contact rate | [MCD-566](https://checkout.atlassian.net/browse/MCD-566) |
+| Q2 | Education Hub for merchants | Reduce contact rate | [MCD-567](https://checkout.atlassian.net/browse/MCD-567) |
+| Q2 | Improve Fin resolution through Procedures | Reduce cost | [MCD-568](https://checkout.atlassian.net/browse/MCD-568) |
+| Q2 | Merchant context for Fin and Agents (phase 2) | Reduce cost | [MCD-562](https://checkout.atlassian.net/browse/MCD-562) |
+| Q2 | Support model — Standard merchants | Reduce cost | [MCD-569](https://checkout.atlassian.net/browse/MCD-569) |
+| Q2 | Agent productivity tools (start) | Reduce cost | [MCD-570](https://checkout.atlassian.net/browse/MCD-570) |
+| Q2 | AI Agent 'Consultant' (phase 2) | Reduce cost | [MCD-564](https://checkout.atlassian.net/browse/MCD-564) |
+| Q2 | Contact reasons reporting — Reflex (phase 2) | Reduce contact rate | [MCD-565](https://checkout.atlassian.net/browse/MCD-565) |
+| Q3 | Replace webform with Fin | Reduce cost | [MCD-571](https://checkout.atlassian.net/browse/MCD-571) |
+| Q3 | Support model — Enterprise and Premium merchants | Reduce cost | [MCD-572](https://checkout.atlassian.net/browse/MCD-572) |
+| Q3 | Contact reasons reporting — Reflex MCP | Reduce contact rate | [MCD-565](https://checkout.atlassian.net/browse/MCD-565) |
+| Q2–Q4 | Agent productivity tools (ongoing) | Reduce cost | [MCD-570](https://checkout.atlassian.net/browse/MCD-570) |
+| Continuous | AI first resolution using Fin | Reduce cost | [MCD-573](https://checkout.atlassian.net/browse/MCD-573) |
+| Uncertain | Support-based proactive notifications | Reduce contact rate | [MCD-574](https://checkout.atlassian.net/browse/MCD-574) |
+| TBC | Centralised merchant ticket submission and visibility | Reduce contact rate | [MCD-575](https://checkout.atlassian.net/browse/MCD-575) |
 
 
 ## Goal 1: Reduce / Maintain Contact Rate
 
 ### Dashboard Onboarding Experience
-**Q2**
+**Q2** · [MCD-566](https://checkout.atlassian.net/browse/MCD-566)
 
 > As a new merchant, I want a clear and intuitive dashboard onboarding experience so that I can quickly and successfully set up my account and start processing payments.
 
@@ -51,7 +51,7 @@
 
 
 ### Education Hub for Merchants
-**Q2**
+**Q2** · [MCD-567](https://checkout.atlassian.net/browse/MCD-567)
 
 > As a merchant, I want to easily find comprehensive resources and documentation to understand and manage my account, products, and processes.
 
@@ -62,7 +62,7 @@
 
 
 ### Support-Based Proactive Notifications
-**Uncertain** — dependency on failure data being published
+**Uncertain** · [MCD-574](https://checkout.atlassian.net/browse/MCD-574) — dependency on failure data being published
 
 > As a merchant, I want to receive proactive notifications so I am alerted to potential issues or actions required before they impact my business or require me to contact support.
 
@@ -74,7 +74,7 @@
 
 
 ### Centralised Merchant Ticket Submission and Visibility
-**TBC**
+**TBC** · [MCD-575](https://checkout.atlassian.net/browse/MCD-575)
 
 > As a merchant, I want a centralised place to submit new support requests and track the status of all my tickets in one place.
 
@@ -85,7 +85,7 @@
 
 
 ### Contact Reasons Reporting — Reflex
-**Q1 → Q2 → Q3**
+**Q1 → Q2 → Q3** · [MCD-565](https://checkout.atlassian.net/browse/MCD-565)
 
 > As a Support Leader, I want to understand the main drivers for merchants contacting support, identify areas for product improvement, and reduce unnecessary contacts.
 
@@ -106,7 +106,7 @@
 ## Goal 2: Reduce Cost of Support
 
 ### AI Powered Contextual Answers on Dashboard
-**Q1**
+**Q1** · [MCD-561](https://checkout.atlassian.net/browse/MCD-561)
 
 > As a merchant, I want contextual answers on the Dashboard so I can get immediate, relevant support and information without leaving my workspace.
 
@@ -118,7 +118,7 @@
 
 
 ### Merchant Context for Fin and Agents
-**Q1 (phase 1) → Q2 (phase 2)**
+**Q1 (phase 1) → Q2 (phase 2)** · [MCD-562](https://checkout.atlassian.net/browse/MCD-562)
 
 > As an AI or human Agent, I want context so I can quickly understand the merchant's history, platform configuration, and previous interactions to provide fast and accurate resolution.
 
@@ -135,7 +135,7 @@
 
 
 ### AI First Resolution Using Fin
-**Continuous**
+**Continuous** · [MCD-573](https://checkout.atlassian.net/browse/MCD-573)
 
 > As a merchant, I want rapid support resolution so I can get my common issues resolved instantly.
 
@@ -146,7 +146,7 @@
 
 
 ### Improve Fin Resolution Through Procedures
-**Q2**
+**Q2** · [MCD-568](https://checkout.atlassian.net/browse/MCD-568)
 
 > As a merchant, I want Fin to handle my support request end-to-end, including following structured processes, so I get a consistent and accurate resolution without needing a human agent.
 
@@ -157,7 +157,7 @@
 
 
 ### Platform Support Channels
-**Q1**
+**Q1** · [MCD-563](https://checkout.atlassian.net/browse/MCD-563)
 
 > As an ISV, I want access to raise support for my merchants.
 
@@ -171,7 +171,7 @@
 
 
 ### AI Agent 'Consultant'
-**Q1 (phase 1) → Q2 (phase 2)**
+**Q1 (phase 1) → Q2 (phase 2)** · [MCD-564](https://checkout.atlassian.net/browse/MCD-564)
 
 Product context and capability set: `01-knowledge-base/products/agent-consultant.md`
 
@@ -189,7 +189,7 @@ Product context and capability set: `01-knowledge-base/products/agent-consultant
 
 
 ### Support Model
-**Q2 → Q3**
+**Q2 → Q3** · [MCD-569](https://checkout.atlassian.net/browse/MCD-569) (Standard) · [MCD-572](https://checkout.atlassian.net/browse/MCD-572) (Enterprise/Premium)
 
 > As a merchant, I want multiple support channels so I can contact support in my preferred way that is contextual for me.
 
@@ -200,7 +200,7 @@ Product context and capability set: `01-knowledge-base/products/agent-consultant
 
 
 ### Replace Webform with Fin
-**Q3**
+**Q3** · [MCD-571](https://checkout.atlassian.net/browse/MCD-571)
 
 > As a merchant, I want to contact support through a single, intelligent entry point so I get faster, more accurate help without navigating a static form.
 
@@ -214,7 +214,7 @@ Product context and capability set: `01-knowledge-base/products/agent-consultant
 
 
 ### Agent Productivity Tools
-**Q2 → Q4 (ongoing)**
+**Q2 → Q4 (ongoing)** · [MCD-570](https://checkout.atlassian.net/browse/MCD-570)
 
 > As a Support Agent, I want tools so I can handle merchant inquiries more efficiently, reduce resolution time, and improve the quality of my support.
 

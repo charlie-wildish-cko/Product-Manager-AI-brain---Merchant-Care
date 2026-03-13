@@ -75,7 +75,7 @@ This backlog tracks the data sources Fin should be able to access (via API or MC
 | **Contact volume** | 2,228 contacts / 6 months |
 | **Integration method** | API |
 | **Access model** | Read-only |
-| **Data availability** | Not confirmed |
+| **Data availability** | Confirmed live |
 | **Complexity** | Medium |
 | **Status** | Proposed |
 | **API reference** | https://usermanagement-qa-int.cko-qa.ckotech.co/swagger/index.html |
