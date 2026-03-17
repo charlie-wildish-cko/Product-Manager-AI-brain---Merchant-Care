@@ -131,21 +131,20 @@
 
 ### Functional requirements
 
-*`Include merchant-facing capabilities and internal operational needs (treasury reconciliation, support tooling, compliance reporting, etc.). Focus on what needs to happen, not how it will be built. Use clear acceptance criteria.`*
+*`Include merchant-facing capabilities and internal operational needs (treasury reconciliation, support tooling, compliance reporting, etc.). Focus on what needs to happen, not how it will be built. Use clear acceptance criteria (Given [state], when [action], then [result]).`*
 
-| ID | Area | Requirement | Priority |
-|----|------|-------------|----------|
-| **FR-0** | **Instrumentation** | **Key events defined in the Instrumentation section must be implemented, validated in staging, and confirmed firing before Phase 1 go-live.** *AC: All listed events fire correctly in staging; validated by [Data Scientist / Engineering] before Phase 1 entry.* | **P0** |
+| ID | Requirement | Acceptance Criteria | Domain/s |
+|----|-------------|---------------------|----------|
+| **FR-0** | **Key events defined in the Instrumentation section must be implemented, validated in staging, and confirmed firing before Phase 1 go-live. (P0)** | All listed events fire correctly in staging; validated by [Data Scientist / Engineering] before Phase 1 entry. | Product / Platform |
 | FR-1 | | | |
 
-### Non-Functional Requirements:
+### Non-Functional Requirements
 
-*`List the non-functional requirements. Only include items that will be tested.`*
+*`List only NFRs that will be tested. Use the same format: Given [state], when [action], then [result].`*
 
-*`Consider format each requirement as:`*
-
-*`**FR-'X':`** `Short requirement sentence.`*
-`***Acceptance criteria:**` `Given [state], when [action], then [result].*`
+| ID | Requirement | Acceptance Criteria | Domain/s |
+|----|-------------|---------------------|----------|
+| NFR-1 | | | |
 
 ## `**Design and User Experience**`
 

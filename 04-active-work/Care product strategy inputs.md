@@ -31,10 +31,10 @@ What Claude does NOT need from you:
 
 > What is this strategy about, and how long does it span?
 
-- **Strategy title / domain:** [e.g. AI Deflection / Self-Serve / Platform Support / Agent Productivity]
+- **Strategy title / domain:** Merchant Care to 2030 during multi product customer expansion
 - **Horizon:** [e.g. 2026–2028]
-- **Strategic goal:** [Reduce contact rate / Reduce cost of support / Both]
-- **Primary flywheel domain(s):** [e.g. Fuel + Orchestration]
+- **Strategic goal:** Enable the scaling of Support experience to our customers
+- **Primary flywheel domain(s):** All - this is top down view
 
 *Produces: document title, header metadata, anchor table.*
 
@@ -42,15 +42,17 @@ What Claude does NOT need from you:
 
 ## 2. Strategic Context (Diagnosis — situational assessment)
 
-> What is changing — in the business, the market, or for this customer segment — that makes this strategy necessary now?
-> Think: new customer segments launching, cost pressures, product changes, competitive moves, regulatory change, volume growth.
-> Aim for 3–5 bullets. These are the "why now" forces, not the problem itself.
-
--
--
--
--
--
+> What is changing —
+>
+> We are expanding our customer base from ~2k merchants today in the Direct merchant acquiring model to:
+>
+> 1. Platforms (ISV, Payfac, SMB?)
+> 2. Consumer wallet offering (B2C)
+> 3. Becoming a bank and storing funds for customers with interest rates (not confirmed but very likely)
+>
+> - This will increase our customer base to millions by 2030 in both B2B and B2C offerings. This in turn brings the rate of support contacts increasing, additional regulatory requirements, complexity in how we service the customer and provide the right experience for them (e.g. size of merchant, if we offer a consumer tiered plan like Monzo/Revolut with paid plans).
+> - TLDR: We are becoming a large multi product company which means growth in all areas. This stratey focuses specifically on customer support (Care).
+>
 
 *Produces: Section 1 (Strategic Context). Claude will expand these into 3–5 short paragraphs.*
 
@@ -75,10 +77,10 @@ What Claude does NOT need from you:
 > Examples: contact volumes, Fin resolution rate, cost per contact, handle time, CSAT scores, % of contacts in this domain.
 
 | Metric | Value (rough is fine) |
-|---|---|
-| | |
-| | |
-| | |
+| ------ | --------------------- |
+|        |                       |
+|        |                       |
+|        |                       |
 
 *Produces: data table in Section 2 (Problem Framing) and baselines in Section 6 (Success Looks Like). Claude fills in metric names and flags missing values as TBC.*
 
@@ -89,8 +91,6 @@ What Claude does NOT need from you:
 > How does this problem show up for merchants? What do they feel, see, or complain about?
 > A rough quote from an interview, a Fin transcript excerpt, or a one-line description is enough.
 
--
-
 *Produces: "What merchants experience" paragraph in Section 2.*
 
 ---
@@ -100,12 +100,12 @@ What Claude does NOT need from you:
 > Which segments does this strategy apply to, and what (if anything) differs per segment?
 > Segments: Direct Merchant / Platform / ISV / B2C (2027) / B2B Banking (2028+)
 
-| Segment | In scope? | Notes (what differs, if anything) |
-|---|---|---|
-| Direct Merchant | | |
-| Platform / ISV | | |
-| B2C (2027) | | |
-| B2B Banking (2028+) | | |
+| Segment             | In scope? | Notes (what differs, if anything) |
+| ------------------- | --------- | --------------------------------- |
+| Direct Merchant     |           |                                   |
+| Platform / ISV      |           |                                   |
+| B2C (2027)          |           |                                   |
+| B2B Banking (2028+) |           |                                   |
 
 **Segments explicitly not in scope:**
 
@@ -123,8 +123,7 @@ What Claude does NOT need from you:
 **Draft intent:**
 
 **What this rules out (the hard choices):**
--
--
+---------------------------------------
 
 *Produces: Section 3 (Strategic Intent / Guiding Policy) and Section 5 (What We Are Not Doing).*
 
@@ -137,22 +136,27 @@ What Claude does NOT need from you:
 > Claude will add "what would make it wrong", "what it requires", and the coherence check.
 
 ### Bet 1
+
 - **Name:**
 - **Idea / hypothesis:**
 
 ### Bet 2
+
 - **Name:**
 - **Idea / hypothesis:**
 
 ### Bet 3
+
 - **Name:**
 - **Idea / hypothesis:**
 
 ### Bet 4 (optional)
+
 - **Name:**
 - **Idea / hypothesis:**
 
 ### Bet 5 (optional)
+
 - **Name:**
 - **Idea / hypothesis:**
 
@@ -166,10 +170,6 @@ What Claude does NOT need from you:
 > You don't need Jira IDs — Claude will cross-reference 2026 deliverables.md and flag gaps.
 > Rough names or descriptions are fine.
 
--
--
--
-
 *Produces: Section 8 (Roadmap Alignment). Claude maps each deliverable to a named bet and flags any bets with no corresponding deliverable.*
 
 ---
@@ -179,12 +179,12 @@ What Claude does NOT need from you:
 > Any known target values for the strategy horizon or 12-month mark.
 > Leave blank if unknown — Claude will include the metric with a TBC baseline.
 
-| Metric | 12-month target | Horizon target |
-|---|---|---|
-| Contact rate | | |
-| Cost per contact | | |
-| Fin involvement rate | | |
-| [Other] | | |
+| Metric               | 12-month target | Horizon target |
+| -------------------- | --------------- | -------------- |
+| Contact rate         |                 |                |
+| Cost per contact     |                 |                |
+| Fin involvement rate |                 |                |
+| [Other]              |                 |                |
 
 *Produces: Section 6 (Success Looks Like). Claude fills in baseline values from known data or flags as TBC.*
 
@@ -196,12 +196,10 @@ What Claude does NOT need from you:
 > Rough bullets — Claude will structure these into the risks/dependencies table.
 
 **Risks:**
--
--
+------
 
 **Dependencies (cross-team or external):**
--
--
+--------------------------------------
 
 *Produces: Section 9 (Risks and Dependencies).*
 
@@ -212,9 +210,9 @@ What Claude does NOT need from you:
 > Unresolved questions that could change a bet or the scope. Assign an owner if you know one.
 
 | Question | Bet affected | Owner |
-|---|---|---|
-| | | |
-| | | |
+| -------- | ------------ | ----- |
+|          |              |       |
+|          |              |       |
 
 *Produces: Section 10 (Open Questions). Claude adds a target resolution column.*
 
@@ -223,5 +221,3 @@ What Claude does NOT need from you:
 ## 13. Anything Else
 
 > Links to related research, interviews, PRDs, or context Claude should read before generating the strategy.
-
--

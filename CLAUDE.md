@@ -175,6 +175,10 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 
 **Team composition (2026 baseline)**: 1 PM (Charlie); 4 engineers + 1 EM (max span ~8 including ZD admins); 2 Zendesk admins; shared Product Data Scientist; part-time Data Engineer shared with wider teams. Fin administration is a shared responsibility across Product and Content with no dedicated owner.
 
+**Fin deployment setup**: Fin Messenger is installed in the Checkout.com Dashboard (merchant-facing live chat); unresolved conversations escalate to Zendesk as tickets. Fin for Zendesk handles inbound email/tickets. Copilot (Intercom's agent AI assistant) is connected to Zendesk for Care agents — maps to the Agent Consultant product concept.
+
+**Zendesk setup**: Checkout.com uses Zendesk Support + Zendesk Guide (help centre at support.checkout.com). Fin (Intercom) is the AI resolution layer via the Zendesk integration — Zendesk's native AI agents are not used. Zendesk Auto Assist (Copilot) is connected for agents.
+
 **Agent Consultant modes**: Autonomous (data lookups, knowledge retrieval, approved API calls, QA on closed tickets) vs Human-in-the-loop (refunds, reversals, 3rd-party API actions). Full list: `01-knowledge-base/products/agent-consultant.md`.
 
 **Reflex 2030 vision**: AI-generated action plan recommendations and fix PRs for engineering review, not autonomous deployment to production.

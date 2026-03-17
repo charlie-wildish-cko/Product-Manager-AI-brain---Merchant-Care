@@ -17,7 +17,7 @@ Reference these personas when:
 
 Personas are grouped into two sets:
 
-- **External** (merchants and consumers who contact support): Maria, James, Priya, Tom, Alex
+- **External** (merchants and consumers who contact support): Maria, James, Priya, Tom, Alex (Remember Me), Jordan (Braavos)
 - **Internal** (Checkout.com staff whose work is shaped by Care product): Oliver, Niamh, Marcus
 
 ---
@@ -284,34 +284,80 @@ Niamh picks up an escalated FTS ticket from a Platform contact (Guesty) about a 
 
 ---
 
-## Alex — Consumer (B2C)
+## Alex — Consumer (Remember Me)
 
 **Segment**: B2C Consumer
-**Role**: Consumer who has saved their card via Checkout.com's Remember Me product (live today) or, from 2027, a Braavos neobank account holder.
+**Role**: Consumer who has saved their card via Checkout.com's Remember Me product. Remember Me is a passive saved-card service: consumers enrol at checkout on a merchant's site and may not know Checkout.com is the underlying provider.
 
 ### Goals
 
-- Resolve their payment or account problem quickly and with minimal friction
-- Understand what happened and why
-- Know their complaint will be heard and acted on
+- Resolve a payment failure or card management issue quickly
+- Understand why the payment failed and what to do next
 
-### Frustrations (Remember Me, live)
+### Frustrations
 
 - Webform-only contact channel; no phone or live chat
 - Slow response times relative to consumer expectations
 - No formal complaint process
+- May not know they are contacting Checkout.com rather than the merchant
 
-### Frustrations (Braavos, 2027)
+### A day in the life
 
-- All of the above, plus: no phone channel for a regulated banking product; no visible complaint handling process; potential vulnerability identification gaps
+Alex tries to use a remembered card at checkout and the payment fails. She can't find a phone number for Checkout.com. She locates the Remember Me webform, submits a query, and waits two business days for a response. The issue is resolved, but the experience felt slow and impersonal for what she considers a payment product.
 
-### A day in the life (Remember Me)
+**Support expectation**: Consumer-grade. Fast response, empathetic tone, clear resolution.
 
-Alex tries to use a remembered card on checkout and the payment fails. She can't find a phone number for Checkout.com. She locates the Remember Me webform, submits a query, and waits two business days for a response. The issue is resolved, but the experience felt slow and impersonal for what she considers a payment product.
+**Design implication**: Remember Me is live but low-volume and informally supported. The contact model is simple: webform intake, email resolution. The priority is ensuring response times and resolution quality meet basic consumer expectations. No structural changes required before Braavos launch; maintain and monitor. Maps to: B2C support operations (ongoing).
 
-**Support expectation**: Consumer-grade. Fast response, empathetic tone, clear resolution, complaint rights visible and accessible.
+---
 
-**Design implication**: B2C support model is nascent. Remember Me is live but low-volume and informally supported. Braavos launch (2027) requires a full consumer support model from day one: phone channel, complaint handling (Consumer Duty, 8-week FRL, FOS referral rights), and vulnerable customer identification in Fin. These cannot be added post-launch. Maps to: B2C wallet launch preparation (2027 pre-work, 2026 backlog).
+## Jordan — Consumer (Braavos)
+
+**Segment**: B2C Consumer
+**Role**: Braavos neobank account holder (2027 launch). Braavos is a mobile-first neobank competing with Monzo and Revolut. Jordan has actively chosen Braavos for its value proposition and expects a full-service consumer banking experience.
+
+### Behavioural Sub-segments
+
+Jordan is not a single archetype. Two primary sub-segments shape product and support design decisions.
+
+**Trailblazer**
+A 24-year-old analyst flat-sharing with friends. Generally on the lookout for offers and deals; seeks social experiences over the weekends. Pain points: actively looking for ways to invest and grow money, relies on others for financial information, struggling to save. Openness to new providers is high but loyalty is contingent on long-term value — will switch quickly if it isn't delivered.
+
+**Smart Value Seeker**
+A 34-year-old marketing consultant. Uses resale platforms (e.g. Vinted) and buy-nothing-new approaches to free up money for big goals. Saving for a house in London; relies on splitting payments for expensive purchases. Pain points: relies on points-based rewards; actively seeks ways to budget and grow wealth. Needs to know the benefits are clear and there are no hidden terms before committing to a product.
+
+### Psychographic Profile
+
+- **Financial profile**: Steady disposable income, typically dual-income household, stable employment
+- **Spending style**: Cautious but not restrictive; actively looks for deals; uses 0% credit cards, BNPL, and cashback strategically rather than compulsively
+- **Attitude toward money**: Seeks balance between enjoying life now and planning ahead; spending decisions are aligned to personal values (connection, security, self-expression)
+- **Attitude toward technology**: Open to new financial apps when clear benefit is evident; relies on rewards apps and social media for pre-purchase discovery
+- **Primary anxieties**: Losing track of spending; impulse purchases; misuse of credit; lack of visibility or control over finances
+- **Immediate goals**: Saving for meaningful experiences (renovations, travel, family); reducing financial stress; maintaining financial alignment with a partner
+- **What they value**: Autonomy and transparency; tools that support shared decision-making; no surprises; design that encourages thoughtful choices rather than impulsive spending
+
+### Goals
+
+- Resolve account or payment issues quickly with minimal friction
+- Understand what happened and why
+- Know their complaint will be heard and acted on
+- Maintain confidence that their money is safe and the product is regulated
+
+### Frustrations
+
+- No phone channel for a regulated banking product
+- No visible complaint handling process
+- Slow response times relative to neobank competitors (Monzo, Revolut offer in-app live chat)
+- Potential vulnerability identification gaps
+- Lack of transparency erodes trust rapidly in a product where trust is the core value proposition
+
+### A day in the life
+
+Jordan's Braavos card is declined abroad. She opens the app expecting in-app chat but can't find one. She submits a webform query and waits. By the time she gets a response, she has used a competitor card instead. The payment issue was minor; the confidence loss was not. For a neobank user who chose Braavos over Monzo, a single unresolved support experience can end the relationship.
+
+**Support expectation**: Consumer-grade, neobank-standard. In-app or live chat, fast response, empathetic tone, clear resolution, complaint rights visible and accessible from day one.
+
+**Design implication**: Braavos launch (2027) requires a full consumer support model live at launch — not added post-launch. Required from day one: phone channel, in-app or live chat, complaint handling (Consumer Duty, 8-week FRL, FOS referral rights), and vulnerable customer identification in Fin. The psychographic profile reinforces the design priority: Jordan values transparency, dislikes surprises, and will disengage quickly if the support experience undermines trust. Braavos competes on trust; every support gap is a churn risk. Maps to: B2C wallet launch preparation (2027 pre-work, 2026 backlog).
 
 ---
 
@@ -327,10 +373,11 @@ Alex tries to use a remembered card on checkout and the payment fails. She can't
 | Oliver  | Internal — L1 agent  | Fast merchant ID, in-Zendesk knowledge retrieval, fewer tool switches                     | Internal tooling      | High          | Agent Consultant (knowledge retrieval), Agent Toolkit, Dashboard user search by name             |
 | Marcus  | Internal — AM/TAM    | Visibility into ticket status, formalised escalation route                                | Internal stakeholder  | Medium        | Internal ticket submission form                                                                  |
 | Niamh   | Internal — L2 agent  | Complete context at handoff, cross-system data access, merchant self-serve reconciliation | Internal tooling      | High          | Agent Consultant (data + action modes), merchant reconciliation self-serve, role ownership model |
-| Alex    | B2C Consumer          | Fast, empathetic consumer support; complaint rights                                       | Consumer-grade        | 2027 pre-work | Full B2C support model before Braavos launch                                                     |
+| Alex    | B2C Consumer (Remember Me) | Fast resolution for payment failures; basic complaint access                         | Consumer-grade        | Maintain      | Webform intake, email resolution; monitor volume; no structural changes needed pre-Braavos       |
+| Jordan  | B2C Consumer (Braavos) | Neobank-standard support: fast, transparent, complaint rights from day one              | Consumer-grade, neobank-standard | 2027 pre-work | Full B2C support model at launch: phone, in-app chat, Consumer Duty compliance, vulnerable customer ID in Fin |
 
 ---
 
 **Owner**: Charlie Wildish
 **Last Updated**: March 2026
-**Source files**: `customer-segments.md`, `platform-segment.md`, `support-taxonomy.md`, `agent-toolkit-zendesk.md`, `04-active-work/Agent interview transcripts/` (8 interviews, Aug–Sep 2024; researcher: Alcinda); `04-active-work/merchant-interview-transcripts-2025/` (7 merchant interviews, Jun–Nov 2025: Plutus, Findo, Kiwi, Curve, Guesty, Sunday, Golf Manager)
+**Source files**: `customer-segments.md`, `platform-segment.md`, `support-taxonomy.md`, `agent-toolkit-zendesk.md`, `04-active-work/Agent interview transcripts/` (8 interviews, Aug–Sep 2024; researcher: Alcinda); `04-active-work/merchant-interview-transcripts-2025/` (7 merchant interviews, Jun–Nov 2025: Plutus, Findo, Kiwi, Curve, Guesty, Sunday, Golf Manager); `04-active-work/Consumer persona behavioural.png`, `04-active-work/Consumer persona goals.png` (B2C segment research, March 2026)
