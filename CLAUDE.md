@@ -56,6 +56,7 @@ Every document, analysis, or recommendation must connect to:
 | Platform Embedded AI vision | `01-knowledge-base/products/platform-embedded-ai-support-vision.md` |
 | Customer personas (merchant + internal) | `01-knowledge-base/products/customer-personas.md` |
 | KPI definitions | `01-knowledge-base/metrics/kpi-definitions.md` |
+| Reflex phased plan (components + build sequence, Q1–Q4 2026) | `04-active-work/reflex-phased-plan.md` |
 | PRD template | `03-templates/prd-template.md` |
 | PRD example | `03-templates/prd-template-example.md` |
 | Product strategy template | `03-templates/product-strategy-template.md` |
@@ -84,6 +85,8 @@ For Leadership, Engineering, Slack, and Reports style: see `01-knowledge-base/pr
 ## Data Rules
 
 **Interview transcripts**: WEBVTT format. Stored in `04-active-work/merchant-interview-transcripts-2025/`. Two subfolders: `Direct merchants/` (Participant 2 is the merchant) and `Platforms/` (Alcinda Lee is the interviewer; other speakers are Platform ops users). Files are large — use Explore agents with chunked reads.
+
+**Large files in 04-active-work/:** Files exported from Google Docs or containing embedded images may exceed the Read tool limit despite having few lines. Use `strings <file> | grep -v "^data:"` to extract readable text content.
 
 **Always use real data; never use placeholder numbers:**
 - Source: `01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv`
@@ -123,6 +126,10 @@ Apply to any PRD, memo, or spec before finalising.
 ### Draft → Critique → Refine
 Run for any significant document from scratch: Draft → Critique (panel) → Refine → Condense (PRDs: ~250–350 lines).
 - Workflow: `02-workflows/draft-critique-refine.md`
+
+### PRD Re-Review
+Run against any existing PRD when the template has been updated or scope has changed significantly.
+- Skill: `/prd-review [file path]` — audits PRD against current `03-templates/prd-template.md`, produces gap report, offers to apply fixes
 
 ### Publish to Confluence
 Add YAML front matter to any markdown file:
@@ -169,7 +176,7 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 | Customer 360 | Centralised customer context across all Checkout sources | Merchant 360 |
 | Platform / ISV | Vertical SaaS businesses that embed Checkout payments as PayFacs for their Platform merchants | Sub-merchant (use "Platform merchant") |
 | Fin involvement rate | Contacts where Fin was first point of contact and the merchant did not subsequently submit a separate channel contact for the same issue | — |
-| Fin Procedures | Fin's equivalent of SOPs — define the steps Fin follows to resolve a specific contact type, including API calls, data retrieval, and response logic. Data integrations are accessed via Procedures, not ad hoc. Related deliverable: Improve Fin Resolution Through Procedures (Q2 2026) | — |
+| Fin Procedures | Fin's equivalent of SOPs: define the steps Fin follows to resolve a specific contact type, including API calls, data retrieval, and response logic. Data integrations are accessed via Procedures, not ad hoc. Related deliverable: Improve Fin Resolution Through Procedures (Q2 2026) | — |
 
 **Unit cost benchmarks**: Fin costs $0.90/resolution; human agent ~$40/contact (44x difference). Use these when framing AI investment cases.
 

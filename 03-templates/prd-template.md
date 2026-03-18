@@ -1,4 +1,4 @@
-# `**PRD: [Product/Feature Name]**`
+# PRD: [Product/Feature Name]
 
 `**Author:**` `[Your name]`
 
@@ -21,15 +21,16 @@
 | **2026 deliverable** | [Name of the deliverable this PRD implements or supports] |
 | **Strategic goal** | Reduce contact rate · Reduce cost of support (pick one) |
 | **Flywheel domain** | 1. Input · 2. Orchestration · 3. Fuel · 4. Agent Experience · 5. Insight & Prevention · 6. Governance (pick one) |
+| **Strategic lever** | Contact reduction · AI deflection · Agent efficiency · Self-service (pick one) |
 | **How it fits** | [1–2 sentences: how this initiative supports the deliverable and goal] |
 
 ---
 
-## `**Executive Summary**`
+## Executive Summary
 
 `*This is your elevator pitch. If an exec reads nothing else, they should understand what you're building and why it matters. Keep it to 3-4 sentences: the merchant problem, your solution, and the expected business impact. Include how this connects to our company strategy or pillar goals. For Care & Support work: state which 2026 deliverable and goal this supports.`*
 
-## `**Problem Space*`*
+## Problem Space
 
 `*Describe the problem you're solving. Include who experiences it, how it affects them, and data that validates it's worth solving (data points from merchant conversations, feature requests, support tickets, etc).`*
 
@@ -52,7 +53,7 @@
 
 `*(Avoid solution talk here. Focus on the pain and impact.)`*
 
-## `**Goals and Success Metrics*`*
+## Goals and Success Metrics
 
 `*Define business goals (what Checkout.com achieves) and merchant goals (what merchants achieve). Use specific, measurable targets. List what you're deliberately not solving for.`*
 
@@ -77,7 +78,7 @@
 | `Metric 3` |                  |            |          |          |
 
 
-## `**Customer Segments & Needs*`*
+## Customer Segments & Needs
 
 `*Identify your target merchant archetypes, along with their key needs, pain points, and motivations. Consider bringing these to life through customer persona artefacts that illustrate their goals and behaviors.`*
 
@@ -92,7 +93,7 @@
 - `As a [merchant persona], I want to [do something], so that [benefit]`
 - `When [situation], I want to [motivation], so I can [outcome]`
 
-## `**Proposed Solution & Scope`**
+## Proposed Solution & Scope
 
 *`Describe what you're building and why this approach solves the merchant problem. Focus on merchant value, not technical implementation. Define what's in scope and what's out of scope.`*
 
@@ -105,7 +106,7 @@
 - `**In scope:**` `Bullets of capability slices, not tasks`
 - `**Out of scope:**` `Bullets that might be assumed but are excluded`
 
-## `**Requirements**`
+## Requirements
 
 `*Write requirements as testable behaviors. Each requirement should be verifiable. Include both merchant-facing and internal operational requirements.`*
 
@@ -133,24 +134,24 @@
 
 *`Include merchant-facing capabilities and internal operational needs (treasury reconciliation, support tooling, compliance reporting, etc.). Focus on what needs to happen, not how it will be built. Use clear acceptance criteria (Given [state], when [action], then [result]).`*
 
-| ID | Requirement | Acceptance Criteria | Domain/s |
-|----|-------------|---------------------|----------|
-| **FR-0** | **Key events defined in the Instrumentation section must be implemented, validated in staging, and confirmed firing before Phase 1 go-live. (P0)** | All listed events fire correctly in staging; validated by [Data Scientist / Engineering] before Phase 1 entry. | Product / Platform |
-| FR-1 | | | |
+| ID | Priority | Requirement | Acceptance Criteria | Domain/s |
+|----|----------|-------------|---------------------|----------|
+| **FR-0** | **P0** | **Key events defined in the Instrumentation section must be implemented, validated in staging, and confirmed firing before Phase 1 go-live.** | All listed events fire correctly in staging; validated by [Data Scientist / Engineering] before Phase 1 entry. | Product / Platform |
+| FR-1 | | | | |
 
 ### Non-Functional Requirements
 
 *`List only NFRs that will be tested. Use the same format: Given [state], when [action], then [result].`*
 
-| ID | Requirement | Acceptance Criteria | Domain/s |
-|----|-------------|---------------------|----------|
-| NFR-1 | | | |
+| ID | Priority | Requirement | Acceptance Criteria | Domain/s |
+|----|----------|-------------|---------------------|----------|
+| NFR-1 | | | | |
 
-## `**Design and User Experience**`
+## Design and User Experience
 
 **Design & UX:** `[Link to Figma]` — `[1-sentence description of key interaction or flow]`
 
-## `**Instrumentation and Monitoring**`
+## Instrumentation and Monitoring
 
 `Define what data you'll collect and how. Focus on the events, properties, and validation needed to track your success metrics and maintain operational visibility.`
 
@@ -170,32 +171,25 @@
 - `[Validation method, e.g., test contacts in staging, compare event counts to expected baseline]`
 - `Silent failure detection: define how you will know if events stop firing or are malformed (e.g. daily row count alert, null-field threshold alert). Name the owner and cadence.`
 
-## `**Risks, Assumptions, and Open Questions**`
+## Risks, Assumptions, and Dependencies
 
-`*List what could go wrong, what you're assuming, and what you don't know yet. Include potential mitigations for each risk.*`
+*List what could go wrong, what you're assuming, and what you don't know yet.*
 
-`**Risks:**`
+| Type | Description | Likelihood | Impact | Mitigation / Validation | Owner |
+|------|-------------|------------|--------|--------------------------|-------|
+| Risk | | | | | |
+| Assumption | | | | How you'll validate or monitor it | |
+| Dependency | | | | What happens if this isn't ready | |
 
-- `Risk 1 and potential mitigation`
-- `Risk 2 and potential mitigation`
+*Likelihood: High / Medium / Low. Impact: High / Medium / Low.*
 
-`**Key assumptions:**`
-
-- `[Assumption 1 — and how you'll validate or monitor it]`
-- `[Assumption 2 — and how you'll validate or monitor it]`
-
-`**Open questions:**`
-
-- `Question 1 that needs answering [owner]`
-- `Question 2 that needs answering [owner]`
-
-## `**Rollout Plan**`
+## Rollout Plan
 
 `*Define your phased rollout approach. For each phase, specify entry criteria (what must be ready), success criteria (what must be true to move forward), and timeline.`*
 
 `***Rollout approach:*`* `[High-level strategy - why this phased approach, risk mitigation plan, rollback triggers]*`
 
-### `***Phase 1: [Pilot/Beta]**`*
+### Phase 1: [Pilot/Beta]
 
 `***Purpose:**` `[What you're trying to validate in this phase]*`
 
@@ -214,7 +208,7 @@
 
 *`**Timeline:`** `[Phase start date] - [Phase end / decision point]`*
 
-### `***Phase 2: [Gradual Expansion]**`*
+### Phase 2: [Gradual Expansion]
 
 `*Optional phase. Include if you have gradual expansion between beta and GA.`*
 
@@ -233,7 +227,7 @@
 
 *`**Timeline:`** `[Phase start date] - [Phase end / GA decision point]`*
 
-### `***Phase 3: General Availability**`*
+### Phase 3: General Availability
 
 `***Purpose:*`* `[e.g., Launch to all eligible merchants]*`
 
@@ -261,7 +255,7 @@
 
 `**Go-to-market:**` `Define how we'll take this to market and how our merchants will learn about this. Cover operational enablement (merchant care briefings and training, knowledge hub enhancements, runbooks, SoPs, etc.), sales enablement (sales briefing and training, collateral, etc.), merchant communications (email, dashboard prompts, documentation, etc.), marketing (blogs, press, case studies, etc.), and developer materials (API docs, SDK guides). Include owners for each activity`
 
-## `**Appendix**`
+## Appendix
 
 `*Include supporting materials that provide context but aren't essential to the core PRD.`*
 
