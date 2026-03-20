@@ -31,6 +31,16 @@ Template for internal memos to COO, CPO, or other executives. Summary-first, pun
 - Supporting data
 
 
+### 📖 **product-reference-template.md** – Product Reference Document
+Reusable template for `01-knowledge-base/products/` files. Covers why the product matters, what it is, users, components, success metrics, roadmap, and related links.
+
+**When to use**: Creating or refreshing any product definition file in the knowledge base.
+
+**Key principle**: "Why it matters" leads with the problem — not a feature list. Connects to a strategic goal, flywheel domain, and cost benchmarks where relevant ($40/contact human; $0.90 Fin).
+
+**Sections include**: Why it matters · What it is · Users · Components / Capabilities · Success Metrics · 2026 Roadmap · Related
+
+
 ### 📋 **prd-template.md** – Product Requirements Document
 The official Checkout.com PRD template. Structured around merchant problems, business goals, and phased rollout.
 

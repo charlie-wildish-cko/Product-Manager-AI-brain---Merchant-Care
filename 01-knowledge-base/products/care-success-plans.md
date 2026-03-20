@@ -5,6 +5,14 @@
 >
 > **Stripe benchmark**: [stripe.com/support-plans](https://stripe.com/support-plans) — reviewed February 2026. Key gaps identified and mapped below.
 
+## Why it matters
+
+Checkout.com currently applies a one-size-fits-all support model to merchants with fundamentally different needs. A Tier 5 Standard merchant with one developer and low TPV gets the same support experience as a Premium strategic account processing billions annually. This misallocates agent time, frustrates high-value merchants with slow responses, and leaves standard merchants with an experience that doesn't match their needs or expectations.
+
+Without defined plans, support is reactive and inconsistent. Sales has no structured offering to present; merchants don't know what they're entitled to; agents have no framework for prioritisation. The result is poor CSAT at the top end (where expectations are highest and stakes are greatest) and unnecessary contact volume at the bottom end (where self-service and AI could resolve most queries).
+
+Care Success Plans replace this with a model calibrated to merchant value and needs: highest-touch human support where it matters most commercially, AI and self-service for the long tail. The SLA differentiation also creates a commercial lever — Premium entitlements justify the pricing of Checkout.com's top-tier offering and provide a credible benchmark against Stripe.
+
 ## Overview
 
 A support model with three Merchant segments (Standard, Enterprise, Premium) for B2B merchants, replacing the current one-size-fits-all approach. Merchant segment is determined by Salesforce CRM fields (Tier, Incentive Rating, SAT designation) and reflects a combination of current net revenue, revenue potential, and strategic brand value. See **Tier Assignment Logic** below for the exact rules.

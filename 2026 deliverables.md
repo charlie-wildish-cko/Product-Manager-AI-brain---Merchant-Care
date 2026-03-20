@@ -6,63 +6,57 @@
 >
 > **P&L context**: Both goals directly improve the 'L' column — contact rate reduction eliminates demand at source; cost reduction improves unit economics. See `01-knowledge-base/metrics/kpi-definitions.md` → P&L Reporting section.
 >
-> **Flywheel context**: Deliverables map to the Handle → Learn → Fix → Scale flywheel. See `01-knowledge-base/strategy/care-product-model.md`.
-
-
-## Quick View by Quarter
-
-| Q | Deliverable | Goal | Jira |
-|---|---|---|---|
-| Q1 | AI powered contextual answers on Dashboard | Reduce cost | [MCD-561](https://checkout.atlassian.net/browse/MCD-561) |
-| Q1 | Merchant context for Fin and Agents (phase 1) | Reduce cost | [MCD-562](https://checkout.atlassian.net/browse/MCD-562) |
-| Q1 | Platform support channels | Reduce cost | [MCD-563](https://checkout.atlassian.net/browse/MCD-563) |
-| Q1 | AI Agent 'Consultant' (phase 1) | Reduce cost | [MCD-564](https://checkout.atlassian.net/browse/MCD-564) |
-| Q1 | Contact reasons reporting — Reflex (phase 1) | Reduce contact rate | [MCD-565](https://checkout.atlassian.net/browse/MCD-565) |
-| Q2 | Dashboard onboarding experience | Reduce contact rate | [MCD-566](https://checkout.atlassian.net/browse/MCD-566) |
-| Q2 | Education Hub for merchants | Reduce contact rate | [MCD-567](https://checkout.atlassian.net/browse/MCD-567) |
-| Q2 | Improve Fin resolution through Procedures | Reduce cost | [MCD-568](https://checkout.atlassian.net/browse/MCD-568) |
-| Q2 | Merchant context for Fin and Agents (phase 2) | Reduce cost | [MCD-562](https://checkout.atlassian.net/browse/MCD-562) |
-| Q2 | Support model — Standard merchants | Reduce cost | [MCD-569](https://checkout.atlassian.net/browse/MCD-569) |
-| Q2 | Agent productivity tools (start) | Reduce cost | [MCD-570](https://checkout.atlassian.net/browse/MCD-570) |
-| Q2 | AI Agent 'Consultant' (phase 2) | Reduce cost | [MCD-564](https://checkout.atlassian.net/browse/MCD-564) |
-| Q2 | Contact reasons reporting — Reflex (phase 2) | Reduce contact rate | [MCD-565](https://checkout.atlassian.net/browse/MCD-565) |
-| Q3 | Replace webform with Fin | Reduce cost | [MCD-571](https://checkout.atlassian.net/browse/MCD-571) |
-| Q3 | Support model — Enterprise and Premium merchants | Reduce cost | [MCD-572](https://checkout.atlassian.net/browse/MCD-572) |
-| Q3 | Contact reasons reporting — Reflex MCP | Reduce contact rate | [MCD-565](https://checkout.atlassian.net/browse/MCD-565) |
-| Q2–Q4 | Agent productivity tools (ongoing) | Reduce cost | [MCD-570](https://checkout.atlassian.net/browse/MCD-570) |
-| Continuous | AI first resolution using Fin | Reduce cost | [MCD-573](https://checkout.atlassian.net/browse/MCD-573) |
-| Uncertain | Support-based proactive notifications | Reduce contact rate | [MCD-574](https://checkout.atlassian.net/browse/MCD-574) |
-| TBC | Centralised merchant ticket submission and visibility | Reduce contact rate | [MCD-575](https://checkout.atlassian.net/browse/MCD-575) |
-
+> **Flywheel context**: Deliverables map to the Input → Orchestration → Fuel → Agent Experience → Insight & Prevention → Governance flywheel. See `01-knowledge-base/strategy/care-product-model.md`.
 
 ## Goal 1: Reduce / Maintain Contact Rate
 
 ### Dashboard Onboarding Experience
-**Q2** · [MCD-566](https://checkout.atlassian.net/browse/MCD-566)
+
+Guided in-app onboarding so new merchants set up successfully without contacting support.
+
+**TBC - this sits with Dashboard team** · [MCD-566](https://checkout.atlassian.net/browse/MCD-566)
 
 > As a new merchant, I want a clear and intuitive dashboard onboarding experience so that I can quickly and successfully set up my account and start processing payments.
 
 - In-app onboarding checklist that tracks completion of key tasks (invite team members, check payments, check balance, check settlement…)
 - Interactive product tours with tooltips for first-time users
 - User-selected, role-based journeys for their necessary tasks in Dashboard
-- Template merchant *Welcome* microsite, tailorable by Commercial with relevant content and links
 
-**Flywheel**: Fix (reduces onboarding-related contacts at source)
-
+**Flywheel**: Insight & Prevention (reduces onboarding-related contacts at source)
 
 ### Education Hub for Merchants
-**Q2** · [MCD-567](https://checkout.atlassian.net/browse/MCD-567)
+
+20 tutorials and videos on support.checkout.com covering the top merchant how-to tasks, reducing inbound how-to contacts.
+
+**Q1–Q4** · [MCD-567](https://checkout.atlassian.net/browse/MCD-567)
 
 > As a merchant, I want to easily find comprehensive resources and documentation to understand and manage my account, products, and processes.
 
-- New Education / Academy section on [support.checkout.com](http://support.checkout.com) with role-based guides for Dashboard tasks (linked to the onboarding journeys above)
-- Videos for the top 5 "how to" tasks/pages in Dashboard
+**Q1**
 
-**Flywheel**: Fix (self-service content reduces inbound contacts)
+- Discovery on the 20 Tutorials for 2026
+- Design confirmed on how this exists on support.checkout.com
 
+**Q2**
+
+- Add new Categories and Sections to support.checkout.com
+- First 5 Tutorials and videos published
+
+**Q3**
+
+- Next 10 Tutorials and videos published
+
+**Q4**
+
+- Next 5 Tutorials and videos published
+
+**Flywheel**: Insight & Prevention (self-service content reduces inbound contacts)
 
 ### Support-Based Proactive Notifications
-**Uncertain** · [MCD-574](https://checkout.atlassian.net/browse/MCD-574) — dependency on failure data being published
+
+Real-time alerts for critical payment events so merchants are informed before they need to contact support.
+
+**TBC** · [MCD-574](https://checkout.atlassian.net/browse/MCD-574) — dependency on notification data being available
 
 > As a merchant, I want to receive proactive notifications so I am alerted to potential issues or actions required before they impact my business or require me to contact support.
 
@@ -70,93 +64,138 @@
 - Merchant-configurable notification preferences (in-app and email)
 - Notification content includes ticket summary and self-serve resolution steps; explore using Fin for this
 
-**Flywheel**: Fix (proactive alerts prevent contacts before they happen)
+**Flywheel**: Insight & Prevention (proactive alerts prevent contacts before they happen)
 
+### Merchant Ticket Submission and Visibility
 
-### Centralised Merchant Ticket Submission and Visibility
-**TBC** · [MCD-575](https://checkout.atlassian.net/browse/MCD-575)
+A centralised place in Dashboard for merchants to submit and track all their support requests.
+
+**Q3** · [MCD-575](https://checkout.atlassian.net/browse/MCD-575)
 
 > As a merchant, I want a centralised place to submit new support requests and track the status of all my tickets in one place.
 
-- Unified ticket submission flow from Fin with auto-classification and routing to Zendesk and Salesforce
-- List view in Dashboard ticket page pulling ticket data and statuses from multiple source systems (Zendesk, Salesforce) into a single interface
+- Unified ticket submission flow from Fin with auto-classification and routing to Zendesk
+- List view in Dashboard ticket page pulling ticket data and statuses
+- Admins in Dashboard can see all their business' support requests
 
-**Flywheel**: Handle + Orchestration (reduces friction in submission; improves routing accuracy)
+**Flywheel**: Input + Orchestration (reduces friction in submission; improves routing accuracy)
 
+### Reflex
 
-### Contact Reasons Reporting — Reflex
-**Q1 → Q2 → Q3** · [MCD-565](https://checkout.atlassian.net/browse/MCD-565)
+AI-powered analysis of support tickets to surface the top contact drivers to Product teams for prioritisation and fix.
+
+**Q1 → Q4** · [MCD-565](https://checkout.atlassian.net/browse/MCD-565)
 
 > As a Support Leader, I want to understand the main drivers for merchants contacting support, identify areas for product improvement, and reduce unnecessary contacts.
 
-**Q1 — AI-Powered Support Intelligence Hub**
+**Q1 — Ticket Summaries POC**
+
 - Dashboards surfacing quantified and costed recurring support issues and trends
 - Reportable to Product for prioritisation and investment decisions
 
-**Q2 — Voice of the Customer Intelligence**
-- Merge support insights with NPS and other research into a full 360 view of merchant feedback
-- Proactive ticket spike analysis dashboard — catch high volumes of inbound queries for triage and escalation to Product
+**Q2 — Theme Aggregation, Product Mapping, and Insights Query Interface**
 
-**Q3 — Reflex MCP**
+- Aggregate per-ticket summaries into recurring theme clusters by product area and contact reason
+- Map theme clusters to Product teams using the Product Catalogue data
+- Build Insights Query Interface: Product team views, self-serve querying, shareable insight links
+- Establish quarterly reporting cadence to Product leads
+
+**Q3 — Build MCP**
+
 - Build Reflex as an MCP so support intelligence is queryable by AI tools and agents
+- Merge support insights with NPS and other research into a full 360 view of merchant feedback
 
-**Flywheel**: Learn (the core insight and prevention engine — see `01-knowledge-base/products/reflex.md`)
+**Q4 — NPS data, Spike Detection, and Governance**
 
+- Spike detection and alert mechanism — triggers when inbound volume exceeds thresholds by issue type
+- Monthly Reflex digest to Product team leads
+- Content gap identification surfaced to Knowledge Manager
+
+**Q4/Q1 2027 — Jira Integration (TBC)**
+
+- Automated quarterly creation of top 5–10 stack-ranked Jira issues per product pillar, pre-populated with volume, cost, trend, and example tickets
+- Human review step before issues publish to Product team boards
+
+**Flywheel**: Insight & Prevention (the core insight and prevention engine — see `01-knowledge-base/products/reflex.md`)
 
 ## Goal 2: Reduce Cost of Support
 
 ### AI Powered Contextual Answers on Dashboard
-**Q1** · [MCD-561](https://checkout.atlassian.net/browse/MCD-561)
+
+Contextual Fin buttons embedded on Dashboard pages so merchants get instant answers without leaving their workspace.
+
+**Q2–Q3** · [MCD-561](https://checkout.atlassian.net/browse/MCD-561)
 
 > As a merchant, I want contextual answers on the Dashboard so I can get immediate, relevant support and information without leaving my workspace.
 
-- Contextual buttons to launch Fin with pre-defined prompts for problem areas on Dashboard pages, providing answers from articles and docs
-- Data lookups for specific pages (e.g. Payments, Settlements)
-- *Note: access rights management currently has no practical solution — flagged as uncertain*
+**Q2**
 
-**Flywheel**: Handle (Fin deflects contacts before they become tickets)
+- Re-usable contextual buttons to launch Fin with pre-defined prompts for problem areas on Dashboard pages, providing answers from articles and docs
+- Put on Payments pages
+- Assess impact
 
+**Q3**
+
+- Expand button to more pages - Settlements, Balances, Users etc
+
+**Flywheel**: Input (Fin deflects contacts before they become tickets)
 
 ### Merchant Context for Fin and Agents
+
+Merchant account data surfaced in Fin and the Agent Toolkit so AI and human agents can resolve queries faster with full context.
+
 **Q1 (phase 1) → Q2 (phase 2)** · [MCD-562](https://checkout.atlassian.net/browse/MCD-562)
 
 > As an AI or human Agent, I want context so I can quickly understand the merchant's history, platform configuration, and previous interactions to provide fast and accurate resolution.
 
 **Q1**
+
 - Integration between Fin, Zendesk, and internal Entity / Merchant 360 data sources
 - Identify "first-time contact" merchant users to offer a more guided support experience
 - Agent Toolkit displays data from the Merchant 360 profile — entity structure, processing profile settings, merchant type, balances…
 
-**Q2**
+**TBC**
+
 - Rules engine on Dashboard to define support channel eligibility (e.g. high-value customers see a "Phone" option; new customers guided to chatbot first)
 - Show critical alerts in the Agent Toolkit (e.g. "Merchant live < 30 days", "High recent transaction failure rates")
 
-**Flywheel**: Handle + Fuel (context powers both AI and human resolution quality)
-
+**Flywheel**: Fuel (context powers both AI and human resolution quality)
 
 ### AI First Resolution Using Fin
-**Continuous** · [MCD-573](https://checkout.atlassian.net/browse/MCD-573)
+
+Expand Fin's data access and structured Procedures so it resolves more contact types autonomously, including over email.
+
+**Q2 → Q3** · [MCD-573](https://checkout.atlassian.net/browse/MCD-573) · [MCD-568](https://checkout.atlassian.net/browse/MCD-568)
 
 > As a merchant, I want rapid support resolution so I can get my common issues resolved instantly.
 
-- Continuous improvement of content coverage through conversation analysis and gap-filling (persistent work)
-- Provide Fin with APIs, MCPs, and other data to answer questions across: Outages, Clearing, TPA, APM, Settlements, Balances, Dashboard bugs/errors (using Datadog RUM API)
+**Q2 — Data and Procedures**
 
-**Flywheel**: Handle (core AI deflection engine — primary driver of cost per contact reduction)
+- Continuous improvement of content coverage through conversation analysis and gap-filling
+- Fin can query payments with Reference or ARN/RRN value
+- Add Outages API to Fin so it can tell merchants about outages impacting them
+- Create Fin Procedures for the top 5 query types
 
+**Q2 — Discovery: Email Data Sharing**
 
-### Improve Fin Resolution Through Procedures
-**Q2** · [MCD-568](https://checkout.atlassian.net/browse/MCD-568)
+- Design and get ARB sign-off for a solution enabling Fin to share data connector information over email, with an auth mechanism (Phase 1 of Fin data policy)
 
-> As a merchant, I want Fin to handle my support request end-to-end, including following structured processes, so I get a consistent and accurate resolution without needing a human agent.
+**Q3 — Expanded Data & Procedures**
 
-- Enable Fin to follow defined resolution procedures (SOPs) for known issue types — not just answer questions, but execute structured steps
-- Detail to be added
+- Configure Fin for new PLC data source from Payments Search API
+- Add User Management API to Fin so it can troubleshoot merchant account access issues
+- Add another 5 Procedures to Fin (covering top 10 query types)
 
-**Flywheel**: Handle (increases AI resolution rate by expanding the types of contact Fin can fully own)
+**Q3 — Email: Implement Fin Data Policy**
 
+- Implement Phase 2 of Fin data policy — enable Fin to share data-driven resolutions over email (all available APIs)
+
+**Flywheel**: Input + Fuel (core AI deflection engine — primary driver of cost per contact reduction)
 
 ### Platform Support Channels
+
+Identify ISV contacts at point of entry and surface Platform merchant context in Zendesk for correct routing and resolution.
+
 **Q1** · [MCD-563](https://checkout.atlassian.net/browse/MCD-563)
 
 > As an ISV, I want access to raise support for my merchants.
@@ -164,82 +203,120 @@
 - Identify which platform a sub-merchant belongs to when they seek support through Fin or Webform — surfaced in Zendesk
 - ISV can link merchant to ticket raised through Fin and Webform
 
-**Flywheel**: Handle + Orchestration (correct identification and routing for ISV contacts)
+**Flywheel**: Input + Orchestration (correct identification and routing for ISV contacts)
 **Related context**: `01-knowledge-base/products/platform-segment.md`
 
 **Future direction**: Embed the Fin AI Agent in the Platform's portal so they resolve merchant queries with Fin first and escalate to us only when needed. Vision: `01-knowledge-base/products/platform-embedded-ai-support-vision.md`.
 
-
 ### AI Agent 'Consultant'
-**Q1 (phase 1) → Q2 (phase 2)** · [MCD-564](https://checkout.atlassian.net/browse/MCD-564)
+
+An AI assistant in Zendesk that proactively suggests data, answers, and actions for agents to review and send, reducing AHT.
+
+**Q1–Q4** · [MCD-564](https://checkout.atlassian.net/browse/MCD-564)
 
 Product context and capability set: `01-knowledge-base/products/agent-consultant.md`
 
-> As an Agent, I want proactive, data-driven advice and recommendations to optimise my responses to the merchant.
+> As an Agent, I want proactive, data-driven advice and actions to optimise my responses to the merchant.
 
 **Q1**
+
 - Auto-suggest data and answers for agents to review and send, based on SOPs
 - Auto-suggested "next best action" prompts based on ticket content (e.g. "Suggest escalating to engineering team")
 
 **Q2**
-- Agents can view and use natural language to query production data securely across Payments, Settlements, Balances, Webhooks, and User Management
-- AI to show recent tickets from the merchant in a short summary
+
+- Add central content source - Public content & Agent content (from git repo)
+- Explain Payins using Agent SOPs
+- Explain Payouts using Agent SOPs
+- Automate TPA payment status lookups
+- Automate Refund reversals
+
+**H2**
+
+- Pick from the Agent automation backlog priorities
+- Analyse and flag potential content gaps in public and internal content using tickets solved by Agents
 
 **Flywheel**: Agent Experience (reduces AHT; core driver of cost per contact for human-handled tickets)
 
-
 ### Support Model
+
+A tiered support model that matches each merchant segment to the right channels and SLAs.
+
 **Q2 → Q3** · [MCD-569](https://checkout.atlassian.net/browse/MCD-569) (Standard) · [MCD-572](https://checkout.atlassian.net/browse/MCD-572) (Enterprise/Premium)
 
 > As a merchant, I want multiple support channels so I can contact support in my preferred way that is contextual for me.
 
-- **Q2**: Enable support model for Standard level merchants
-- **Q3**: Enable support model for Enterprise and Premium merchants
+* **Q2**: Enable support model for Standard level merchants
+* **Q3**: Enable support model for Enterprise and Premium merchants
+
+**Dependency**: Leadership decision and Commercial sign off on the support model - target early Q2.
 
 **Flywheel**: Orchestration (right channel for the right merchant at the right time)
 
-
 ### Replace Webform with Fin
+
+Retire the static Dashboard webform and make Fin the primary support entry point for ticket submission.
+
 **Q3** · [MCD-571](https://checkout.atlassian.net/browse/MCD-571)
 
 > As a merchant, I want to contact support through a single, intelligent entry point so I get faster, more accurate help without navigating a static form.
 
-- Retire the Dashboard webform as a standalone support entry point
+- Retire the Dashboard webform as a standalone support entry point, bar exceptions like for: MCR requests and for fallback if Fin is down
 - Fin becomes the primary support channel for ticket submission — capturing context, classifying intent, and routing to the right team where human handling is required
-- Detail to be added
 
 **Dependency**: Fin must be able to capture CC'd email addresses on handoff to Zendesk — this is a prerequisite before the webform can be retired, as CC functionality is currently a webform capability merchants rely on.
 
-**Flywheel**: Handle + Orchestration (consolidates intake into AI-first channel; removes a low-intelligence entry point in favour of a higher-resolution one)
+**Flywheel**: Input + Orchestration (consolidates intake into AI-first channel; removes a low-intelligence entry point in favour of a higher-resolution one)
 
+### Reduce Agent Effort on Dispatch and Email Clean Up Rules
 
-### Agent Productivity Tools
-**Q2 → Q4 (ongoing)** · [MCD-570](https://checkout.atlassian.net/browse/MCD-570)
+Zendesk configuration and routing improvements to reduce manual triage work and noise in the agent queue.
+
+**Q2**
+
+* Pilot domain mapping for big merchants with missing users: Exness/Danibrook, Bytedance, MAF Holding, Yango - Eng needed
+* Set Closed rules on non business emails - e.g. gmail/hotmail etc - ZD Config
+* Close internal ticket creation bar exceptions & enforce internal form adoption for Commercial - ZD config
+* Enable internally created tickets to enrich using client id
+* Trigger weekly sync for AM/TAM records from SF accounts - Eng needed
+
+**Flywheel**: Agent Experience
+
+### Agent Productivity Tools (toolkit and routing)
+
+More data in the Agent Toolkit and smarter routing rules so agents spend less time on admin and more time resolving.
+
+**Q1 → Q4** · [MCD-570](https://checkout.atlassian.net/browse/MCD-570)
 
 > As a Support Agent, I want tools so I can handle merchant inquiries more efficiently, reduce resolution time, and improve the quality of my support.
 
-- Advanced data for L1 & L2 teams — Payments, Settlements, Balances
-- Integration with workforce management tools for scheduling and capacity planning
-- Routing rules based on agent skills
-- SLAs based on issue type, per tier
+**Q1**
+
 - Bi-directional integration between Zendesk and Jira
-- Bi-directional integration with Salesforce for tickets requiring SF team involvement
+
+**Q2**
+
+- Add in more Toolkit data (Payouts, Fraud detection, Processing profile etc, from request list)
+- Routing rules based on agent skills
+
+**H2**
+
+- SLAs based on issue type, per Segment (Standard/Enterprise/Premium)
+- Get case numbers from Salesforce and show case status in Agent toolkit
 
 **Flywheel**: Agent Experience + Governance
 
-
 ## Flywheel Domain Summary
 
-| Flywheel Domain | 2026 Deliverables |
-|---|---|
-| **Handle** | AI contextual answers, AI first resolution (Fin), Fin resolution through Procedures, Platform support channels |
-| **Orchestration** | Merchant context (channel eligibility), Support model, Centralised ticket submission |
-| **Fuel** | Merchant context for Fin & Agents, AI first resolution (data/MCPs) |
-| **Agent Experience** | AI Consultant, Agent productivity tools |
-| **Insight & Prevention (Learn)** | Reflex (all phases) |
-| **Fix** | Dashboard onboarding, Education Hub, Proactive notifications |
+| Flywheel Domain                | 2026 Deliverables                                                                                                  |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| **Input**                | AI contextual answers on Dashboard, AI first resolution (Fin), Platform support channels, Replace webform with Fin |
+| **Orchestration**        | Support model, Merchant context (channel eligibility), Merchant ticket submission and visibility                   |
+| **Fuel**                 | Merchant context for Fin & Agents, AI first resolution (data/procedures)                                           |
+| **Agent Experience**     | AI Consultant, Agent productivity tools, Reduce agent effort on dispatch                                           |
+| **Insight & Prevention** | Reflex (all phases), Education Hub, Proactive notifications, Dashboard onboarding                                  |
+| **Governance**           | Agent productivity tools (SLAs, routing), Support model (SLA framework)                                            |
 
-
-**Last Updated**: February 2026
+**Last Updated**: March 2026
 **Owner**: Charlie Wildish
 **Status**: Work in progress — detail to be added per deliverable

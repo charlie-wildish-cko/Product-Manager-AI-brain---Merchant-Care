@@ -56,7 +56,9 @@ Every document, analysis, or recommendation must connect to:
 | Platform Embedded AI vision | `01-knowledge-base/products/platform-embedded-ai-support-vision.md` |
 | Customer personas (merchant + internal) | `01-knowledge-base/products/customer-personas.md` |
 | KPI definitions | `01-knowledge-base/metrics/kpi-definitions.md` |
+| Reflex product reference (components, metrics, vision, why it matters) | `01-knowledge-base/products/reflex.md` |
 | Reflex phased plan (components + build sequence, Q1–Q4 2026) | `04-active-work/reflex-phased-plan.md` |
+| Product reference doc template (why it matters + components + metrics) | `03-templates/product-reference-template.md` |
 | PRD template | `03-templates/prd-template.md` |
 | PRD example | `03-templates/prd-template-example.md` |
 | Product strategy template | `03-templates/product-strategy-template.md` |

@@ -2,6 +2,14 @@
 
 > Part of the broader customer segment model — see `01-knowledge-base/products/customer-segments.md` for the full picture.
 
+## Why it matters
+
+Platforms are Checkout.com's fastest-growing B2B segment and the primary 2026 delivery focus for Merchant Care. They are structurally different from Direct Merchants: a single Platform can represent dozens or hundreds of sub-merchants, meaning one poorly-handled Platform contact can have a multiplied downstream impact on merchant experience and revenue.
+
+Today, Checkout.com has no systematic way to identify Platform contacts, understand which sub-merchant an issue relates to, or route those tickets correctly. Agents handle Platform queries the same way as standard merchant queries, with no hierarchy context and no sub-merchant lookup capability. This creates slower resolutions, repeated back-and-forth, and agent errors.
+
+Getting the Platform support model right in 2026 is foundational — without it, the Platform segment's contact volume will increase with TPV growth, cost per contact will stay high, and the US ISV launch will generate contacts that can't be handled effectively. It also unlocks the longer-term opportunity: embedding Fin AI in Platform portals (2027+) to deflect queries before they reach Checkout.com agents entirely.
+
 ## What is a Platform?
 
 A **Platform** (also referred to internally as an **ISV — Independent Software Vendor**) is a Checkout.com merchant that operates as an intermediary — typically a **vertical SaaS business** that has embedded payments into its core product, enabling its own customers (merchants) to accept payments through it. Platforms often operate as **Payment Facilitators (PayFacs)**: they take on the merchant of record responsibility and the direct merchant relationship, with Checkout.com as the underlying acquirer.

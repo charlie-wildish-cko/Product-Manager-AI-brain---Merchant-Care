@@ -6,6 +6,14 @@ Fin is Intercom's AI customer service agent. It is resolution-first — designed
 
 ---
 
+## Why it matters
+
+The unit economics of support are stark: a human agent contact costs ~$40; Fin costs $0.90 per resolution — a 44x difference. At Checkout.com's contact volumes, shifting resolution from agents to Fin is the single highest-leverage cost reduction available. Every percentage point improvement in Fin's involvement rate directly reduces cost per contact.
+
+Beyond cost, Fin determines the merchant experience at first contact. Most merchants never speak to a human agent — Fin is the entire support interaction. If Fin resolves accurately and quickly, CSAT holds. If it deflects without resolving, merchants resubmit through email and the contact is counted twice. Getting Fin's resolution quality right is therefore both a cost lever and a guardrail.
+
+Fin also creates the data layer that feeds the rest of the Care AI stack. Conversation metadata from Fin flows into Reflex for contact driver analysis. The Fin involvement rate metric is specifically designed to measure true deflection (not just first-touch), so improvements in Fin quality are reflected accurately in the north star metrics.
+
 ## Checkout.com Deployment
 
 Checkout.com uses Fin across two surfaces:

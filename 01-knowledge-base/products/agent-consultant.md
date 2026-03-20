@@ -6,6 +6,16 @@
 
 The **Agent Consultant** is an AI-powered application for Care agents in Zendesk. It is designed to help agents with their tasks; the end goal is to act as a semi-autonomous AI agent that executes manual work on their behalf to save time, with humans remaining in the loop to review and approve.
 
+## Why it matters
+
+Human agents are Checkout.com's most expensive support resource at ~$40 per contact. Every minute an agent spends searching for information, manually retrieving payment data, or re-reading policy docs is cost with no customer value. At scale, that friction adds up across thousands of tickets per month.
+
+The Agent Consultant attacks handle time directly. By surfacing the right knowledge, data, and suggested actions in the agent's workflow — without them leaving Zendesk — it reduces the cognitive load on agents and cuts the time to resolution. Over time, as the action-based capability matures, agents move from doing repetitive tasks manually to reviewing and approving AI-generated actions.
+
+There is also a quality dimension. Inconsistent handling across agents is a persistent problem in support at scale. The QA capability creates a feedback loop — identifying gaps between how agents resolve tickets and what good looks like — that improves quality without requiring manual QA on every ticket.
+
+The Agent Consultant is also a structural dependency for Reflex: ticket content summaries from the Consultant feed the Insight & Prevention engine, turning closed ticket data into prevention intelligence.
+
 ## Capabilities
 
 | Capability | Description |

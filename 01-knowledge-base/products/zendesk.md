@@ -4,6 +4,16 @@
 
 ---
 
+## Why it matters
+
+Zendesk is the operational backbone of Checkout.com's support function. Every contact that isn't resolved by Fin becomes a Zendesk ticket — it is where agents work, where SLAs are tracked, and where the data record of every merchant support interaction lives.
+
+Its configuration directly determines support quality and efficiency. Routing rules control whether the right agent handles the right ticket at the right time. Business rules (triggers, automations, macros) determine how consistently tickets are processed. SLA policies set the expectations merchants are measured against. Poor Zendesk configuration means misrouted tickets, inconsistent handling, and avoidable SLA breaches.
+
+Zendesk is also a primary data source for Reflex. Every ticket — its fields, tags, comments, resolution path, and CSAT — is raw material for contact driver analysis. The quality of that analysis depends on the quality of ticket data: accurate categorisation, consistent tagging, and structured fields. Investments in Zendesk configuration are therefore investments in the Reflex data foundation.
+
+Finally, Zendesk Guide (support.checkout.com) is one of Fin's primary content sources. The quality of the knowledge base determines Fin's resolution accuracy. Keeping Guide current is a direct input to Fin performance.
+
 ## Checkout.com Setup
 
 | Product | Use |
@@ -11,7 +21,6 @@
 | **Zendesk Support** | Core ticketing platform — all inbound contacts (email, webform, Fin Messenger escalations) become tickets here |
 | **Zendesk Guide / Knowledge** | Knowledge base at **support.checkout.com** — merchant-facing help centre; one of Fin's primary content sources |
 | **Fin AI Agent** (Intercom) | AI resolution layer — integrated with Zendesk; handles tickets before human agents. Not Zendesk's native AI agents. |
-| **Auto Assist (Zendesk Copilot)** | Agent-facing AI assistant — connected to Zendesk for Care agents. Maps to the [Agent Consultant](agent-consultant.md) product concept. |
 
 ---
 

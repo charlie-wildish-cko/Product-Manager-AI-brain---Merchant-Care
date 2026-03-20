@@ -7,6 +7,14 @@
 > **Strategic link**: Supports **reduce contact rate** and **reduce cost** — AI resolves queries in the Platform's workflow; only unresolved cases escalate to Checkout. Flywheel: **Handle** (AI first in Platform experience) + **Orchestration** (escalation rules to us).
 
 
+## Why it matters
+
+Every Platform query that reaches Checkout.com's agents represents a failure of self-service: the Platform couldn't resolve it, and Checkout.com bears the cost (~$40/contact). At scale — with US ISV expansion in 2026 and more Platforms onboarded — that contact volume compounds.
+
+The embedded AI vision addresses the root cause rather than optimising the symptom. Instead of making Checkout.com better at handling Platform escalations, it reduces the number of queries that need to escalate at all. Platforms get a resolution capability inside their own workflow; Checkout.com only sees the genuinely complex cases that require direct investigation.
+
+This also strengthens the Platform relationship. Providing AI-powered support tooling as a Platform capability — not just a cost reduction measure — creates a differentiated service that competitors can't easily replicate. It positions Checkout.com as a partner in the Platform's support operations, not just a payment infrastructure provider they escalate to.
+
 ## Vision in one sentence
 
 We provide the Platform with an AI support component designed for integration into their internal portal, so their support teams can resolve merchant queries relating to our services (payments lifecycle, onboarding) using our AI first, and escalate to us only when needed.

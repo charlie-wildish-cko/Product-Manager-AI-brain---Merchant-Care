@@ -2,6 +2,14 @@
 
 > Overview of all customer segments supported by Checkout.com's Customer Support (Merchant Care) team. Covers (1) **end customer personas** — who we design for and prioritise (B2B: Ops teams at the merchant; B2C: cardholders and Braavos end users) — and (2) **business segments** — Enterprise, Platform, Payfac, Issuing, Identity, B2C.
 
+## Why it matters
+
+Not all contacts cost the same and not all merchants need the same support. Without a clear segment model, Merchant Care cannot make rational decisions about where to invest — whether in AI deflection, agent tooling, self-service, or human coverage — because there is no shared view of who the customer is and what they need.
+
+The segment model provides that foundation. It determines which merchants get which support experience (via Care Success Plans), how contact volumes and costs are attributed, and where product investment will have the most impact. It also sets the boundary between B2B and B2C support — two fundamentally different models with different channels, regulatory requirements, and cost structures.
+
+Getting segments right matters most when the portfolio is growing. Platform is the primary 2026 focus because the support model for that segment doesn't yet exist. B2C is the 2027 challenge because Consumer Duty obligations apply from day one of the Braavos launch.
+
 ## End merchant customer personas (Merchant Care context)
 
 **We solve for Ops teams at the merchant:** Support, Risk, and Finance. This is **B2B support only** — the personas and taxonomy below describe who contacts Merchant Care from our business (merchant) customers. B2C support (separate model) will serve **cardholders and end users of Project Braavos**. Who contacts us (and what they contact us about) is reflected in our taxonomy and in contact volumes — Case Types and Issue Types map to these three Ops domains. See `01-knowledge-base/processes/support-taxonomy.md` for the full taxonomy and volume view.
