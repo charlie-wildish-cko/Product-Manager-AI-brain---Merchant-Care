@@ -24,7 +24,7 @@ Guided in-app onboarding so new merchants set up successfully without contacting
 
 **Flywheel**: Insight & Prevention (reduces onboarding-related contacts at source)
 
-### Education Hub for Merchants
+### Merchant Education Hub
 
 20 tutorials and videos on support.checkout.com covering the top merchant how-to tasks, reducing inbound how-to contacts.
 
@@ -296,7 +296,8 @@ More data in the Agent Toolkit and smarter routing rules so agents spend less ti
 
 **Q2**
 
-- Add in more Toolkit data (Payouts, Fraud detection, Processing profile etc, from request list)
+- Add Fraud Detection data to the Agent Toolkit
+- Payouts and Processing Profile (TBC)
 - Routing rules based on agent skills
 
 **H2**
@@ -305,6 +306,24 @@ More data in the Agent Toolkit and smarter routing rules so agents spend less ti
 - Get case numbers from Salesforce and show case status in Agent toolkit
 
 **Flywheel**: Agent Experience + Governance
+
+## Other Goals / Asks
+
+> Other asks or areas which don't contribute to our 2026 goals
+
+### Blue EMI support
+
+Enable merchant support through Zendesk for merchants with Blue EMI entity
+
+H2
+
+* Build Zendesk brand and configuration; user identification from Dashboard webform and link to Blue EMI entity for reporting
+
+### Consumer support strategy for 2027
+
+H2
+
+* Plan for Consumer support channels (B2C) and experience with Consumer team, to start in 2027
 
 ## Flywheel Domain Summary
 
