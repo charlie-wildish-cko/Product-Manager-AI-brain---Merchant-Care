@@ -170,12 +170,26 @@ To improve North Star Metrics, focus on:
 
 ## Product Impact Metrics
 
+### Fin Involvement Rate
+- **Definition**: Percentage of inbound contacts where Fin was applied as the first point of contact
+- **Calculation**: (Contacts where Fin was first point of contact / Total inbound contacts) × 100
+- **Target**: Continuously increasing — measures deployment breadth across inbound volume
+- **Frequency**: Daily, Weekly, Monthly
+- **Why It Matters**:
+  - Measures how widely Fin is deployed; a prerequisite for AI resolution rate improvements
+  - Low involvement rate indicates contacts are bypassing Fin entirely (e.g. direct email, AM/TAM-raised tickets)
+  - Distinct from AI resolution rate: involvement measures reach, resolution measures quality
+- **Breakdown By**:
+  - Channel (Messenger vs email)
+  - Customer segment
+  - Contact type / topic
+
 ### AI Resolution Rate
 - **Definition**: Percentage of AI Agent conversations resolved without reaching a human agent
 - **Calculation**: (Conversations resolved by AI without human involvement / Total AI conversations) × 100
 - **Target**: Continuously increasing (track by topic/category)
 - **Frequency**: Daily, Weekly, Monthly
-- **Why It Matters**: 
+- **Why It Matters**:
   - Higher AI resolution rate = lower cost per contact
   - Indicates AI Agent effectiveness
   - Key driver of support scalability

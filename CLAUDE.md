@@ -177,7 +177,7 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 |---|---|---|
 | Customer 360 | Centralised customer context across all Checkout sources | Merchant 360 |
 | Platform / ISV | Vertical SaaS businesses that embed Checkout payments as PayFacs for their Platform merchants | Sub-merchant (use "Platform merchant") |
-| Fin involvement rate | Contacts where Fin was first point of contact and the merchant did not subsequently submit a separate channel contact for the same issue | — |
+| Fin involvement rate | % of contacts where Fin was applied as the first point of contact. Distinct from AI resolution rate (% resolved without escalation to a human). | — |
 | Fin Procedures | Fin's equivalent of SOPs: define the steps Fin follows to resolve a specific contact type, including API calls, data retrieval, and response logic. Data integrations are accessed via Procedures, not ad hoc. Related deliverable: Improve Fin Resolution Through Procedures (Q2 2026) | — |
 
 **Unit cost benchmarks**: Fin costs $0.90/resolution; human agent ~$40/contact (44x difference). Use these when framing AI investment cases.
@@ -199,5 +199,7 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 **Investment asks**: Team growth investment asks start 2027. The current team can deliver the 2026 B2B roadmap but cannot simultaneously build the 2027 B2C foundation.
 
 **Care capability model**: Full year-by-year product maturity (2026–2030) per flywheel stage is in `01-knowledge-base/strategy/care-capability-model.md`.
+
+**Operating model at scale**: Implications of 80%+ AI resolution by 2030 (agent roles, governance, knowledge infra, ownership, successor metrics) in `01-knowledge-base/strategy/operating-model-at-scale.md`.
 
 **Platform segment (2026)**: Distinct B2B customer segment alongside Direct Merchants. Checkout is L2; Platform is L1 for its Platform merchants. US ISV launch in active delivery 2026. Platform Embedded AI (Fin in ISV portals) is a 2027 capability. Checkout-as-PayFac (2028+, unconfirmed) would make Checkout L1 for Platform merchants directly.

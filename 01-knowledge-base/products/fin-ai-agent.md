@@ -12,7 +12,7 @@ The unit economics of support are stark: a human agent contact costs ~$40; Fin c
 
 Beyond cost, Fin determines the merchant experience at first contact. Most merchants never speak to a human agent — Fin is the entire support interaction. If Fin resolves accurately and quickly, CSAT holds. If it deflects without resolving, merchants resubmit through email and the contact is counted twice. Getting Fin's resolution quality right is therefore both a cost lever and a guardrail.
 
-Fin also creates the data layer that feeds the rest of the Care AI stack. Conversation metadata from Fin flows into Reflex for contact driver analysis. The Fin involvement rate metric is specifically designed to measure true deflection (not just first-touch), so improvements in Fin quality are reflected accurately in the north star metrics.
+Fin also creates the data layer that feeds the rest of the Care AI stack. Conversation metadata from Fin flows into Reflex for contact driver analysis. The Fin involvement rate metric measures how widely Fin is deployed across inbound volume. AI resolution rate measures how many of those contacts Fin resolves without escalation to a human agent.
 
 ## Checkout.com Deployment
 
@@ -128,7 +128,7 @@ Simulations are specific to Procedures. Batch Testing measures aggregate resolut
 | Metric | Definition |
 |--------|-----------|
 | **Automation Rate** (AI Resolution Rate) | % of conversations resolved by Fin without human involvement. Equivalent to "AI resolution rate" in Checkout.com's KPI framework. |
-| **Fin Involvement Rate** | Checkout.com's specific metric: contacts where Fin was the first point of contact and the merchant did not subsequently submit a separate channel contact for the same issue. Measures true deflection, not just first-touch. |
+| **Fin Involvement Rate** | % of contacts where Fin was applied as the first point of contact. Measures how widely Fin is deployed across inbound volume. |
 | **CSAT** | Customer satisfaction, measurable and reportable within Fin |
 | **CX Score** | Intercom's composite metric spanning both AI and human interactions |
 
@@ -191,7 +191,7 @@ Copilot is Intercom's AI assistant for **human agents** — not for customers. I
 | **Fin Attributes** | Structured classification fields Fin applies automatically to conversations |
 | **Guidance** | Natural language standing instructions shaping Fin's responses and policies |
 | **Automation Rate** | % of conversations resolved without human involvement (same as AI Resolution Rate) |
-| **Fin Involvement Rate** | Contacts where Fin was first point of contact and no separate follow-up contact was submitted |
+| **Fin Involvement Rate** | % of contacts where Fin was applied as the first point of contact |
 | **CX Score** | Intercom's composite customer experience metric across AI and human interactions |
 | **Topics Explorer** | AI-generated volume clustering without manual tagging |
 | **Copilot** | AI assistant for human agents (not customers) — distinct from Fin |
