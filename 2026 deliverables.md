@@ -32,10 +32,11 @@ Guided in-app onboarding so new merchants set up successfully without contacting
 
 > As a merchant, I want to easily find comprehensive resources and documentation to understand and manage my account, products, and processes.
 
-**Q1**
+**Q1 ✓**
 
-- Discovery on the 20 Tutorials for 2026
-- Design confirmed on how this exists on support.checkout.com
+- Discovery on the 20 Tutorials for 2026 — Complete
+- Design confirmed on how this exists on support.checkout.com — Complete
+- Initial 5 tutorials scoped
 
 **Q2**
 
@@ -88,33 +89,46 @@ AI-powered analysis of support tickets to surface the top contact drivers to Pro
 
 > As a Support Leader, I want to understand the main drivers for merchants contacting support, identify areas for product improvement, and reduce unnecessary contacts.
 
-**Q1 — Ticket Summaries POC**
+**Q1 ✓ — Ticket Summaries POC**
 
-- Dashboards surfacing quantified and costed recurring support issues and trends
-- Reportable to Product for prioritisation and investment decisions
+- Dashboards surfacing quantified and costed recurring support issues and trends — Complete
+- Reportable to Product for prioritisation and investment decisions — Complete
+- POC feeds into Q2 Theme Aggregation and Product Mapping work
 
-**Q2 — Theme Aggregation, Product Mapping, and Insights Query Interface**
+**Q2 — Theme Aggregation + Product Mapping + Query Interface**
 
 - Aggregate per-ticket summaries into recurring theme clusters by product area and contact reason
 - Map theme clusters to Product teams using the Product Catalogue data
-- Build Insights Query Interface: Product team views, self-serve querying, shareable insight links
+- Build AI engine component 2: theme cluster aggregation + product team mapping
+- Build Insights Query Interface (tool TBD): Product team views, self-serve querying, shareable insight links
 - Establish quarterly reporting cadence to Product leads
 
-**Q3 — Build MCP**
+**Done when**: Aggregated theme clusters live; top 10 contact drivers quantified and shared with VP Product and Director of Operations; at least one Product team using Reflex output for prioritisation
 
-- Build Reflex as an MCP so support intelligence is queryable by AI tools and agents
-- Merge support insights with NPS and other research into a full 360 view of merchant feedback
+**Q3 — Add NPS data, Contact Spike Detection, Measure Fixes from Product**
 
-**Q4 — NPS data, Spike Detection, and Governance**
+- Set up fix implementation measurement from Product teams
+- NPS data merge into VoC view (Airtable source; joined via client ID)
+- Spike detection and alert mechanism for recent contacts on specific themes/clusters
+- Weekly Reflex digest to Product team leads
 
-- Spike detection and alert mechanism — triggers when inbound volume exceeds thresholds by issue type
-- Monthly Reflex digest to Product team leads
-- Content gap identification surfaced to Knowledge Manager
+**Done when**: VoC dashboard live; spike detection running; Product teams on weekly digest; attribution model tracking contact rate reduction from Reflex-originated fixes
 
-**Q4/Q1 2027 — Jira Integration (TBC)**
+**Q4 — Jira Integration (TBC)**
 
-- Automated quarterly creation of top 5–10 stack-ranked Jira issues per product pillar, pre-populated with volume, cost, trend, and example tickets
-- Human review step before issues publish to Product team boards
+- Automated quarterly creation of top 5–10 stack-ranked Jira issues per product pillar
+- Pre-populated with volume, cost, trend, example tickets, and recommended Product team (mapped via product catalogue)
+- Issues routed to correct Jira project/board based on pillar → team mapping
+- Human review step before issues publish
+
+**Done when**: Quarterly Jira issues auto-created and reviewed by Product leads; Product team contact reduction targets tracked against Reflex-originated fixes
+
+**TBC: Reflex MCP**
+
+- Build and deploy Reflex MCP with read endpoints
+- Enables Insights Query Interface and other internal teams to query Reflex insights programmatically
+
+**Done when**: MCP live; Insights Query Interface connected; Product fix governance cycle started
 
 **Flywheel**: Insight & Prevention (the core insight and prevention engine — see `01-knowledge-base/products/reflex.md`)
 
@@ -148,11 +162,11 @@ Merchant account data surfaced in Fin and the Agent Toolkit so AI and human agen
 
 > As an AI or human Agent, I want context so I can quickly understand the merchant's history, platform configuration, and previous interactions to provide fast and accurate resolution.
 
-**Q1**
+**Q1 ✓**
 
-- Integration between Fin, Zendesk, and internal Entity / Merchant 360 data sources
-- Identify "first-time contact" merchant users to offer a more guided support experience
-- Agent Toolkit displays data from the Merchant 360 profile — entity structure, processing profile settings, merchant type, balances…
+- Integration between Fin, Zendesk, and internal Entity / Merchant 360 data sources — Complete
+- Identify "first-time contact" merchant users to offer a more guided support experience — Complete
+- Agent Toolkit displays data from the Merchant 360 profile — entity structure, processing profile settings, merchant type, balances… — Complete
 
 **TBC**
 
@@ -196,12 +210,13 @@ Expand Fin's data access and structured Procedures so it resolves more contact t
 
 Identify ISV contacts at point of entry and surface Platform merchant context in Zendesk for correct routing and resolution.
 
-**Q1** · [MCD-563](https://checkout.atlassian.net/browse/MCD-563)
+**Q1 ✓** · [MCD-563](https://checkout.atlassian.net/browse/MCD-563)
 
 > As an ISV, I want access to raise support for my merchants.
 
-- Identify which platform a sub-merchant belongs to when they seek support through Fin or Webform — surfaced in Zendesk
-- ISV can link merchant to ticket raised through Fin and Webform
+- Identify which platform a sub-merchant belongs to when they seek support through Fin or Webform — surfaced in Zendesk — Complete
+- ISV can link merchant to ticket raised through Fin and Webform — Complete
+- Agents can identify Platform-type queries; Fin has Platform flag for context and content use
 
 **Flywheel**: Input + Orchestration (correct identification and routing for ISV contacts)
 **Related context**: `01-knowledge-base/products/platform-segment.md`
@@ -218,10 +233,11 @@ Product context and capability set: `01-knowledge-base/products/agent-consultant
 
 > As an Agent, I want proactive, data-driven advice and actions to optimise my responses to the merchant.
 
-**Q1**
+**Q1 ✓**
 
-- Auto-suggest data and answers for agents to review and send, based on SOPs
-- Auto-suggested "next best action" prompts based on ticket content (e.g. "Suggest escalating to engineering team")
+- Auto-suggest data and answers for agents to review and send, based on SOPs — Complete
+- Auto-suggested "next best action" prompts based on ticket content (e.g. "Suggest escalating to engineering team") — Complete
+- Payins status and response code explanations posted as internal notes
 
 **Q2**
 
@@ -290,9 +306,9 @@ More data in the Agent Toolkit and smarter routing rules so agents spend less ti
 
 > As a Support Agent, I want tools so I can handle merchant inquiries more efficiently, reduce resolution time, and improve the quality of my support.
 
-**Q1**
+**Q1 🔄**
 
-- Bi-directional integration between Zendesk and Jira
+- Bi-directional integration between Zendesk and Jira — In progress
 
 **Q2**
 
@@ -336,6 +352,13 @@ H2
 | **Insight & Prevention** | Reflex (all phases), Education Hub, Proactive notifications, Dashboard onboarding                                  |
 | **Governance**           | Agent productivity tools (SLAs, routing), Support model (SLA framework)                                            |
 
-**Last Updated**: March 2026
+**Last Updated**: 2026-03-30
 **Owner**: Charlie Wildish
-**Status**: Work in progress — detail to be added per deliverable
+**Status**: Q1 complete / in-flight. Detail to be added per deliverable.
+
+---
+
+## Q1 Summary
+
+✓ Complete (5): Merchant Education Hub · Reflex POC · Merchant Context Phase 1 · Platform Support Channels · AI Consultant (Payins)
+🔄 In Progress (1): Agent Productivity Tools (Zendesk/Jira integration)
