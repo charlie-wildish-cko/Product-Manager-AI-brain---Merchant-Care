@@ -25,7 +25,7 @@ Before writing a Care & Support PRD, fix the strategic context. This ensures the
 
 2. **2026 deliverable** — Which deliverable in `2026 deliverables.md` does this PRD implement or support? Name it explicitly.
 
-3. **Flywheel domain** — Which of the six Care Product domains does this work sit in? (Defines which domain-level metrics apply.)
+3. **Product flywheel domain** — Which of the six Care Product domains does this work sit in? (Defines which domain-level metrics apply.)
    - 1. Input | 2. Orchestration | 3. Fuel | 4. Agent Experience | 5. Insight & Prevention | 6. Governance  
    See `01-knowledge-base/strategy/care-product-model.md`.
 

@@ -20,7 +20,7 @@ Agent Consultant is an AI assistant embedded in the Agent sidebar. It surfaces t
 
 This is distinct from what Intercom Copilot (Auto Assist) already provides. Copilot is the knowledge retrieval layer — it surfaces relevant articles and SOP suggestions as agents work a ticket. Agent Consultant builds on that foundation with three additional capabilities: data retrieval from external systems (Payments API, TPA systems, User Management API), structured action execution (refund reversals, account unlocks), and guided workflows that walk agents through repeatable tasks step by step. The two systems are complementary. Live today: User Profile (merchant context) and Payment Tool (payment data surfaced automatically when a payment ID appears in a ticket).
 
-We would consolidate all Agent tools into the Consultant as the single agent tool over time, removing need for manual checks or searches.
+We would consolidate all Agent tools into the Consultant Toolkit UI as the single agent tool over time, removing need for manual checks or searches.
 
 ---
 

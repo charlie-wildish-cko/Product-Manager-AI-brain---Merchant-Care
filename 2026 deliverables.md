@@ -341,6 +341,18 @@ H2
 
 * Plan for Consumer support channels (B2C) and experience with Consumer team, to start in 2027
 
+### Contact Volume Forecast 2026–2030
+
+Long-range demand forecast across all segments (Enterprise, Platforms ISV, Platforms SMB, Consumer) to anchor investment decisions and B2C readiness planning.
+
+**Q1 ✓**
+
+- Segment-level contact projections from 2026 to 2030 — Complete
+- B2B and B2C split quantified — Complete
+- Underpins AI investment case and Consumer Duty planning horizon
+
+Reference: `01-knowledge-base/metrics/contact forecasting.md`
+
 ## Flywheel Domain Summary
 
 | Flywheel Domain                | 2026 Deliverables                                                                                                  |
@@ -360,5 +372,5 @@ H2
 
 ## Q1 Summary
 
-✓ Complete (5): Merchant Education Hub · Reflex POC · Merchant Context Phase 1 · Platform Support Channels · AI Consultant (Payins)
+✓ Complete (6): Merchant Education Hub · Reflex POC · Merchant Context Phase 1 · Platform Support Channels · AI Consultant (Payins) · Contact Volume Forecast
 🔄 In Progress (1): Agent Productivity Tools (Zendesk/Jira integration)

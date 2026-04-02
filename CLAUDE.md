@@ -97,7 +97,7 @@ For Leadership, Engineering, Slack, and Reports style: see `01-knowledge-base/pr
 
 **Note:** Volume totals in `support-taxonomy.md` and the flat CSV will differ — the taxonomy doc draws on a broader dataset. Use the CSV for relative prioritisation and actuals; use the taxonomy doc for issue type structure.
 
-**To aggregate volumes from the CSV:** Use a Python script to sum `support_contacts` grouped by `case_type` and `issue_type` — rows are split by segment/channel/territory so individual rows are not totals.
+**To aggregate volumes from the CSV:** Use a Python script to sum `support_contacts` grouped by `case_type` and `issue_type` — rows are split by segment/channel/territory so individual rows are not totals. Run `pip3 install pandas` first if pandas is not available.
 
 ---
 
@@ -192,7 +192,7 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 
 **Reflex 2030 vision**: AI-generated action plan recommendations and fix PRs for engineering review, not autonomous deployment to production.
 
-**Reflex MCP (Q3 2026)**: Surfaces Reflex insights in engineering workflows. Insights available via data product regardless; MCP improves shareability.
+**Reflex MCP (TBC)**: Surfaces Reflex insights in engineering workflows. Timing is TBC — dependent on Phase 3 (Q3 2026) attribution model stability. Insights available via data product regardless; MCP improves shareability.
 
 **B2C wallet launch (2027)**: Consumer Duty obligations apply from day one. Phone channel, complaint handling, and vulnerable customer identification in Fin must all be live at launch, not added post-launch.
 
