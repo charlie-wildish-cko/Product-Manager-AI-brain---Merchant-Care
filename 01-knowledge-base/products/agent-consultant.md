@@ -20,11 +20,17 @@ The Agent Consultant is also a structural dependency for Reflex: ticket content 
 
 | Capability | Description |
 |------------|-------------|
-| **Knowledge retrieval** | Retrieval from public and internal knowledge sources so agents get relevant answers and SOPs in context. |
-| **Data retrieval** | Payments and other data. Currently live: posts internal notes in Zendesk when a payment ID is found in a ticket (see [agent-toolkit-zendesk.md](../processes/agent-toolkit-zendesk.md) Payment tool). |
-| **Ticket content summary** | Summarises closed ticket content to identify root causes. Feeds into [Reflex](reflex.md) for contact driver analysis and insight. |
-| **Internal QA** | QA on closed tickets based on QA definitions and a golden dataset of what qualifies as good tickets. |
-| **Action-based** | Access to relevant APIs/MCP tools to perform agent tasks (e.g. refund reversals, querying 3rd party APIs), with human-in-the-loop approval. |
+| **Context retrieval** | Surfaces merchant data (entity structure, processing profile, account status), payment history, and prior ticket/contact history in the sidebar when a ticket opens — giving the agent full context before they read the first line of the merchant's message. |
+| **Knowledge retrieval** | Retrieval from public documentation and internal agent SOPs so agents get relevant answers and procedures in context. Fin uses public content only; Consultant also retrieves from internal operational documents held in the git repo. |
+| **Data retrieval** | Live payment and third-party data surfaced from internal APIs. Currently live: payment status and response code explanations posted as internal notes when a payment ID is found in a ticket (see [agent-toolkit-zendesk.md](../processes/agent-toolkit-zendesk.md) Payment tool). |
+| **Action execution** | Access to relevant APIs to perform agent tasks (e.g. refund reversals, TPA status lookups, account unlocks) via step-by-step Runbooks. Human-in-the-loop: agent approves each action before it executes. |
+| **Response drafting** | Drafts a response to the merchant based on ticket context, knowledge retrieval results, or as the final step of a Runbook. Agent reviews, edits if needed, and sends. |
+| **Conversation summary** | Summarises the ticket thread on demand — collapses context for agents picking up a ticket mid-flight or reviewing a long exchange quickly. |
+| **Escalation summary** | Generated at the point of escalation: states why the ticket is being escalated and the complexity level, so the receiving agent or team has immediate context without reading the full thread. |
+| **Ticket content summary** | Summarises closed ticket content to identify root causes. Feeds into [Reflex](reflex.md) for contact driver analysis and insight. Distinct from conversation summary — this is a post-resolution output for the insight pipeline, not an agent-facing view. |
+| **Content gap flagging** | When the Consultant cannot answer a query on an agent-resolved ticket, the gap is flagged to the Knowledge Manager with the ticket reference, query, and contact type — creating a feedback loop between agent usage and content investment. |
+| **Audit log** | Records all Consultant actions — AI-generated and agent-approved — per ticket. Accessible to Ops managers and the Product team only (not surfaced to agents). Supports quality review, incident investigation, and governance. |
+| **Internal QA** | QA on closed tickets based on QA definitions and a golden dataset of what qualifies as good tickets. 2027 horizon. |
 
 ## Relationship to existing assets
 

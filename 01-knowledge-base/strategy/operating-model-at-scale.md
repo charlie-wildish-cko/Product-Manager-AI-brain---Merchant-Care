@@ -19,7 +19,7 @@ The remaining 20% of contacts will be disproportionately complex, high-stakes, o
 **Now**: Agents handle a broad mix of contact types across all tiers.
 **2030**: Agents handle only what AI cannot. Hiring profiles, training, and baseline skill floor must reflect this.
 
-Headcount does not scale with contact volume. It scales with complexity.
+Headcount does not scale with contact volume. It scales with complexity. The 2030 baseline assumption is ~500 agents across B2B and B2C. That number does not grow proportionally with transaction volume — it grows with the complexity and regulatory footprint of the remaining 20%.
 
 ### **Fin ownership must formalise before this model is load-bearing**
 
@@ -44,7 +44,14 @@ Fin's resolution quality is a direct function of content coverage and accuracy. 
 At high AI resolution rates, the quality of the escalation path for the 20% matters more than the throughput of the 80%. Poor escalation design causes merchants who need a human to get bounced, context to be lost at handoff, and CSAT to decline despite strong AI resolution numbers.
 
 **Now**: Escalated chats arrive with full transcript and taxonomy classification. Context exists but agents must interpret it manually.
-**2030**: Agent Consultant assembles full context at handoff. Agents receive AI-suggested actions, not raw tickets.
+**2030**: Agent Consultant assembles full context at handoff. Agents receive AI-suggested actions, not raw tickets. The escalation design covers two types: AI-to-human handoff (Fin to agent) and agent-to-team escalation (agent to Engineering, Treasury, or other business teams via Jira or custom API integrations). Both must be trackable from the support ticket so agents can update the customer without switching systems.
+
+### **The support platform must support ~500 agents with strict data separation**
+
+B2B and B2C operations are virtually separated by channel and agent team. At 500 agents, this cannot be enforced informally — it requires a walled permissions model in the support platform so that B2C agents (including any BPO) cannot access B2B customer data.
+
+**Now**: Single Zendesk instance; B2C volume is negligible; separation is not yet an operational concern.
+**2030**: B2B and B2C are materially different in volume, regulation, and team composition. Platform-level data isolation is a compliance and operational requirement, not a configuration preference.
 
 ---
 
@@ -55,7 +62,7 @@ At high AI resolution rates, the quality of the escalation path for the 20% matt
 When AI handles 80% of contacts autonomously, failure modes are silent and systematic. A bad Fin Procedure or hallucinated answer goes out at scale before anyone notices. Operational Excellence must shift from reviewing agent interactions to auditing AI resolution quality at the cohort level, monitoring for systematic errors, managing the Fin Procedure library as a critical asset, and detecting when AI confidence is low and escalation thresholds need recalibrating.
 
 **Now**: QA is sampling-based, agent-focused, qualitative.
-**2030**: QA is data-tooled, AI-focused, quantitative. Reflex is not optional here; it is the reliability mechanism.
+**2030**: QA is data-tooled, AI-focused, quantitative. Reflex is not optional here; it is the reliability mechanism. Every closed ticket feeds Reflex — ticket close is the trigger for the Reflex data pipeline. This means the quality of Reflex outputs is directly tied to the completeness of ticket closure; tickets left open or mis-classified degrade insight quality at scale.
 
 ### **AI resolution rate needs to be supplemented with quality metrics**
 
@@ -98,7 +105,9 @@ The 2030 operating model is only reachable if the 2026 foundations are built cor
 | Fin as primary support product | AI First Resolution Using Fin (Q2-Q3); Replace Webform with Fin (Q3) |
 | AI audit and QA function | Reflex dashboards (Q1-Q2); Reflex MCP (Q3) |
 | Knowledge base as infrastructure | Content gap analysis in Reflex; Merchant Education Hub |
-| Escalation design with full context | Merchant Context for Fin and Agents (Q1-Q2); Agent Consultant (Q1-Q4) |
+| Escalation design with full context (AI-to-human) | Merchant Context for Fin and Agents (Q1-Q2); Agent Consultant (Q1-Q4) |
+| Cross-team escalation design (agent-to-team) | Agent Productivity Tools: Zendesk/Jira integration (Q1/Q2); custom API integrations scoped H2 |
+| Support platform multi-tenancy (B2B/B2C separation) | B2C Zendesk configuration (H2 2026); walled permissions design before wallet launch |
 | Fin ownership formalisation | Must be resolved as a team/operating model decision in 2026 before scale |
 | Consumer Duty readiness | Consumer support strategy planning (H2 2026) |
 | Successor metrics | Support Model and tiering (Q2-Q3); Fin resolution tracking improvements |

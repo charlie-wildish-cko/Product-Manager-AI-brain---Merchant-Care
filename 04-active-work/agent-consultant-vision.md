@@ -72,6 +72,20 @@ One important clarification on how this works in practice: the selection of inte
 
 ---
 
+## Supporting capabilities
+
+Beyond the two core interaction modes, the Consultant provides four capabilities that apply across all ticket types.
+
+**Context retrieval.** When a ticket opens, the Consultant loads merchant context automatically: entity structure, processing profile, account status, payment history, and prior tickets and contacts. The agent has a complete picture of who they are dealing with before reading the merchant's first message. This is the data layer the Consultant provides — distinct from the existing Agent Toolkit (User Profile, Payment Tool), which surfaces structured data fields. Context retrieval synthesises across sources into a single sidebar view.
+
+**Response drafting.** The Consultant drafts a reply to the merchant based on the current ticket context. For Runbook tasks, response drafting is the final step — the Runbook prepares the response after completing the resolution steps. For knowledge-based queries, the Consultant can draft a response based on the SOP or article it retrieved. In both cases the agent reviews, edits if needed, and sends. The Consultant never sends on the agent's behalf.
+
+**Conversation summary and escalation summary.** When a ticket is escalated — to a specialist team, a technical account manager, or a senior agent — the receiving agent needs immediate context without reading the full thread. The Consultant generates two distinct summaries at escalation: a conversation summary (what has been discussed and attempted) and an escalation summary (why it is being escalated and the assessed complexity level). Both are available on demand for any long or complex thread, not only at escalation.
+
+**Audit log.** Every action the Consultant performs — data retrievals, API calls, response drafts generated, Runbook steps executed — is logged per ticket with a timestamp and the agent who approved it. The audit log is not visible to agents; it is accessible to Ops managers and the Product team for quality review, incident investigation, and governance. This is a prerequisite for any write-action capability (reversals, account unlocks).
+
+---
+
 ## Example workflows
 
 ### Pattern 1: Runbook — Refund reversal
@@ -108,7 +122,7 @@ The investigation took minutes, not the 15–20 minutes it would take an agent t
 
 ## Agent experience principles
 
-**Surfaced without asking.** The Consultant does not wait for the agent to query it. When a payment ID appears in a ticket, data is retrieved and surfaced automatically. When the ticket content matches a Runbook, the Runbook is suggested. Agents do not need to know what tools exist — the system presents what is relevant.
+**Surfaced without asking.** The Consultant does not wait for the agent to query it. When a ticket opens, merchant context is loaded automatically: entity structure, account status, payment history, and prior tickets. When a payment ID appears in the thread, live payment data is retrieved. When the ticket content matches a Runbook, the Runbook is suggested. Agents do not need to know what tools exist — the system presents what is relevant.
 
 **Approve, don't configure.** Agents interact with outputs. The Consultant proposes actions; the agent approves or rejects. The decision to act remains human. The effort to prepare the action is AI.
 

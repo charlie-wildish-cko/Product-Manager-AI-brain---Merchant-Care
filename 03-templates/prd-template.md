@@ -28,7 +28,7 @@
 
 ## Executive Summary
 
-`*This is your elevator pitch. If an exec reads nothing else, they should understand what you're building and why it matters. Keep it to 3-4 sentences: the merchant problem, your solution, and the expected business impact. Include how this connects to our company strategy or pillar goals. For Care & Support work: state which 2026 deliverable and goal this supports.`*
+`*3 sentences maximum. Sentence 1: the problem and who it affects, with one data point. Sentence 2: what you're building and how it solves it. Sentence 3: the expected business impact and which 2026 deliverable and strategic goal this supports. If you cannot fit it in 3 sentences, the scope is not clear enough yet.*`
 
 ## Problem Space
 
@@ -185,75 +185,23 @@
 
 ## Rollout Plan
 
-`*Define your phased rollout approach. For each phase, specify entry criteria (what must be ready), success criteria (what must be true to move forward), and timeline.`*
+`*One sentence on rollout strategy and rollback trigger. Then one table per phase — no prose. Each phase: what's in scope, entry criteria (technical + operational), success criteria to advance, and timeline. Keep each cell to one line where possible.*`
 
-`***Rollout approach:*`* `[High-level strategy - why this phased approach, risk mitigation plan, rollback triggers]*`
+`*Rollback trigger: [condition that stops the rollout — e.g. >N P0 incidents, incorrect actions on write APIs]*`
 
-### Phase 1: [Pilot/Beta]
+| | Phase 1 | Phase 2 | Phase 3 |
+|---|---|---|---|
+| **Name** | | | |
+| **Timeline** | | | |
+| **In scope** | | | |
+| **Entry criteria** | | | |
+| **Success criteria** | | | |
 
-`***Purpose:**` `[What you're trying to validate in this phase]*`
+`**Definition of Done:** bullet list — technical, operational, data criteria that must all be true before this is considered shipped.`
 
-`***Entry criteria:**` `What must be ready to start this phase*`
+`**Product dependencies:** table of dependency · owner · required by phase.`
 
-- `***Technical:**` `[e.g., Feature complete in sandbox, certifications received]*`
-- `***Operational:**` `[e.g., Support trained on beta process, escalation path defined]*`
-- `***Merchant:**` `[e.g., beta merchants identified and onboarded]*`
-- `*etc.`*
-
-`***Success criteria:*`* `What must be true to move to next phase*`
-
-- `*[e.g., Process X transactions with >Y% success rate]`*
-- `*[e.g., <N P1 incidents, all resolved within SLA]`*
-- *`[e.g., Beta merchants confirm production readiness]`*
-
-*`**Timeline:`** `[Phase start date] - [Phase end / decision point]`*
-
-### Phase 2: [Gradual Expansion]
-
-`*Optional phase. Include if you have gradual expansion between beta and GA.`*
-
-`***Purpose:*`* `[What you're trying to validate in this phase]*`
-
-`***Entry criteria:**` `What must be ready to start this phase*`
-
-- `***Technical:**` `[e.g., Beta issues resolved, monitoring validated]*`
-- `***Operational:**` `[e.g., Extended support coverage in place]*`
-- `***Merchant:**` `[e.g., Next cohort of merchants ready]*`
-
-`***Success criteria:**` `What must be true to move to GA*`
-
-- `*[e.g., X merchants live processing Y volume]`*
-- `*[e.g., Maintain success rate and stability targets]`*
-
-*`**Timeline:`** `[Phase start date] - [Phase end / GA decision point]`*
-
-### Phase 3: General Availability
-
-`***Purpose:*`* `[e.g., Launch to all eligible merchants]*`
-
-`***Entry criteria:**` `What must be ready for GA*`
-
-- `***Technical:**` `[e.g., All P0 requirements met, performance meets NFRs]*`
-- `***Operational:**` `[e.g., Runbooks published, 24/7 on-call staffed, treasury reconciliation tested]*`
-- `***Business:**` `[e.g., Legal/compliance approvals complete, contracts signed]*`
-- `***Merchant:**` `[e.g., Documentation published, communications ready]*`
-
-`***Success criteria:**` `[e.g., X merchants live within 30 days, maintain >Y% uptime]*`
-
-`**Definition of Done:**`
-
-`*What must be true to consider this launch-ready? Define technical, operational, merchant, and business criteria that must be met.`*
-
-- `**Technical:`** `[e.g., All P0 requirements delivered and tested, performance meets NFR targets]`
-- `**Operational:*`* `[e.g., support trained with runbooks published, monitoring and alerting configured]`
-- `**Merchant:**` `[e.g., beta merchants processing successfully, documentation published]`
-- `**Business:**` `[e.g., Legal/compliance approvals complete, go-to-market materials ready]`
-
-`**Timeline:**` `List target dates for the different phases.`
-
-`**Product Dependencies:**` `List what must be completed before launch. Cover cross-pillar product build dependencies including central teams such as One Finance, CoS Ops, legal/compliance activities (licensing, approvals, T&C changes), and external dependencies (scheme certification and approvals, third-party integrations). Include owners`
-
-`**Go-to-market:**` `Define how we'll take this to market and how our merchants will learn about this. Cover operational enablement (merchant care briefings and training, knowledge hub enhancements, runbooks, SoPs, etc.), sales enablement (sales briefing and training, collateral, etc.), merchant communications (email, dashboard prompts, documentation, etc.), marketing (blogs, press, case studies, etc.), and developer materials (API docs, SDK guides). Include owners for each activity`
+`**Go-to-market:** bullet list covering operational enablement (agent training, runbooks, SOPs), merchant communications if applicable, and developer materials if applicable. Include owners.`
 
 ## Appendix
 

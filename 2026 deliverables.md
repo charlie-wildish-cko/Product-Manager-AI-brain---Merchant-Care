@@ -341,6 +341,23 @@ H2
 
 * Plan for Consumer support channels (B2C) and experience with Consumer team, to start in 2027
 
+### Zendesk Platform Decision (Build / Buy / Keep)
+
+Strategic evaluation of Zendesk as the long-term ticketing and agent platform for Care, ahead of contract renewal in June 2027.
+
+**Q3 → Q4** · Strategic decision piece
+
+- **Q3**: Capability gap map + options evaluation — Keep + Extend vs. Buy (Plain, Pylon, Intercom) vs. Build; vendor RFIs/demos; migration feasibility
+- **Q4**: RFC decision document complete; recommendation approved; contract negotiation or replacement programme initiated by Q1 2027
+
+**Trigger**: Contract renewal June 2027; known capability gaps (Platform merchant data, AI workflow execution, B2C readiness)
+
+**Flywheel**: Governance (underpins all flywheel stages — ticketing, routing, SLA, QA, data pipeline)
+
+Reference: `04-active-work/zendesk-platform-decision-rfc.md` (to be created)
+
+---
+
 ### Contact Volume Forecast 2026–2030
 
 Long-range demand forecast across all segments (Enterprise, Platforms ISV, Platforms SMB, Consumer) to anchor investment decisions and B2C readiness planning.

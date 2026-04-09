@@ -58,11 +58,14 @@ Every document, analysis, or recommendation must connect to:
 | KPI definitions | `01-knowledge-base/metrics/kpi-definitions.md` |
 | Reflex product reference (components, metrics, vision, why it matters) | `01-knowledge-base/products/reflex.md` |
 | Reflex phased plan (components + build sequence, Q1–Q4 2026) | `04-active-work/reflex-phased-plan.md` |
+| Agent Consultant capabilities (full list) and interaction model | `01-knowledge-base/products/agent-consultant.md` · vision: `04-active-work/agent-consultant-vision.md` |
 | Product reference doc template (why it matters + components + metrics) | `03-templates/product-reference-template.md` |
 | PRD template | `03-templates/prd-template.md` |
 | PRD example | `03-templates/prd-template-example.md` |
 | Product strategy template | `03-templates/product-strategy-template.md` |
 | Writing style by audience | `01-knowledge-base/processes/writing-style-guide.md` |
+| Zendesk platform decision RFC (Build/Buy/Keep, Q3–Q4 2026) | `04-active-work/zendesk-platform-decision-rfc.md` |
+| Zendesk viability research (AI, pricing, market, 2024–2026) | `04-active-work/Zendesk Viability_ AI, Pricing, Market.md` |
 
 ---
 
@@ -112,6 +115,10 @@ Anchor in strategy first:
 5. Which **strategic lever** does it pull? (contact reduction, AI deflection, agent efficiency, self-service)
 
 Then use `03-templates/prd-template.md`. Quality rules are enforced in the template. For PRD sharpening, use Socratic questions from `01-knowledge-base/processes/socratic-questioning-prds.md`.
+
+**PRD scope sections must map to named deliverable line items verbatim** — copy the exact bullet text from `2026 deliverables.md` into In Scope. Do not paraphrase or regroup them.
+
+**PRD format (updated 2026-04-09)**: Executive Summary = 3 sentences max (problem + data point / solution / deliverable + goal). Rollout Plan = single table (one column per phase), not prose phase blocks. See `03-templates/prd-template.md`.
 
 For product strategy documents (1–3 year horizon, VP/Director audience): use `03-templates/product-strategy-template.md`. Framework: Rumelt's Strategy Kernel (Diagnosis → Guiding Policy → Coherent Actions) — reference doc at `01-knowledge-base/strategy/rumelt-strategy-kernel.md`.
 
