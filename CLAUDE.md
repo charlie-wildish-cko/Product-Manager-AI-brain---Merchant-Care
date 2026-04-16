@@ -49,6 +49,7 @@ Every document, analysis, or recommendation must connect to:
 | Team structure & stakeholders | `01-knowledge-base/teams.md` |
 | Support workflows & operations | `01-knowledge-base/processes/support-workflows.md` |
 | Ticket taxonomy & contact volumes | `01-knowledge-base/processes/support-taxonomy.md` |
+| Care Agent SOPs & KB (526 articles, 125 folders from Zendesk KB) | `01-knowledge-base/processes/Care Agent SOPs/INDEX.md` |
 | Merchant segments | `01-knowledge-base/products/customer-segments.md` |
 | Product catalogue (products, teams, pillars) | `01-knowledge-base/Checkout Products and teams.csv` |
 | Product definitions with contact risk tags | `01-knowledge-base/products/product-definitions.md` |
@@ -66,6 +67,9 @@ Every document, analysis, or recommendation must connect to:
 | Writing style by audience | `01-knowledge-base/processes/writing-style-guide.md` |
 | Zendesk platform decision RFC (Build/Buy/Keep, Q3–Q4 2026) | `04-active-work/zendesk-platform-decision-rfc.md` |
 | Zendesk viability research (AI, pricing, market, 2024–2026) | `04-active-work/Zendesk Viability_ AI, Pricing, Market.md` |
+| Support articles (879 markdown files, 14 topic folders — Payments, Disputes, Settlements, Platforms, etc.) | `01-knowledge-base/Support content/checkout-support-site-main/Support articles/` |
+| Technical documentation articles (~700 files) | `01-knowledge-base/Support content/Tech Docs/` |
+| API reference (Swagger YAML + paths, components, code samples) | `01-knowledge-base/Support content/API reference/` |
 
 ---
 
@@ -82,6 +86,10 @@ Every document, analysis, or recommendation must connect to:
 - Hedging language ("may", "could potentially", "somewhat")
 - Burying the conclusion or leading with context instead of the point
 - Semicolons to connect clauses
+- Flattery or affirmations ("Great question!", "Certainly!", "Absolutely!")
+- Padding or filler sentences
+- Rewriting entire files when only a small change is needed
+- Unsolicited summaries of what was just done
 
 For Leadership, Engineering, Slack, and Reports style: see `01-knowledge-base/processes/writing-style-guide.md`.
 

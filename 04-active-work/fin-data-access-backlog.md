@@ -193,12 +193,12 @@ This backlog tracks the data sources Fin should be able to access (via API or MC
 
 | Priority | Data source | Contacts / 6m | Data availability | Complexity | Procedure defined? |
 |---|---|---|---|---|---|
-| P1 | Payments API (Transaction Status, Refunds, Disputes, 3DS, Risk, APMs) | ~10,049 | Confirmed live | Medium | No |
-| P2 | User Management API (Login & Access) | 2,228 | Not confirmed | Medium | No |
+| P1 | Payments API (Transaction Status, Refunds, Disputes, 3DS, Risk, APMs) | ~10,049 | Confirmed live | Medium | [Yes](payment-details-fields.csv) |
+| P2 | User Management API (Login & Access) | 2,228 | Not confirmed | Medium | [Yes](fin-user-management-responses.md) |
 | P2 | Settlements API | 858 | H2 2026 | Medium | No |
 | P2 | Analytics MCP (Reporting) | 763 | Not confirmed | Medium | No |
 | P2 | Balance API | 409 | Not confirmed | Low | No |
-| P2 | VisionNotify (Incident API) | Spike-dependent | Confirmed (partial) | Low | No |
+| P2 | VisionNotify (Incident API) | Spike-dependent | Confirmed (partial) | Low | [Yes](fin-outage-check-responses.md) |
 | P3 | Webhook Delivery Logs | 182 | H2 2026 | Medium | No |
 | P3 | Clearing / TPA Data (Payments API extension) | Subset of Payments | Q4 2026 | Low | No |
 

@@ -388,15 +388,15 @@ Derived from [support platform flows](support%20platform%20flows.md). Use as a s
 
 ### 1. Multi-channel entry points
 
-| Requirement                | Detail                                                             |
-| -------------------------- | ------------------------------------------------------------------ |
-| Email ingestion            | Native ticket creation from inbound email                          |
-| AI Agent escalation path   | Receive handoff from AI agent (Fin) with full conversation context |
-| Live chat with human agent | Native or integrated chat for B2B                                  |
-| Instant messaging channels | Slack/Teams B2B support (2028–2029 requirement)                   |
-| Phone channel              | Native or integrated IVR + call routing for B2C (Consumer Duty)    |
-| Mobile app chat            | B2C channel (2027 wallet launch)                                   |
-| Internal ticket submission | Account teams can raise tickets on behalf of customers             |
+| Requirement                | Detail                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------- |
+| Email ingestion            | Native ticket creation from inbound email                                       |
+| AI Agent escalation path   | Receive handoff from AI Agent (Fin for now) with full conversation context      |
+| Live chat with human agent | Native or integrated chat for B2B                                               |
+| Instant messaging channels | Slack/Teams B2B support (2028–2029 requirement)                                |
+| Phone channel              | Native or integrated IVR + call routing for B2C                                 |
+| Mobile app chat            | B2C channel (2027 wallet launch)                                                |
+| Internal ticket submission | Account teams can raise tickets on behalf of customers                          |
 
 **Assessment question**: Which channels are native vs. add-on, and what is the per-channel cost at 500-agent scale?
 
@@ -414,7 +414,7 @@ Derived from [support platform flows](support%20platform%20flows.md). Use as a s
 
 ---
 
-### 3. Routing logic
+### 3. Routing & field logic
 
 | Requirement                             | Detail                                             |
 | --------------------------------------- | -------------------------------------------------- |
@@ -422,7 +422,9 @@ Derived from [support platform flows](support%20platform%20flows.md). Use as a s
 | Skill-based routing                     | Agent skill tags matched to ticket classification  |
 | SLA per tier and taxonomy value         | Different SLA clocks per priority and contact type |
 | Customisable ticket and customer fields | Company-level and individual-level custom fields   |
-| Flexible tagging system                 | Taxonomy mapping and analytics use cases           |
+| Flexible tagging/field system           | Taxonomy mapping and analytics use cases           |
+
+Ultimately, we need a flexible routing system where we can use attributes in branches and fallbacks.
 
 ---
 
@@ -438,7 +440,7 @@ Derived from [support platform flows](support%20platform%20flows.md). Use as a s
 | Agent-triggered workflow execution | Agent approves AI action; platform passes execution signal, or allows external system to do this                                   |
 | Internal collaborator access       | Account teams and non-agent staff can view threads and leave internal comments without a full agent seat                           |
 
-**Assessment questions**: What is the custom app development framework (SDK, API, tooling)? Are there restrictions on what custom apps can read/write, or requirements to publish via a vendor marketplace? What is the seat model for internal collaborators (Account teams, Treasury, Engineering) who need read/comment access without handling tickets?
+**Assessment questions**: What is the custom app development framework (SDK, API, tooling)? Are there restrictions on what custom apps can read/write, or requirements to publish via a vendor marketplace?
 
 ---
 
@@ -472,8 +474,8 @@ Derived from [support platform flows](support%20platform%20flows.md). Use as a s
 | Fin (Intercom)          | Inbound        | Escalation with full conversation context                                                                                                           |
 | Jira                    | Bi-directional | Create/update Jira issues from tickets; sync status back                                                                                            |
 | Salesforce              | Read           | Sync case numbers and customer data                                                                                                                 |
-| Analytics data pipeline | Outbound       | Full ticket data extract via API                                                                                                                    |
-| Knowledge source sync   | Inbound        | Sync knowledge content from an external source (website URL or GitHub repo) for use by the AI agent layer — no manual article duplication required |
+| Knowledge sources       | Inbound        | Sync knowledge content from an external source (website URL or GitHub repo) for use by the AI agent layer — no manual article duplication required |
+| Custom APIs             | Read           | Pull data from internal systems (e.g. BigQuery)                                                                                                     |
 
 **Assessment question**: What knowledge sync mechanisms are supported (URL crawl, GitHub, API push)? Is sync automated on change, or manual?
 
@@ -487,7 +489,6 @@ Derived from [support platform flows](support%20platform%20flows.md). Use as a s
 | Taxonomy-level reporting  | Filter and group by custom taxonomy tags                                                                     |
 | SLA breach alerting       | Automated in-platform alerts before and on SLA breach, configurable per tier — for agent and supervisor use |
 
-**Assessment question**: Are SLA alerts configurable per tier and taxonomy value, and are they surfaced in the agent workspace?
 
 ---
 
@@ -511,26 +512,23 @@ Derived from [support platform flows](support%20platform%20flows.md). Use as a s
 | Named account team         | Dedicated enterprise contact with defined escalation chain contractually named                      |
 | Billing dispute resolution | Documented process for disputing AR charges with a defined resolution timeline                      |
 | Auto-renewal protection    | Minimum 60-day written notice required before automatic contract renewal                            |
-| Vendor continuity risk     | Evidence that the vendor will operate in substantially the same form through 2030: profitable or funded to runway, no active strategic review or likely acqui-hire, and enterprise financial services is a core segment not an edge case |
+| Vendor continuity risk     | Evidence of operation in substantially the same form through 2030                                                                                                                                                                       |
 
-**Assessment questions**: What contractual commitments exist for vendor support response times, and what is the escalation path when those SLAs are breached? Is the vendor profitable or funded beyond 2028? What is their stated ICP — does enterprise financial services feature prominently? Has there been any acquisition interest or strategic review disclosed?
+**Assessment questions**: What contractual commitments exist for vendor support response times and escalation? Is the vendor profitable or funded beyond 2028? Financial services domain customers and experience?
 
 ---
 
 ### 11. Pricing scorecard
 
-| Requirement                | Detail                                                                                             |
-| -------------------------- | -------------------------------------------------------------------------------------------------- |
-| All-in cost at 500 agents  | Total monthly cost modelled: seats + required add-ons + AR volume at projected resolution rate     |
-| Cost predictability        | 12-month cost can be modelled with reasonable confidence despite variable AR volume                |
-| Add-on gating transparency | Required features (QA, WFM, Advanced AI) documented as included or separately billed               |
-| Volume discount terms      | Enterprise pricing at projected 2027 and 2030 contact volumes available on request                 |
-| AR overage cap             | Contractual ceiling on AR overage fees to protect against cost spikes at high Fin resolution rates |
-
-**Assessment question**: What is the all-in monthly cost at 500 agents with a 70% AI resolution rate, and what contractual protections exist against AR cost overruns?
+| Requirement                | Detail                                                                             |
+| -------------------------- | ---------------------------------------------------------------------------------- |
+| All-in cost at 500 agents  | Total monthly cost modelled: seats + required add-ons                              |
+| Cost predictability        | 12-month cost can be modelled with reasonable confidence                           |
+| Add-on gating transparency | Required features (QA, WFM, Advanced AI) documented as included or separately billed |
+| Volume discount terms      | Enterprise pricing at projected 2027–2030 contact volumes available on request    |
 
 ---
 
-**Last Updated**: 2026-04-08
+**Last Updated**: 2026-04-15
 **Owner**: Charlie Wildish
 **Status**: Draft — work begins Q3 2026

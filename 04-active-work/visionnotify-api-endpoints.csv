@@ -1,0 +1,18 @@
+endpoint,field_name,field_location,field_type,required,description
+GET /client/incidents,status,query,string,false,"Filter incidents by status. Available values: open, resolved. Default: open"
+GET /client/incidents,start_date,query,string($date-time),false,"Filter incidents that started on or after this date. ISO 8601 format (e.g. 2025-06-01T00:00:00.000Z)"
+GET /client/incidents,end_date,query,string($date-time),false,"Filter incidents that ended on or before this date. ISO 8601 format (e.g. 2025-06-30T23:59:59.000Z)"
+GET /client/incidents,limit,query,integer,false,"Number of incidents to return per page (pagination). Default: 20"
+GET /client/incidents,page,query,integer,false,"Page number of results to return. Default: 1"
+GET /client/incidents,skip,query,integer,false,"Number of incidents to skip (alternative to page-based pagination). Default: 0"
+GET /client/incidents,sort_by,query,string,false,"Field to sort incidents by. Available values: start_time, end_time, severity, status. Default: end_time. For resolved incidents, end_time is recommended."
+GET /client/incidents,order,query,string,false,"Sort order. Available values: asc, desc. Default: desc (most recent first)"
+GET /client/incidents [response],id,response body,string,false,Incident identifier
+GET /client/incidents [response],start_time,response body,string($date-time),false,Incident start time in ISO 8601 format
+GET /client/incidents [response],end_time,response body,string($date-time),false,Incident end time. Null if still open.
+GET /client/incidents [response],severity,response body,string,false,"Incident severity level (e.g. SEV1, SEV3)"
+GET /client/incidents [response],status,response body,string,false,"Incident status: open or resolved"
+GET /client/incidents [response],impacted_service_id,response body,string,false,Service impacted by the incident
+GET /client/incidents [response],impacted_sub_service_id,response body,string,false,Sub-service impacted by the incident
+GET /client/incidents [response],total_count,response body,integer,false,Total number of matching incidents
+GET /client/incidents [response],page,response body,integer,false,Current page number
