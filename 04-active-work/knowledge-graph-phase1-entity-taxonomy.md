@@ -5,27 +5,31 @@
 > **Sources**:
 > - `01-knowledge-base/processes/support-taxonomy.md` (V3, February 2026) — entity classes 1–3, 7–8
 > - `Product category and name definitions - Sheet1.csv` (April 2026, new source of truth) — entity classes 4–6
+> - `01-knowledge-base/products/customer-segments.md` — entity class 10
 >
-> **Owner**: Charlie Wildish (draft); transfer to Knowledge Model Owner on appointment
+> **Scope**: B2B support only. The B2C taxonomy does not yet exist — B2C (Consumer/Braavos) is excluded from all phases until that taxonomy is defined (2027+). See note under Class 10.
+>
+> **Owner**: Charlie Wildish (draft); Content team on appointment
 > **Status**: Draft — not yet validated against Fin query data or agent SOP content
 
 ---
 
 ## Entity Classes
 
-Nine entity classes in total. Classes 1–3 map directly to the taxonomy's three-level structure. Classes 4–6 are now sourced from the canonical product catalogue CSV (replaces earlier estimates inferred from taxonomy language). Classes 7–9 are implicit in the taxonomy and need to be surfaced explicitly.
+Ten entity classes in total. Classes 1–3 map directly to the taxonomy's three-level structure. Classes 4–6 are sourced from the canonical product catalogue CSV. Classes 7–9 are implicit in the taxonomy and need to be surfaced explicitly. Class 10 was added in the April 2026 design review — the original 9-class list omitted segment context, which is required for routing differentiation.
 
 | # | Entity Class | Description | Source |
 |---|---|---|---|
 | 1 | **Domain** | Top-level support area. Equivalent to Case Type. | Taxonomy — Case Type |
 | 2 | **Problem Type** | Structured problem category within a domain. Equivalent to Issue Type. | Taxonomy — Issue Type |
-| 3 | **Reason** | Specific problem statement. Leaf node in taxonomy. | Taxonomy — Reason |
+| 3 | **Reason** | Specific problem statement. Leaf node in taxonomy. Central hub node — everything else connects through it. | Taxonomy — Reason |
 | 4 | **Product Category** | Canonical product grouping (e.g. Disputes, Payouts, Vault). | Product catalogue CSV |
 | 5 | **Product / Feature** | Named Checkout product within a category (e.g. Pre-Disputes, Bank Payouts, Forward API). | Product catalogue CSV |
 | 6 | **Payment Method** | Specific payment method or card scheme (e.g. SEPA Direct Debit Core, Klarna BNPL, Mada). Treated as a separate class due to volume and geographic distribution. | Product catalogue CSV — Payment Methods category |
 | 7 | **Integration Method** | How the merchant connects to Checkout: technical integration (API, Flow, HPP, SDK) or via a partner platform (Shopify, WooCommerce, Gr4vy). | Taxonomy + Product catalogue CSV — Partner Integrations category |
-| 8 | **Action Type** | The resolution action required to close the contact. | Implied by Reasons |
+| 8 | **Action Type** | The resolution action required to close the contact. Determines Fin automability. | Implied by Reasons |
 | 9 | **Error / State** | Specific error code or status state that triggered the contact. | Implied by Reasons |
+| 10 | **Customer Segment** | Which B2B merchant segment raised the contact. Determines handling path (Fin-resolvable vs L2 escalation). B2C excluded until consumer taxonomy is defined (2027+). | `customer-segments.md` |
 
 Classes 7–9 are not yet fully enumerated — they are the extension work of Phase 1.
 
@@ -264,6 +268,86 @@ Error codes and status states that merchants report as triggers for contacts. No
 
 ---
 
+## Class 10 — Customer Segment (4 entities, B2B only)
+
+Added in design review, April 2026. The original 9-class taxonomy had no concept of who is raising the contact. Without Segment, the graph cannot model the fact that the same Reason has a different handling path depending on merchant type — a Platform contact about "Transfers & Splits" requires L2 human handling (Checkout is second-line for Platform merchants), whereas the same Domain for Enterprise may be Fin-resolvable.
+
+| Segment | Description | Source |
+|---|---|---|
+| Enterprise | Direct merchants integrating Checkout APIs. Standard, Enterprise, and Premium tiers. | `customer-segments.md` |
+| Platform | Marketplace operators with sub-merchants beneath them. Checkout acts as L2; Platform is L1 for its merchants. | `customer-segments.md` |
+| Payfac | Small merchants where Checkout is the primary PayFac. TBC — timing not confirmed. | `customer-segments.md` |
+| Issuing | Merchants using Checkout card issuance capabilities. Small segment; low contact volume currently. | `customer-segments.md` |
+
+**B2C is excluded.** The consumer support taxonomy does not yet exist. When defined (2027+, ahead of Braavos launch), B2C slots in as a fifth Segment entity — the graph structure is compatible. B2C will require new Domains, Problem Types, and Reasons (balance disputes, card freeze, complaint handling, FOS referral, vulnerable customer escalation) before any `RAISED_BY` edges can be created.
+
+---
+
+## Relationship Schema (Phase 1b)
+
+Relationship types must be defined before Phase 2 (content coverage mapping) begins. Without them, Phase 2 produces a flat content list mapped to isolated nodes, not a traversable graph. The `INVOLVES` and `COVERED_BY` edges are the minimum required to run a meaningful coverage matrix.
+
+| Relationship | Direction | Cardinality | Notes |
+|---|---|---|---|
+| `CONTAINS` | Domain → Problem Type → Reason | 1:many | Hierarchical; already implicit in taxonomy structure |
+| `INVOLVES` | Reason → Product/Feature | many:many | Core edge for content routing. A Reason may involve multiple products. |
+| `INVOLVES` | Reason → Payment Method | many:many | Exposes APM-specific coverage gaps in Phase 2 |
+| `RESOLVED_BY` | Reason → Action Type | many:1 | Determines Fin automability. "Status lookup" = candidate for data Procedure; "Configuration change" = human-in-loop |
+| `RAISED_BY` | Reason → Customer Segment | many:many | With contact volume weight from CSV. Unlocks segment-differentiated routing in Phase 4 |
+| `ROUTED_VIA` | Reason → Integration Method | many:many | Affects resolution path — Shopify merchant has different error origin than direct REST API |
+| `TRIGGERS` | Error/State → Reason | many:many | Connects formal error codes to the Reasons they surface as |
+| `BELONGS_TO` | Product/Feature → Product Category | many:1 | Hierarchical |
+| `COVERED_BY` | Reason → Content Article | many:many | **Phase 2** — maps existing Fin/KB content to Reason nodes; absence = coverage gap |
+| `HANDLED_BY` | Reason × Segment → Fin Procedure | many:many | **Phase 4** — the routing output. Input to Fin Procedures PRD. Living artifact as Procedures become BAU. |
+
+**Construction format**: Edges stored as a relationship CSV alongside this taxonomy doc:
+
+```
+source_class, source_entity, relationship_type, target_class, target_entity, weight, notes
+```
+
+Human-editable, queryable with Python (pandas), version-controlled (diff-friendly for BAU Fin Procedure updates), and ingestible into a graph system later. Phase 1b task: populate `INVOLVES` (Reason → Product) and `RAISED_BY` (Reason → Segment) for top-volume Reasons — PAYMENTS (IN) and ACCOUNT MANAGEMENT & ACCESS (~60% of contacts) — before Phase 2 begins.
+
+---
+
+## Taxonomy Coverage Gaps
+
+The 7 product categories with no taxonomy domain are a content gap, not a confirmed out-of-scope. Two distinct cases:
+
+| Category | Gap type | Action |
+|---|---|---|
+| Vault | Contacts likely miscategorised as TECHNICAL ISSUE → Tokens or API Integration | Investigate CSV data; add Reasons if contacts exist |
+| Treasury & FX | Likely low volume; may sit under FUNDS AND FEES informally | Investigate CSV data; add Reasons if contacts exist |
+| Real-Time Account Updater | Likely low volume; no current taxonomy node | Investigate CSV data; add Reasons if contacts exist |
+| Intelligent Acceptance | Contacts implied under PAYMENTS (IN) → Performance | Add explicit Reason or confirm absorbed |
+| Remember Me | Contacts split across TECHNICAL ISSUE and B2C path | Clarify scope; B2C taxonomy will cover cardholder side |
+| Corporate Cards | Contacts likely under FUNDS AND FEES | Investigate CSV data; add Reasons if contacts exist |
+| Partner Integrations | 17 named partners collapsed to "E-Commerce Plugin" | Phase 2 should surface per-partner volume; expand Reasons if significant |
+
+Goal: no gaps. Content team covers all nodes once the taxonomy is complete.
+
+---
+
+## Automated Tagging — Reflex Capability
+
+Manual tagging of 879 articles against the entity taxonomy will not scale and will drift as articles are updated. The tagging workflow is built in three stages:
+
+**Phase 2 — LLM-assisted batch tagging (Reflex AI Engine)**
+The Reflex AI Engine (`01-knowledge-base/products/reflex.md`) already lists "content gap identification" as a named function. Phase 2 implements this: Reflex reads each article against the entity taxonomy and outputs suggested `COVERED_BY`, `INVOLVES`, and `ROUTED_VIA` edges as CSV rows. Content team reviews suggestions (approve/reject) rather than tagging from scratch. High confidence for product/method mentions (exact-match against entity names); lower for Reason mapping (requires understanding of what the article solves, not just what it mentions) — human review required for Reason edges. This runs as a scheduled Reflex job, not a one-off script, so new articles are processed as they are published.
+
+**Phase 3 — Fin usage signal feedback**
+Reflex already ingests Fin conversation metadata. When Fin surfaces an article for a contact that has a tagged Reason, a `COVERED_BY` edge can be inferred from usage. Articles that resolve contacts reinforce edges; articles that fail to resolve flag gaps. This becomes the primary signal for edge weight over time, and validates or overrides the static Phase 2 tags.
+
+**End state — authoring-time tagging**
+A mandatory taxonomy tag field in Zendesk Guide authoring workflow. Publishing an article produces `COVERED_BY` edges automatically — zero retrospective tagging work. Requires the Reason entity list to be stable (Phase 1 completion criteria) and a Zendesk Guide custom field synced to the relationship CSV.
+
+**Product release trigger (end state)**
+When a product changes, the graph flags every article with a `COVERED_BY` or `INVOLVES` edge to that product entity for review — before the change ships. Prevents content drift from product changes that invalidate articles without triggering updates.
+
+**Architectural note**: Reflex is the write path for the knowledge graph. The graph is the structured output Reflex produces; Fin reads from it to route contacts and select content. Loop: Reflex analyses contacts/content → populates graph edges → Fin uses graph → Fin resolution outcomes feed back into Reflex for validation.
+
+---
+
 ## Coverage Assessment
 
 | Entity Class | Completeness | What's Missing |
@@ -272,26 +356,53 @@ Error codes and status states that merchants report as triggers for contacts. No
 | Problem Type | Complete (37 / 37) | Nothing — taxonomy is the source |
 | Reason | Near-complete (~103) | Reconciliation against CSV needed |
 | Product Category | Complete (21 / 21) | Nothing — product catalogue CSV is the source |
-| Product / Feature | Complete (~100) | Taxonomy mapping gaps documented above (Vault, FX, RTAU, etc.) |
+| Product / Feature | Complete (~100) | Taxonomy mapping gaps documented above |
 | Payment Method | Complete (68) | No contact volume split by payment method yet — Phase 3 work |
 | Integration Method | Good (technical: 6; partners: 17) | Webhook transport and token sub-types for Phase 4 |
 | Action Type | Draft (10 categories) | Not yet validated against SOP content |
 | Error / State | Partial (~11 extracted) | Not bound to API error code registry |
+| Customer Segment | Draft (4 B2B entities) | Contact volume split by segment not yet aggregated; B2C excluded until 2027 |
 
 ---
 
 ## Phase 1 Completion Criteria
 
-- [ ] All 9 entity class definitions agreed with Knowledge Manager and Process Architect
+- [ ] All 10 entity class definitions agreed with Content team, Knowledge Manager, and Process Architect
 - [ ] Reason count reconciled against `support_contacts_flat_table_2025_last_6m.csv`
-- [ ] Taxonomy mapping gaps resolved for unmapped product categories (Vault, FX, RTAU, Intelligent Acceptance, Remember Me, Corporate Cards) — add Reasons or confirm out-of-scope for Fin
+- [ ] Taxonomy mapping gaps investigated for all 7 unmapped product categories — add Reasons or confirm contacts are absorbed elsewhere
 - [ ] Error / State list cross-referenced against API reference — bind to formal codes
 - [ ] Action Type categories reviewed against Care Agent SOPs (`INDEX.md`) — confirm coverage
-- [ ] Single named owner assigned per entity class (product team for product entities; Ops for resolution paths)
+- [ ] Single named owner assigned per entity class
 - [ ] Published to Confluence as living document before Phase 2 tagging begins
+
+## Phase 1b Completion Criteria (required before Phase 2)
+
+- [ ] Relationship schema agreed (10 relationship types above)
+- [ ] Relationship CSV format agreed and first file created
+- [ ] `INVOLVES` edges populated for top-volume Reasons: all Reasons under PAYMENTS (IN) and ACCOUNT MANAGEMENT & ACCESS
+- [ ] `RAISED_BY` edges populated for the same Reasons, with volume weights from `support_contacts_flat_table_2025_last_6m.csv`
+- [ ] Reflex Phase 2 scoped to include LLM-assisted article tagging as a named capability
+
+---
+
+## Phase Sequencing
+
+| Phase | Deliverable | Blocker for next |
+|---|---|---|
+| Phase 1 | Entity classes + vocabulary (this doc) | Class 10, relationship types, Reason count reconciliation, gap investigation |
+| Phase 1b | Relationship schema + starter edges | `INVOLVES` and `RAISED_BY` populated for top-volume Reasons; relationship CSV created |
+| Phase 2 | Content coverage matrix | Reflex LLM tagging run against 879 articles; `COVERED_BY` edges reviewed by Content team |
+| Phase 3 | Volume-weighted graph | Contact volume split by Segment and Payment Method; Fin usage signals feed back into edge weights |
+| Phase 4 | Fin routing map | `HANDLED_BY` (Reason × Segment → Procedure) — input to Fin Procedures PRD; becomes living BAU artifact |
 
 ---
 
 ## Phase 2 Preview
 
-With entity classes defined, Phase 2 maps existing Fin content articles against these entities. Output: a coverage matrix showing which entity nodes have mapped content and which are blank. High-volume nodes with no content coverage are the first content priorities.
+With entity classes and relationship schema defined (Phases 1 + 1b), Phase 2 maps existing Fin content articles against Reason nodes via `COVERED_BY` edges, generated by Reflex AI Engine and reviewed by the Content team. Output: a coverage matrix showing which Reason nodes have mapped content and which do not.
+
+The matrix distinguishes two gap types: **no content exists** (article needs to be written) vs **no taxonomy node exists** (contacts are being miscategorised — taxonomy fix needed first). These require different interventions.
+
+Prioritisation: high-volume Reasons with zero `COVERED_BY` edges and no taxonomy node are the first fix. High-volume Reasons with zero `COVERED_BY` edges but a valid taxonomy node are the first content investment.
+
+Phase 2 answers Use Case A only — which content exists? It does not attempt to answer which Reasons Fin can resolve (Use Case B, Phase 4).
