@@ -28,9 +28,22 @@ Checkout must transition from a human-first support operation to an AI-native su
 
 The Care team will build an AI-native support system on the Care flywheel: Input → Orchestration → Fuel → Agent Experience → Insight and Prevention → Governance. Every investment decision will be evaluated against its contribution to the flywheel, not against standalone productivity metrics.
 
+Operating at this scale requires managing a resolution engine, not a ticket queue — instrumenting, maintaining, and continuously optimising the system that handles contacts. Every resolution path must be mapped and standardised before volume arrives; retrofitting AI into broken processes creates a performance ceiling that cannot be engineered away. *[Fin Blueprint: Transform Your Business — Infrastructure Mindset]*
+
 The guiding principle is that AI handles volume; humans handle complexity. By 2030, Fin resolves 80%+ of B2B contacts autonomously and the majority of B2C contacts, with human agents reserved exclusively for Premium/Enterprise escalations, regulated contacts, and novel issue types. This is not a headcount reduction target — it is a service architecture. Agents become specialists, not generalists. The cost structure shifts from scaling-with-volume to fixed-at-complexity.
 
 Reaching 80% AI resolution requires three things to be true simultaneously: Fin must be fully deployed as the primary channel with complete Procedures coverage; the knowledge base must function as infrastructure with systematic refresh cycles, not as documentation updated reactively; and Reflex must operate as an autonomous intelligence layer that converts contact signals into product priorities and, ultimately, product fixes. These three things are the flywheel. Progress on any one of them without the others does not achieve the strategic goal.
+
+### Resolution Architecture
+
+Contact resolution operates across four layers, each handling a distinct class of contact:
+
+1. **Instant AI Resolution** — Fin resolves routine queries using knowledge base and Customer 360 data. Target: 60–80% of contacts.
+2. **Actionable AI** — Fin executes multi-step workflows via Procedures: refund status, settlement queries, webhook diagnostics. Moves beyond Q&A to action via backend integrations.
+3. **AI-Assisted Handoff** — Fin escalates with full context assembled: transcript, Customer 360, Reflex signal, and AI-suggested next action. The agent receives a prepared brief, not a cold transfer.
+4. **Human-Led Expertise** — Complex or high-value issues routed to specialists. Premium and Enterprise escalations only.
+
+The transition from layer 3 to layer 4 is a named design constraint. A customer who repeats themselves after being transferred from AI to a human agent is a system failure, not a normal handoff. Full context continuity is non-negotiable. *[Fin Blueprint: Customer Experience — 4-Layer Resolution Architecture and "The Void"]*
 
 The operating model transformation is not a 2030 problem — it is a 2026 design problem. The governance structures, ownership models, and quality metrics that will be required at 80% AI resolution must be designed now, tested at lower AI resolution rates, and scaled incrementally. Building them at the end is not possible.
 
@@ -178,6 +191,8 @@ The actions below map to the Care flywheel stages and build on each other in seq
 
 80% AI resolution does not mean 80% less operational work. The work shifts from handling contacts to maintaining the system.
 
+The metrics shift accordingly: First Response Time gives way to Automated Resolution Rate; ticket-level CSAT gives way to AI-specific CSAT and handoff rate; Cost per Ticket gives way to Cost per Automated Resolution. *[Fin Blueprint: Transform Your Business — Leadership and Change Management]*
+
 | Dimension | Now (2026) | 2030 |
 |---|---|---|
 | **Agent role** | Volume handler across all contact types | Complex-case specialist; Premium/Enterprise escalations and regulated contacts only |
@@ -186,6 +201,20 @@ The actions below map to the Care flywheel stages and build on each other in seq
 | **QA** | Sampling-based, agent-focused, qualitative | AI-audit-focused, quantitative; Reflex monitors systematic Fin errors; human QA for exceptions |
 | **Cost structure** | Scales with contact volume | Fixed around specialist core; volume growth absorbed by AI |
 | **Key metric** | AI resolution rate | AI resolution rate + re-contact rate + resolution accuracy + content-type coverage |
+
+### Roles the AI-Native Model Requires
+
+Three roles become load-bearing as AI resolution scales — currently these responsibilities are split informally across Product, Content, and Operations with no dedicated ownership: *[Fin Blueprint: Org and System Design — Essential Scaling Roles]*
+
+| Role | Responsibility | Current gap |
+|---|---|---|
+| **AI Ops Lead** | Strategic owner of Fin resolution performance — analyses resolution trends, identifies coverage gaps, manages the Fin technical roadmap | No dedicated owner; responsibility shared across Product and Content with no accountability |
+| **Conversation Designer** | Owns the logic, tone, and Procedure design that governs how Fin behaves — ensures consistency across contact types and that Fin reflects Checkout's brand standard | Not a named role; Procedure design is done ad hoc by Product and Knowledge Manager |
+| **Knowledge Manager** | Shifts from maintaining help articles for human readers to maintaining structured content for LLMs — coverage targets, Reflex-driven gap detection, weekly review cadence | Role exists but scoped to human-facing KB; LLM-optimised content structure not yet a defined responsibility |
+
+These roles do not require net-new headcount immediately — in 2026 they are responsibilities assigned to existing team members. By 2027, as B2C volume arrives, the AI Ops Lead and Knowledge Manager become full-time functions. *[Fin Blueprint: Org and System Design — Essential Scaling Roles]*
+
+When AI absorbs 80%+ of contact volume, agent capacity does not simply reduce — it unlocks. That unlocked time is reinvested into proactive customer success (outreach to at-risk merchants before they contact), revenue influence (passing high-value expansion signals to account management), and structured product intelligence (human-resolved contacts feeding Reflex). This is how Care shifts from cost centre to value driver — and why headcount reduction is not the goal. *[Fin Blueprint: Economics — Capacity as Currency]*
 
 ---
 
