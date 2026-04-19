@@ -51,3 +51,8 @@ Phase 2 requires the existing Fin KB article set (879 articles) to be mapped aga
 Reflex tags product and payment method mentions with high confidence (exact-match against entity names). Reason mapping — which problem type does this article solve? — requires human judgement and is where review effort is concentrated.
 
 The longer-term goal is that tagging happens at authoring time: a mandatory taxonomy field in the Zendesk Guide publishing workflow means new articles produce graph edges automatically. This requires the Reason entity list to be stable, which is a Phase 1 completion criterion.
+<<<<<<< HEAD
+=======
+
+**Proposed next step**: 30-minute alignment between Charlie and Preethy to agree the review workflow for Phase 2 tagging, confirm ownership of the coverage matrix, and identify how it feeds into the content roadmap for Q2/Q3 2026.
+>>>>>>> b2bf67d126ac6b19d62bf7c51081c39b25dace9f
