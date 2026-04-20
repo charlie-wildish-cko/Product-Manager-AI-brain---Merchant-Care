@@ -1,12 +1,23 @@
 ---
 name: create-prd
 description: Run the full PRD creation workflow (Draft → Review Panel Critique → Refine → Condense) for a Care Product initiative. Invoke with /create-prd [topic or deliverable name]. Outputs a finished PRD saved to 04-active-work/.
-tools: Read, Glob, Grep, Bash, Write
+tools: Read, Glob, Grep, Bash, Write, Agent
 ---
 
 # Create PRD
 
 Run the full four-phase PRD workflow: **Draft → Critique → Refine → Condense**.
+
+## Model routing
+
+| Phase | Model | Reason |
+|-------|-------|--------|
+| Phase 1 — Orient | Opus | Strategic anchoring, roadmap alignment, problem framing |
+| Phase 2 — Draft | Sonnet | Structured writing against template |
+| Phase 3 — Critique | Opus | Deep multi-persona reasoning |
+| Phase 4 — Refine & Condense | Sonnet | Editing, condensing, file output |
+
+For Phase 1 and Phase 3, spawn an Agent with `model: "opus"`. Pass all relevant context (deliverable, reference files read, draft content) in the agent prompt. Use the agent's output as the input to the next phase — do not proceed until you have it.
 
 ---
 
@@ -26,6 +37,11 @@ Before writing anything:
    - `01-knowledge-base/products/customer-segments.md` — merchant segments
 
 4. **Clarify if needed.** If the deliverable, strategic goal, or core problem is unclear, ask one question to fill the most important gap. Do not ask multiple questions.
+
+5. **Spawn an Opus agent** with the following prompt structure:
+   > "You are doing strategic analysis for a PRD on [topic]. The 2026 deliverable is [deliverable text verbatim]. Read the following context: [paste content from care-product-model.md, customer-personas.md, customer-segments.md]. Produce: (1) the correct flywheel domain and a 2-sentence explanation of fit, (2) the primary strategic goal (reduce contact rate / reduce cost of support), (3) the top 3 open strategic questions the PRD must answer, (4) any risks that could cause this initiative to float (not connect to strategy)."
+
+   Wait for the Opus agent output before proceeding to Phase 2.
 
 ---
 
@@ -72,6 +88,8 @@ Field names in the Instrumentation section must match the column names in `suppo
 ---
 
 ## Phase 3 — Critique (Document Review Panel)
+
+**Spawn an Opus agent** for this phase. Pass it: (1) the full PRD draft text, (2) the content of `01-knowledge-base/processes/review-panel-personas.md`. Instruct it to run all applicable personas and return structured critique output (see below). Wait for the result before proceeding to Phase 4.
 
 Run the 5 core personas. Read `01-knowledge-base/processes/review-panel-personas.md` for full backstory, goals, and typical questions for each.
 

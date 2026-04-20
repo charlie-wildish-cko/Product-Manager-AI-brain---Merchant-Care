@@ -148,6 +148,18 @@ Run for any significant document from scratch: Draft → Critique (panel) → Re
 Run against any existing PRD when the template has been updated or scope has changed significantly.
 - Skill: `/prd-review [file path]` — audits PRD against current `03-templates/prd-template.md`, produces gap report, offers to apply fixes
 
+### Classifier Definitions
+Generate AI-readable classification definitions (TSV, paste-ready for Google Sheets) from taxonomy or product catalogue.
+- Skill: `/classify-definitions [taxonomy|products|both] [optional filter]`
+- Output: one row per class, columns include include_when, exclude_when, disambiguation, keywords, phrases, entities, examples
+- Saved to: `04-active-work/classifier-definitions-<scope>-<date>.tsv`
+
+### Model Routing in Skills
+Skills use Opus for strategic/analytical phases and Sonnet for writing/output phases.
+- Spawn `Agent(model: "opus")` for: roadmap anchoring, review panel critique, disambiguation analysis
+- Current model (Sonnet) handles: drafting, editing, file output
+- Add `Agent` to the `tools:` line in any skill that uses this pattern
+
 ### Publish to Confluence
 Add YAML front matter to any markdown file:
 ```yaml
