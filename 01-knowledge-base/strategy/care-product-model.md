@@ -1,4 +1,4 @@
-# The Care flywheel and its stages
+# The Care product model
 
 > Strategic principles for scaling the Care flywheel to 2030: [Support Scale Principles](support-scale-principles.md)
 >
@@ -8,8 +8,16 @@
 >
 > **Taxonomy reference**: The current support query taxonomy (Case Type → Issue Type → Reason) is documented in [`../processes/support-taxonomy.md`](../processes/support-taxonomy.md) — 13 case types, 41 issue types, ~107 reasons. Gaps for B2C (2027) and B2B banking (2028+) are noted there.
 
+## Two lenses on the same model
 
+This doc holds two lenses on Care. They are not alternatives. Each answers a different question, and both are used at leadership level.
 
+- **Operating model (Care flywheel)**: the lifecycle of a support contact through six stages. Best for roadmap narrative, how each stage compounds to move contact rate and cost per contact, ops alignment, and the year-by-year maturity view in [`care-capability-model.md`](care-capability-model.md).
+- **Capability stack**: the architectural layers we own, build, or buy. Best for vendor and build/buy/keep decisions (e.g. the [Zendesk platform RFC](../../04-active-work/zendesk-platform-decision-rfc.md)), eng investment framing, and "where does system X fit" questions.
+
+Every product and deliverable can be placed on both. The stack-to-flywheel mapping is immediately after the stack section.
+
+## Operating model: the Care flywheel
 
 | Stage | Components | Definition | Metrics | Product capabilities | Vision state |
 | :---- | :---- | :---- | :---- | :---- | :---- |
@@ -19,6 +27,39 @@
 | **4\. Agent Experience** | **Agent tools (Support platform, Diagnostics, Agent Consultant)** | The interface the human agent uses and the actions they can perform. | Average Handle Time (AHT) Taxonomy automation % Agent tool adoption rate per ticket Issue type/reason automation % | Ticketing system (support platform) Agent tools [Agent AI Consultant](../products/agent-consultant.md) Diagnostic tooling Knowledge access | 90% of Agent tasks are automated/semi-automated using AI-assisted tools Agents get AI-suggested actions on every ticket The support platform operates a 7-step agent workflow: ticket creation and enrichment → auto-classification and routing → agent assignment with Consultant suggestion → agent approves and acts → reply to customer → cross-team escalation via Jira or custom API to other teams (Treasury, Engineering, other business teams) as needed → ticket close triggers Reflex data feed Support platform scales to ~500 agents across B2B and B2C with walled permissions — B2C agents (including any BPO) cannot access B2B customer data Platform architecture is modular and build-around: our AI agents, data sources, and integrations plug into the platform — we do not build for the platform's constraints |
 | **5\. Insight and prevention** | **Support contact data sources Analytics on the sources** | The process and tooling used to translate individual customer issues into actionable product, process, or documentation improvements, and the measure of success in preventing future issues. | Quarterly top contact reasons per issue type % of top X contact reasons resolved by a product fix per quarter Contact Product tagging accuracy | Insights Support data product [Reflex](../products/reflex.md) | Automated outputs for Product/Engineering to prioritize and commit to fixing the top 5 contact drivers (B2B) Automated outputs for B2C contact drivers reviewed weekly to address Support data insights used across the Care flywheel (Input, Fuel, Governance, etc.) |
 | **6\. Governance (this is more Ops, less Product)** | **Scheduling SLA Management** **Quality Assurance (QA)** | The operating principles, processes, and metrics (SLA, QA) that ensure consistent delivery of service speed and quality, and compliance with regulatory or internal standards. | CSAT (AI Agent and Agent) SLA adherence Internal QA scores | Zendesk SLAs Support CSAT survey QA in Zendesk | We have a 90%+ CSAT We meet 95% SLA Full automated, QA scores of 90%+ |
+
+
+## Capability stack
+
+Seven layers describe how Care is technically architected today, and what each layer needs to become by 2030. Operations and Governance is a cross-cutting layer that applies across all the others.
+
+| # | Layer | Definition | Today | 2030 |
+|---|---|---|---|---|
+| 1 | **Channel** | How contacts arrive from customers | Email and Dashboard webform (Zendesk). B2C webform via Checkout Consumer brand | Email, Dashboard, in-app chat, IM/Slack, Phone across B2B and B2C. Platform-tagged structured entry for ISV contacts |
+| 2 | **Customer AI Agent** | AI that resolves customer contacts before a human sees them | Fin on Dashboard and some email. No Platform identification | Fin as triage on most channels. 80%+ resolution. Fin embedded in ISV portals (2027+) |
+| 3 | **Routing and Human Agent Experience** | Where tickets are routed, where human agents work, and how they escalate to other teams and systems (Salesforce, Jira, Slack) | Zendesk with manual and partial AI routing. Limited cross-system escalation | Auto-classified routing. ~500-agent platform across B2B and B2C with walled permissions. Cross-system escalation via Jira and custom APIs |
+| 4 | **Agent AI Assistant** | Internal AI that assists human agents with suggested actions, data lookups, and knowledge retrieval | Early investment in internal AI Agent with human-in-the-loop | Agent Consultant proactively suggests action on every ticket. Agent approves and acts. 90% of agent tasks automated or semi-automated |
+| 5 | **Integration and Data** | Joined-up customer, payments, and ops data surfaced to AI and agents | Payin data via agent tools with high latency. Other sources not AI-ready. No Platform merchant data access | Accurate, low-latency data via MCPs across all sources. Platform merchant data traversal for applicable queries |
+| 6 | **Knowledge** | Centrally hosted content, published to the customer-facing support site and to AI and agent tools | Reactive monthly content reviews. Manual gap detection. Focus on tutorials and video | Weekly AI-assisted gap analysis. 90% taxonomy coverage. Vertical-specific knowledge for Platform agents |
+| 7 | **Analytics and Insight** | Support data product for reporting, root-cause analysis, and prevention | Reflex in build | Weekly automated contact-driver reports. AI-generated action plans and fix PRs for eng review |
+| 8 | **Operations and Governance** *(cross-cutting)* | SLA, QA, scheduling, and complaint-handling tooling | Zendesk SLAs, Zendesk QA, ad hoc scheduling | Automated QA at 90%+ scores. AI-audit tooling. 95% SLA adherence. Formal B2C complaint handling for Consumer Duty |
+
+## How the stack maps to the flywheel
+
+Every stack layer maps to one or more flywheel stages, and every flywheel stage is covered by at least one stack layer.
+
+| Stack layer | Flywheel stage(s) |
+|---|---|
+| Channel | Input |
+| Customer AI Agent | Orchestration (deflection) |
+| Routing and Human Agent Experience | Orchestration (routing) and Agent Experience (UI) |
+| Agent AI Assistant | Agent Experience |
+| Integration and Data | Fuel (data) |
+| Knowledge | Fuel (content) and Input (publishing to support site) |
+| Analytics and Insight | Insight and Prevention |
+| Operations and Governance | Governance |
+
+**When to use which lens.** Use the flywheel for roadmap narrative, the metric compounding story (contact rate and cost per contact), and the year-by-year maturity view in [`care-capability-model.md`](care-capability-model.md). Use the stack for vendor and build/buy/keep decisions, eng investment framing, and architectural diagrams that show where a given system fits.
 
 
 ## B2C — Current State and Launch Considerations
