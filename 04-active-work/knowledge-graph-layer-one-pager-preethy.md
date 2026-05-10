@@ -1,4 +1,4 @@
-# Knowledge Graph Layer — What It Means for Content
+# Knowledge Graph Layer — What It Means for Knowledge and Content
 
 **Audience**: Preethy (Content Strategist)
 **Author**: Charlie Wildish
@@ -8,51 +8,65 @@
 
 ## The problem it solves
 
-Fin's resolution rate is constrained by content coverage. Right now, there is no systematic way to know which products, payment methods, or error types have adequate Fin content — and which are blank. Coverage gaps are discovered reactively, from escalations and failed resolutions, not before Fin is expected to handle them.
+Every contact that reaches Checkout's support operation requires two things to be resolved: the right knowledge, and the right data. Right now, there is no systematic way to know which contacts have adequate knowledge coverage — for any of the actors who might resolve them.
 
-The knowledge graph layer changes that. It is a structured map of the support domain — every product, problem type, and resolution action — that content can be checked against. Instead of reviewing articles by last-updated date, content coverage becomes a measurement: which nodes in the domain have mapped content, which are empty, and which have contradictions.
+A human agent resolving a reconciliation dispute needs an SOP. An L1 agent escalating a payout failure needs a playbook that tells them when escalation is appropriate, not just who to escalate to. Fin resolving a transaction status query needs a KB article. Agent Consultant surfacing context to an L1 agent needs structured knowledge it can retrieve and present in real time. Each actor, each contact type, each knowledge need is currently tracked in isolation — or not tracked at all.
+
+The knowledge graph changes that. It is a structured map of the entire support domain — every problem type, product, error state, and resolution action — that all knowledge assets can be checked against. Coverage becomes a measurement, not a judgement: which contact types have the right knowledge for the right actor, which are blank, and which are covered for Fin but not for the human agents who handle escalations.
 
 ---
 
 ## How it works
 
-The domain is modelled as entities and relationships. Phase 1 defines the entity vocabulary: 13 support domains, 37 problem types, ~103 reasons, 21 product categories, ~100 named products, 68 payment methods, the integration methods and action types that sit beneath them, and the 4 B2B merchant segments (Enterprise, Platform, Payfac, Issuing) that determine how a contact is handled. The Reason node is the hub — everything connects through it.
+The domain is modelled as entities and relationships. The entity vocabulary covers 13 support domains, 37 problem types, ~103 reasons, 21 product categories, ~100 named products, 68 payment methods, integration methods, action types, and 4 B2B merchant segments. The Reason node is the hub — everything connects through it.
 
-Phase 1b (now required before Phase 2) defines the relationship types that connect entities, and populates the first edges for the highest-volume contact types. This is what makes the graph traversable rather than a list of disconnected nodes.
+The graph models four resolution actors: **Fin** (autonomous AI), **Agent Consultant** (AI assistant to human agents), **Human L1** (first-line care agent), and **Human L2** (specialist/escalation). Each actor has distinct knowledge needs for the same Reason. A Reason mapped to "Status lookup" might be fully covered by a KB article for Fin, but an L1 agent handling the escalated version needs an SOP with step-by-step instructions, and Agent Consultant needs structured knowledge it can surface proactively during the conversation.
 
-Phase 2 maps existing Fin content against that vocabulary and produces a coverage matrix — a direct view of which Reason nodes have mapped content and which do not. The matrix distinguishes two gap types: **no content exists** (an article needs writing) and **no taxonomy node exists** (contacts are being miscategorised and the taxonomy needs fixing first). These require different interventions. Phase 3 overlays Fin query volume and resolution rate data, so the matrix shows not just gaps but prioritised gaps: high-volume nodes with no content coverage.
+Four Knowledge Asset subtypes are tracked:
+
+| Subtype | Who needs it | Who owns it |
+|---|---|---|
+| KB article | Fin, Agent Consultant | Content team (Preethy) |
+| SOP | Human L1, Agent Consultant | Process Architect |
+| Escalation playbook | Human L1, Human L2 | Operations |
+| Policy rule | Human L1, Human L2, Agent Consultant | Operations Excellence |
+
+Phase 2 maps existing knowledge assets across all four subtypes against the Reason vocabulary and produces a unified coverage matrix — which Reasons have the right knowledge asset for each actor, and which do not. Phase 3 overlays contact volume, so the matrix shows prioritised gaps: high-volume Reasons with no coverage for any actor.
 
 ---
 
-## What this means for content prioritisation
+## What this means for content strategy
 
-The coverage matrix replaces manual prioritisation with evidence-based prioritisation. The nodes that combine high contact volume, low Fin resolution rate, and no mapped content are the highest-leverage content opportunities — and they will be visible before they become escalations.
+The coverage matrix gives content prioritisation a data foundation it has never had. The highest-leverage content investments are Reasons that combine: high contact volume, no mapped KB article for Fin, and no mapped SOP for L1. These are contacts that neither Fin nor human agents can resolve well — and they are visible before they become escalations.
 
-This directly supports the content strategy's guide programme. The Transactions guide and Balances & Settlements initiative are already targeting the highest-volume domains (PAYMENTS IN at 42.8%, FUNDS AND FEES at 7.5%). The matrix will show which specific reasons and products within those domains are uncovered, so guide scope is driven by data, not assumption.
+Two new dimensions change what "content gap" means:
 
-It also surfaces the product categories that currently have no taxonomy coverage — Vault, Treasury & FX, Real-Time Account Updater, Intelligent Acceptance, and the 17 partner integration platforms. For some, contacts exist but are miscategorised under other case types. For others, there is genuinely no contact surface yet. The goal is no gaps — both cases need resolving before Phase 2 content mapping can be complete.
+**Actor dimension**: An article that covers a Reason for Fin is not automatically the right content for Agent Consultant to surface to an L1 agent. Fin needs factual, structured content it can retrieve and embed in a response. An L1 agent needs step-by-step instructions they can follow in real time. Agent Consultant needs content formatted for rapid surfacing — short, action-oriented, unambiguous. Where an article exists for one actor but is the wrong format for another, that is a content gap of a different type: not missing, but not fit for purpose.
+
+**SOP coverage as a content signal**: High L1 handle time on a Reason with no mapped SOP is a content problem, not an operations problem. The matrix makes this connection explicit. When SOP gaps drive handle time, the content strategy needs to address them directly — not wait for an operations review to surface the issue.
+
+It also surfaces product categories with no taxonomy coverage — Vault, Treasury & FX, Real-Time Account Updater, and others — where contacts exist but are miscategorised. These need resolving before Phase 2 content mapping can be complete: the taxonomy fix comes first, the content investment follows.
 
 ---
 
-## Content ownership implications
+## Ownership
 
-The Content team owns the knowledge graph. This is not just ownership of the articles — it is ownership of the structured map that connects articles to the support domain. That means the coverage matrix is a Content team artefact, not a data or product one, and content prioritisation decisions are made against it directly.
+The Content team owns the KB article layer of the graph — the edges between Reason nodes and KB articles, the coverage matrix for Fin and Agent Consultant, and content prioritisation decisions. That ownership is more specific than before: it is not ownership of the whole graph, but ownership of one Knowledge Asset subtype and its relationships.
 
-Every entity in the graph has a named owner. Product entities are owned by the product team responsible for that product. Resolution path entities — action types and reasons — are owned by Support Ops. Content that maps to an entity inherits that ownership, making it clear who is accountable when a product changes and downstream content needs updating.
+The Process Architect owns the SOP layer. Operations Excellence owns policy rules. Operations owns escalation playbooks. The graph makes the boundaries explicit — and makes cross-team dependencies visible. When a product changes, the graph flags every Knowledge Asset with an edge to that entity for review: KB articles (Content team), SOPs (Process Architect), playbooks (Operations). All at the same time, not sequentially after the first failure.
 
-The end-state goal is that product release triggers flag entity-level content dependencies automatically — a change to 3DS authentication surfaces every article mapped to that entity for review before the change ships, not after the first Fin failure.
+Each entity in the graph has a named owner for product entities (the responsible product team) and for resolution path entities — action types and reasons (Support Ops). Knowledge assets inherit accountability from the entity they cover, not from the team that published them.
 
 ---
 
 ## Immediate relevance
 
-Phase 2 requires the existing Fin KB article set (879 articles) to be mapped against the entity taxonomy. This will not be done manually — Reflex will run LLM-assisted tagging against the article library and output suggested edges as structured data. Preethy's role in Phase 2 is to review those suggestions, not to tag from scratch. The distinction matters: reviewing AI suggestions for 879 articles is hours of work; tagging 879 articles manually is weeks.
+Phase 2 runs two parallel workstreams:
 
-Reflex tags product and payment method mentions with high confidence (exact-match against entity names). Reason mapping — which problem type does this article solve? — requires human judgement and is where review effort is concentrated.
+**KB article tagging (Preethy)**: Reflex runs LLM-assisted tagging against the 879-article library and outputs suggested edges as structured data — which article covers which Reason, for which actor. Preethy's role is to review those suggestions, not tag from scratch. Reviewing AI suggestions for 879 articles is hours of work; tagging manually is weeks. Reflex is high-confidence on product and payment method mentions (exact-match against entity names); Reason mapping requires human judgement and is where review effort concentrates.
 
-The longer-term goal is that tagging happens at authoring time: a mandatory taxonomy field in the Zendesk Guide publishing workflow means new articles produce graph edges automatically. This requires the Reason entity list to be stable, which is a Phase 1 completion criterion.
-<<<<<<< HEAD
-=======
+**SOP tagging (Process Architect)**: Same workflow applied to the SOP library. Both workstreams feed into the same coverage matrix. Where a Reason has a KB article but no SOP, the matrix flags it as covered for Fin but not for L1. Where neither exists, it is a full gap.
 
-**Proposed next step**: 30-minute alignment between Charlie and Preethy to agree the review workflow for Phase 2 tagging, confirm ownership of the coverage matrix, and identify how it feeds into the content roadmap for Q2/Q3 2026.
->>>>>>> b2bf67d126ac6b19d62bf7c51081c39b25dace9f
+The longer-term goal is authoring-time tagging: a mandatory taxonomy field in the Zendesk Guide publishing workflow means new articles produce graph edges automatically. This requires the Reason entity list to be stable, which is a Phase 1 completion criterion.
+
+**Proposed next step**: 30-minute alignment between Charlie and Preethy to agree the Phase 2 review workflow for KB article tagging, confirm the actor dimension of the coverage matrix (Fin vs Agent Consultant mapping), and identify how the matrix feeds into the content roadmap for Q2/Q3 2026.

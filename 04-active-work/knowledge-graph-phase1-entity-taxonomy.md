@@ -9,14 +9,16 @@
 >
 > **Scope**: B2B support only. The B2C taxonomy does not yet exist — B2C (Consumer/Braavos) is excluded from all phases until that taxonomy is defined (2027+). See note under Class 10.
 >
-> **Owner**: Charlie Wildish (draft); Content team on appointment
+> **Resolution scope**: All resolution actors — Fin (autonomous AI), Agent Consultant (AI-assisted human), Human L1, Human L2, External. The graph does not model Fin in isolation. It models the knowledge and data required to resolve each Reason across the full actor stack. See Classes 11–13.
+>
+> **Owner**: Charlie Wildish (draft); Content team (knowledge assets); Process Architect (SOPs/playbooks); Engineering (data integrations)
 > **Status**: Draft — not yet validated against Fin query data or agent SOP content
 
 ---
 
 ## Entity Classes
 
-Ten entity classes in total. Classes 1–3 map directly to the taxonomy's three-level structure. Classes 4–6 are sourced from the canonical product catalogue CSV. Classes 7–9 are implicit in the taxonomy and need to be surfaced explicitly. Class 10 was added in the April 2026 design review — the original 9-class list omitted segment context, which is required for routing differentiation.
+Thirteen entity classes in total. Classes 1–3 map directly to the taxonomy's three-level structure. Classes 4–6 are sourced from the canonical product catalogue CSV. Classes 7–9 are implicit in the taxonomy and need to be surfaced explicitly. Class 10 was added in the April 2026 design review — the original 9-class list omitted segment context, which is required for routing differentiation. Classes 11–13 were added to extend the graph beyond Fin to the full resolution actor stack (Fin, Agent Consultant, Human agents).
 
 | # | Entity Class | Description | Source |
 |---|---|---|---|
@@ -27,11 +29,14 @@ Ten entity classes in total. Classes 1–3 map directly to the taxonomy's three-
 | 5 | **Product / Feature** | Named Checkout product within a category (e.g. Pre-Disputes, Bank Payouts, Forward API). | Product catalogue CSV |
 | 6 | **Payment Method** | Specific payment method or card scheme (e.g. SEPA Direct Debit Core, Klarna BNPL, Mada). Treated as a separate class due to volume and geographic distribution. | Product catalogue CSV — Payment Methods category |
 | 7 | **Integration Method** | How the merchant connects to Checkout: technical integration (API, Flow, HPP, SDK) or via a partner platform (Shopify, WooCommerce, Gr4vy). | Taxonomy + Product catalogue CSV — Partner Integrations category |
-| 8 | **Action Type** | The resolution action required to close the contact. Determines Fin automability. | Implied by Reasons |
+| 8 | **Action Type** | The resolution action required to close the contact. Determines automability across all actors. | Implied by Reasons |
 | 9 | **Error / State** | Specific error code or status state that triggered the contact. | Implied by Reasons |
-| 10 | **Customer Segment** | Which B2B merchant segment raised the contact. Determines handling path (Fin-resolvable vs L2 escalation). B2C excluded until consumer taxonomy is defined (2027+). | `customer-segments.md` |
+| 10 | **Customer Segment** | Which B2B merchant segment raised the contact. Determines handling path and which actor is primary. B2C excluded until consumer taxonomy is defined (2027+). | `customer-segments.md` |
+| 11 | **Resolution Actor** | Who handles the contact: Fin, Agent Consultant, Human L1, Human L2, External. The graph models knowledge and data requirements per actor, not just per Reason. | Design |
+| 12 | **Knowledge Asset** | A structured knowledge artefact used by an actor to resolve a contact. Subtypes: KB article, SOP, escalation playbook, policy rule. Tacit knowledge (no doc exists) surfaces as a gap — a Reason with no mapped Knowledge Asset for a given Actor. | Content team; Process Architect; Operations Excellence |
+| 13 | **Tool / System** | The system an actor uses to access data for a given Reason. Distinct from the data itself. Examples: Fin Procedure, Agent Consultant context panel, Zendesk admin, internal admin portal, partner / scheme portal. | Engineering; Operations |
 
-Classes 7–9 are not yet fully enumerated — they are the extension work of Phase 1.
+Classes 7–9 are not yet fully enumerated — they are the extension work of Phase 1. Classes 11–13 are new additions — initial entity lists in sections below, full enumeration in Phase 1b.
 
 ---
 
@@ -283,30 +288,102 @@ Added in design review, April 2026. The original 9-class taxonomy had no concept
 
 ---
 
+## Class 11 — Resolution Actor (5 entities)
+
+Added April 2026. The graph previously modelled Fin as the only resolution actor — the question was "can Fin resolve this?" The expanded model covers the full actor stack. Each actor has distinct knowledge and data requirements for the same Reason. The graph models those requirements per actor, not just per Reason, making knowledge and data gaps visible across the entire support operation.
+
+| Actor | Description | Cost benchmark |
+|---|---|---|
+| **Fin** | Autonomous AI agent. Resolves without human involvement. Knowledge: KB articles via Procedures. Data: API integrations and BigQuery via Fin Procedures. | $0.90/resolution |
+| **Agent Consultant** | AI assistant to human agents. Surfaces knowledge, context, and recommended actions at the point of resolution. Does not resolve autonomously — reduces human handle time and improves consistency. Knowledge: SOPs, KB articles, policy rules. Data: Customer 360, transaction history, case history. | Handle time reduction on human cost |
+| **Human L1** | Care agent (first line). Resolves standard contacts using SOPs, tools, and KB. Escalates to L2 when outside scope or authority. Knowledge: SOPs, playbooks, KB articles, training. Data: Zendesk, internal admin portal, partner tools. | ~$40/contact |
+| **Human L2** | Specialist or senior agent (second line). Handles escalations requiring deeper system access, exception authority, or partner/scheme involvement. Knowledge: Specialist SOPs, escalation criteria, policy authority. Data: Deep system access, partner/scheme portals, external APIs. | ~$40+/contact |
+| **External** | Third-party actor (acquiring bank, card scheme, issuer, partner platform). Required when resolution depends on action outside Checkout's control. Examples: chargeback outcome with Visa, issuer confirmation for a declined transaction. | N/A — dependency |
+
+**Key insight**: The same Reason can have different primary actors by segment. A Platform contact about "Transfers & Splits" is Human L2 (Checkout is second-line); the same Reason for Enterprise may be Fin-resolvable. The actor-segment combination determines the resolution path.
+
+---
+
+## Class 12 — Knowledge Asset (4 subtypes)
+
+Added April 2026. Previously the graph modelled only KB articles as knowledge objects, via `COVERED_BY` edges. The expanded model recognises four distinct Knowledge Asset subtypes, each required by different actors. Tacit knowledge — things agents resolve from experience with no documented artefact — surfaces in the graph as a gap: a Reason with no mapped Knowledge Asset for a given Actor. This makes invisible knowledge visible as a structural deficit.
+
+| Subtype | Description | Primary actor | Owner |
+|---|---|---|---|
+| **KB article** | Fin-facing and merchant-facing content published in Zendesk Guide. Addresses a Reason directly or provides background. | Fin, Agent Consultant | Content Strategist |
+| **SOP** | Care Agent standard operating procedure. Step-by-step resolution instructions for L1 agents. Equivalent to a Fin Procedure for humans. | Human L1 | Process Architect |
+| **Escalation playbook** | Criteria and steps for escalating a Reason from L1 to L2 or External. Defines when escalation is appropriate, not just who to escalate to. | Human L1, Human L2 | Operations |
+| **Policy rule** | Explicit business rule governing resolution authority. Examples: refund thresholds, exception approval levels, data disclosure rules. | Human L1, Human L2, Agent Consultant | Operations Excellence |
+
+**Governance note**: Each Knowledge Asset subtype has a named owner above. When a product or process changes, the graph must surface all Knowledge Assets with `REQUIRES_KNOWLEDGE` edges to the affected entity — not just KB articles. SOPs and playbooks are equally at risk of going stale from product changes.
+
+---
+
+## Class 13 — Tool / System (initial enumeration)
+
+Added April 2026. Distinct from Data Assets (what data exists) and Knowledge Assets (what knowledge exists) — Tools are the systems actors use to access data for a given Reason. Modelling Tools separately makes tooling gaps and access permission gaps visible: an actor may have the knowledge and data in principle, but lack the tool or credential scope to access it.
+
+| Tool | Actor | Access type |
+|---|---|---|
+| Fin Procedure | Fin | API integration or BigQuery query. The Procedure is the access mechanism — no Procedure = no data access regardless of whether the data exists. |
+| Agent Consultant context panel | Agent Consultant | Customer 360 surface, case history, recommended actions. Configured by Product/Content. |
+| Zendesk admin (ticket view) | Human L1, Human L2 | Ticket history, tags, macros, SLA state. Standard access. |
+| Internal admin portal | Human L1, Human L2 | Account settings, balance tools, configuration state. Access tiers vary by agent role. |
+| Dashboard (merchant portal) | Human L1 (read-only view) | Merchant-side transaction and account view. Used for context, not action. |
+| Partner / scheme portal | Human L2, External | Visa DPS, issuer portal, bank partner portal. L2-only access; requires specific credentials and training. |
+| BigQuery / data tooling | Human L2, Data team | Ad hoc query for investigation. Not a standard L1 tool. |
+
+**Tooling gap model**: A Reason may have a data source available but no Tool configured for the relevant Actor to access it. This is a distinct gap type from "data does not exist" — it requires a configuration or access change, not an API integration. The graph distinguishes these cases.
+
+---
+
 ## Relationship Schema (Phase 1b)
 
-Relationship types must be defined before Phase 2 (content coverage mapping) begins. Without them, Phase 2 produces a flat content list mapped to isolated nodes, not a traversable graph. The `INVOLVES` and `COVERED_BY` edges are the minimum required to run a meaningful coverage matrix.
+Relationship types must be defined before Phase 2 (content coverage mapping) begins. Without them, Phase 2 produces a flat content list mapped to isolated nodes, not a traversable graph. The `INVOLVES` and `REQUIRES_KNOWLEDGE` edges are the minimum required to run a meaningful coverage matrix across all actors.
+
+**Domain and product structure**
 
 | Relationship | Direction | Cardinality | Notes |
 |---|---|---|---|
 | `CONTAINS` | Domain → Problem Type → Reason | 1:many | Hierarchical; already implicit in taxonomy structure |
 | `INVOLVES` | Reason → Product/Feature | many:many | Core edge for content routing. A Reason may involve multiple products. |
 | `INVOLVES` | Reason → Payment Method | many:many | Exposes APM-specific coverage gaps in Phase 2 |
-| `RESOLVED_BY` | Reason → Action Type | many:1 | Determines Fin automability. "Status lookup" = candidate for data Procedure; "Configuration change" = human-in-loop |
+| `RESOLVED_BY` | Reason → Action Type | many:1 | Determines automability across all actors — not just Fin. "Status lookup" = Fin candidate; "Configuration change" = human-in-loop by default |
 | `RAISED_BY` | Reason → Customer Segment | many:many | With contact volume weight from CSV. Unlocks segment-differentiated routing in Phase 4 |
 | `ROUTED_VIA` | Reason → Integration Method | many:many | Affects resolution path — Shopify merchant has different error origin than direct REST API |
 | `TRIGGERS` | Error/State → Reason | many:many | Connects formal error codes to the Reasons they surface as |
 | `BELONGS_TO` | Product/Feature → Product Category | many:1 | Hierarchical |
-| `COVERED_BY` | Reason → Content Article | many:many | **Phase 2** — maps existing Fin/KB content to Reason nodes; absence = coverage gap |
-| `HANDLED_BY` | Reason × Segment → Fin Procedure | many:many | **Phase 4** — the routing output. Input to Fin Procedures PRD. Living artifact as Procedures become BAU. |
+
+**Knowledge coverage — all actors**
+
+| Relationship | Direction | Cardinality | Notes |
+|---|---|---|---|
+| `REQUIRES_KNOWLEDGE` | Reason × Actor → Knowledge Asset | many:many | What each actor needs to resolve this Reason. Absence = knowledge gap per actor. Replaces the Fin-only `COVERED_BY` model. |
+| `REDUCES_TIME_FOR` | Knowledge Asset → Reason × Actor | many:many | **Phase 3** — Agent Consultant surfacing a SOP reduces L1 handle time. Measurable: compare handle time for contacts where AC surfaced an asset vs. where it did not. |
+
+**Data coverage — all actors**
+
+| Relationship | Direction | Cardinality | Notes |
+|---|---|---|---|
+| `DATA_AVAILABLE_FOR` | Reason × Actor → Data Source | many:many | **Data graph** — does the data needed to resolve this Reason exist and is it accessible for this Actor? Four states: no source / partial / blocked / live. Extends the Fin-only Procedure model to all actors. |
+| `USES_TOOL` | Actor × Reason → Tool | many:many | Which Tool the Actor uses to access data for this Reason. A data source may exist but be inaccessible if no Tool is configured for that Actor. |
+
+**Routing and escalation**
+
+| Relationship | Direction | Cardinality | Notes |
+|---|---|---|---|
+| `HANDLED_BY` | Reason × Segment → Resolution Actor | many:many | **Phase 4** — the routing output. Now multi-actor: Fin → AC-assisted L1 → unassisted L1 → L2. Primary actor determined by current coverage state of `REQUIRES_KNOWLEDGE` and `DATA_AVAILABLE_FOR` edges. Living artifact as Procedures, SOPs, and AC configuration change. |
+| `ESCALATES_TO` | Actor × Reason → Actor | many:many | When and to whom a Reason escalates. Distinguishes structural escalations (L2 is always right) from avoidable ones (L1 lacks tool or SOP). |
 
 **Construction format**: Edges stored as a relationship CSV alongside this taxonomy doc:
 
 ```
-source_class, source_entity, relationship_type, target_class, target_entity, weight, notes
+source_class, source_entity, relationship_type, target_class, target_entity, actor, weight, state, notes
 ```
 
-Human-editable, queryable with Python (pandas), version-controlled (diff-friendly for BAU Fin Procedure updates), and ingestible into a graph system later. Phase 1b task: populate `INVOLVES` (Reason → Product) and `RAISED_BY` (Reason → Segment) for top-volume Reasons — PAYMENTS (IN) and ACCOUNT MANAGEMENT & ACCESS (~60% of contacts) — before Phase 2 begins.
+The `actor` column is new — it makes per-actor knowledge and data edges representable in the same flat format. `state` applies to `DATA_AVAILABLE_FOR` edges (no source / partial / blocked / live). Human-editable, queryable with Python (pandas), version-controlled (diff-friendly for BAU updates), and ingestible into a graph system later.
+
+Phase 1b task: populate `INVOLVES` (Reason → Product) and `RAISED_BY` (Reason → Segment) for top-volume Reasons — PAYMENTS (IN) and ACCOUNT MANAGEMENT & ACCESS (~60% of contacts) — and agree the `REQUIRES_KNOWLEDGE` actor mapping for the same Reason set before Phase 2 begins.
 
 ---
 
@@ -344,7 +421,11 @@ A mandatory taxonomy tag field in Zendesk Guide authoring workflow. Publishing a
 **Product release trigger (end state)**
 When a product changes, the graph flags every article with a `COVERED_BY` or `INVOLVES` edge to that product entity for review — before the change ships. Prevents content drift from product changes that invalidate articles without triggering updates.
 
-**Architectural note**: Reflex is the write path for the knowledge graph. The graph is the structured output Reflex produces; Fin reads from it to route contacts and select content. Loop: Reflex analyses contacts/content → populates graph edges → Fin uses graph → Fin resolution outcomes feed back into Reflex for validation.
+**Extended scope — SOPs and playbooks**: The same LLM-assisted tagging approach applies to SOP content (`01-knowledge-base/processes/Care Agent SOPs/`). Reflex reads each SOP against the entity taxonomy and outputs suggested `REQUIRES_KNOWLEDGE` edges (Reason × Human L1 → SOP). Process Architect reviews. This is Phase 2 work alongside KB article tagging — not a later phase.
+
+**Product release trigger (end state)**: When a product changes, the graph flags every Knowledge Asset (KB article, SOP, playbook, policy rule) with a `REQUIRES_KNOWLEDGE` edge to the affected entity for review — before the change ships. Previously this was scoped to KB articles only. The expanded model catches SOPs and playbooks that are equally at risk of staleness from product changes.
+
+**Architectural note**: Reflex is the write path for the knowledge and data graph. The graph is the structured output Reflex produces; Fin and Agent Consultant read from it to route contacts, select content, and surface knowledge assets. Loop: Reflex analyses contacts/content/SOPs → populates graph edges → Fin and AC use graph → resolution outcomes feed back into Reflex for validation.
 
 ---
 
@@ -359,9 +440,12 @@ When a product changes, the graph flags every article with a `COVERED_BY` or `IN
 | Product / Feature | Complete (~100) | Taxonomy mapping gaps documented above |
 | Payment Method | Complete (68) | No contact volume split by payment method yet — Phase 3 work |
 | Integration Method | Good (technical: 6; partners: 17) | Webhook transport and token sub-types for Phase 4 |
-| Action Type | Draft (10 categories) | Not yet validated against SOP content |
+| Action Type | Draft (10 categories) | Not yet validated against SOP content or human agent SOPs |
 | Error / State | Partial (~11 extracted) | Not bound to API error code registry |
 | Customer Segment | Draft (4 B2B entities) | Contact volume split by segment not yet aggregated; B2C excluded until 2027 |
+| Resolution Actor | Draft (5 entities) | Per-actor knowledge and data requirements not yet mapped; owned by multiple teams |
+| Knowledge Asset | Draft (4 subtypes defined) | SOP inventory not yet enumerated; playbooks and policy rules not yet catalogued |
+| Tool / System | Draft (7 tools listed) | Access tier mapping per Reason not yet modelled; credential scope gaps not assessed |
 
 ---
 
@@ -377,11 +461,13 @@ When a product changes, the graph flags every article with a `COVERED_BY` or `IN
 
 ## Phase 1b Completion Criteria (required before Phase 2)
 
-- [ ] Relationship schema agreed (10 relationship types above)
-- [ ] Relationship CSV format agreed and first file created
+- [ ] Relationship schema agreed (all relationship types above, including new actor-scoped types)
+- [ ] Relationship CSV format agreed with `actor` and `state` columns added; first file created
 - [ ] `INVOLVES` edges populated for top-volume Reasons: all Reasons under PAYMENTS (IN) and ACCOUNT MANAGEMENT & ACCESS
 - [ ] `RAISED_BY` edges populated for the same Reasons, with volume weights from `support_contacts_flat_table_2025_last_6m.csv`
-- [ ] Reflex Phase 2 scoped to include LLM-assisted article tagging as a named capability
+- [ ] `REQUIRES_KNOWLEDGE` actor mapping agreed for top-volume Reasons — which actor needs which Knowledge Asset subtype per Reason
+- [ ] Named owner assigned per entity class, including Classes 11–13 (Resolution Actor, Knowledge Asset, Tool)
+- [ ] Reflex Phase 2 scoped to include LLM-assisted tagging of both KB articles and SOP content
 
 ---
 
@@ -389,20 +475,29 @@ When a product changes, the graph flags every article with a `COVERED_BY` or `IN
 
 | Phase | Deliverable | Blocker for next |
 |---|---|---|
-| Phase 1 | Entity classes + vocabulary (this doc) | Class 10, relationship types, Reason count reconciliation, gap investigation |
-| Phase 1b | Relationship schema + starter edges | `INVOLVES` and `RAISED_BY` populated for top-volume Reasons; relationship CSV created |
-| Phase 2 | Content coverage matrix | Reflex LLM tagging run against 879 articles; `COVERED_BY` edges reviewed by Content team |
-| Phase 3 | Volume-weighted graph | Contact volume split by Segment and Payment Method; Fin usage signals feed back into edge weights |
-| Phase 4 | Fin routing map | `HANDLED_BY` (Reason × Segment → Procedure) — input to Fin Procedures PRD; becomes living BAU artifact |
+| Phase 1 | Entity classes + vocabulary (this doc), now including Classes 11–13 | Relationship types, Reason count reconciliation, gap investigation, owner assignment for all 13 classes |
+| Phase 1b | Relationship schema + starter edges | `INVOLVES`, `RAISED_BY`, and `REQUIRES_KNOWLEDGE` actor mapping populated for top-volume Reasons; relationship CSV created |
+| Phase 2 | Full knowledge coverage matrix (all actors) | Reflex LLM tagging of 879 KB articles and SOP inventory; `REQUIRES_KNOWLEDGE` edges reviewed by Content team and Process Architect |
+| Phase 3 | Volume-weighted graph + data coverage layer | Contact volume split by Segment and Payment Method; `DATA_AVAILABLE_FOR` edges populated per actor; Fin usage signals feed back into edge weights |
+| Phase 4 | Full resolution routing map | `HANDLED_BY` (Reason × Segment → Actor) and `ESCALATES_TO` chains defined; input to Fin Procedures PRD and Agent Consultant configuration; becomes living BAU artifact |
 
 ---
 
 ## Phase 2 Preview
 
-With entity classes and relationship schema defined (Phases 1 + 1b), Phase 2 maps existing Fin content articles against Reason nodes via `COVERED_BY` edges, generated by Reflex AI Engine and reviewed by the Content team. Output: a coverage matrix showing which Reason nodes have mapped content and which do not.
+With entity classes and relationship schema defined (Phases 1 + 1b), Phase 2 maps existing knowledge assets against Reason nodes via `REQUIRES_KNOWLEDGE` edges across all actors — not just Fin content.
 
-The matrix distinguishes two gap types: **no content exists** (article needs to be written) vs **no taxonomy node exists** (contacts are being miscategorised — taxonomy fix needed first). These require different interventions.
+**KB articles** (879): Reflex AI Engine generates suggested edges; Content team reviews. Same approach as originally scoped.
 
-Prioritisation: high-volume Reasons with zero `COVERED_BY` edges and no taxonomy node are the first fix. High-volume Reasons with zero `COVERED_BY` edges but a valid taxonomy node are the first content investment.
+**SOPs** (~526 articles in Zendesk KB, 125 folders): Reflex generates suggested `REQUIRES_KNOWLEDGE` (Reason × Human L1 → SOP) edges; Process Architect reviews. This is new scope for Phase 2 — not a later phase — because SOP gaps and KB article gaps are the same class of problem requiring the same fix mechanism.
 
-Phase 2 answers Use Case A only — which content exists? It does not attempt to answer which Reasons Fin can resolve (Use Case B, Phase 4).
+**Playbooks and policy rules**: Inventory required before tagging can begin. Process Architect and Operations Excellence to enumerate. Likely smaller in volume; high priority because gaps here create escalation inconsistency and quality failures.
+
+The Phase 2 matrix distinguishes three gap types:
+- **No knowledge asset exists** for this Reason × Actor — asset needs to be created
+- **Asset exists but is unmapped** — edge needs to be created; content may already cover this
+- **No taxonomy node exists** — contacts are being miscategorised; taxonomy fix required before content gap can be assessed
+
+Prioritisation: high-volume Reasons with no mapped knowledge asset for any actor are the first fix. High-volume Reasons with KB coverage for Fin but no SOP for L1 are the second priority — these are contacts Fin escalates that L1 cannot resolve quickly without guidance.
+
+Phase 2 answers: which knowledge assets exist, for which actors? It does not answer whether Fin or AC can resolve the Reason (Phase 4), or whether the data required is available (Phase 3).

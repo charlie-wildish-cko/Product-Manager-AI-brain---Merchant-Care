@@ -225,7 +225,7 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 
 **Investment asks**: Team growth investment asks start 2027. The current team can deliver the 2026 B2B roadmap but cannot simultaneously build the 2027 B2C foundation.
 
-**Care capability model**: Full year-by-year product maturity (2026–2030) per flywheel stage is in `01-knowledge-base/strategy/care-capability-model.md`.
+**Care product model 2030 mapping**: Full product mapping per flywheel stage and stack layer (existing, build, buy, agentic) is in `04-active-work/care-product-model-2030-mapping.md`.
 
 **Operating model at scale**: Implications of 80%+ AI resolution by 2030 (agent roles, governance, knowledge infra, ownership, successor metrics) in `01-knowledge-base/strategy/operating-model-at-scale.md`.
 
