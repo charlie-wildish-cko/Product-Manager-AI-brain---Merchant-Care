@@ -34,7 +34,7 @@ Every document, analysis, or recommendation must connect to:
 01-knowledge-base/   # Reference docs — strategy, products, processes, payment domain, metrics
 02-workflows/        # Step-by-step process guides
 03-templates/        # Reusable document templates (PRD, memo, user story, etc.)
-04-active-work/      # Current sprint work, active PRDs, stakeholder updates, investigations
+04-active-work/      # Current sprint work, active PRDs, stakeholder updates
 05-archive/          # Completed work by year/quarter
 ```
 

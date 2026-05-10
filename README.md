@@ -209,11 +209,7 @@ Reusable formats for common PM deliverables:
 
 Your work-in-progress organized by type:
 
-**current-sprint/** - Work for this sprint/week
-
 **roadmap-items/** - Features being planned or built
-
-**investigations/** - Deep dives on support issues or opportunities
 
 **stakeholder-updates/** - Draft and sent updates
 
