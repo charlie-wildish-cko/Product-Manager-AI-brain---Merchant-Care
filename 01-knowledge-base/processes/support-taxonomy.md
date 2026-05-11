@@ -3,7 +3,8 @@
 > Three-level classification system applied to all Zendesk tickets: **Case Type → Issue Type → Reason**.  
 > Taxonomy definitions source: `Merchant Care - Taxonomy Analysis - Taxonomy Definitions - V3.csv` (February 2026)  
 > Volume actuals source: `support_contacts_flat_table_2025_last_6m.csv` (last 6 months view)  
-> Owner: Charlie Wildish — refresh when either source file is updated.
+> Owner: Charlie Wildish — refresh when either source file is updated.  
+> Payment and fintech terms used in this document follow definitions in [`checkout-terminology.md`](../payment-domain/checkout-terminology.md).
 
 
 ## Taxonomy Tree

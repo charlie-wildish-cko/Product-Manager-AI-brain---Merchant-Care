@@ -8,7 +8,7 @@ Charlie Wildish is PM for Merchant Care (Customer Support) at Checkout.com, a gl
 
 When given a new task or topic without a clear output format:
 
-1. **Orient** — Check `04-active-work/` for existing work on the topic. If a file exists, read it before starting.
+1. **Orient** — Check `04-active-work/` (including `04-active-work/roadmap-items/` for active PRDs) for existing work on the topic. If a file exists, read it before starting.
 2. **Anchor** — Check `2026 deliverables.md` to confirm the task maps to a named deliverable and quarter. If it doesn't, flag this before proceeding.
 3. **Clarify the output format** — PRD · memo · Slack update · stakeholder update · analysis · exploration
 4. **Draft** — Apply the relevant template and writing style. Ask one clarifying question at most before producing output.
@@ -46,6 +46,8 @@ Every document, analysis, or recommendation must connect to:
 |---|---|
 | Strategic goals & 2026 roadmap | `2026 deliverables.md` |
 | Care Product flywheel model | `01-knowledge-base/strategy/care-product-model.md` |
+| Care Product strategy 2026–2030 (Rumelt strategy kernel, VP/Director audience) | `04-active-work/care-product-strategy-2026-2030.md` |
+| Care strategy 2026–2030 (narrative + TPV/contact forecasts, co-authored with Oliver Westlake-Simm) | `04-active-work/care-strategy-2026-2030.md` |
 | Team structure & stakeholders | `01-knowledge-base/teams.md` |
 | Support workflows & operations | `01-knowledge-base/processes/support-workflows.md` |
 | Ticket taxonomy & contact volumes | `01-knowledge-base/processes/support-taxonomy.md` |
@@ -53,13 +55,17 @@ Every document, analysis, or recommendation must connect to:
 | Merchant segments | `01-knowledge-base/products/customer-segments.md` |
 | Product catalogue (products, teams, pillars) | `01-knowledge-base/Checkout Products and teams.csv` |
 | Product definitions with contact risk tags | `01-knowledge-base/products/product-definitions.md` |
+| Payment domain terminology (200 terms: acquirer, authorization, chargeback, settlement, SCA, APM, etc.) | `01-knowledge-base/payment-domain/checkout-terminology.md` |
 | Platform segment model | `01-knowledge-base/products/platform-segment.md` |
 | Platform Embedded AI vision | `01-knowledge-base/products/platform-embedded-ai-support-vision.md` |
 | Customer personas (merchant + internal) | `01-knowledge-base/products/customer-personas.md` |
 | KPI definitions | `01-knowledge-base/metrics/kpi-definitions.md` |
+| Contact volume forecasts 2026–2030 by segment (Enterprise, Platforms ISV, Platforms SMB, Consumer) | `01-knowledge-base/metrics/contact forecasting.md` |
 | Reflex product reference (components, metrics, vision, why it matters) | `01-knowledge-base/products/reflex.md` |
 | Reflex phased plan (components + build sequence, Q1–Q4 2026) | `04-active-work/reflex-phased-plan.md` |
 | Agent Consultant capabilities (full list) and interaction model | `01-knowledge-base/products/agent-consultant.md` · vision: `04-active-work/agent-consultant-vision.md` |
+| Fin AI Agent — how it works, Checkout.com deployment, Procedures/Tasks, analytics, terminology | `01-knowledge-base/products/fin-ai-agent.md` |
+| Zendesk — ticket lifecycle, business rules, routing, Guide/Knowledge, AI tooling, analytics, terminology | `01-knowledge-base/products/zendesk.md` |
 | Product reference doc template (why it matters + components + metrics) | `03-templates/product-reference-template.md` |
 | PRD template | `03-templates/prd-template.md` |
 | PRD example | `03-templates/prd-template-example.md` |
@@ -109,6 +115,8 @@ For Leadership, Engineering, Slack, and Reports style: see `01-knowledge-base/pr
 **Note:** Volume totals in `support-taxonomy.md` and the flat CSV will differ — the taxonomy doc draws on a broader dataset. Use the CSV for relative prioritisation and actuals; use the taxonomy doc for issue type structure.
 
 **To aggregate volumes from the CSV:** Use a Python script to sum `support_contacts` grouped by `case_type` and `issue_type` — rows are split by segment/channel/territory so individual rows are not totals. Run `pip3 install pandas` first if pandas is not available.
+
+**Payment domain terms**: When defining or using payment/fintech terms (e.g. authorization, capture, settlement, chargeback, APM, SCA, MID, acquirer, issuer), use `01-knowledge-base/payment-domain/checkout-terminology.md` as the authoritative source. Do not paraphrase or re-define terms that already exist there.
 
 ---
 

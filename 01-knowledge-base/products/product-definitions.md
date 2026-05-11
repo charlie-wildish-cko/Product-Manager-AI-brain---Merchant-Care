@@ -5,6 +5,8 @@ Definitions enriched from: checkout.com/docs (scraped March 2026)
 
 **Planned use**: Map against support contact data to identify which products drive contact volumes.
 
+> Payment and fintech terms used in this document follow definitions in [`checkout-terminology.md`](../payment-domain/checkout-terminology.md).
+
 ---
 
 ## How to read this file
