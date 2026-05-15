@@ -1,0 +1,130 @@
+Response code	10011	The payment was approved under a VIP designation. This code is not currently in use.
+Response code	10076	The payment was approved under a country club designation.
+Response code	10077	The payment was approved via a local bank network.
+Response code	10081	The payment was approved as a commercial transaction.
+Response code	20002	The issuer declined under special conditions , the cardholder should contact their bank.
+Response code	20004	The issuer is requesting the card be retained , it should not be returned to the cardholder.
+Response code	20006	The request contained invalid parameters , the merchant should review their integration configuration.
+Response code	20009	The transaction is already being processed , do not retry immediately.
+Response code	20015	The transaction must be routed via the card's signature network , not the debit network.
+Response code	20016	The card has not been activated , the cardholder should contact their bank.
+Response code	20018	The cardholder has raised a dispute on this transaction.
+Response code	20020	An invalid response was received from the issuer , this is typically a temporary technical issue.
+Response code	20021	The reversal could not be processed , the prior transaction could not be backed out.
+Response code	20022	A system malfunction was suspected , retrying the transaction may resolve the issue.
+Response code	20023	The transaction fee was rejected by the issuer.
+Response code	20024	The receiving system does not support this type of file update.
+Response code	20025	The issuer could not locate the account record , the cardholder should check their card details.
+Response code	20026	A duplicate update record was detected by the issuer.
+Response code	20027	A field in the file update request contained an error.
+Response code	20028	The issuer's file is temporarily unavailable , retrying later may resolve the issue.
+Response code	20029	The file update operation failed at the issuer.
+Response code	20030	The transaction had a formatting error , the merchant should retry with the same or a different card.
+Response code	20031	The cardholder's bank is not supported by this network switch.
+Response code	20032	The transaction completed only partially.
+Response code	20033	The referenced scheme transaction ID is invalid , check the prior transaction reference.
+Response code	20039	The cardholder has no credit account linked to this card.
+Response code	20042	No universal amount was found for this transaction.
+Response code	20044	The cardholder has no investment account linked to this card.
+Response code	20045	The issuer does not support fallback transactions for hybrid cards.
+Response code	20046	The bank declined the payment , the cardholder should contact their bank for more information.
+Response code	20052	The cardholder has no current account linked to this card.
+Response code	20053	The cardholder has no savings account linked to this card.
+Response code	20060	The issuer is requesting the card acceptor contact the acquirer directly.
+Response code	20064	The original transaction value does not match , the cardholder should contact their bank.
+Response code	20066	The card acceptor should call acquirer security.
+Response code	20067	The card should be retained at the ATM.
+Response code	20072	The cardholder's account has not been activated yet.
+Response code	20081	This card is restricted to use within its home country or region.
+Response code	20083	No accounts are associated with this card.
+Response code	20084	No personal banking file was found for this card.
+Response code	20085	An error occurred updating the personal banking file.
+Response code	20086	An ATM malfunction or invalid authorisation type was detected.
+Response code	20088	The transaction could not be dispensed or processed at this time.
+Response code	20089	An administration error occurred , contact support if the issue persists.
+Response code	20090	The issuer is performing a daily cut-off , retrying after the cut-off completes may resolve the issue.
+Response code	20093	The transaction was blocked due to a legal or regulatory restriction.
+Response code	20095	A reconciliation error occurred.
+Response code	20097	The reconciliation totals have been reset.
+Response code	20098	A message authentication code (MAC) error occurred , indicating a possible security issue with the request.
+Response code	20101	The token is incorrect or invalid , the merchant should check the token and retry.
+Response code	20102	The merchant or wallet ID is invalid , review the processing configuration.
+Response code	20104	The gateway rejected the transaction as invalid , retrying or using a different card may resolve the issue.
+Response code	20105	The gateway rejected the transaction due to a rule violation.
+Response code	20107	The billing address is required for this transaction but was not provided.
+Response code	20108	The issuer has updated cardholder details available , consider requesting an account updater response.
+Response code	20109	The transaction was already reversed , or the capture amount exceeds the original authorisation.
+Response code	20110	The authorisation has already been completed.
+Response code	20111	The payment reversal has already been processed.
+Response code	20112	The merchant is not enabled for Mastercard SecureCode , contact support to resolve.
+Response code	20113	An invalid property was included in the request.
+Response code	20114	The payment token is incorrect or has expired.
+Response code	20115	The token lifetime value is missing or invalid.
+Response code	20116	The request contained an unsupported encoding.
+Response code	20117	The API version used is not supported , the merchant should update to a current version.
+Response code	20118	The transaction is still pending , it has not yet been completed.
+Response code	20119	The batch data is missing or contains invalid values.
+Response code	20120	The customer or user record is invalid.
+Response code	20121	The merchant or terminal transaction limit has been exceeded.
+Response code	20122	Mastercard installment payments are not supported for this transaction.
+Response code	20123	Required fields including zip code , address or membership data are missing.
+Response code	20124	The CVV is required for ecommerce transactions but was not included in the request.
+Response code	20150	The card is not enrolled in 3D Secure , the cardholder should try a different card.
+Response code	20151	The cardholder failed 3DS authentication , they should retry or contact their bank.
+Response code	20152	The 3DS authentication session expired due to inactivity , the cardholder should retry.
+Response code	20153	A technical issue occurred with the 3DS system , retrying with the same or a different card may resolve it.
+Response code	20154	The issuer requires 3DS authentication before this transaction can be approved.
+Response code	20155	The 3DS authentication service returned an invalid or unrecognised result.
+Response code	20156	The acquirer does not support the requested function for this transaction.
+Response code	20157	The merchant's configuration is invalid , contact support to resolve.
+Response code	20158	The refund window has closed , this payment can no longer be refunded.
+Response code	20159	The Access Control Server (ACS) used for 3DS authentication malfunctioned , retrying may resolve the issue.
+Response code	20179	The card data is invalid due to a lifecycle issue , such as an expired or replaced card. See recommendation codes for guidance.
+Response code	20182	The transaction does not comply with card scheme policies. See recommendation codes for guidance.
+Response code	20183	The transaction was flagged as a security risk by the issuer or scheme. See recommendation codes for guidance.
+Response code	20193	The country code included in the request is invalid.
+Response code	20197	The terminal is not registered with the scheme , contact support to register it.
+Response code	2005C	The transaction type is not supported or has been explicitly blocked by the issuer.
+Response code	2006P	The cardholder's identity could not be verified as part of KYC , they must contact their issuer to resolve this.
+Response code	2009G	The cardholder has blocked this transaction , contact the cardholder directly.
+Response code	200A4	The transaction had a defect and the requests were not received by the issuer.
+Response code	200A5	The transaction had a defect and the original transactions were rejected by the issuer.
+Response code	200A6	UnionPay forwarded the transaction but received no response from the issuer.
+Response code	200E0	An unauthorised access attempt was detected on this transaction.
+Response code	200E2	The digital signature on the transaction could not be verified.
+Response code	200E3	The issuer system is busy , retrying later should resolve the issue.
+Response code	200N0	The transaction was processed through Stand-In Processing (STIP) by the scheme.
+Response code	200O5	A PIN is required to complete this transaction.
+Response code	200P1	The cardholder has exceeded their daily spending limit.
+Response code	200P9	The transaction amount exceeds the allowed limit , a lower amount should be used.
+Response code	200S4	The permanent transaction log file is full.
+Response code	200T2	The transaction date included in the request is invalid.
+Response code	200T3	This card type is not supported for this transaction type.
+Response code	200T5	The cardholder authorisation file status indicates the card is not active.
+Response code	30016	The issuer does not permit online gambling payouts to this card.
+Response code	30017	The issuer does not permit original credit transactions (OCT) to this card.
+Response code	30018	The issuer does not permit money transfer payouts to this card.
+Response code	30019	The issuer does not permit non-money transfer payouts to this card.
+Response code	30020	The transaction amount is invalid , the merchant should review and correct the amount.
+Response code	30021	The cardholder has reached their total amount limit.
+Response code	30022	The cardholder has reached their total transaction count limit.
+Response code	30035	The acquirer should be contacted and the card should be retained.
+Response code	30036	The card is restricted and should be retained.
+Response code	30037	Acquirer security should be called and the card retained.
+Response code	30038	The PIN retry limit was exceeded , the card should be retained.
+Response code	30044	The transaction was rejected under the AMLD5 directive , it involved an anonymous prepaid card for an amount over 50 EUR.
+Response code	30045	The fund transfer type is not permitted in this merchant's configuration.
+Response code	30401	The capture amount exceeds the permitted overcapture limit.
+Response code	30402	Overcapture is not permitted when a partial capture has been requested.
+Response code	30403	Overcapture is not permitted when partial authorisation was requested.
+Response code	30404	The sub-merchant ID is required for this transaction but was not included in the request.
+Response code	30405	The billing descriptor contains unsupported special characters.
+Response code	41206	The transaction was declined because the email domain is on a client-level decline list.
+Response code	42101	The transaction was declined due to an entity-level risk rule.
+Response code	42201	The transaction was declined because the card number is on an entity-level decline list.
+Response code	42202	The transaction was declined because the BIN is on an entity-level decline list.
+Response code	42203	The transaction was declined because the email address is on an entity-level decline list.
+Response code	42204	The transaction was declined because the phone number is on an entity-level decline list.
+Response code	42205	The transaction was declined because the payment IP is on an entity-level decline list.
+Response code	42206	The transaction was declined because the email domain is on an entity-level decline list.
+Response code	42301	The transaction was declined because it has a high risk score at entity level.

@@ -1,0 +1,751 @@
+openapi: 3.0.3
+info:
+  title: Payment Search - OpenAPI 3.0
+  version: 0.0.x
+servers:
+  - url: https://api.sandbox.checkout.com
+  - url: https://api.checkout.com
+tags:
+  - name: Payments
+paths:
+  /payments/search:
+    post:
+      tags:
+        - Payments
+      summary: Search payments
+      description: "<span style=\"font-size: 12px; font-weight: 500; color: rgb(0, 0, 0); background-color: rgb(255, 176, 97); border-radius: 4px; padding: 2px 6px\" >Beta</span><p></p>\n\n<a href=\"https://www.checkout.com/docs/payments/manage-payments/search-and-filter-payments\" target=\"blank\">Search and filter through your payment data</a> to retrieve payments that match your query.\"\n"
+      operationId: search
+      requestBody:
+        description: Search query.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful search
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/PayinResponse'
+                  - $ref: '#/components/schemas/BankPayoutResponse'
+                  - $ref: '#/components/schemas/CardPayoutResponse'
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Query validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchError'
+      security:
+        - OAuth:
+            - payments:search
+        - ApiSecretKey: [ ]
+components:
+  schemas:
+      BankPayout:
+          title: Bank payout
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              type: string
+              description: The unique identifier of the payout.
+              example: pay_mbabizu24mvu3mela5njyhpit4
+            requested_on:
+              type: string
+              description: 'The UTC date and time the payment was requested, in ISO 8601 format.'
+              example: '2023-08-24T14:15:22Z'
+            destination:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: The payout destination type.
+                  example: bank_account
+                id:
+                  type: string
+                  description: The unique identifier of the payment instrument.
+                  example: src_4pakgjwmv5re5m5ivqohsqpxnm
+                bank_code:
+                  type: string
+                  description: The code that identifies the bank.
+                  example: 123-456
+                branch_code:
+                  type: string
+                  description: The code that identifies the bank branch.
+                  example: '6443'
+                iban:
+                  type: string
+                  description: The International Bank Account Number (IBAN) of the account.
+                  example: HU93116000060000000012345676
+                country:
+                  type: string
+                  description: 'The country where the account is based, as a [two-letter ISO country code](https://www.checkout.com/docs/developer-resources/codes/country-codes).'
+                  example: GB
+                account_holder:
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                      description: The account holder's first name.
+                      example: Jia
+                    last_name:
+                      type: string
+                      description: The account holder's last name.
+                      example: Tsang
+                  description: The account holder's details.
+                  additionalProperties: false
+              description: The destination of the payout.
+              additionalProperties: false
+            amount:
+              type: number
+              description: The original payout amount.
+              example: 10000
+            currency:
+              type: string
+              description: 'The currency of the payout, as a [three-letter ISO currency code](https://www.checkout.com/docs/developer-resources/codes/currency-codes).'
+              example: GBP
+            reference:
+              type: string
+              description: The reference for the payout.
+              example: ORD-5023-4E89
+            billing_descriptor:
+              type: object
+              properties:
+                reference:
+                  type: string
+                  description: The reference displayed on the payout recipient's bank statement.
+                  example: BANK-REF
+              description: The billing descriptor details.
+              additionalProperties: false
+            status:
+              type: string
+              description: The status of the payout.
+              example: Pending
+            processing_channel_id:
+              type: string
+              description: The unique identifier of the processing channel that was used for the payout.
+              example: pc_vxt6yftthv4e5flqak6w2i7rim
+            sender:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  description: The sender's first name.
+                  example: Ali
+                last_name:
+                  type: string
+                  description: The sender's last name.
+                  example: Farid
+              description: The payout sender's details.
+              additionalProperties: false
+            actions:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    maxLength: 30
+                    minLength: 30
+                    pattern: '^(act)_(\w{26})$'
+                    type: string
+                    description: The unique identifier of the payment action.
+                  type:
+                    enum:
+                      - Payout
+                      - Return
+                    type: string
+                    description: The type of action.
+                  processed_on:
+                    type: string
+                    description: The date and time the action was processed.
+                    format: date-time
+                  response_code:
+                    type: string
+                    description: The response code.
+                  response_summary:
+                    type: string
+                    description: The response summary.
+                  reference:
+                    type: string
+                    description: The reference for the payout.
+                additionalProperties: false
+              example:
+                - type: Return
+                  processed_on: '2023-08-24T14:15:25.3448464+00:00'
+                  status: Returned
+                - id: act_m4wvaqkqdzferpgpw32ykoxvuq
+                  type: Payout
+                  processed_on: '2023-08-24T14:15:23.3448464+00:00'
+                  status: Approved
+                  response_code: '10000'
+                  response_summary: Approved
+                - id: act_4crmhihaknzuvhjclvxu7bni24
+                  type: Payout
+                  processed_on: '2023-08-24T14:15:22.3448464+00:00'
+                  status: Pending
+                  reference: fd45gyh7-6y74-3gt6-bb3d-fd167854bc3c
+      BankPayoutResponse:
+          title: BankPayout Response
+          type: object
+          additionalProperties: false
+          properties:
+            data:
+              type: array
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/BankPayout'
+            _links:
+              $ref: "#/components/schemas/Links"
+      CardPayout:
+          title: Card payout
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              type: string
+              description: The unique identifier of the payout.
+              example: pay_mbabizu24mvu3mela5njyhpit4
+            requested_on:
+              type: string
+              description: 'The UTC date and time the payment was requested, in ISO 8601 format.'
+              example: '2023-08-24T14:15:22Z'
+            destination:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: The payout destination type.
+                  example: card
+                id:
+                  type: string
+                  description: The unique identifier of the payment source.
+                  example: ca_y3oqhf46pyzuxjbcn2giaqnb44
+                expiry_year:
+                  type: string
+                  description: The card expiration year.
+                  example: '2024'
+                expiry_month:
+                  type: string
+                  description: The card expiration month.
+                  example: '04'
+                account_holder:
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                      description: "The account holder's first name.\n\nThis field is only returned if `destination.account_holder.type` is `individual`.\n"
+                      example: Jia
+                    last_name:
+                      type: string
+                      description: "The account holder's last name.\n\nThis field is only returned if `destination.account_holder.type` is `individual`.\n"
+                      example: Tsang
+                  description: The account holder's details.
+                  additionalProperties: false
+                scheme:
+                  type: string
+                  description: The card scheme.
+                  example: Visa
+                last4:
+                  type: string
+                  description: The last four digits of the card number.
+                  example: '1212'
+                issuer:
+                  type: string
+                  description: The issuer name.
+                  example: issuer
+                issuer_country:
+                  type: string
+                  description: 'The issuer country, as a [two-letter ISO country code](https://www.checkout.com/docs/developer-resources/codes/country-codes).'
+                  example: issuer
+              description: The destination of the payout.
+              additionalProperties: false
+            amount:
+              type: number
+              description: The original payout amount.
+              example: 10000
+            currency:
+              type: string
+              description: 'The currency of the payout, as a [three-letter ISO currency code](https://www.checkout.com/docs/developer-resources/codes/currency-codes).'
+              example: GBP
+            reference:
+              type: string
+              description: The reference for the payout.
+              example: ORD-5023-4E89
+            billing_descriptor:
+              type: object
+              properties:
+                reference:
+                  type: string
+                  description: The reference displayed on the payout recipient's bank statement.
+                  example: CARD-REF
+              description: The billing descriptor details.
+              additionalProperties: false
+            status:
+              type: string
+              description: The status of the payout.
+              example: Paid
+            processing_channel_id:
+              type: string
+              description: The unique identifier of the processing channel that was used for the payout.
+              example: pc_vxt6yftthv4e5flqak6w2i7rim
+            sender:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: "The sender type. \n\nThis field is only returned for payout requests for some [funds transfer types](https://www.checkout.com/docs/payments/request-payouts/card-payouts#Fund_Transfer_Types).\n"
+                  example: individual
+                first_name:
+                  type: string
+                  description: "The sender's first name.\n\nThis field is only returned if `sender.type` is `individual`.\n"
+                  example: Ali
+                last_name:
+                  type: string
+                  description: "The sender's last name.\n\nThis field is only returned if `sender.type` is `individual`.\n"
+                  example: Farid
+              description: The payout sender's details.
+              additionalProperties: false
+            metadata:
+              type: object
+              description: 'A set of key-value pairs attached to the payout, used to store additional information.'
+              additionalProperties:
+                oneOf:
+                  - type: string
+                  - type: number
+                  - type: boolean
+                nullable: true
+            actions:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    maxLength: 30
+                    minLength: 30
+                    pattern: '^(act)_(\w{26})$'
+                    type: string
+                    description: The unique identifier of the payment action.
+                  type:
+                    enum:
+                      - Payout
+                    type: string
+                    description: The type of action.
+                  processed_on:
+                    type: string
+                    description: The date and time the action was processed.
+                    format: date-time
+                  processing:
+                    type: object
+                    properties:
+                      acquirer_reference_number:
+                        type: string
+                        description: A unique identifier for the payout that is submitted to the card scheme during processing.
+                    additionalProperties: false
+                  response_code:
+                    type: string
+                    description: The response code.
+                  response_summary:
+                    type: string
+                    description: The response summary.
+                  reference:
+                    type: string
+                    description: The reference for the payout.
+                  sanction_screening:
+                    type: string
+                    description: The outcome of sanction screening.
+                additionalProperties: false
+              example:
+                - id: act_obwnktnk6i2e5bcp5i7xq673se
+                  type: Payout
+                  processed_on: '2023-08-24T14:15:23.3448464+00:00'
+                  status: Approved
+                  response_code: '10000'
+                  response_summary: Approved
+                  sanction_screening: Pass
+                  processing:
+                    acquirer_reference_number: '232810098064'
+                - id: act_rdqbtrhinozuza3wbnhi3n7noa
+                  type: Payout
+                  processed_on: '2023-08-24T14:15:22.3448464+00:00'
+                  status: Pending
+                  reference: fd45gyh7-6y74-3gt6-bb3d-fd167854bc3c
+      CardPayoutResponse:
+          title: CardPayout Response
+          type: object
+          additionalProperties: false
+          properties:
+            data:
+              type: array
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/CardPayout'
+            _links:
+              $ref: "#/components/schemas/Links"
+      Payin:
+          title: Payin
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              type: string
+              description: The unique identifier of the payment.
+              example: pay_mbabizu24mvu3mela5njyhpit4
+            requested_on:
+              type: string
+              description: 'The UTC date and time the payment was requested, in ISO 8601 format.'
+              example: '2023-08-24T14:15:22Z'
+            source:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: "The payment source type. \n\nFor payment request sources that result in a card token, this will be `card`. For example, a token or source ID.\n"
+                  example: card
+                expiry_month:
+                  type: string
+                  description: The card expiration month.
+                  example: '04'
+                expiry_year:
+                  type: string
+                  description: The card expiration year.
+                  example: '2024'
+                name:
+                  type: string
+                  description: The cardholder's name.
+                  example: Jia Tsang
+                scheme:
+                  type: string
+                  description: The card scheme.
+                  example: Visa
+                local_schemes:
+                  type: array
+                  items: { }
+                  description: The local co-branded card scheme.
+                  example: cartes bancaire
+                last4:
+                  type: string
+                  description: The last four digits of the card number.
+                  example: '3131'
+                fingerprint:
+                  type: string
+                  description: "The card's unique fingerprint.\n\nYou can use the card fingerprint to compare cards across customers.\n"
+                  example: B16D9C2EF0C861A8825C9BD59CCE9171D84EBC45E89CC792B5D1D2D0DDE3DAB7
+                bin:
+                  type: string
+                  description: The card issuer's Bank Identification Number (BIN).
+                  example: '313131'
+                card_type:
+                  type: string
+                  description: The card type.
+                  example: credit
+                card_wallet_type:
+                  type: string
+                  description: The card wallet type.
+                  example: googlepay
+                issuer:
+                  type: string
+                  description: The card issuer.
+                  example: 'GE CAPITAL FINANCIAL, INC'
+                issuer_country:
+                  type: string
+                  description: 'The issuer country, as a [two-letter ISO country code](https://www.checkout.com/docs/developer-resources/codes/country-codes).'
+                  example: US
+                avs_check:
+                  type: string
+                  description: The result of the Address Verification System (AVS) check.
+                  example: G
+              description: The source of the payment.
+              additionalProperties: false
+            amount:
+              type: number
+              description: The original payment amount.
+              example: 10000
+            amount_requested:
+              type: number
+              description: 'The full amount from the original authorization, if a partial authorization was requested.'
+              example: 10000
+            currency:
+              type: string
+              description: 'The currency of the payment, as a [three-letter ISO currency code](https://www.checkout.com/docs/developer-resources/codes/currency-codes).'
+              example: GBP
+            payment_type:
+              type: string
+              description: "The type of payment.\n\nThis field is returned for card payments where the cardholder was not present. For example, recurring payments or mail order / telephone order (MOTO) payments.\n"
+              example: regular
+            processing_channel_id:
+              type: string
+              description: The unique identifier of the processing channel that was used for the payment.
+              example: pc_vxt6yftthv4e5flqak6w2i7rim
+            reference:
+              type: string
+              description: The reference for the payment.
+              example: ORD-5023-4E89
+            status:
+              type: string
+              description: The status of the payment.
+              example: captured
+            balances:
+              type: object
+              properties:
+                total_authorized:
+                  type: number
+                  description: The total amount that was authorized.
+                  example: 200
+                total_captured:
+                  type: number
+                  description: The total amount that was captured.
+                  example: 150
+                total_refunded:
+                  type: number
+                  description: The total amount that was refunded.
+                  example: 50
+              description: The payment's balances.
+              additionalProperties: false
+            3ds:
+              type: object
+              properties:
+                eci:
+                  type: string
+                  description: The Electronic Commerce Indicator (ECI).
+                  example: '02'
+                version:
+                  type: string
+                  description: The version of 3DS that was used for authentication.
+                  example: '2.1.0'
+              description: Details relating to payments processed with 3D Secure (3DS).
+              additionalProperties: false
+            risk:
+              type: object
+              properties:
+                flagged:
+                  type: boolean
+                  description: Specifies whether the payment was flagged by a risk check.
+                  example: false
+                score:
+                  type: string
+                  description: "The risk score calculated by our Fraud Detection engine.\n\nThis field is only returned if sufficient data was provided to Fraud Detection.\n"
+                  example: '22'
+              description: The payment's risk assessment results.
+              additionalProperties: false
+            customer:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: The customer's email address.
+                  example: jia.tsang@checkout.com
+                name:
+                  type: string
+                  description: The customer's name.
+                  example: Jia Tsang
+              description: The customer linked to the payment.
+              additionalProperties: false
+            billing_descriptor:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The reference displayed on the customer's bank statement.
+                  example: Purchase
+                city:
+                  type: string
+                  description: The city from which the payment originated.
+                  example: London
+              description: "An optional description displayed on the customer's statement identifying a purchase.\n\nApplies to card payments only.\n"
+              additionalProperties: false
+            metadata:
+              type: object
+              description: 'A set of key-value pairs attached to the payin, used to store additional information.'
+              additionalProperties:
+                oneOf:
+                  - type: string
+                  - type: number
+                  - type: boolean
+                nullable: true
+            actions:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    maxLength: 30
+                    minLength: 30
+                    pattern: '^(act)_(\w{26})$'
+                    type: string
+                    description: 'The unique identifier of the payment action, including authentication and disputes.'
+                  type:
+                    enum:
+                      - Authentication
+                      - Authorization
+                      - Card Verification
+                      - Void
+                      - Capture
+                      - Partial Capture
+                      - Partial Refund
+                      - Refund
+                      - Cancelation
+                      - Request
+                      - Pending
+                      - Dispute
+                    type: string
+                    description: The type of action.
+                  status:
+                    type: string
+                    description: The action outcome.
+                  processed_on:
+                    type: string
+                    description: The date and time the action was processed.
+                    format: date-time
+                  amount:
+                    type: integer
+                    description: The action amount in minor currency units.
+                  auth_code:
+                    type: string
+                    description: The issuer authorization code for cards.
+                  response_code:
+                    type: string
+                    description: The response code.
+                  response_summary:
+                    type: string
+                    description: The response summary.
+                  reference:
+                    type: string
+                    description: Your reference for the action.
+                  processing:
+                    type: object
+                    properties:
+                      acquirer_reference_number:
+                        type: string
+                        description: A unique identifier for the capture that is submitted to the card scheme during processing.
+                    additionalProperties: false
+                  fraud_score:
+                    type: string
+                    description: The risk score calculated by our Fraud Detection engine. This field is only returned if sufficient data was provided to Fraud Detection.
+                  response_status_reason:
+                    type: string
+                    description: The reason for the response status. This is only available as a result of a 3DS2 authentication.
+                  authentication_experience:
+                    type: string
+                    description: The authentication type used.
+                  reason_code:
+                    type: string
+                    description: The reason code provided by the card scheme. This only applies to disputes.
+                additionalProperties: false
+              example:
+                - id: dsp_egiv5753bwmexj6ip3tlpog6gq
+                  type: Dispute
+                  processed_on: 2023-08-25T14:15:24.3448464ZZ
+                  status: Evidence Required
+                  amount: 1310
+                  reason_code: '13.1'
+                - id: act_i3cd3w3lcooexmyrtlgulk3d7a
+                  type: Capture
+                  processed_on: '2023-08-24T14:15:26.3448464+00:00'
+                  status: Approved
+                  amount: 1310
+                  auth_code: '983647'
+                  response_code: '10000'
+                  response_summary: Approved
+                  reference: REF-7HR-IYW
+                  processing:
+                    acquirer_reference_number: '25651432189281252509653'
+                - id: act_2uwlm6xyeszerhroqhfnotmiwu
+                  type: Authorization
+                  processed_on: '2023-08-24T14:15:25.3448464+00:00'
+                  status: Approved
+                  amount: 1310
+                  auth_code: '983647'
+                  response_code: '10000'
+                  response_summary: Approved
+                  reference: REF-7HR-IYW
+                  processing:
+                    acquirer_reference_number: '25651432189281252509653'
+                - id: act_mscwxewzdldefh2rbbnhm6aeqi
+                  type: Authorization
+                  processed_on: '2023-08-24T14:15:24.3448464+00:00'
+                  status: Pending
+                  amount: 1310
+                  reference: REF-7HR-IYW
+                - id: sid_qocmjw6skb4u3c4wd3avpot64y
+                  type: Authentication
+                  processed_on: 2023-08-24T14:15:3448464Z
+                  status: Approved
+                  authentication_experience: 3ds
+                  authentication_transaction_id: f05af960-f718-428d-b856-068f6cb9a3b4
+                - id: sid_qocmjw6skb4u3c4wd3avpot64y
+                  type: Authentication
+                  processed_on: '2023-08-24T14:15:22.3448464+00:00'
+                  status: Pending
+                  reference: REF-7HR-IYW
+      PayinResponse:
+          title: Payin Response
+          type: object
+          additionalProperties: false
+          properties:
+            data:
+              type: array
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/Payin'
+            _links:
+              $ref: "#/components/schemas/Links"
+      SearchError:
+          title: Search error
+          type: object
+          additionalProperties: false
+          properties:
+            request_id:
+              type: string
+              example: 0HL80RJLS76I7
+            error_type:
+              type: string
+              example: request_invalid
+            error_codes:
+              type: array
+              items:
+                type: string
+                example: unknown_attribute
+      SearchRequest:
+          title: Search request
+          type: object
+          additionalProperties: false
+          properties:
+            query:
+              maxLength: 1024
+              type: string
+              description: "The query string.\n\nFor more information on how to build out your query, see the <a href=\"https://www.checkout.com/docs/payments/manage-payments/search-and-filter-payments#Search_through_your_payments\" target=\"blank\">Search and filter payments</a> documentation."
+              example: id:'pay_mbabizu24mvu3mela5njyhpit4'
+            limit:
+              maximum: 1000
+              minimum: 1
+              type: integer
+              description: The number of results to return.
+              default: 10
+              example: 10
+            from:
+              type: string
+              description: The UTC date and time for the query start in ISO 8601 format. Required if `to` is provided.
+              example: '2023-08-24T14:15:22Z'
+            to:
+              type: string
+              description: The UTC date and time for the query end in ISO 8601 format. Required if `from` is provided.
+              example: '2023-08-24T14:15:22Z'
+      Links:
+        title: Links
+        type: object
+        additionalProperties: false
+        properties:
+          next:
+            type: string
+            minLength: 1
+            maxLength: 2048
+            description: A link to the next page of results. Pagination links expire after 24 hours, after which they will return a 404 Not Found response code.
