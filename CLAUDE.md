@@ -229,9 +229,7 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 
 **Reflex MCP (TBC)**: Surfaces Reflex insights in engineering workflows. Timing is TBC — dependent on Phase 3 (Q3 2026) attribution model stability. Insights available via data product regardless; MCP improves shareability.
 
-**B2C wallet launch (2027)**: Consumer Duty obligations apply from day one. Phone channel, complaint handling, and vulnerable customer identification in Fin must all be live at launch, not added post-launch.
-
-**Investment asks**: Team growth investment asks start 2027. The current team can deliver the 2026 B2B roadmap but cannot simultaneously build the 2027 B2C foundation.
+**B2C wallet launch (2027)**: Consumer Duty obligations apply from day one. Complaint handling and vulnerable customer identification in Fin must be live at launch, not added post-launch.
 
 **Care product model 2030 mapping**: Full product mapping per flywheel stage and stack layer (existing, build, buy, agentic) is in `04-active-work/care-product-model-2030-mapping.md`.
 

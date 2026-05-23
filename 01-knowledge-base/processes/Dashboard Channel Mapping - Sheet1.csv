@@ -1,0 +1,51 @@
+Section,Page,Team,Channel
+Business Account,Balances,Financial Reporting,#ask-fex-clientreporting
+Business Account,Transfers,Financial Reporting,#ask-fex-clientreporting
+Business Account,Cards,Financial Reporting,#ask-fex-clientreporting
+Business Account,Settlements,Financial Reporting,No channel
+Business Account,Invoices,Financial Reporting,#ask-fex-clientreporting
+Reports,Reports,Data Connectivity & Analytics,#ask-data-connectivity-and-analytics
+Reports,Manage Schedules,Data Connectivity & Analytics,#ask-data-connectivity-and-analytics
+Payments,All Payments — table view,Data Connectivity & Analytics,#ask-data-connectivity-and-analytics
+Payments,All Payments — payment detail,Dashboard Core,#ask-dashboard
+Payments,All Payments — fraud flags,Fraud Detection,#ask-fraud-detection
+Payments,Disputes,Disputes,#ask-disputes
+Payments,Compliance Requests,Transactional Compliance,#ask-fincrime
+Payments,Payment Links,Payment Experience,#payment-interfaces
+Payments,Virtual Terminal,Dashboard Core,#ask-dashboard
+Payments,Sub-Entities,Activation,#ask-activation
+Analytics,Payment Lifecycle,Data Connectivity & Analytics,#ask-data-connectivity-and-analytics
+Analytics,Boards,Data Connectivity & Analytics,#ask-data-connectivity-and-analytics
+Analytics,Data Explorer,Data Connectivity & Analytics,#ask-data-connectivity-and-analytics
+Analytics,Intelligent Acceptance,Payment Performance,#ask-intelligent-acceptance
+Fraud,Fraud Performance,Fraud Detection,#ask-fraud-detection
+Fraud,Fraud Strategy,Fraud Detection,#ask-fraud-detection
+Issuing,All Transactions,Issuing,#ask-issuing
+Issuing,Issuing Cards,Issuing,#ask-issuing
+Issuing,Cardholders,Issuing,#ask-issuing
+Issuing,Card Program,Issuing,#ask-issuing
+Vault,Payment Instruments,Vault,#ask-vault
+Vault,Credential Forwarding,Vault,#ask-vault
+Vault,Network Tokens,Vault,#ask-vault
+Identities,Identities,IDV,#ask-idv
+Identities,Identity Analytics,IDV,#ask-idv
+Identities,Identity Verification,IDV,#ask-idv
+Identities,Identity Profiles,IDV,#ask-idv
+Developers,API Keys,IAM,#ask-iam
+Developers,Webhooks,Notifications,#ask-notifications
+Developers,API Logs,Edge Gateway,#edge-gateway
+Developers,Integration Health,Payment Performance,#ask-intelligent-acceptance
+Developers,Simulate Payments,Dashboard Core,#ask-dashboard
+Developers,Authorization Relay,Issuing,#ask-issuing
+Settings,User Permissions,IAM,#ask-iam
+Settings,Single Sign-On,IAM,#ask-iam
+Settings,Account Structure,IAM,#ask-iam
+Settings,Bank Settlements,MCR,#ask-merchant-change-requests-product
+Settings,Billing Descriptors,MCR,#ask-merchant-change-requests-product
+Settings,Business Details,MCR,#ask-merchant-change-requests-product
+Settings,Payment Methods,MCR,#ask-merchant-change-requests-product
+Settings,Website URLs,MCR,#ask-merchant-change-requests-product
+Settings,Key Business Stakeholders,MCR,#ask-merchant-change-requests-product
+Settings,User Activity,Dashboard Core,#ask-dashboard
+Settings,Account Rules,Dashboard Core,#ask-dashboard
+Onboarding,Onboarding,Activation,#ask-activation
