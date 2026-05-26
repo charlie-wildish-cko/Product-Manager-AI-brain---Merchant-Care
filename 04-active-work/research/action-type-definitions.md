@@ -4,7 +4,7 @@
 > **Status**: Draft — not yet validated against SOP content or Fin Procedures backlog
 > **Purpose**: Define Action Types as the join key between Reason nodes and Data Source availability in the knowledge graph. Action Types determine Fin automability and drive `DATA_AVAILABLE_FOR` edge modelling in the data layer graph.
 >
-> **Source**: Derived from Reason labels in `01-knowledge-base/processes/support-taxonomy.md` (V3, Feb 2026) and Class 8 draft in `04-active-work/knowledge-graph-phase1-entity-taxonomy.md`.
+> **Source**: Derived from Reason labels in `01-knowledge-base/processes/support-taxonomy.md` (V3, Feb 2026) and Class 8 draft in `04-active-work/research/knowledge-graph-phase1-entity-taxonomy.md`.
 
 ---
 

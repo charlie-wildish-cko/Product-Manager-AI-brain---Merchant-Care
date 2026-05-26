@@ -4,7 +4,7 @@
 **Date:** May 2026
 **Status:** Draft
 
-This document lists every Care-owned technical deliverable for Phase 2 (October 2026) and External Launch (H1 2027). It is the working build reference for the engineering team and Zendesk admins. For stakeholder context see `braavos-care-scoping.md`.
+This document lists every Care-owned technical deliverable for Phase 2 (October 2026) and External Launch (H1 2027). It is the working build reference for the engineering team and Zendesk admins. For stakeholder context see `./scoping.md`.
 
 Each item is labelled: **[ZD]** = Zendesk admin task · **[ENG]** = engineering/integration task · **[FIN]** = Fin AI configuration · **[AC]** = Agent Consultant / Agent Consultant configuration
 

@@ -392,7 +392,7 @@ Evaluate whether Zendesk remains the right long-term platform for Care, ahead of
 
 **Flywheel**: Governance (underpins all flywheel stages — ticketing, routing, SLA, QA, data pipeline)
 
-Reference: `04-active-work/zendesk-platform-decision-rfc.md`
+Reference: `04-active-work/research/zendesk-platform-decision-rfc.md`
 
 ---
 

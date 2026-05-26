@@ -25,7 +25,7 @@ For Phase 1 and Phase 3, spawn an Agent with `model: "opus"`. Pass all relevant 
 
 Before writing anything:
 
-1. **Check for existing work.** Search `04-active-work/` for any file related to the topic. If found, read it before proceeding — the PRD may already be partially done.
+1. **Check for existing work.** Search `04-active-work/prds/` first (PRDs by initiative), then `04-active-work/research/` and `04-active-work/strategy/` for any file related to the topic. If found, read it before proceeding — the PRD may already be partially done.
 
 2. **Anchor to the roadmap.** Read `2026 deliverables.md`. Confirm the topic maps to a named 2026 deliverable. If it doesn't map clearly, flag this to the user before proceeding — floating work is not written.
 
@@ -123,7 +123,7 @@ Check `01-knowledge-base/processes/review-panel-personas.md` for the rules on wh
 2. Address the highest-severity issues from each persona.
 3. Cut to ~250–350 lines. Remove scaffolding instructions, placeholder text, and redundant explanations.
 4. Ensure all section headers match the template structure.
-5. Save the final PRD to `04-active-work/[kebab-case-title].md`.
+5. Save the final PRD to `04-active-work/prds/[kebab-case-initiative]/prd.md`. Create the initiative subfolder if it doesn't already exist. If supporting docs (vision, scoping, build plan) are produced alongside, save them in the same folder with descriptive filenames (e.g. `vision.md`, `scoping.md`).
 
 Report to the user:
 - File path saved

@@ -2,7 +2,7 @@
 
 > Strategic principles for scaling the Care flywheel to 2030: [Support Scale Principles](support-scale-principles.md)
 >
-> **Source of truth**: This doc owns the model structure — the two lenses (flywheel + stack), their definitions, and stack-to-flywheel mapping. For the expanded product mapping (what products are needed within each capability, including net-new and agentic), see [Care Product Model 2030 — Mapping](../../04-active-work/care-product-model-2030-mapping.md).
+> **Source of truth**: This doc owns the model structure — the two lenses (flywheel + stack), their definitions, and stack-to-flywheel mapping. For the expanded product mapping (what products are needed within each capability, including net-new and agentic), see [Care Product Model 2030 — Mapping](../../04-active-work/strategy/care-product-model-2030-mapping.md).
 >
 > **2026 delivery**: See `2026 deliverables.md` in the workspace root for the full roadmap mapped against these stages.
 >
@@ -13,7 +13,7 @@
 This doc holds two lenses on Care. They are not alternatives. Each answers a different question, and both are used at leadership level.
 
 - **Operating model (Care flywheel)**: the lifecycle of a support contact through six stages. Best for roadmap narrative, how each stage compounds to move contact rate and cost per contact, and ops alignment.
-- **Capability stack**: the architectural layers we own, build, or buy. Best for vendor and build/buy/keep decisions (e.g. the [Zendesk platform RFC](../../04-active-work/zendesk-platform-decision-rfc.md)), eng investment framing, and "where does system X fit" questions.
+- **Capability stack**: the architectural layers we own, build, or buy. Best for vendor and build/buy/keep decisions (e.g. the [Zendesk platform RFC](../../04-active-work/research/zendesk-platform-decision-rfc.md)), eng investment framing, and "where does system X fit" questions.
 
 Every product and deliverable can be placed on both. The stack-to-flywheel mapping is immediately after the stack section.
 

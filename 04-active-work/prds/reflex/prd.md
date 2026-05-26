@@ -324,7 +324,7 @@ Done. Per-ticket LLM root cause summaries live in BigQuery. Basic contact driver
 **Strategy and research:**
 
 - Reflex product reference:`01-knowledge-base/products/reflex.md`
-- Phased build sequence:`04-active-work/reflex-phased-plan.md`
+- Phased build sequence:`./phased-plan.md`
 - Care flywheel model:`01-knowledge-base/strategy/care-product-model.md`
 - Care capability model (year-by-year to 2030):`01-knowledge-base/strategy/care-capability-model.md`
 - Contact volume data source:`01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv`

@@ -295,7 +295,7 @@ Phased by capability risk: read-only first, write actions on a pilot cohort seco
 
 **Strategy and research:**
 
-- Agent Consultant vision and interaction model: `04-active-work/agent-consultant-vision.md`
+- Agent Consultant vision and interaction model: `./vision.md`
 - Agent Consultant product reference: `01-knowledge-base/products/agent-consultant.md`
 - Agent automation backlog: Confluence page 7847149938
 - Contact volume actuals: `01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv`

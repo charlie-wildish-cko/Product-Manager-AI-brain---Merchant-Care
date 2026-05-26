@@ -21,7 +21,7 @@ Two-phase workflow: **Opus analyses → Sonnet writes**.
 
 Before calling Opus:
 
-1. **Identify the subject.** If a file path was passed, read it. If a topic was passed, search `04-active-work/` for existing work on it.
+1. **Identify the subject.** If a file path was passed, read it. If a topic was passed, search `04-active-work/prds/`, `04-active-work/research/`, and `04-active-work/strategy/` for existing work on it.
 2. **Read the strategy anchors:**
    - `2026 deliverables.md` — confirm whether the topic maps to a named deliverable
    - `01-knowledge-base/strategy/care-product-model.md` — flywheel domains

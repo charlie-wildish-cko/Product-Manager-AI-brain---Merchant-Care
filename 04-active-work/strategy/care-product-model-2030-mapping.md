@@ -5,7 +5,7 @@
 > **Created**: 2026-04-21  
 >
 > **Source of truth**: This doc owns the product mapping — what products (existing, adjacent, build, buy, agentic) are needed within each flywheel capability and stack layer. It does not own the model structure or delivery sequencing.
-> - Model structure (flywheel + stack definitions): [Care Product Model](../01-knowledge-base/strategy/care-product-model.md)
+> - Model structure (flywheel + stack definitions): [Care Product Model](../../01-knowledge-base/strategy/care-product-model.md)
 
 Classification key:
 - **EXISTING (Care)** — already in the Care product set

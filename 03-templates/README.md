@@ -14,7 +14,7 @@ Reusable template for introducing Merchant Care to any new stakeholder or team. 
 - Part 2 (audience lens): Why this matters to you, how our domains intersect, 2026 relevance, how to work with us
 - Reference examples for Product PM, Software Engineer, and Care Agent
 
-**Reference example of a completed instance**: `04-active-work/merchant-care-b2c-briefing.md`
+**Reference example of a completed instance**: `05-archive/2026/investigations/merchant-care-b2c-briefing.md`
 
 
 ### 📄 **c-suite-memo-template.md** – C-Suite internal memo

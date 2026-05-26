@@ -14,7 +14,7 @@
 >
 > **Part 2: The Audience Lens** is where you tailor the document. Replace the `[bracketed guidance]` with content specific to the person or team you're writing for. The four sub-section headers are fixed; only the content inside them changes.
 >
-> **Reference example**: See `04-active-work/merchant-care-b2c-briefing.md` for a completed instance tailored to a Consumer PM.
+> **Reference example**: See `05-archive/2026/investigations/merchant-care-b2c-briefing.md` for a completed instance tailored to a Consumer PM.
 >
 > Delete this instruction block before sharing.
 
