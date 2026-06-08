@@ -266,6 +266,7 @@ Product context and capability set: `01-knowledge-base/products/agent-consultant
 
 - New version of Agent Toolkit incorporating runbook solution — refund reversals is the first runbook
 - Agents can trigger automated task: Refund reversals
+- Consultant QA judge: nightly batch job that scores every AC-fired ticket against a four-dimension rubric (Relevance, Accuracy, Completeness, Actionability — each 1–3) plus a binary quality signal (would this response reduce AHT or improve reply quality?). Judge runs on a stronger model than the AC (Opus if AC runs on Sonnet) with an independent prompt and rubric. Requires the AC to surface which KB articles it drew from — this is a prerequisite; without it the judge cannot assess accuracy. Scores stored against ticket ID; weekly aggregates surfaced in analytics to identify retrieval degradation, stale KB content, and actionability gaps. Low-scoring examples become the primary input for AC prompt and retrieval improvements. Before shipping as a metric: calibrate against 50–100 human-QA-scored tickets and refine the judge prompt where scores diverge.
 
 **Q4**
 
@@ -365,12 +366,21 @@ Establish the support infrastructure for Checkout.com's first B2C product: the B
 
 Consumer Duty obligations apply from day one of launch. Complaint handling and vulnerable customer identification must be live at launch, not added post-launch.
 
-**Q4** · PRDs to be added per phase
+**Q3–Q4** · PRDs to be added per phase
 
 > As a Braavos consumer, I want fast, accessible support so I can resolve payment and account issues without friction, through the app I'm already using.
 
-- Set up Zendesk flows for support tickets submitted via Fin in the Braavos app: new form, taxonomy, triggers, automations, macros, and agent content
+**Q3**
+
+- Define consumer care taxonomy (contact types, issue types, reasons) for the Braavos wallet
+- Set up Zendesk brand, forms, triggers, automations, and routing for B2C contacts
+- Author agent content and macros for launch contact types
+
+**Q4**
+
 - Install Fin mobile into the Braavos app as the primary support entry point
+- Configure Fin for B2C: content, Guidance, escalation rules, and Procedures for top consumer contact types
+- Validate support model against Consumer Duty obligations before launch
 
 **Future phases (2027)**
 

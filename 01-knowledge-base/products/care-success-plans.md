@@ -114,7 +114,7 @@ All Enterprise merchants have an Account Manager.
 - Developer-to-developer priority routing (1 developer profile)
 - Real-time merchant health alerts — essential API alerts
 
-### Checkout Payfac — Direct Sub-Merchant Support *(New, TBC)*
+### SMB — Direct Sub-Merchant Support *(New, TBC)*
 
 **Merchant profile**: Small merchants Checkout directly supports as primary Platform/PayFac, or SMB merchants onboarded via Tier 5 expansion. Same profile as Standard.
 

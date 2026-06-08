@@ -34,7 +34,7 @@ Within our B2B merchants, the people who contact or could be served by Merchant 
 | **Enterprise (Direct) — Enterprise** | Enterprise | High | Maintain quality, Phase II features |
 | **Enterprise (Direct) — Standard** | Standard | Medium | AI deflection, self-service |
 | **Platform** | Varies (Platform-level TBD) | Very High | Primary delivery focus — build the model |
-| **Checkout Payfac** | Standard (TBC) | Medium | TBC — timing not confirmed |
+| **SMB** | Standard (TBC) | Medium | end 2027 |
 | **Card Issuing** | Standard / Enterprise | Medium | Monitor |
 | **Identity Verification** | Standard / Enterprise | Medium | Monitor |
 | **B2C Consumer** | Consumer (new) | Low-Medium | 2027+ |
@@ -109,13 +109,13 @@ A **Platform** is a Checkout.com merchant that itself operates a marketplace or 
 | Complexity | High | Very High (multi-entity) |
 
 
-## Checkout Payfac — Direct Sub-Merchant Support *(New, TBC)*
+## SMB *(New, 2027)*
 
 ### What They Are
 Small merchants that Checkout.com directly supports as the primary Platform or PayFac (Payment Facilitator), or SMB merchants onboarded through a Tier 5 expansion programme. Similar profile to Standard-tier merchants.
 
 ### Status
-Timing is TBC. This is a named segment in the Care Success Plans but not yet in active delivery.
+Timing is 2027. This is a named segment in the Care Success Plans but not yet in active delivery.
 
 ### Notes
 - May offer premium add-ons (faster SLAs, live chat) at extra cost
@@ -188,7 +188,7 @@ B2C support serves **cardholders and end users of Project Braavos** — a distin
 ### What They Are
 Two sub-segments under the B2C model:
 - **Remember Me**: Users of Checkout.com's consumer card-saving product, accessed via Flow. **Live today** — consumers contact support via a webform on the Remember Me portal; tickets flow into the **Checkout Consumer** Zendesk brand. Volume is <10 tickets/week at this stage.
-- **Braavos Neobank**: Customers of Checkout.com's consumer neobank proposition — planned for 2027+
+- **Braavos Neobank**: Customers of Checkout.com's consumer neobank proposition — planned for 2027+. This is a mobile based app platform for customer card spending, wallet, rewards.
 
 ### Support Model
 - **Remember Me (live)**: Checkout Consumer Zendesk brand active. Low volume, simple queries (card saving, OTP, purchase history). No AI Agent deployed yet. No formal SLA or tier framework.
@@ -215,5 +215,5 @@ Different segments have different cost profiles and levers:
 | Identity Verification | L2 efficiency | Help articles for verification flows |
 
 
-**Last Updated**: February 2026  
+**Last Updated**: June 2026  
 **Owner**: Charlie Wildish

@@ -10,7 +10,7 @@
 
 **Status:** Draft
 
-**Last Updated:** 2026-04-09
+**Last Updated:** 2026-06-05
 
 **Stakeholders:** Engineering Manager · Knowledge Manager · Process Architect · Content Strategist
 
@@ -137,6 +137,7 @@ The content layer is distinct from Fin's. Fin uses public documentation only. Ag
 
 - **Pick from the Agent automation backlog priorities**: following Q2 impact review, select and build the next highest-priority Runbooks from the automation backlog (Confluence page 7847149938) — exact items to be confirmed post-Q2
 - **Analyse and flag potential content gaps**: Consultant analyses tickets solved by agents where it could not provide a useful answer and flags these to the Knowledge Manager as gaps in public or internal content
+- **Consultant QA judge (Q3)**: nightly batch job that scores every AC-fired ticket on a four-dimension rubric (Relevance, Accuracy, Completeness, Actionability — each 1–3) plus a binary quality signal (would this response reduce AHT or improve reply quality?). Judge runs on a stronger model than the AC with an independent prompt and rubric. Scores stored against ticket ID; weekly aggregates surfaced in analytics to identify retrieval degradation, stale KB content, and actionability gaps. Low-scoring examples feed directly into AC prompt and retrieval improvements. **Prerequisite**: the AC must surface which KB articles it drew from in each response — without this, the judge cannot assess Accuracy. KB article sourcing must be added before the judge can ship. Before treating scores as a metric, calibrate against 50–100 human-QA-scored tickets and refine judge prompt where scores diverge.
 
 **In scope — H2 2026 (TBC, pending scoping and prioritisation):**
 
@@ -149,7 +150,6 @@ The content layer is distinct from Fin's. Fin uses public documentation only. Ag
 **In scope — 2027 horizon (not in this PRD, flagged for planning):**
 
 - Autonomous task execution for approved action types (no human approval required for defined low-risk actions)
-- QA on closed tickets — automated quality scoring against golden dataset
 - Fin Procedures alignment: Consultant's data integrations and Fin's Procedures should share a common API access layer to avoid duplication
 
 **Out of scope (2026):**
@@ -186,6 +186,7 @@ Requirement IDs map to the MCD-564 deliverable line items.
 | FR-5 | P0 | Q2: Automate Refund reversals | Refund reversal Runbook: payment eligibility check, merchant intent confirmation, API reversal trigger (agent approval required at this step), internal note, merchant response draft. | Given a refund request ticket, the Runbook completes all five steps in sequence; reversal API call does not execute without explicit agent approval at step 3; all reversal actions logged with agent ID and timestamp. | Care Ops / CX · Security & Compliance |
 | FR-6 | P1 | H2: Agent automation backlog items | Following Q2 impact review, additional Runbooks built from the Agent automation backlog (Confluence 7847149938), prioritised by human-handled volume and estimated handle time saving. Exact items confirmed post-Q2. | Each selected Runbook follows the same approval-step model as FR-4 and FR-5; adoption instrumented from day 1. | Care Ops / CX |
 | FR-7 | P1 | H2: Content gap flagging | When the Consultant cannot provide a useful answer on an agent-resolved ticket, the gap is flagged to the Knowledge Manager with the ticket reference, query text, and contact type. | Given a ticket where the Consultant returns no result or a low-confidence result, a gap event is logged and surfaced in the Knowledge Manager's gap report within 24h of ticket close. | Care Ops / CX · Analytics & Reporting |
+| FR-13 | P1 | H2 Q3: Consultant QA judge | Nightly batch job scoring every AC-fired ticket closed that day on four dimensions (Relevance, Accuracy, Completeness, Actionability — 1–3 scale) plus a binary quality signal. Judge uses a stronger model than the AC (Opus if AC runs on Sonnet) with an independent prompt and rubric. Scores stored against ticket ID. **Prerequisite**: AC must expose which KB articles it drew from per response before the judge can assess Accuracy. Pre-ship calibration: correlate judge scores against human QA on 50–100 tickets; refine judge prompt where divergence exceeds 1 point on any dimension. | Given a ticket closed with AC involvement, scores are stored against the ticket ID by the next morning; weekly aggregate report shows per-dimension averages; calibration correlation ≥ 0.75 before scores treated as production metric. | Analytics & Reporting · Care Ops / CX |
 | FR-8 | P1 | H2 TBC: Context retrieval | On ticket open, the Consultant automatically surfaces merchant context: entity structure, processing profile, account status, payment history, and prior tickets. Requires merchant data layer — scoping needed before scheduling. | Given a ticket open event, merchant context loads in the sidebar within 5s; data sourced from entity/merchant data layer (source TBC). Scope and timeline subject to data layer availability. | Care Ops / CX · Product / Platform |
 | FR-9 | P1 | H2 TBC: Response drafting | Consultant drafts a reply to the merchant based on ticket context and knowledge retrieval results, or as the final step of a Runbook. Agent reviews, edits if needed, and sends. Consultant never sends without agent action. | Given a completed knowledge retrieval or Runbook, the Consultant presents a draft response in the sidebar; no send action is possible without agent confirmation; tested on 3 representative contact types. | Care Ops / CX |
 | FR-10 | P1 | H2 TBC: Conversation summary | On demand, the Consultant summarises the ticket thread — collapsing context for agents picking up a ticket mid-flight or reviewing a long exchange. | Given a ticket with >5 messages, the agent can trigger a conversation summary; summary is generated within 10s and covers key exchanges and any resolution steps taken. | Care Ops / CX |
@@ -226,6 +227,7 @@ Key interaction principles:
 - `consultant_tool_response_time_ms`: p50/p95 response time per tool
 - `consultant_ticket_summary_generated`: ticket_id, case_type, issue_type — feeds Reflex pipeline
 - `contact_resolved`: resolved_by (agent), handle_time_seconds, consultant_assisted (boolean), runbook_used (boolean), issue_type, merchant_segment
+- `consultant_qa_judge_scored`: ticket_id, issue_type, relevance_score (1–3), accuracy_score (1–3), completeness_score (1–3), actionability_score (1–3), quality_binary (boolean), kb_articles_used (array), judge_model
 
 **Internal dashboards and monitoring:**
 
@@ -263,7 +265,7 @@ Phased by capability risk: read-only first, write actions on a pilot cohort seco
 |---|---|---|---|
 | **Name** | Content and read-only | Action Runbooks (pilot) | Full rollout + H2 backlog |
 | **Timeline** | Q2 2026 | Q3 2026 | Q4 2026 |
-| **In scope** | FR-1 (content source), FR-2/FR-3 (SOP explanations), FR-4 (TPA lookup — read only) | FR-5 (refund reversal Runbook, pilot cohort of 3–5 agents), account unlock Runbook (pilot), ticket content summaries | Full rollout of Phase 2 Runbooks, FR-6 (backlog Runbooks), FR-7 (content gap flagging) |
+| **In scope** | FR-1 (content source), FR-2/FR-3 (SOP explanations), FR-4 (TPA lookup — read only) | FR-5 (refund reversal Runbook, pilot cohort of 3–5 agents), account unlock Runbook (pilot), ticket content summaries, FR-13 (QA judge — KB article sourcing prerequisite, judge build, calibration) | Full rollout of Phase 2 Runbooks, FR-6 (backlog Runbooks), FR-7 (content gap flagging), QA judge scores live in analytics dashboard |
 | **Entry criteria** | FR-0 instrumentation live in staging; public + SOP content indexed; agents briefed; cost per contact baseline methodology agreed | Reversal API permissions confirmed; approval flow tested in staging; Phase 1 TPA adoption >40%; no open P0s | Phase 2 pilot complete; zero incorrect reversals; all agents trained; monitoring configured |
 | **Success criteria** | >80% agent "helpful" rating on SOP suggestions; TPA Runbook used on >40% eligible tickets; zero P0s | Zero incorrect reversals over 4-week pilot window; >70% ticket summary coverage on pilot cohort | >60% Runbook adoption on eligible tickets; >80% ticket summary coverage; CSAT no worse than baseline |
 

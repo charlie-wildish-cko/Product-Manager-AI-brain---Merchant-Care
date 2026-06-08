@@ -75,7 +75,7 @@ Every document, analysis, or recommendation must connect to:
 | Zendesk viability research (AI, pricing, market, 2024–2026) | `05-archive/2026/investigations/Zendesk Viability_ AI, Pricing, Market.md` |
 | Support articles (879 markdown files, 14 topic folders — Payments, Disputes, Settlements, Platforms, etc.) | `01-knowledge-base/Support content/checkout-support-site-main/Support articles/` |
 | Technical documentation articles (~700 files) | `01-knowledge-base/Support content/Tech Docs/` |
-| API reference (Swagger YAML + paths, components, code samples) | `01-knowledge-base/Support content/API reference/` |
+| API reference — full OpenAPI 3.0.1 spec (JSON, 3.4MB; all endpoints, schemas, tags) | `01-knowledge-base/Support content/API reference/api-reference.json` |
 
 ---
 
