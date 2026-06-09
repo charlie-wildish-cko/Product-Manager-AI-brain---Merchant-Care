@@ -207,6 +207,6 @@ Copilot is Intercom's AI assistant for **human agents** — not for customers. I
 - [Agent Consultant](agent-consultant.md) — Copilot analogue in Checkout.com's roadmap
 - [Platform Embedded AI Support Vision](platform-embedded-ai-support-vision.md) — Fin in Platform portals (2027)
 - [KPI Definitions](../metrics/kpi-definitions.md) — AI Agent resolution rate, Fin Involvement Rate, CSAT
-- `04-active-work/fin-involvement-rate-prd.md` — PRD for increasing Fin Involvement Rate
-- `04-active-work/fin-email-behaviour-spec.md` — email channel behaviour specification
+- `04-active-work/prds/fin-involvement-rate/prd.md` — PRD for increasing Fin Involvement Rate
+- `04-active-work/research/fin-email-behaviour-spec.md` — email channel behaviour specification
 - `2026 deliverables.md` — "Improve Fin Resolution Through Procedures" (Q2 2026)

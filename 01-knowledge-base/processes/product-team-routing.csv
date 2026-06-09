@@ -1,0 +1,38 @@
+Pillar,Team,Slack Channel,Dashboard,Dashboard Pages
+Consumer,Flow (Mobile),TBC,N,
+Consumer,Flow (Web),TBC,N,
+Consumer,Payment Experience,#payment-interfaces,Y,Payment Links
+Core Network,APM London,TBC,N,
+Core Network,Card Payments Processing,TBC,N,
+Core Network,CP Berlin,TBC,N,
+Core Network,CP London MC,TBC,N,
+Core Network,CP London Visa,TBC,N,
+Core Network,Payment Specialists,TBC,N,
+Emerging Products,Bank Payouts,TBC,N,
+Emerging Products,Identity Verification,#ask-idv,Y,"Identities, Identity Analytics, Identity Verification, Identity Profiles"
+Emerging Products,Issuing Card Management,TBC,N,
+Emerging Products,Issuing Experience,TBC,N,
+Financial Experiences,Checkout Business Account,TBC,N,
+Financial Experiences,Cost and Revenue / Financial Reporting,#ask-fex-clientreporting,Y,"Balances, Transfers, Cards, Invoices"
+Financial Experiences,FX,TBC,N,
+Financial Experiences,Pricing and Billing,TBC,N,
+Financial Infrastructure,Cost of Sales,TBC,N,
+Global Partnerships,Partner Engineering,TBC,N,
+Merchant Services,Activation,#ask-activation,Y,"Sub-Entities, Onboarding"
+Merchant Services,Card Payouts,TBC,N,
+Merchant Services,Core Processing,TBC,N,
+Merchant Services,Dashboard Core,#ask-dashboard,Y,"All Payments (payment detail), Virtual Terminal, Simulate Payments, User Activity, Account Rules"
+Merchant Services,Data Connectivity & Analytics,#ask-data-connectivity-and-analytics,Y,"Reports, Manage Schedules, All Payments (table view), Payment Lifecycle, Boards, Data Explorer"
+Merchant Services,Disputes / Payment Infrastructure,#ask-disputes,Y,Disputes
+Merchant Services,MCR,#ask-merchant-change-requests-product,Y,"Bank Settlements, Billing Descriptors, Business Details, Payment Methods, Website URLs, Key Business Stakeholders"
+Merchant Services,Notifications,#ask-notifications,Y,Webhooks
+Merchant Services,Payment Routing,TBC,N,
+Payment Performance,Fraud Detection Pro,#ask-fraud-detection,Y,"Fraud Performance, Fraud Strategy, Fraud Flags"
+Payment Performance,Intelligent Acceptance,#ask-intelligent-acceptance,Y,"Intelligent Acceptance, Integration Health"
+Payment Services,Issuing,#ask-issuing,Y,"All Transactions, Issuing Cards, Cardholders, Card Program, Authorization Relay"
+Merchant Services,Edge Gateway,#edge-gateway,Y,API Logs
+Central Services,IAM,#ask-iam,Y,"API Keys, User Permissions, SSO, Account Structure"
+Platform & Operations,Product Operations,TBC,N,
+Emerging Products,Transactional Compliance,#ask-fincrime,Y,Compliance Requests
+Value Added Services,Authentication,#ask-authentication,N,
+Value Added Services,Vault,#ask-vault,Y,"Payment Instruments, Credential Forwarding, Network Tokens"

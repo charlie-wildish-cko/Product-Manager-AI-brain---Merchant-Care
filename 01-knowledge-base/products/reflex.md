@@ -43,7 +43,7 @@ Question: do our Knowledge and data graphs live in Reflex or is Reflex a consume
 
 ## 2026 Roadmap
 
-**Jira**: MCD-565 · **Full phased plan**: `04-active-work/reflex-phased-plan.md`
+**Jira**: MCD-565 · **Full phased plan**: `04-active-work/prds/reflex/phased-plan.md`
 
 | Phase   | Quarter           | Goal                                                                |
 | ------- | ----------------- | ------------------------------------------------------------------- |

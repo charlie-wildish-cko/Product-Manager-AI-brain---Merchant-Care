@@ -14,7 +14,7 @@
 
 Guided in-app onboarding so new merchants set up successfully without contacting support.
 
-**TBC - this sits with Dashboard team** · [MCD-566](https://checkout.atlassian.net/browse/MCD-566)
+**Deprioritised — not in 2026 scope** · [MCD-566](https://checkout.atlassian.net/browse/MCD-566)
 
 > As a new merchant, I want a clear and intuitive dashboard onboarding experience so that I can quickly and successfully set up my account and start processing payments.
 
@@ -57,7 +57,7 @@ Guided in-app onboarding so new merchants set up successfully without contacting
 
 Real-time alerts for critical payment events so merchants are informed before they need to contact support.
 
-**TBC** · [MCD-574](https://checkout.atlassian.net/browse/MCD-574) — dependency on notification data being available
+**2027** · [MCD-574](https://checkout.atlassian.net/browse/MCD-574) — deprioritised for 2026; dependency on notification data being available
 
 > As a merchant, I want to receive proactive notifications so I am alerted to potential issues or actions required before they impact my business or require me to contact support.
 
@@ -71,11 +71,10 @@ Real-time alerts for critical payment events so merchants are informed before th
 
 A centralised place in Dashboard for merchants to submit and track all their support requests.
 
-**Q3** · [MCD-575](https://checkout.atlassian.net/browse/MCD-575)
+**Q4** · [MCD-575](https://checkout.atlassian.net/browse/MCD-575)
 
 > As a merchant, I want a centralised place to submit new support requests and track the status of all my tickets in one place.
 
-- Unified ticket submission flow from Fin with auto-classification and routing to Zendesk
 - List view in Dashboard ticket page pulling ticket data and statuses
 - Admins in Dashboard can see all their business' support requests
 
@@ -105,7 +104,7 @@ AI-powered analysis of support tickets to surface the top contact drivers to Pro
 
 **Done when**: Aggregated theme clusters live; top 10 contact drivers quantified and shared with VP Product and Director of Operations; at least one Product team using Reflex output for prioritisation
 
-**Q3 — Add NPS data, Contact Spike Detection, Measure Fixes from Product**
+**Q3 — Reflex V2 (scope shaped by Q2 feedback)**
 
 - Set up fix implementation measurement from Product teams
 - NPS data merge into VoC view (Airtable source; joined via client ID)
@@ -132,23 +131,37 @@ AI-powered analysis of support tickets to surface the top contact drivers to Pro
 
 **Flywheel**: Insight & Prevention (the core insight and prevention engine — see `01-knowledge-base/products/reflex.md`)
 
+### Knowledge and Data Graph
+
+Map the relationship between support taxonomy, products, content, and data to identify where coverage gaps exist and what is needed to close them.
+
+**Q3** · Owned by Data Science
+
+> As a Care Product team, I want to understand which contact types lack adequate content or data coverage so we can target improvements to Fin and agent knowledge.
+
+- Map support taxonomy (contact reasons) to products and to existing content and data sources
+- Identify gaps: where Fin lacks content, where agents lack SOPs, where data connectors are missing
+- Output feeds directly into Fin Procedures roadmap and Knowledge Base prioritisation
+
+**Flywheel**: Fuel + Insight & Prevention (informs content and data investment; connects taxonomy to resolution capability)
+
 ## Goal 2: Reduce Cost of Support
 
 ### AI Powered Contextual Answers on Dashboard
 
 Contextual Fin buttons embedded on Dashboard pages so merchants get instant answers without leaving their workspace.
 
-**Q2–Q3** · [MCD-561](https://checkout.atlassian.net/browse/MCD-561)
+**Q3–Q4** · [MCD-561](https://checkout.atlassian.net/browse/MCD-561)
 
 > As a merchant, I want contextual answers on the Dashboard so I can get immediate, relevant support and information without leaving my workspace.
 
-**Q2**
+**Q3**
 
 - Re-usable contextual buttons to launch Fin with pre-defined prompts for problem areas on Dashboard pages, providing answers from articles and docs
 - Put on Payments pages
 - Assess impact
 
-**Q3**
+**Q4**
 
 - Expand button to more pages - Settlements, Balances, Users etc
 
@@ -196,9 +209,11 @@ Expand Fin's data access and structured Procedures so it resolves more contact t
 
 **Q3 — Expanded Data & Procedures**
 
+- Connect bot gateway to Payin and Payout BQ data source (trade-off: available now vs. waiting on PLC dependency)
 - Configure Fin for new PLC data source from Payments Search API
 - Add User Management API to Fin so it can troubleshoot merchant account access issues
-- Add another 5 Procedures to Fin (covering top 10 query types)
+- Add Sub-merchant Onboarding API to Fin so it can explain onboarding status to Platform ops users in Dashboard and over email
+- Add another 5 Procedures to Fin (covering top 10 query types) — Product and Ops scope
 
 **Q3 — Email: Implement Fin Data Policy**
 
@@ -247,9 +262,15 @@ Product context and capability set: `01-knowledge-base/products/agent-consultant
 - Automate TPA payment status lookups
 - Automate Refund reversals
 
-**H2**
+**Q3**
 
-- Pick from the Agent automation backlog priorities
+- New version of Agent Toolkit incorporating runbook solution — refund reversals is the first runbook
+- Agents can trigger automated task: Refund reversals
+- Consultant QA judge: nightly batch job that scores every AC-fired ticket against a four-dimension rubric (Relevance, Accuracy, Completeness, Actionability — each 1–3) plus a binary quality signal (would this response reduce AHT or improve reply quality?). Judge runs on a stronger model than the AC (Opus if AC runs on Sonnet) with an independent prompt and rubric. Requires the AC to surface which KB articles it drew from — this is a prerequisite; without it the judge cannot assess accuracy. Scores stored against ticket ID; weekly aggregates surfaced in analytics to identify retrieval degradation, stale KB content, and actionability gaps. Low-scoring examples become the primary input for AC prompt and retrieval improvements. Before shipping as a metric: calibrate against 50–100 human-QA-scored tickets and refine the judge prompt where scores diverge.
+
+**Q4**
+
+- Additional automated tasks (from backlog priorities)
 - Analyse and flag potential content gaps in public and internal content using tickets solved by Agents
 
 **Flywheel**: Agent Experience (reduces AHT; core driver of cost per contact for human-handled tickets)
@@ -262,10 +283,10 @@ A tiered support model that matches each merchant segment to the right channels 
 
 > As a merchant, I want multiple support channels so I can contact support in my preferred way that is contextual for me.
 
-* **Q2**: Enable support model for Standard level merchants
-* **Q3**: Enable support model for Enterprise and Premium merchants
+* **Q2**: Add relevant merchant attributes to determine support tier — not yet enforced
+* **Q3**: Enable support model for Enterprise and Premium merchants; enforce tier routing for Standard
 
-**Dependency**: Leadership decision and Commercial sign off on the support model - target early Q2.
+**Dependency**: Ops decision on support model tiers and SLA rules — TBC.
 
 **Flywheel**: Orchestration (right channel for the right merchant at the right time)
 
@@ -316,9 +337,13 @@ More data in the Agent Toolkit and smarter routing rules so agents spend less ti
 - Payouts and Processing Profile (TBC)
 - Routing rules based on agent skills
 
-**H2**
+**Q3**
 
-- SLAs based on issue type, per Segment (Standard/Enterprise/Premium)
+- Routing by taxonomy Reason (route tickets based on contact reason classification) — ZD config
+- SLAs based on issue type, per Segment (Standard/Enterprise/Premium) — ZD config
+
+**Q4**
+
 - Get case numbers from Salesforce and show case status in Agent toolkit
 
 **Flywheel**: Agent Experience + Governance
@@ -335,26 +360,49 @@ H2
 
 * Build Zendesk brand and configuration; user identification from Dashboard webform and link to Blue EMI entity for reporting
 
-### Consumer support strategy for 2027
+### Consumer Support — Braavos App
 
-H2
+Establish the support infrastructure for Checkout.com's first B2C product: the Braavos consumer wallet app. This is a new customer segment requiring a distinct support channel, contact taxonomy, agent content, and AI resolution layer — separate from the existing B2B merchant support model.
 
-* Plan for Consumer support channels (B2C) and experience with Consumer team, to start in 2027
+Consumer Duty obligations apply from day one of launch. Complaint handling and vulnerable customer identification must be live at launch, not added post-launch.
 
-### Zendesk Platform Decision (Build / Buy / Keep)
+**Q3–Q4** · PRDs to be added per phase
 
-Strategic evaluation of Zendesk as the long-term ticketing and agent platform for Care, ahead of contract renewal in June 2027.
+> As a Braavos consumer, I want fast, accessible support so I can resolve payment and account issues without friction, through the app I'm already using.
+
+**Q3**
+
+- Define consumer care taxonomy (contact types, issue types, reasons) for the Braavos wallet
+- Set up Zendesk brand, forms, triggers, automations, and routing for B2C contacts
+- Author agent content and macros for launch contact types
+
+**Q4**
+
+- Install Fin mobile into the Braavos app as the primary support entry point
+- Configure Fin for B2C: content, Guidance, escalation rules, and Procedures for top consumer contact types
+- Validate support model against Consumer Duty obligations before launch
+
+**Future phases (2027)**
+
+- Complaint handling workflow (Consumer Duty compliant)
+- Vulnerable customer identification in Fin
+
+**Flywheel**: Input + Orchestration (establishes AI-first entry point and correct routing for a net-new B2C segment)
+
+### Help Desk Platform Evaluation
+
+Evaluate whether Zendesk remains the right long-term platform for Care, ahead of contract renewal in June 2027.
 
 **Q3 → Q4** · Strategic decision piece
 
-- **Q3**: Capability gap map + options evaluation — Keep + Extend vs. Buy (Plain, Pylon, Intercom) vs. Build; vendor RFIs/demos; migration feasibility
-- **Q4**: RFC decision document complete; recommendation approved; contract negotiation or replacement programme initiated by Q1 2027
+- **Q3**: Analysis of current capability gaps; light spikes and trials of alternative platforms (e.g. Plain, Pylon, Intercom)
+- **Q4**: Decision made; recommendation approved; contract negotiation or replacement programme initiated by Q1 2027
 
 **Trigger**: Contract renewal June 2027; known capability gaps (Platform merchant data, AI workflow execution, B2C readiness)
 
 **Flywheel**: Governance (underpins all flywheel stages — ticketing, routing, SLA, QA, data pipeline)
 
-Reference: `04-active-work/zendesk-platform-decision-rfc.md` (to be created)
+Reference: `04-active-work/research/zendesk-platform-decision-rfc.md`
 
 ---
 
@@ -378,10 +426,10 @@ Reference: `01-knowledge-base/metrics/contact forecasting.md`
 | **Orchestration**        | Support model, Merchant context (channel eligibility), Merchant ticket submission and visibility                   |
 | **Fuel**                 | Merchant context for Fin & Agents, AI first resolution (data/procedures)                                           |
 | **Agent Experience**     | AI Consultant, Agent productivity tools, Reduce agent effort on dispatch                                           |
-| **Insight & Prevention** | Reflex (all phases), Education Hub, Proactive notifications, Dashboard onboarding                                  |
+| **Insight & Prevention** | Reflex (all phases), Education Hub, Knowledge and Data Graph                                                       |
 | **Governance**           | Agent productivity tools (SLAs, routing), Support model (SLA framework)                                            |
 
-**Last Updated**: 2026-03-30
+**Last Updated**: 2026-05-18
 **Owner**: Charlie Wildish
 **Status**: Q1 complete / in-flight. Detail to be added per deliverable.
 

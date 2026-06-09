@@ -2,7 +2,7 @@
 
 > **Related**: [Care Product Flywheel](care-product-model.md) · [Support Scale Principles](support-scale-principles.md) · [2026 Deliverables](../../2026%20deliverables.md)
 >
-> **Source of truth**: This doc owns the year-by-year capability maturity (L0–L4, 2026–2030) and delivery sequencing. For the product model structure (flywheel + stack definitions), see [Care Product Model](care-product-model.md). For the expanded product mapping (what products are needed within each capability, including net-new and agentic), see [Care Product Model 2030 — Mapping](../../04-active-work/care-product-model-2030-mapping.md).
+> **Source of truth**: This doc owns the year-by-year capability maturity (L0–L4, 2026–2030) and delivery sequencing. For the product model structure (flywheel + stack definitions), see [Care Product Model](care-product-model.md). For the expanded product mapping (what products are needed within each capability, including net-new and agentic), see [Care Product Model 2030 — Mapping](../../04-active-work/strategy/care-product-model-2030-mapping.md).
 
 This document defines the capability model for scaling Care from the current 2026 state to the 2030 vision. For each flywheel stage, it maps the discrete capabilities required, which Care products deliver them, how they mature year by year, the metric they drive, and what must be true before they can advance.
 

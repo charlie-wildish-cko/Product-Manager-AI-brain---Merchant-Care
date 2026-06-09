@@ -129,9 +129,9 @@ This backlog tracks the data sources Fin should be able to access (via API or MC
 | **Contact volume** | Spike-dependent — high deflection value during incidents |
 | **Integration method** | API (REST, internal) |
 | **Access model** | Read-only (`GET /incidents`, `GET /incidents/{incident_id}`, `GET /incidents/clients/{client_id}`) |
-| **Data availability** | Confirmed (internal API exists; `GET /incidents` is planned — confirm GA status) |
+| **Data availability** | Confirmed live |
 | **Complexity** | Low |
-| **Status** | Proposed |
+| **Status** | Live |
 | **API reference** | https://checkout.atlassian.net/wiki/spaces/NOC/pages/7008912153/VisionNotify+API+Documentation |
 | **Notes** | VisionNotify is Checkout's internal incident platform — RESTful API with DynamoDB persistence, API key auth via Lambda Authorizer, SNS notifications to Merchant Care. During outages, contact volume spikes sharply; Fin surfacing incident status before merchants escalate is high-leverage deflection. The `GET /incidents/clients/{client_id}` endpoint allows filtering by impacted client — enabling Fin to confirm whether a specific merchant is affected. `GET /incidents` (all incidents) is currently planned, not live — confirm availability. Owner: Nirvan Bahadoor (NOC). |
 
@@ -157,19 +157,43 @@ This backlog tracks the data sources Fin should be able to access (via API or MC
 
 ---
 
-#### Webhook Delivery Logs ✦
+#### Webhooks (Workflows API) ✦
 | Field | Value |
 |---|---|
-| **Data source** | Checkout Webhooks API / internal delivery log |
-| **Query types enabled** | Webhook delivery status; failure reason; retry count; last attempted timestamp |
-| **Contact types** | TECHNICAL ISSUE → Webhooks |
-| **Contact volume** | 182 contacts / 6 months |
+| **Data source** | Checkout Workflows API |
+| **Query types enabled** | Webhook configuration status (what events a workflow is subscribed to, what endpoint is configured); delivery status for a specific event (`GET /workflows/events/{eventId}/actions/{workflowActionId}`); all events for a given payment or dispute (`GET /workflows/events/subject/{subjectId}`); list of available event types (`GET /workflows/event-types`) |
+| **Contact types** | TECHNICAL ISSUE → Webhooks & Notifications |
+| **Contact volume** | TBD — confirm from flat table; included under TECHNICAL ISSUE |
 | **Integration method** | API |
 | **Access model** | Read-only |
-| **Data availability** | H2 2026 |
-| **Complexity** | Medium |
+| **Data availability** | Confirmed live |
+| **Complexity** | Low |
 | **Status** | Proposed |
-| **Notes** | Low volume but rides on the Agent Consultant Phase 2 data layer (H2 2026) — incremental effort once that foundation is live. Merchants contact when they believe a webhook has not fired; Fin confirming delivery status and failure reason resolves most of these without escalation. Distinguish between "not delivered" (retrying) and "delivered but not received" (merchant-side issue). |
+| **Auth** | OAuth scopes: `flow`, `flow:events`, `flow:workflows` — or Secret API key |
+| **Internal base URL** | `http://flow-int.prod.internal/diagnostics-api` |
+| **Key endpoints** | `GET /workflows` · `GET /workflows/{workflowId}` · `GET /workflows/events/subject/{subjectId}` · `GET /workflows/events/{eventId}/actions/{workflowActionId}` · `GET /workflows/{workflowId}/events?startDate=&endDate=&failuresOnly=&limit=` |
+| **Notes** | The action invocations endpoint (`GET /workflows/events/{eventId}/actions/{workflowActionId}`) returns delivery attempt details — status, response code, timestamps — directly answering "did my webhook fire?" and "why did it fail?". The subject events endpoint allows Fin to look up all webhook events associated with a payment ID or dispute ID without the merchant needing to know the event ID. Requires Fin to be granted read-only OAuth credentials scoped to `flow:events` and `flow:workflows`. |
+
+---
+
+#### Issuing Transactions ✦
+| Field | Value |
+|---|---|
+| **Data source** | Checkout Issuing Transactions API |
+| **Query types enabled** | List transactions for a cardholder or card (`GET /issuing/transactions`, filterable by `cardholder_id`, `card_id`, `entity_id`, `status`, date range); individual transaction detail (`GET /issuing/transactions/{transactionId}`) — returns transaction type, lifecycle status, amounts, merchant details, card/cardholder, and message history |
+| **Contact types** | ISSUING → Transaction queries (status, declined reason, spend history) |
+| **Contact volume** | TBD — Issuing contact volume not yet broken out in flat table; confirm with actuals |
+| **Integration method** | API |
+| **Access model** | Read-only |
+| **Data availability** | Beta (live in sandbox and production; Beta label in spec) |
+| **Complexity** | Low |
+| **Status** | Proposed |
+| **Auth** | OAuth scope: `issuing:transactions-read` |
+| **Internal base URL** | `https://issuing-int.cko-prod.ckotech.co` |
+| **Key endpoints** | `GET /issuing/transactions` (query params: `cardholder_id`, `card_id`, `entity_id`, `status`, `from`, `to`, `limit`, `skip`) · `GET /issuing/transactions/{transactionId}` |
+| **Response fields** | `id`, `status` (lifecycle stage), `transaction_type`, `card`, `cardholder`, `entity`, `client`, `amounts`, `merchant`, `messages` (delivery history), `reference_transaction`, `created_on` |
+| **BFF / integration note** | The Dashboard calls a BFF (Issuing Dashboard API) that proxy-calls the Transactions API. Fin should integrate via the same BFF pattern. BFF OpenAPI spec: https://friendly-dollop-a6266254.pages.github.io/#tag/Dashboard-API-Transactions/operation/getIssuingDashboardTransactions — note: some filters in the BFF spec are out of date; use the public Transactions API reference for the authoritative filter list: https://api-reference.checkout.com/tag/Transactions#operation/getTransactions |
+| **Notes** | API is in Beta — confirm production stability and SLA before committing to a Procedure. The `messages` field (summarised list of network messages) is high-value for diagnosing declined or pending Issuing transactions. Filter by `entity_id` to scope queries to the calling merchant's entity, avoiding cross-entity data exposure. Issuing is a distinct product segment — confirm whether Issuing merchants are currently using Fin and whether deflection uplift is in scope for 2026. |
 
 ---
 
@@ -198,8 +222,9 @@ This backlog tracks the data sources Fin should be able to access (via API or MC
 | P2 | Settlements API | 858 | H2 2026 | Medium | No |
 | P2 | Analytics MCP (Reporting) | 763 | Not confirmed | Medium | No |
 | P2 | Balance API | 409 | Not confirmed | Low | No |
-| P2 | VisionNotify (Incident API) | Spike-dependent | Confirmed (partial) | Low | [Yes](fin-outage-check-responses.md) |
-| P3 | Webhook Delivery Logs | 182 | H2 2026 | Medium | No |
+| P2 | VisionNotify (Incident API) | Spike-dependent | Confirmed live | Low | [Yes](fin-outage-check-responses.md) |
+| P3 | Webhooks — Workflows API (delivery status, config lookup) | TBD | Confirmed live | Low | No |
+| P3 | Issuing Transactions (list + detail; Beta) | TBD | Beta (live) | Low | No |
 | P3 | Clearing / TPA Data (Payments API extension) | Subset of Payments | Q4 2026 | Low | No |
 
 ---

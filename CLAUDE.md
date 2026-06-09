@@ -8,7 +8,7 @@ Charlie Wildish is PM for Merchant Care (Customer Support) at Checkout.com, a gl
 
 When given a new task or topic without a clear output format:
 
-1. **Orient** — Check `04-active-work/` (including `04-active-work/roadmap-items/` for active PRDs) for existing work on the topic. If a file exists, read it before starting.
+1. **Orient** — Check `04-active-work/` for existing work. PRDs live in `04-active-work/prds/<initiative>/`; long-horizon strategy in `04-active-work/strategy/`; research and supporting analysis in `04-active-work/research/`; CSVs and data artefacts in `04-active-work/working-files/`. If a file exists, read it before starting.
 2. **Anchor** — Check `2026 deliverables.md` to confirm the task maps to a named deliverable and quarter. If it doesn't, flag this before proceeding.
 3. **Clarify the output format** — PRD · memo · Slack update · stakeholder update · analysis · exploration
 4. **Draft** — Apply the relevant template and writing style. Ask one clarifying question at most before producing output.
@@ -34,7 +34,7 @@ Every document, analysis, or recommendation must connect to:
 01-knowledge-base/   # Reference docs — strategy, products, processes, payment domain, metrics
 02-workflows/        # Step-by-step process guides
 03-templates/        # Reusable document templates (PRD, memo, user story, etc.)
-04-active-work/      # Current sprint work, active PRDs, stakeholder updates
+04-active-work/      # Active work — prds/, strategy/, research/, working-files/
 05-archive/          # Completed work by year/quarter
 ```
 
@@ -46,8 +46,8 @@ Every document, analysis, or recommendation must connect to:
 |---|---|
 | Strategic goals & 2026 roadmap | `2026 deliverables.md` |
 | Care Product flywheel model | `01-knowledge-base/strategy/care-product-model.md` |
-| Care Product strategy 2026–2030 (Rumelt strategy kernel, VP/Director audience) | `04-active-work/care-product-strategy-2026-2030.md` |
-| Care strategy 2026–2030 (narrative + TPV/contact forecasts, co-authored with Oliver Westlake-Simm) | `04-active-work/care-strategy-2026-2030.md` |
+| Care Product strategy 2026–2030 (Rumelt strategy kernel, VP/Director audience) | `04-active-work/strategy/care-product-strategy-2026-2030.md` |
+| Care strategy 2026–2030 (narrative + TPV/contact forecasts, co-authored with Oliver Westlake-Simm) | `04-active-work/strategy/care-strategy-2026-2030.md` |
 | Team structure & stakeholders | `01-knowledge-base/teams.md` |
 | Support workflows & operations | `01-knowledge-base/processes/support-workflows.md` |
 | Ticket taxonomy & contact volumes | `01-knowledge-base/processes/support-taxonomy.md` |
@@ -62,8 +62,8 @@ Every document, analysis, or recommendation must connect to:
 | KPI definitions | `01-knowledge-base/metrics/kpi-definitions.md` |
 | Contact volume forecasts 2026–2030 by segment (Enterprise, Platforms ISV, Platforms SMB, Consumer) | `01-knowledge-base/metrics/contact forecasting.md` |
 | Reflex product reference (components, metrics, vision, why it matters) | `01-knowledge-base/products/reflex.md` |
-| Reflex phased plan (components + build sequence, Q1–Q4 2026) | `04-active-work/reflex-phased-plan.md` |
-| Agent Consultant capabilities (full list) and interaction model | `01-knowledge-base/products/agent-consultant.md` · vision: `04-active-work/agent-consultant-vision.md` |
+| Reflex phased plan (components + build sequence, Q1–Q4 2026) | `04-active-work/prds/reflex/phased-plan.md` |
+| Agent Consultant capabilities (full list) and interaction model | `01-knowledge-base/products/agent-consultant.md` · vision: `04-active-work/prds/agent-consultant/vision.md` |
 | Fin AI Agent — how it works, Checkout.com deployment, Procedures/Tasks, analytics, terminology | `01-knowledge-base/products/fin-ai-agent.md` |
 | Zendesk — ticket lifecycle, business rules, routing, Guide/Knowledge, AI tooling, analytics, terminology | `01-knowledge-base/products/zendesk.md` |
 | Product reference doc template (why it matters + components + metrics) | `03-templates/product-reference-template.md` |
@@ -71,11 +71,11 @@ Every document, analysis, or recommendation must connect to:
 | PRD example | `03-templates/prd-template-example.md` |
 | Product strategy template | `03-templates/product-strategy-template.md` |
 | Writing style by audience | `01-knowledge-base/processes/writing-style-guide.md` |
-| Zendesk platform decision RFC (Build/Buy/Keep, Q3–Q4 2026) | `04-active-work/zendesk-platform-decision-rfc.md` |
-| Zendesk viability research (AI, pricing, market, 2024–2026) | `04-active-work/Zendesk Viability_ AI, Pricing, Market.md` |
+| Zendesk platform decision RFC (Build/Buy/Keep, Q3–Q4 2026) | `04-active-work/research/zendesk-platform-decision-rfc.md` |
+| Zendesk viability research (AI, pricing, market, 2024–2026) | `05-archive/2026/investigations/Zendesk Viability_ AI, Pricing, Market.md` |
 | Support articles (879 markdown files, 14 topic folders — Payments, Disputes, Settlements, Platforms, etc.) | `01-knowledge-base/Support content/checkout-support-site-main/Support articles/` |
 | Technical documentation articles (~700 files) | `01-knowledge-base/Support content/Tech Docs/` |
-| API reference (Swagger YAML + paths, components, code samples) | `01-knowledge-base/Support content/API reference/` |
+| API reference — full OpenAPI 3.0.1 spec (JSON, 3.4MB; all endpoints, schemas, tags) | `01-knowledge-base/Support content/API reference/api-reference.json` |
 
 ---
 
@@ -229,11 +229,9 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 
 **Reflex MCP (TBC)**: Surfaces Reflex insights in engineering workflows. Timing is TBC — dependent on Phase 3 (Q3 2026) attribution model stability. Insights available via data product regardless; MCP improves shareability.
 
-**B2C wallet launch (2027)**: Consumer Duty obligations apply from day one. Phone channel, complaint handling, and vulnerable customer identification in Fin must all be live at launch, not added post-launch.
+**B2C wallet launch (2027)**: Consumer Duty obligations apply from day one. Complaint handling and vulnerable customer identification in Fin must be live at launch, not added post-launch.
 
-**Investment asks**: Team growth investment asks start 2027. The current team can deliver the 2026 B2B roadmap but cannot simultaneously build the 2027 B2C foundation.
-
-**Care product model 2030 mapping**: Full product mapping per flywheel stage and stack layer (existing, build, buy, agentic) is in `04-active-work/care-product-model-2030-mapping.md`.
+**Care product model 2030 mapping**: Full product mapping per flywheel stage and stack layer (existing, build, buy, agentic) is in `04-active-work/strategy/care-product-model-2030-mapping.md`.
 
 **Operating model at scale**: Implications of 80%+ AI resolution by 2030 (agent roles, governance, knowledge infra, ownership, successor metrics) in `01-knowledge-base/strategy/operating-model-at-scale.md`.
 

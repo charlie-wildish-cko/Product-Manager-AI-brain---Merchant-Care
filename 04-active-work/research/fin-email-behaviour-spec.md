@@ -3,7 +3,7 @@
 **Status**: Draft for review  
 **Author**: Charlie Wildish  
 **Date**: February 2026  
-**Related**: [`known-challenges.md`](../01-knowledge-base/processes/known-challenges.md), [`ai-agent-operations.md`](../01-knowledge-base/processes/ai-agent-operations.md)
+**Related**: [`known-challenges.md`](../../01-knowledge-base/processes/known-challenges.md), [`ai-agent-operations.md`](../../01-knowledge-base/processes/ai-agent-operations.md)
 
 
 ## Problem Statement
