@@ -14,7 +14,7 @@
 
 Guided in-app onboarding so new merchants set up successfully without contacting support.
 
-**Deprioritised — not in 2026 scope** · [MCD-566](https://checkout.atlassian.net/browse/MCD-566)
+**Deprioritised — not in 2026 scope**
 
 > As a new merchant, I want a clear and intuitive dashboard onboarding experience so that I can quickly and successfully set up my account and start processing payments.
 
@@ -28,7 +28,7 @@ Guided in-app onboarding so new merchants set up successfully without contacting
 
 20 tutorials and videos on support.checkout.com covering the top merchant how-to tasks, reducing inbound how-to contacts.
 
-**Q1–Q4** · [MCD-567](https://checkout.atlassian.net/browse/MCD-567)
+**Q1–Q4**
 
 > As a merchant, I want to easily find comprehensive resources and documentation to understand and manage my account, products, and processes.
 
@@ -57,7 +57,7 @@ Guided in-app onboarding so new merchants set up successfully without contacting
 
 Real-time alerts for critical payment events so merchants are informed before they need to contact support.
 
-**2027** · [MCD-574](https://checkout.atlassian.net/browse/MCD-574) — deprioritised for 2026; dependency on notification data being available
+**2027** — deprioritised for 2026; dependency on notification data being available
 
 > As a merchant, I want to receive proactive notifications so I am alerted to potential issues or actions required before they impact my business or require me to contact support.
 
@@ -71,7 +71,7 @@ Real-time alerts for critical payment events so merchants are informed before th
 
 A centralised place in Dashboard for merchants to submit and track all their support requests.
 
-**Q4** · [MCD-575](https://checkout.atlassian.net/browse/MCD-575)
+**Q4**
 
 > As a merchant, I want a centralised place to submit new support requests and track the status of all my tickets in one place.
 
@@ -84,7 +84,7 @@ A centralised place in Dashboard for merchants to submit and track all their sup
 
 AI-powered analysis of support tickets to surface the top contact drivers to Product teams for prioritisation and fix.
 
-**Q1 → Q4** · [MCD-565](https://checkout.atlassian.net/browse/MCD-565)
+**Q1 → Q4**
 
 > As a Support Leader, I want to understand the main drivers for merchants contacting support, identify areas for product improvement, and reduce unnecessary contacts.
 
@@ -151,7 +151,7 @@ Map the relationship between support taxonomy, products, content, and data to id
 
 Contextual Fin buttons embedded on Dashboard pages so merchants get instant answers without leaving their workspace.
 
-**Q3–Q4** · [MCD-561](https://checkout.atlassian.net/browse/MCD-561)
+**Q3–Q4**
 
 > As a merchant, I want contextual answers on the Dashboard so I can get immediate, relevant support and information without leaving my workspace.
 
@@ -171,7 +171,7 @@ Contextual Fin buttons embedded on Dashboard pages so merchants get instant answ
 
 Merchant account data surfaced in Fin and the Agent Toolkit so AI and human agents can resolve queries faster with full context.
 
-**Q1 (phase 1) → Q2 (phase 2)** · [MCD-562](https://checkout.atlassian.net/browse/MCD-562)
+**Q1 (phase 1) → Q2 (phase 2)**
 
 > As an AI or human Agent, I want context so I can quickly understand the merchant's history, platform configuration, and previous interactions to provide fast and accurate resolution.
 
@@ -192,7 +192,7 @@ Merchant account data surfaced in Fin and the Agent Toolkit so AI and human agen
 
 Expand Fin's data access and structured Procedures so it resolves more contact types autonomously, including over email.
 
-**Q2 → Q3** · [MCD-573](https://checkout.atlassian.net/browse/MCD-573) · [MCD-568](https://checkout.atlassian.net/browse/MCD-568)
+**Q2 → Q3**
 
 > As a merchant, I want rapid support resolution so I can get my common issues resolved instantly.
 
@@ -225,7 +225,7 @@ Expand Fin's data access and structured Procedures so it resolves more contact t
 
 Identify ISV contacts at point of entry and surface Platform merchant context in Zendesk for correct routing and resolution.
 
-**Q1 ✓** · [MCD-563](https://checkout.atlassian.net/browse/MCD-563)
+**Q1 ✓**
 
 > As an ISV, I want access to raise support for my merchants.
 
@@ -242,7 +242,7 @@ Identify ISV contacts at point of entry and surface Platform merchant context in
 
 An AI assistant in Zendesk that proactively suggests data, answers, and actions for agents to review and send, reducing AHT.
 
-**Q1–Q4** · [MCD-564](https://checkout.atlassian.net/browse/MCD-564)
+**Q1–Q4**
 
 Product context and capability set: `01-knowledge-base/products/agent-consultant.md`
 
@@ -279,7 +279,7 @@ Product context and capability set: `01-knowledge-base/products/agent-consultant
 
 A tiered support model that matches each merchant segment to the right channels and SLAs.
 
-**Q2 → Q3** · [MCD-569](https://checkout.atlassian.net/browse/MCD-569) (Standard) · [MCD-572](https://checkout.atlassian.net/browse/MCD-572) (Enterprise/Premium)
+**Q2 → Q3**
 
 > As a merchant, I want multiple support channels so I can contact support in my preferred way that is contextual for me.
 
@@ -294,7 +294,7 @@ A tiered support model that matches each merchant segment to the right channels 
 
 Retire the static Dashboard webform and make Fin the primary support entry point for ticket submission.
 
-**Q3** · [MCD-571](https://checkout.atlassian.net/browse/MCD-571)
+**Q3**
 
 > As a merchant, I want to contact support through a single, intelligent entry point so I get faster, more accurate help without navigating a static form.
 
@@ -323,7 +323,7 @@ Zendesk configuration and routing improvements to reduce manual triage work and 
 
 More data in the Agent Toolkit and smarter routing rules so agents spend less time on admin and more time resolving.
 
-**Q1 → Q4** · [MCD-570](https://checkout.atlassian.net/browse/MCD-570)
+**Q1 → Q4**
 
 > As a Support Agent, I want tools so I can handle merchant inquiries more efficiently, reduce resolution time, and improve the quality of my support.
 

@@ -16,7 +16,7 @@
 
 | Field | Value |
 |-------|--------|
-| **2026 deliverable** | AI Agent 'Consultant' · MCD-564 · Q1–Q4 2026 |
+| **2026 deliverable** | AI Agent 'Consultant' · Q1–Q4 2026 |
 | **Strategic goal** | Reduce cost of support |
 | **Flywheel domain** | 4. Agent Experience |
 | **Strategic lever** | Agent efficiency |
@@ -26,7 +26,7 @@
 
 ## Executive Summary
 
-92.5% of contacts reach a human agent, and for the highest-volume types — Refunds (4,038 human-handled per 6m), Payouts (2,315), Login & Access (1,947) — Fin's resolution rate is below 5%, meaning handle time is the only remaining cost lever. Agent Consultant embeds an AI assistant in the Zendesk sidebar that surfaces SOP guidance, live payment data, and step-by-step Runbooks at the moment the agent needs them, removing the manual multi-system work that inflates handle time on every complex ticket. This PRD covers Q2–Q4 2026 (Q1 foundations already shipped), supporting the **AI Agent Consultant** deliverable (MCD-564) under the **Reduce cost of support** goal via the **agent efficiency** lever.
+92.5% of contacts reach a human agent, and for the highest-volume types — Refunds (4,038 human-handled per 6m), Payouts (2,315), Login & Access (1,947) — Fin's resolution rate is below 5%, meaning handle time is the only remaining cost lever. Agent Consultant embeds an AI assistant in the Zendesk sidebar that surfaces SOP guidance, live payment data, and step-by-step Runbooks at the moment the agent needs them, removing the manual multi-system work that inflates handle time on every complex ticket. This PRD covers Q2–Q4 2026 (Q1 foundations already shipped), supporting the **AI Agent Consultant** deliverable under the **Reduce cost of support** goal via the **agent efficiency** lever.
 
 ---
 
@@ -125,7 +125,7 @@ The content layer is distinct from Fin's. Fin uses public documentation only. Ag
 
 > Alternatives evaluated: see Appendix.
 
-**In scope — Q2 2026** (per MCD-564 Q2 deliverables):
+**In scope — Q2 2026** (per Q2 deliverables):
 
 - **Central content source**: index public documentation and internal agent SOPs (from git repo) into a single retrieval layer — giving Consultant access to internal guidance that Fin cannot surface
 - **Explain Payins using Agent SOPs**: when a ticket matches a Transaction Status or Refund issue type, surface the relevant agent SOP in the sidebar proactively
@@ -133,7 +133,7 @@ The content layer is distinct from Fin's. Fin uses public documentation only. Ag
 - **Automate TPA payment status lookups**: Runbook that retrieves the TPA reference from the ticket, queries the TPA API, surfaces the result, and drafts an agent response for approval
 - **Automate Refund reversals**: Runbook that checks payment eligibility, confirms merchant intent, triggers the reversal via API (agent approval required), posts an internal note, and drafts the merchant response
 
-**In scope — H2 2026** (per MCD-564 H2 deliverables):
+**In scope — H2 2026** (per H2 deliverables):
 
 - **Pick from the Agent automation backlog priorities**: following Q2 impact review, select and build the next highest-priority Runbooks from the automation backlog (Confluence page 7847149938) — exact items to be confirmed post-Q2
 - **Analyse and flag potential content gaps**: Consultant analyses tickets solved by agents where it could not provide a useful answer and flags these to the Knowledge Manager as gaps in public or internal content
@@ -174,7 +174,7 @@ The content layer is distinct from Fin's. Fin uses public documentation only. Ag
 
 ### Functional requirements
 
-Requirement IDs map to the MCD-564 deliverable line items.
+Requirement IDs map to the deliverable line items.
 
 | ID | Priority | Deliverable | Requirement | Acceptance Criteria | Domain/s |
 |---|---|---|---|---|---|
