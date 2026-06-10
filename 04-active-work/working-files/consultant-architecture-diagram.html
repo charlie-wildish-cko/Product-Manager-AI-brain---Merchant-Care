@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Care Consultant Architecture</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 32px;
+  }
+  .diagram {
+    background: white;
+    border-radius: 16px;
+    padding: 40px 48px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    max-width: 1500px;
+    width: 100%;
+  }
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 44px;
+  }
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+  }
+  .node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex: 0 0 auto;
+  }
+  .box {
+    border-radius: 12px;
+    padding: 18px 22px;
+    text-align: center;
+    min-width: 130px;
+  }
+  .box-label {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .box-sub {
+    font-size: 11px;
+    margin-top: 4px;
+    opacity: 0.75;
+    line-height: 1.4;
+  }
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  /* Node colours */
+  .node-merchant .box { background: #eff6ff; border: 2px solid #bfdbfe; }
+  .node-merchant .box-label { color: #1e40af; }
+  .node-merchant .tag { background: #dbeafe; color: #1d4ed8; }
+
+  .node-fin .box { background: #f0fdf4; border: 2px solid #bbf7d0; }
+  .node-fin .box-label { color: #166534; }
+  .node-fin .tag { background: #dcfce7; color: #15803d; }
+
+  .node-consultant .box { background: #fef3c7; border: 2px solid #fde68a; }
+  .node-consultant .box-label { color: #92400e; }
+  .node-consultant .tag { background: #fef9c3; color: #a16207; }
+
+  .node-data .box { background: #faf5ff; border: 2px solid #e9d5ff; }
+  .node-data .box-label { color: #6b21a8; }
+  .node-data .tag { background: #ede9fe; color: #7c3aed; }
+
+  /* Arrows */
+  .arrow-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 60px;
+  }
+  .arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 2px;
+  }
+  .arrow-label {
+    font-size: 10px;
+    color: #6b7280;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .arrow-line {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  .line {
+    flex: 1;
+    height: 2px;
+  }
+  .line-forward { background: #9ca3af; }
+  .line-return { background: #d1d5db; }
+  .arrowhead {
+    font-size: 14px;
+    line-height: 1;
+    color: #9ca3af;
+  }
+  .return-label { color: #9ca3af; }
+
+  /* Boundary box */
+  .boundary {
+    border: 2px dashed #fbbf24;
+    border-radius: 14px;
+    padding: 12px 16px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .boundary-label {
+    position: absolute;
+    top: -11px;
+    left: 16px;
+    background: white;
+    padding: 0 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #b45309;
+    letter-spacing: 0.03em;
+  }
+
+  .legend {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid #f3f4f6;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 220px;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .legend-text {
+    font-size: 12px;
+    color: #374151;
+    line-height: 1.5;
+  }
+  .legend-text strong {
+    display: block;
+    font-weight: 600;
+    color: #111;
+  }
+</style>
+</head>
+<body>
+<div class="diagram">
+  <h2>Care Consultant: How It Works</h2>
+  <p class="subtitle">Fin handles the conversation. The Consultant owns the data and reasoning.</p>
+
+  <div class="flow">
+
+    <!-- Merchant -->
+    <div class="node node-merchant">
+      <span class="tag">Customer</span>
+      <div class="box">
+        <div class="box-label">Merchant</div>
+        <div class="box-sub">"Why was my payment declined?"</div>
+      </div>
+    </div>
+
+    <!-- Arrow: Merchant ↔ Fin -->
+    <div class="arrow-group">
+      <div class="arrow">
+        <div class="arrow-label">question</div>
+        <div class="arrow-line">
+          <div class="line line-forward"></div>
+          <span class="arrowhead">▶</span>
+        </div>
+      </div>
+      <div class="arrow">
+        <div class="arrow-line">
+          <span class="arrowhead" style="transform:scaleX(-1); display:inline-block;">▶</span>
+          <div class="line line-return"></div>
+        </div>
+        <div class="arrow-label return-label">answer</div>
+      </div>
+    </div>
+
+    <!-- Fin -->
+    <div class="node node-fin">
+      <span class="tag">Intercom</span>
+      <div class="box">
+        <div class="box-label">Fin AI Agent</div>
+        <div class="box-sub">Conversation layer. Translates answer for the merchant.</div>
+      </div>
+    </div>
+
+    <!-- Boundary starts -->
+    <div class="boundary">
+      <span class="boundary-label">Care-owned</span>
+
+      <!-- Arrow: Fin ↔ Consultant -->
+      <div class="arrow-group">
+        <div class="arrow">
+          <div class="arrow-label">data request</div>
+          <div class="arrow-line">
+            <div class="line line-forward"></div>
+            <span class="arrowhead">▶</span>
+          </div>
+        </div>
+        <div class="arrow">
+          <div class="arrow-line">
+            <span class="arrowhead" style="transform:scaleX(-1); display:inline-block;">▶</span>
+            <div class="line line-return"></div>
+          </div>
+          <div class="arrow-label return-label">explanation</div>
+        </div>
+      </div>
+
+      <!-- Consultant -->
+      <div class="node node-consultant">
+        <span class="tag">New</span>
+        <div class="box">
+          <div class="box-label">Care Consultant</div>
+          <div class="box-sub">Fetches data. Reasons. Returns explanation.</div>
+        </div>
+      </div>
+
+      <!-- Arrow: Consultant ↔ Data -->
+      <div class="arrow-group">
+        <div class="arrow">
+          <div class="arrow-label">query</div>
+          <div class="arrow-line">
+            <div class="line line-forward"></div>
+            <span class="arrowhead">▶</span>
+          </div>
+        </div>
+        <div class="arrow">
+          <div class="arrow-line">
+            <span class="arrowhead" style="transform:scaleX(-1); display:inline-block;">▶</span>
+            <div class="line line-return"></div>
+          </div>
+          <div class="arrow-label return-label">raw data</div>
+        </div>
+      </div>
+
+      <!-- Data -->
+      <div class="node node-data">
+        <span class="tag">Internal</span>
+        <div class="box">
+          <div class="box-label">BigQuery &amp; Internal Systems</div>
+          <div class="box-sub">Payments, settlements, balances, disputes.</div>
+        </div>
+      </div>
+
+    </div>
+    <!-- Boundary ends -->
+
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#fbbf24;"></div>
+      <div class="legend-text"><strong>Sensitive data stays inside the boundary</strong> Fin never sees raw payment data — only the explanation.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#6d28d9;"></div>
+      <div class="legend-text"><strong>Any BigQuery table, no new dependencies</strong> Consultant already has access — no cross-team API work needed.</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#1d4ed8;"></div>
+      <div class="legend-text"><strong>Portable</strong> Swap Fin for any AI agent — the Consultant interface stays the same.</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -6,6 +6,8 @@
 
 The **Agent Consultant** is an AI-powered application for Care agents in Zendesk. It is designed to help agents with their tasks; the end goal is to act as a semi-autonomous AI agent that executes manual work on their behalf to save time, with humans remaining in the loop to review and approve.
 
+The Consultant also functions as the **data and reasoning layer for Fin**. Rather than Fin calling other teams' APIs directly, Fin calls Care-owned Consultant endpoints for any merchant data query (payment status, settlement, balance, dispute). The Consultant retrieves data from BigQuery and internal systems, reasons over it, and returns a structured explanation. Fin converts that explanation into merchant-facing language. Sensitive data never leaves Care's systems; Fin receives only the output. This architecture removes cross-team API dependencies, uses BigQuery access the Consultant already holds, and is portable — any future AI agent can replace Fin without changing the Consultant interface.
+
 ## Why it matters
 
 Human agents are Checkout.com's most expensive support resource at ~$40 per contact. Every minute an agent spends searching for information, manually retrieving payment data, or re-reading policy docs is cost with no customer value. At scale, that friction adds up across thousands of tickets per month.
@@ -29,6 +31,7 @@ The Agent Consultant is also a structural dependency for Reflex: ticket content 
 | **Escalation summary** | Generated at the point of escalation: states why the ticket is being escalated and the complexity level, so the receiving agent or team has immediate context without reading the full thread. |
 | **Ticket content summary** | Summarises closed ticket content to identify root causes. Feeds into [Reflex](reflex.md) for contact driver analysis and insight. Distinct from conversation summary — this is a post-resolution output for the insight pipeline, not an agent-facing view. |
 | **Content gap flagging** | When the Consultant cannot answer a query on an agent-resolved ticket, the gap is flagged to the Knowledge Manager with the ticket reference, query, and contact type — creating a feedback loop between agent usage and content investment. |
+| **Fin data layer** | Care-owned endpoints that Fin calls to retrieve and reason over merchant data (payments, settlements, balances, disputes). Consultant queries BigQuery and internal systems, reasons over results, and returns a structured explanation. Fin converts the explanation to merchant-facing language. Data does not leave Care's systems. |
 | **Audit log** | Records all Consultant actions — AI-generated and agent-approved — per ticket. Accessible to Ops managers and the Product team only (not surfaced to agents). Supports quality review, incident investigation, and governance. |
 | **Internal QA** | QA on closed tickets based on QA definitions and a golden dataset of what qualifies as good tickets. 2027 horizon. |
 

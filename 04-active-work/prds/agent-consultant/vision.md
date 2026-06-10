@@ -1,6 +1,6 @@
 # Agent Consultant: Vision
 
-**Deliverable**: MCD-564 · AI Agent 'Consultant' · Q1–Q4 2026
+**Deliverable**: AI Agent 'Consultant' · Q1–Q4 2026
 **Flywheel domain**: Agent Experience
 **Strategic goal**: Reduce cost per contact
 
@@ -69,6 +69,25 @@ Many contacts involve both. The agent investigates first (contextual tools to re
 | Starts open, ends with a defined action      | Contextual tools → Runbook handoff |
 
 One important clarification on how this works in practice: the selection of interaction model is a product and operations configuration decision, not an agent runtime choice. For each task type in the automation backlog, the team determines whether it warrants a Runbook (defined path) or contextual tooling (exploratory). Agents follow the interface the system presents. They do not need to choose which mode to invoke.
+
+---
+
+## The Consultant as Fin's data layer
+
+The Consultant serves two audiences: human agents in Zendesk, and Fin (and future AI agents) handling merchant conversations.
+
+Today, Fin calls other teams' APIs directly to retrieve merchant data. This creates external dependencies and limits what data Fin can access — large volumes of relevant data sit in BigQuery with no path to Fin. The Consultant removes that constraint.
+
+**How it works.** Fin calls a Care-owned Consultant endpoint for any data-dependent query — payment status, settlement reconciliation, balance, dispute outcome. The Consultant queries BigQuery and internal systems it already has access to, reasons over the results, and returns a structured explanation to Fin. Fin's role is the conversation layer: it translates the Consultant's output into a clear merchant-facing response. Sensitive raw data never leaves Care's systems.
+
+**Why this matters.**
+
+- **No new cross-team dependencies.** The Consultant already has BigQuery access. Any BQ table in the business is reachable without a new API agreement with another team.
+- **Reasoning, not just retrieval.** Payment queries require explanation, not just data. A decline reason code, a settlement discrepancy, a dispute timeline — these need context to be useful to a merchant. The Consultant reasons over the data before returning it; Fin does not need to.
+- **Portable.** Fin is the current AI agent. If Checkout.com moves to an in-house AI agent in future, the Consultant interface is unchanged — only the caller changes. The interface must be designed as agent-agnostic from the start: clean request/response contracts that do not assume Fin's specific API conventions.
+- **Data boundary.** Fin (Intercom) is a third-party system. Keeping raw merchant data inside Care's systems and passing only the explanation to Fin is a clean data governance boundary.
+
+**Design constraint.** The Consultant's reasoning must operate on deterministic data as input — BQ queries return facts; the Consultant reasons on top of them. The Consultant should not infer what data probably says. Clear logging at each hop (Fin → Consultant → BQ → Consultant → Fin) is required so that when an explanation is wrong, the failure point is identifiable.
 
 ---
 
