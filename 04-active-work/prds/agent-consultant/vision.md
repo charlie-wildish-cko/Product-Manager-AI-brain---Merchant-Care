@@ -72,22 +72,22 @@ One important clarification on how this works in practice: the selection of inte
 
 ---
 
-## The Consultant as Fin's data layer
+## Customer Agent: the data and reasoning layer for Fin
 
-The Consultant serves two audiences: human agents in Zendesk, and Fin (and future AI agents) handling merchant conversations.
+The Consultant serves two audiences: human agents in Zendesk, and Fin (and future AI agents) handling merchant conversations. **Customer Agent** is the Care-owned product that serves the second audience.
 
-Today, Fin calls other teams' APIs directly to retrieve merchant data. This creates external dependencies and limits what data Fin can access — large volumes of relevant data sit in BigQuery with no path to Fin. The Consultant removes that constraint.
+Today, Fin calls other teams' APIs directly to retrieve merchant data. This creates external dependencies and limits what data Fin can access — large volumes of relevant data sit in BigQuery with no path to Fin. Customer Agent removes that constraint.
 
-**How it works.** Fin calls a Care-owned Consultant endpoint for any data-dependent query — payment status, settlement reconciliation, balance, dispute outcome. The Consultant queries BigQuery and internal systems it already has access to, reasons over the results, and returns a structured explanation to Fin. Fin's role is the conversation layer: it translates the Consultant's output into a clear merchant-facing response. Sensitive raw data never leaves Care's systems.
+**How it works.** Fin calls Customer Agent for any data-dependent query — payment status, settlement reconciliation, balance, dispute outcome. Customer Agent queries BigQuery and internal systems it already has access to, reasons over the results, and returns a structured explanation to Fin. Fin's role is the conversation layer: it translates the Customer Agent output into a clear merchant-facing response. Sensitive raw data never leaves Care's systems.
 
 **Why this matters.**
 
-- **No new cross-team dependencies.** The Consultant already has BigQuery access. Any BQ table in the business is reachable without a new API agreement with another team.
-- **Reasoning, not just retrieval.** Payment queries require explanation, not just data. A decline reason code, a settlement discrepancy, a dispute timeline — these need context to be useful to a merchant. The Consultant reasons over the data before returning it; Fin does not need to.
-- **Portable.** Fin is the current AI agent. If Checkout.com moves to an in-house AI agent in future, the Consultant interface is unchanged — only the caller changes. The interface must be designed as agent-agnostic from the start: clean request/response contracts that do not assume Fin's specific API conventions.
+- **No new cross-team dependencies.** Customer Agent already has BigQuery access. Any BQ table in the business is reachable without a new API agreement with another team.
+- **Reasoning, not just retrieval.** Payment queries require explanation, not just data. A decline reason code, a settlement discrepancy, a dispute timeline — these need context to be useful to a merchant. Customer Agent reasons over the data before returning it; Fin does not need to.
+- **Portable.** Fin is the current AI agent. If Checkout.com moves to an in-house AI agent in future, the Customer Agent interface is unchanged — only the caller changes. The interface must be designed as agent-agnostic from the start: clean request/response contracts that do not assume Fin's specific API conventions.
 - **Data boundary.** Fin (Intercom) is a third-party system. Keeping raw merchant data inside Care's systems and passing only the explanation to Fin is a clean data governance boundary.
 
-**Design constraint.** The Consultant's reasoning must operate on deterministic data as input — BQ queries return facts; the Consultant reasons on top of them. The Consultant should not infer what data probably says. Clear logging at each hop (Fin → Consultant → BQ → Consultant → Fin) is required so that when an explanation is wrong, the failure point is identifiable.
+**Design constraint.** Customer Agent's reasoning must operate on deterministic data as input — BQ queries return facts; Customer Agent reasons on top of them. It should not infer what data probably says. Clear logging at each hop (Fin → Customer Agent → BQ → Customer Agent → Fin) is required so that when an explanation is wrong, the failure point is identifiable.
 
 ---
 

@@ -156,6 +156,13 @@ Run for any significant document from scratch: Draft → Critique (panel) → Re
 Run against any existing PRD when the template has been updated or scope has changed significantly.
 - Skill: `/prd-review [file path]` — audits PRD against current `03-templates/prd-template.md`, produces gap report, offers to apply fixes
 
+### Sync Meeting Notes
+Pull new Gemini-generated meeting notes from Google Drive and write structured notes files. Run weekly or monthly to keep the PM brain current.
+- Skill: `/sync-meeting-notes [optional: YYYY-MM-DD cutoff]` — scans Drive folder since last sync date, filters recurring syncs, writes to `04-active-work/meeting-notes/YYYY-MM/`
+- Drive folder: `1Mnz7XMPGYaeZG0nHQ4_R9mYn06188zU8`
+- Merchant interview outputs go to `04-active-work/research/merchant-support-needs/`
+- Inserts key findings into knowledge base files where relevant
+
 ### Classifier Definitions
 Generate AI-readable classification definitions (TSV, paste-ready for Google Sheets) from taxonomy or product catalogue.
 - Skill: `/classify-definitions [taxonomy|products|both] [optional filter]`

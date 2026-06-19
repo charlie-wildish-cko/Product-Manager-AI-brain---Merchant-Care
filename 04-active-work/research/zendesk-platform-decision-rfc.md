@@ -226,18 +226,18 @@ Renew Zendesk at contract. Use the renewal as leverage to negotiate price, SLAs,
 **What this means in practice:**
 
 - Invest in Zendesk configuration for B2C: complaint handling, Consumer Duty flows, vulnerable customer flags, phone channel (Zendesk Talk)
-- Negotiate hard on AR pricing, Advanced AI add-on costs, and response SLAs given our enterprise scale
+- Negotiate on AR pricing, Advanced AI add-on costs, and response SLAs at enterprise scale
 - Demand audit rights on "Automated Resolution" billing before signing
-- Continue Agent Consultant as our AI workflow execution layer — this is the right approach regardless of platform
-- Accept that some capabilities (agent-triggered autonomous execution) require custom build; this is already the plan
+- Continue Agent Consultant as the AI workflow execution layer outside native Zendesk
+- Accept that some capabilities (agent-triggered autonomous execution) require custom build
 
-**Why this approach:**
+**Considerations:**
 
 - Zero roadmap disruption — all 2026 deliverables are in flight on Zendesk
-- Zendesk leads on routing depth, SLA management, compliance tooling, and must-have integrations across every requirement category
-- Migration to any alternative would consume 2+ engineers for 6–12 months during our most critical delivery year
-- Forethought acquisition (Resolution Learning Loop) reduces our Zendesk technical debt risk; the platform is genuinely improving
-- Zendesk's architecture is compatible with the desired platform model: modular, API-first, and build-around — our AI agents, data sources, and custom integrations sit outside Zendesk and connect to it, not the other way around. Agent Consultant, Agent Toolkit, and Reflex all follow this pattern today.
+- Zendesk leads on routing depth, SLA management, compliance tooling, and must-have integrations across the current requirement set
+- Migration to any alternative would consume 2+ engineers for 6–12 months
+- Forethought acquisition (Resolution Learning Loop) indicates platform investment in AI workflow capability
+- Zendesk's architecture is API-first and build-around — Agent Consultant, Agent Toolkit, and Reflex all follow this pattern today
 
 **Risks and mitigations:**
 
@@ -254,21 +254,25 @@ Renew Zendesk at contract. Use the renewal as leverage to negotiate price, SLAs,
 
 Migrate from Zendesk to Intercom as the primary platform before June 2027.
 
-Intercom has meaningful advantages on AI chat history, Fin integration cost, and unified AI + ticketing UX. Against the full requirement set, it fails on routing depth, SLA management, phone channel, and Consumer Duty compliance tooling — all of which are required by 2027. The migration cost (6–12 months engineering, Reflex re-integration, Jira re-integration, team retraining) is not justified by the capability delta at this stage.
+Intercom has meaningful advantages on AI chat history, Fin integration cost, and unified AI + ticketing UX. Known gaps against the requirement set include routing depth, SLA management, phone channel, and Consumer Duty compliance tooling. Migration cost would include Reflex re-integration, Jira re-integration, and team retraining (estimated 6–12 months engineering).
 
-**Why not chosen now**: Intercom is the most credible future alternative. Revisit at 2030 renewal if enterprise routing, SLA management, and phone depth have matured.
+**Considerations**: Enterprise routing depth, SLA management, and phone channel maturity are the primary unknowns to assess. Full platform pricing at Checkout's scale is unpublished — requires RFI.
 
 ---
 
 ### Option 3: Buy — Replace with Plain or Pylon
 
-Neither platform is viable at Checkout's scale, SLA complexity, or Consumer Duty requirements. Ruled out.
+Plain is API-first with a flexible data model and competitive pricing. Pylon is Slack-native and suited to B2B IM-first support. Neither has been assessed at 500-agent scale, and phone channel and Consumer Duty compliance tooling are not confirmed for either.
+
+**Considerations**: Plain's routing configurability, custom object model, and API-first architecture warrant assessment. Pylon's native Slack/Teams channel support is relevant to the 2028–2029 IM requirement.
 
 ---
 
 ### Option 4: Build
 
-Team capacity is 4 engineers + 1 EM. Building and maintaining enterprise-grade ticketing infrastructure is not a viable use of the team. Ruled out.
+Team capacity is 4 engineers + 1 EM. Building and maintaining enterprise-grade ticketing infrastructure would consume the team's full delivery capacity.
+
+**Considerations**: Not viable as a primary path. Relevant only if no vendor meets requirements and a minimal custom layer is needed on top of an existing platform.
 
 ---
 
@@ -285,8 +289,7 @@ Team capacity is 4 engineers + 1 EM. Building and maintaining enterprise-grade t
 | Must-have integrations       | All live or in delivery                                | Requires full re-integration                                      | Not viable                    | Build                |
 | Analytics and data extract   | Live; billing auditability is a gap                    | Requires Reflex re-integration                                    | Not viable                    | Full control         |
 | Pricing                      | Unknown at scale; AR model needs modelling             | Lower AI cost ($0.99 vs $1.50–$2.00); full platform cost unknown | Lower but not viable          | Very high build cost |
-| Migration risk               | None                                                   | High — 6–12 months                                              | Very high                     | Highest              |
-| **Verdict**            | **Recommended**                                  | Consider at 2030 renewal                                          | Ruled out                     | Ruled out            |
+| Migration risk               | None                                                   | High — 6–12 months                                              | Unknown at scale              | Highest              |
 
 ---
 
@@ -391,14 +394,16 @@ Derived from [support platform flows](support%20platform%20flows.md). Use as a s
 | Requirement                | Detail                                                                          |
 | -------------------------- | ------------------------------------------------------------------------------- |
 | Email ingestion            | Native ticket creation from inbound email                                       |
+| Email user enrichment      | Auto-match inbound email to the correct org record; handle emails that belong to multiple orgs or have no match |
+| Domain mapping             | Link email domains to org records (e.g. @checkout.com → Checkout.com org) so unrecognised senders can be resolved |
 | AI Agent escalation path   | Receive handoff from AI Agent (Fin for now) with full conversation context      |
 | Live chat with human agent | Native or integrated chat for B2B                                               |
-| Instant messaging channels | Slack/Teams B2B support (2028–2029 requirement)                                |
+| Instant messaging channels | Slack/Teams/WeChat/custom integrations for B2B support (2028–2029 requirement) |
 | Phone channel              | Native or integrated IVR + call routing for B2C                                 |
 | Mobile app chat            | B2C channel (2027 wallet launch)                                                |
 | Internal ticket submission | Account teams can raise tickets on behalf of customers                          |
 
-**Assessment question**: Which channels are native vs. add-on, and what is the per-channel cost at 500-agent scale?
+**Assessment question**: Which channels are native vs. add-on, and what is the per-channel cost at 500-agent scale? How is email-to-org matching configured — domain rules, manual mapping, or API enrichment?
 
 ---
 
@@ -425,6 +430,8 @@ Derived from [support platform flows](support%20platform%20flows.md). Use as a s
 | Flexible tagging/field system           | Taxonomy mapping and analytics use cases           |
 
 Ultimately, we need a flexible routing system where we can use attributes in branches and fallbacks.
+
+**Required routing flow**: Ticket arrives → email enrichment populates org/tier fields → fields determine SLA and routing to correct team via skill matching → priority ranking applied (SLA timer, contact type) → auto-assignment to agent with capacity controls; no cherry-picking.
 
 ---
 
@@ -488,6 +495,7 @@ Ultimately, we need a flexible routing system where we can use attributes in bra
 | API access to ticket data | Full export of ticket data fields for Analytics pipeline                                                     |
 | Taxonomy-level reporting  | Filter and group by custom taxonomy tags                                                                     |
 | SLA breach alerting       | Automated in-platform alerts before and on SLA breach, configurable per tier — for agent and supervisor use |
+| AHT / agent task time     | Native measurement of handle time per ticket and per agent; required for cost-per-contact modelling         |
 
 
 ---

@@ -121,3 +121,20 @@ Resolution by Tier & Issue Type Today [Tier TTR by Issue Type](https://docs.goog
 | Enterprise | Delivery Hero eToro Plus500 | Low/Medium maturity Some tools for teams, but need our Dashboard to fill the gaps. Use our APIs/Webhooks.  | 50-200 | Ask repeat simple support issues, usually about several payments Willing to self serve in most cases |
 | Standard | Small Tier 2 & Tier3-5  | Low maturity Usually no tools, so rely on our Dashboard. API usage is low.  | 25-50 | Ask range of simple support issues, across payment lifecycle and Dashboard usage/functionality Tries to self serve first |
 
+**Research findings — Premium tier (January 2026 AM interviews):**
+
+The Premium tier channel design is validated by direct AM research. Key findings per merchant:
+
+| Merchant | Primary support channel | Dashboard? | Primary query types | Channel gap |
+| :---- | :---- | :---- | :---- | :---- |
+| eBay | Multiple dedicated Slack channels (AR, dev, P0/P1). Almost never raises Zendesk tickets. | Minimal — deliberate policy | AR drops by BIN/market, invoice reconciliation, proof of settlement, 3DS/compliance | Phone for P1; AM CC on tickets; AI agent responses that avoid directing to dashboard |
+| Temu | Proprietary in-house IM (not WeChat — no external integration possible). Support email for reconciliation/disputes. | None — internal compliance block | Webhook status mismatches, AR monitoring, out-of-hours coverage (APAC, after 8pm) | After-hours coverage; accurate webhook data would eliminate most contacts |
+| Shein | Email/tickets | None — compliance block on holding cardholder data | APM status/disputes (~60%), Pay to Card RFI (~40%) | APM dispute API; clearing process visibility; no self-serve path |
+| Ant Financial | DingTalk/InTalk (proprietary in-house IM, 150-person chat group; no external integration) | Partial — known bug in webhook subscription view | Payment confirmation, webhook misconfiguration, Payback sub-merchant auth failures | IM channel is untrackable; webhook dashboard bug needs fixing |
+
+**Implications for the Premium tier channel design:**
+- Dashboard-based self-serve is not viable for this segment — these merchants deliberately bypass it. The Premium channel set (dedicated email, Slack/IM, phone) is correctly specified.
+- The Slack/IM channel in Premium is confirmed as the primary contact channel for APAC accounts (Temu, Ant). Without it, support effort is invisible and absorbed by AMs.
+- Phone for P1 is validated: eBay's AM reports merchants asking for phone support since she joined; current line is not fit for purpose.
+- AM/TAM auto-CC on tickets is confirmed as important for Premium accounts — eBay specifically asked for the ability to interject if an AI response is incorrect.
+

@@ -304,6 +304,22 @@ Phased by capability risk: read-only first, write actions on a pilot cohort seco
 - Support taxonomy: `01-knowledge-base/processes/support-taxonomy.md`
 - Care product flywheel model: `01-knowledge-base/strategy/care-product-model.md`
 
+**Automation backlog — known candidates:**
+
+Items below are confirmed additions to the automation backlog (Confluence 7847149938). Prioritisation happens post-Q2 impact review. Items marked *in build* are being developed by other teams; integration with Consultant is the dependency, not the build itself.
+
+| Item | Type | What it enables | Dependencies / notes |
+|---|---|---|---|
+| Payouts data — Card & Bank Payouts | Data integration | Surface Card Payout and Bank Payout status, failure codes, and retry state in the sidebar. Agents resolve payout failures without querying the payouts system manually. | Payouts system API access; pairs with FR-3 (Explain Payouts via SOP) |
+| Webhooks & webhook events linked to a payment ID | Data integration | Surface webhook delivery history (events fired, delivery status, retries) for a given payment ID. Agents diagnose integration issues without escalating to L2. | Webhooks API access or event log query |
+| Sub-agent per case type / product | Architecture | Dedicated sub-agents scoped to specific domains (e.g. Disputes, Payouts, Settlements) with tailored prompts, tool sets, and context windows — rather than a single general-purpose assistant. Improves accuracy and reduces prompt noise for high-complexity contact types. | Requires sub-agent framework in the Consultant architecture; design decision for Engineering |
+| Ticket history context | Data retrieval | On ticket open, surface prior tickets from the same merchant — last N contacts with summaries and any unresolved issues. Agents handling repeat contacts have full context without searching Zendesk manually. | Related to FR-8 (context retrieval, TBC); depends on Zendesk ticket history API |
+| Datadog MCP | Tool integration | Expose Datadog metrics and logs to the Consultant via MCP. Agents investigating payment failures or integration issues can query system health, error rates, and latency without leaving the ticket. | Datadog MCP server; access scoped to read-only for agent use |
+| GitHub code analyser | Tool integration (*in build — L2 AI team*) | Surface code-level context (integration setup, SDK version, known issues in the merchant's codebase) for technical escalation tickets. Reduces L1→L2 escalation rate on integration issues. | Dependency on AI team completing the L2 tool; Consultant integration is the follow-on work |
+| Balance reconciliation logic | Tool integration (*in build — L2*) | Surface reconciliation discrepancies, balance queries, and settlement breakdowns for payout and settlement tickets. Agents resolve balance queries without raising L2 requests. | Dependency on L2 completing the reconciliation tool; Consultant integration is the follow-on work |
+
+---
+
 **Alternatives considered:**
 
 - **Extend Fin to cover refund reversals and TPA lookups**: Fin's strength is deflecting contacts before they reach agents. Refund reversals and complex payout investigations require multi-step approval, human judgement, and write-API access — not a natural fit for an AI deflection layer. Extending Fin here would conflate two distinct products with different risk profiles. Rejected.

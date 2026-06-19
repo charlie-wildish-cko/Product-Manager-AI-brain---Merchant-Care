@@ -27,6 +27,14 @@ Reflex also creates the data foundation for the rest of the Care AI stack.
 - **Care Product team** — understand what issues their products create
 - **Product Managers** — see contact drivers and prevention opportunities for their products
 
+## PM User Journey
+
+1. **Filter** — Scope the data to your product area and the time period you care about.
+2. **Overview** — See the biggest issue clusters ranked by their business impact, so you know where to focus.
+3. **Select a cluster** — Drill into a cluster to see the themes within it, each with enough context to judge priority.
+4. **Investigate a theme** — Explore the individual contacts that make up a theme: summaries, examples, and the underlying conversations.
+5. **Deep dive** — Go further within a theme to see granular sub-clusters, each with a synthesised view of what merchants are experiencing at that level.
+
 ## Components
 
 | Component                          | Description                                                                                                                                                                                                                                                                                                   |

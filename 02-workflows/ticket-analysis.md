@@ -99,11 +99,11 @@ Use the template from `01-knowledge-base/metrics/kpi-definitions.md`
 ### Category Breakdown
 
 **Group tickets by** (align to support taxonomy where possible):
-1. **Case Type** then **Issue Type** then **Reason** — use [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) so every analysis uses the same labels (e.g. PAYMENTS (IN), Refunds, Refund status enquiry).
+1. **Case Type** then **Issue Type** then **Reason** — use [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) so every analysis uses the same labels (e.g. Accepting payments, Refunds, Refund status enquiry).
 2. **Primary category** (integration, payment, account, billing, etc.) if your export uses legacy labels — map to taxonomy for reporting.
 3. **Product area** (API, dashboard, specific feature).
 
-**Baseline comparison**: Use the taxonomy’s summary counts and % of volume (from the last-6m flat table) as the baseline. Compare your analysis period to that mix (e.g. PAYMENTS 42.8%, AMA 16.9%) so you can state “PAYMENTS up 5% vs last-6m” or “Refunds within PAYMENTS driving the spike.”
+**Baseline comparison**: Use the taxonomy’s summary counts and % of volume (from the last-6m flat table) as the baseline. Compare your analysis period to that mix (e.g. Accepting payments 42.8%, Account management & access 16.9%) so you can state “Accepting payments up 5% vs last-6m” or “Refunds within Accepting payments driving the spike.”
 
 **Create frequency table**:
 | Category | Count | % of Total | Change vs Previous |
@@ -177,7 +177,7 @@ Capture specific merchant quotes that illustrate:
 
 ## Step 5: Root Cause Analysis
 
-**Prioritisation lens**: Use the **Prioritisation implications** section in [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) to decide where to dig. Focus root-cause work on high-leverage categories first (e.g. PAYMENTS (IN), ACCOUNT MANAGEMENT & ACCESS); treat TECHNICAL ISSUE as diagnostic/tooling, not content-only.
+**Prioritisation lens**: Use the **Prioritisation implications** section in [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) to decide where to dig. Focus root-cause work on high-leverage categories first (e.g. Accepting payments, Account management & access); treat Technical issue as diagnostic/tooling, not content-only.
 
 ### For Each Top Issue, Ask
 
@@ -239,7 +239,7 @@ Use 2x2 matrix: **Impact vs. Effort**
 
 When escalating a contact driver to product or feeding the contact reduction programme:
 
-- **Taxonomy**: Use [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) to name the **Case Type** and **Issue Type** (and Reason if useful). Prioritise categories that the taxonomy flags as high-leverage (PAYMENTS, AMA, then PAYOUTS, FUNDS AND FEES). Escalation evidence should use the same labels so product and reporting stay aligned.
+- **Taxonomy**: Use [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) to name the **Case Type** and **Issue Type** (and Reason if useful). Prioritise categories that the taxonomy flags as high-leverage (Accepting payments, Account management & access, then Payouts, Funds and fees). Escalation evidence should use the same labels so product and reporting stay aligned.
 - **Evidence pack**: Use [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) (and [metric definitions](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md)) to build the evidence pack. Filter by case_type, issue_type, and optionally segment, channel, region. Include: contact count in period, trend, Fin vs Zendesk split. That gives product a reproducible, consistent basis for “how big is this?” and for tracking impact after fixes.
 
 ### Generate Recommendations
