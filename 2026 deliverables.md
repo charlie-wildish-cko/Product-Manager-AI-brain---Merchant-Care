@@ -71,7 +71,7 @@ Real-time alerts for critical payment events so merchants are informed before th
 
 A centralised place in Dashboard for merchants to submit and track all their support requests.
 
-**Q4**
+**Q3**
 
 > As a merchant, I want a centralised place to submit new support requests and track the status of all my tickets in one place.
 
@@ -163,7 +163,7 @@ Contextual Fin buttons embedded on Dashboard pages so merchants get instant answ
 
 **Q4**
 
-- Expand button to more pages - Settlements, Balances, Users etc
+- Expand to Settlements and Balances pages
 
 **Flywheel**: Input (Fin deflects contacts before they become tickets)
 
@@ -196,12 +196,12 @@ Expand Fin's data access and structured Procedures so it resolves more contact t
 
 > As a merchant, I want rapid support resolution so I can get my common issues resolved instantly.
 
-**Q2 — Data and Procedures**
+**Q2 — Data and Procedures** ✓
 
-- Continuous improvement of content coverage through conversation analysis and gap-filling
-- Fin can query payments with Reference or ARN/RRN value
-- Add Outages API to Fin so it can tell merchants about outages impacting them
-- Create Fin Procedures for the top 5 query types
+- Continuous improvement of content coverage through conversation analysis and gap-filling — Complete
+- Add Outages API to Fin so it can tell merchants about outages impacting them — Complete
+- Create Fin Procedures for the top 5 query types — Complete
+- Fin can query payments with Reference or ARN/RRN value — moved to Q3
 
 **Q2 — Discovery: Email Data Sharing**
 
@@ -209,6 +209,7 @@ Expand Fin's data access and structured Procedures so it resolves more contact t
 
 **Q3 — Expanded Data & Procedures**
 
+- Payment reference lookup — Fin and Agent Consultant can query payments by Reference or ARN/RRN value
 - Connect bot gateway to Payin and Payout BQ data source (trade-off: available now vs. waiting on PLC dependency)
 - Configure Fin for new PLC data source from Payments Search API
 - Add User Management API to Fin so it can troubleshoot merchant account access issues
@@ -256,21 +257,24 @@ Product context and capability set: `01-knowledge-base/products/agent-consultant
 
 **Q2**
 
-- Add central content source - Public content & Agent content (from git repo)
-- Explain Payins using Agent SOPs
-- Explain Payouts using Agent SOPs
-- Automate TPA payment status lookups
-- Automate Refund reversals
+- Explain Payins using Agent SOPs — Complete
+- Automate TPA payment status lookups — Complete
+- Add central content source — public content (Complete); agent content from git repo moved to Q3
+- Explain Payouts using Agent SOPs — moved to Q3
+- Automate Refund reversals — moved to Q3
 
 **Q3**
 
+- Agent content from git repo added as central content source
+- Explain Payouts using Agent SOPs
 - New version of Agent Toolkit incorporating runbook solution — refund reversals is the first runbook
 - Agents can trigger automated task: Refund reversals
 - Consultant QA judge: nightly batch job that scores every AC-fired ticket against a four-dimension rubric (Relevance, Accuracy, Completeness, Actionability — each 1–3) plus a binary quality signal (would this response reduce AHT or improve reply quality?). Judge runs on a stronger model than the AC (Opus if AC runs on Sonnet) with an independent prompt and rubric. Requires the AC to surface which KB articles it drew from — this is a prerequisite; without it the judge cannot assess accuracy. Scores stored against ticket ID; weekly aggregates surfaced in analytics to identify retrieval degradation, stale KB content, and actionability gaps. Low-scoring examples become the primary input for AC prompt and retrieval improvements. Before shipping as a metric: calibrate against 50–100 human-QA-scored tickets and refine the judge prompt where scores diverge.
 
 **Q4**
 
-- Additional automated tasks (from backlog priorities)
+- Add Datadog and Slack as data sources for agent recommendations
+- Codebase assistant integration — surface relevant code context for engineering-adjacent queries
 - Analyse and flag potential content gaps in public and internal content using tickets solved by Agents
 
 **Flywheel**: Agent Experience (reduces AHT; core driver of cost per contact for human-handled tickets)
@@ -289,6 +293,24 @@ A tiered support model that matches each merchant segment to the right channels 
 **Dependency**: Ops decision on support model tiers and SLA rules — TBC.
 
 **Flywheel**: Orchestration (right channel for the right merchant at the right time)
+
+### Customer Agent
+
+Care-owned data and reasoning layer that Fin calls to retrieve and reason over merchant data. Customer Agent queries BigQuery and internal systems, reasons over results, and returns structured output to Fin, which converts it to merchant-facing language. Data does not leave Care's systems.
+
+**Q3**
+
+> As Fin, I want to call a single Care-owned endpoint to retrieve and reason over merchant payment data, so I can serve accurate, data-driven answers without calling other teams' APIs directly.
+
+- Source payment data from multiple internal systems (Payin BQ, PLC Payments Search API) via a unified Customer Agent interface
+- Fin calls Customer Agent endpoints for payment status, response code explanation, and transaction detail queries
+
+**Q4**
+
+- Payout analysis — Customer Agent retrieves and reasons over payout status and failure detail; surfaced to merchants via Fin
+- Settlements analysis — Customer Agent queries Settlements API and returns reconciliation explanations to Fin (TBC)
+
+**Flywheel**: Fuel (Care-owned reasoning layer powering Fin's data-driven resolution capability)
 
 ### Replace Webform with Fin
 
@@ -315,7 +337,7 @@ Zendesk configuration and routing improvements to reduce manual triage work and 
 * Set Closed rules on non business emails - e.g. gmail/hotmail etc - ZD Config
 * Close internal ticket creation bar exceptions & enforce internal form adoption for Commercial - ZD config
 * Enable internally created tickets to enrich using client id
-* Trigger weekly sync for AM/TAM records from SF accounts - Eng needed
+* Trigger weekly sync for AM/TAM records from SF accounts — Deprioritised
 
 **Flywheel**: Agent Experience
 
@@ -333,18 +355,16 @@ More data in the Agent Toolkit and smarter routing rules so agents spend less ti
 
 **Q2**
 
-- Add Fraud Detection data to the Agent Toolkit
-- Payouts and Processing Profile (TBC)
-- Routing rules based on agent skills
+- Routing rules based on agent skills — Complete
+- Payouts and Processing Profile (TBC) — Complete
+- Add Fraud Detection data to the Agent Toolkit — moved to Q3
 
 **Q3**
 
+- Add Fraud Detection data to the Agent Toolkit
+- Consolidation of Agent Tools — unified agent toolkit experience bringing together existing tools into a coherent interface
 - Routing by taxonomy Reason (route tickets based on contact reason classification) — ZD config
 - SLAs based on issue type, per Segment (Standard/Enterprise/Premium) — ZD config
-
-**Q4**
-
-- Get case numbers from Salesforce and show case status in Agent toolkit
 
 **Flywheel**: Agent Experience + Governance
 
@@ -380,6 +400,8 @@ Consumer Duty obligations apply from day one of launch. Complaint handling and v
 
 - Install Fin mobile into the Braavos app as the primary support entry point
 - Configure Fin for B2C: content, Guidance, escalation rules, and Procedures for top consumer contact types
+- Agent Toolkit and Consultant for Consumer — configure agent-facing tools for B2C support workflows
+- CRM integration — connect consumer contact data to CRM for case tracking and customer history
 - Validate support model against Consumer Duty obligations before launch
 
 **Future phases (2027)**
@@ -395,7 +417,7 @@ Evaluate whether Zendesk remains the right long-term platform for Care, ahead of
 
 **Q3 → Q4** · Strategic decision piece
 
-- **Q3**: Analysis of current capability gaps; light spikes and trials of alternative platforms (e.g. Plain, Pylon, Intercom)
+- **Q3**: Discovery and POC of alternative vendor — analysis of current capability gaps; light spikes and trials of alternative platforms (e.g. Plain, Pylon, Intercom)
 - **Q4**: Decision made; recommendation approved; contract negotiation or replacement programme initiated by Q1 2027
 
 **Trigger**: Contract renewal June 2027; known capability gaps (Platform merchant data, AI workflow execution, B2C readiness)
@@ -429,7 +451,7 @@ Reference: `01-knowledge-base/metrics/contact forecasting.md`
 | **Insight & Prevention** | Reflex (all phases), Education Hub, Knowledge and Data Graph                                                       |
 | **Governance**           | Agent productivity tools (SLAs, routing), Support model (SLA framework)                                            |
 
-**Last Updated**: 2026-05-18
+**Last Updated**: 2026-06-29
 **Owner**: Charlie Wildish
 **Status**: Q1 complete / in-flight. Detail to be added per deliverable.
 
