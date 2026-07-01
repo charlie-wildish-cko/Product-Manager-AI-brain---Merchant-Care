@@ -1,0 +1,288 @@
+Status,Catalogue product,Catalogue category,Catalogue state,Catalogue pillar,Catalogue team,Zendesk value,Zendesk category,Zendesk tag,Note
+MATCH,Accel,Payment Methods,General availability,Core Network,CPP - Visa & Pinless,Accel,Payment Methods,product_name_payment_methods_accel,
+MATCH,ACH Direct Debit,Payment Methods,General availability,Core Network,APM - UK,ACH Direct Debit,Payment Methods,product_name_payment_methods_ach_direct_debit,
+MATCH,Acquiring - Custom FX markup per currency pair,Treasury & FX,General availability,Financial Experiences,Merchant FX / Rev Ops,Acquiring - Custom FX markup per currency pair,Treasury & FX,product_name_treasury_fx_acquiring_custom_fx_markup_per_currency_pair,
+MATCH,Acquiring - Daily FX Rates,Treasury & FX,General availability,Financial Experiences,Merchant FX / Rev Ops,Acquiring - Daily FX Rates,Treasury & FX,product_name_treasury_fx_acquiring_daily_fx_rates,
+MATCH,Acquiring - FX Live Market Rates,Treasury & FX,General availability,Financial Experiences,Merchant FX / Rev Ops,Acquiring - FX Live Market Rates,Treasury & FX,product_name_treasury_fx_acquiring_fx_live_market_rates,
+MATCH,Acquiring - Scheme FX Rates,Treasury & FX,General availability,Financial Experiences,Merchant FX / Rev Ops,Acquiring - Scheme FX Rates,Treasury & FX,product_name_treasury_fx_acquiring_scheme_fx_rates,
+MATCH,Airtable Product Catalogue,Internal products,General availability,Product Operations,Product Operations,Airtable Product Catalogue,Internal products,product_name_internal_products_airtable_product_catalogue,
+MATCH,AlipayCN,Payment Methods,Mixed availability,Core Network,APM - UK,AlipayCN,Payment Methods,product_name_payment_methods_alipaycn,
+MATCH,AlipayHK,Payment Methods,Mixed availability,Core Network,APM - UK,AlipayHK,Payment Methods,product_name_payment_methods_alipayhk,
+MATCH,Alma,Payment Methods,General availability,Core Network,APM - UK,Alma,Payment Methods,product_name_payment_methods_alma,
+MATCH,American Express - Collecting,Payment Methods,Mixed availability,Core Network,Payment Specialists,American Express - Collecting,Payment Methods,product_name_payment_methods_american_express_collecting,
+MATCH,American Express - Gateway,Payment Methods,Mixed availability,Core Network,Payment Specialists,American Express - Gateway,Payment Methods,product_name_payment_methods_american_express_gateway,
+MATCH,Apple Pay,Payment Methods,General availability,Value Added Services,Value Added Services,Apple Pay,Payment Methods,product_name_payment_methods_apple_pay,
+MATCH,Authentication,Issuing,Mixed availability,Payment Services,Issuing,Authentication,Issuing,product_name_issuing_authentication,
+MATCH,Authentication,Issuing,Mixed availability,Payment Services,Issuing,Authentication,Authentication,product_name_authentication_authentication,
+MATCH,Bacs,Payment Methods,Roadmap,Core Network,APM - UK,Bacs,Payment Methods,product_name_payment_methods_bacs,
+MATCH,Balances,Business Account,General availability,Financial Experiences,Client Balances,Balances,Business Account,product_name_business_account_balances,
+MATCH,Bancontact,Payment Methods,General availability,Core Network,APM - UK,Bancontact,Payment Methods,product_name_payment_methods_bancontact,
+MATCH,Basis Theory,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,Basis Theory,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_basis_theory,
+MATCH,Benefit Payment Gateway,Payment Methods,General availability,Core Network,APM - UK,Benefit Payment Gateway,Payment Methods,product_name_payment_methods_benefit_payment_gateway,
+MATCH,BenefitPay,Payment Methods,Deprecated,Core Network,APM - UK,BenefitPay,Payment Methods,product_name_payment_methods_benefitpay,
+MATCH,BigCommerce,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,BigCommerce,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_bigcommerce,
+MATCH,Bizum,Payment Methods,Beta,Core Network,APM - UK,Bizum,Payment Methods,product_name_payment_methods_bizum,
+MATCH,BLIK,Payment Methods,Beta,Core Network,APM - UK,BLIK,Payment Methods,product_name_payment_methods_blik,
+MATCH,Boleto Bancario,Payment Methods,Deprecated,,,Boleto Bancario,Payment Methods,product_name_payment_methods_boleto_bancario,
+MATCH,BR-DGE,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,BR-DGE,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_br_dge,
+MATCH,Cards,Issuing,Mixed availability,Emerging Products,Issuing Experience,Cards,Issuing,product_name_issuing_cards,
+MATCH,Cartes Bancaires,Payment Methods,General availability,Core Network,Card Payments Processing Leads,Cartes Bancaires,Payment Methods,product_name_payment_methods_cartes_bancaires,
+MATCH,Chargebee,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,Chargebee,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_chargebee,
+MATCH,Chargify,Partner Integrations and Plugins,Don't sell,Global Partnerships,Partner Engineering,Chargify,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_chargify,
+MATCH,Corporate Cards,Business Account,Beta,Emerging Products,Issuing Experience,Corporate Cards,Business Account,product_name_business_account_corporate_cards,
+MATCH,DANA,Payment Methods,Mixed availability,Core Network,APM - UK,DANA,Payment Methods,product_name_payment_methods_dana,
+MATCH,Dashboard,Dashboard,General availability,Merchant Services,Dashboard,Dashboard,Dashboard,product_name_dashboard_dashboard,
+MATCH,Diners Club International,Payment Methods,General availability,Core Network,Card Payments Processing Leads,Diners Club International,Payment Methods,product_name_payment_methods_diners_club_international,
+MATCH,Discover,Payment Methods,General availability,Core Network,Card Payments Processing Leads,Discover,Payment Methods,product_name_payment_methods_discover,
+MATCH,Disputes,Disputes,General availability,Merchant Services,Payment Infrastructure,Disputes,Disputes,product_name_disputes_disputes,
+MATCH,Disputes,Issuing,Mixed availability,Payment Services,Issuing,Disputes,Disputes,product_name_disputes_disputes,
+MATCH,EFTPOS,Payment Methods,Roadmap,Core Network,Card Payments Processing Leads,EFTPOS,Payment Methods,product_name_payment_methods_eftpos,
+MATCH,eps,Payment Methods,General availability,Core Network,APM - UK,eps,Payment Methods,product_name_payment_methods_eps,
+MATCH,Face Authentication,Identity Verification,Beta,Emerging Products,Identity Verification,Face Authentication,Identity Verification,product_name_identity_verification_face_authentication,
+MATCH,Fawry,Payment Methods,Don't sell,Core Network,APM - UK,Fawry,Payment Methods,product_name_payment_methods_fawry,
+MATCH,Flow Android SDK,"Mobile SDK, Flow",General availability,Consumer,Flow Leads,Flow Android SDK,"Flow,Mobile SDK",product_name_flow_mobile_sdk_flow_android_sdk,
+MATCH,Flow iOS SDK,"Mobile SDK, Flow",General availability,Consumer,Flow Leads,Flow iOS SDK,"Flow,Mobile SDK",product_name_flow_mobile_sdk_flow_ios_sdk,
+MATCH,Flow React Native SDK,"Mobile SDK, Flow",Don't sell,Consumer,Flow Leads,Flow React Native SDK,"Flow,Mobile SDK",product_name_flow_mobile_sdk_flow_react_native_sdk,
+MATCH,Flow Web,Flow,General availability,Consumer,Flow Leads,Flow Web,Flow,product_name_flow_flow_web,
+MATCH,Forward API,Vault,Beta,Value Added Services,Value Added Services,Forward API,Vault,product_name_vault_forward_api,
+MATCH,Fraud Detection,Fraud Detection,General availability,Payment Performance,Fraud Detection Pro,Fraud Detection,Fraud Detection,product_name_fraud_detection_fraud_detection,
+MATCH,Fraud Detection Pro,Fraud Detection,General availability,Payment Performance,Fraud Detection Pro,Fraud Detection Pro,Fraud Detection,product_name_fraud_detection_fraud_detection_pro,
+MATCH,GCash,Payment Methods,Mixed availability,Core Network,APM - UK,GCash,Payment Methods,product_name_payment_methods_gcash,
+MATCH,GIG,Partner Integrations and Plugins,Roadmap,Global Partnerships,Partner Engineering,GIG,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_gig,
+MATCH,Google Pay,Payment Methods,General availability,Value Added Services,Value Added Services,Google Pay,Payment Methods,product_name_payment_methods_google_pay,
+MATCH,Gr4vy,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,Gr4vy,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_gr4vy,
+MATCH,Hosted Payment Page,Hosted Payment Page,General availability,Consumer,Flow Leads,Hosted Payment Page,Hosted Payment Page,product_name_hosted_payment_page_hosted_payment_page,
+MATCH,ID Document Verification,Identity Verification,Beta,Emerging Products,Identity Verification,ID Document Verification,Identity Verification,product_name_identity_verification_id_document_verification,
+MATCH,iDEAL,Payment Methods,General availability,Core Network,APM - UK,iDEAL,Payment Methods,product_name_payment_methods_ideal,
+MATCH,Identity Verification,Identity Verification,General availability,Emerging Products,Identity Verification,Identity Verification,Identity Verification,product_name_identity_verification_identity_verification,
+MATCH,Integrated Vault,Vault,General availability,Value Added Services,Value Added Services,Integrated Vault,Vault,product_name_vault_integrated_vault,
+MATCH,Intelligent Acceptance,Intelligent Acceptance,General availability,Payment Performance,Intelligent Acceptance,Intelligent Acceptance,Intelligent Acceptance,product_name_intelligent_acceptance_intelligent_acceptance,
+MATCH,Internal - Cash ladder reporting,Treasury & FX,,Financial Infrastructure,Financial Applications,Internal - Cash ladder reporting,Treasury & FX,product_name_treasury_fx_internal_cash_ladder_reporting,
+MATCH,Internal - FX Blotter reporting,Treasury & FX,General availability,Financial Infrastructure,Financial Applications,Internal - FX Blotter reporting,Treasury & FX,product_name_treasury_fx_internal_fx_blotter_reporting,
+MATCH,Jaywan,Payment Methods,Roadmap,Core Network,Card Payments Processing,Jaywan,Payment Methods,product_name_payment_methods_jaywan,
+MATCH,JCB,Payment Methods,Mixed availability,Core Network,Card Payments Processing Leads,JCB,Payment Methods,product_name_payment_methods_jcb,
+MATCH,KakaoPay,Payment Methods,Mixed availability,Core Network,APM - UK,KakaoPay,Payment Methods,product_name_payment_methods_kakaopay,
+MATCH,Klarna BNPL (Collecting),Payment Methods,Mixed availability,Core Network,APM - UK,Klarna BNPL (Collecting),Payment Methods,product_name_payment_methods_klarna_bnpl_collecting,
+MATCH,Klarna Crypto,Payment Methods,Beta,Core Network,APM - UK,Klarna Crypto,Payment Methods,product_name_payment_methods_klarna_crypto,
+MATCH,Klarna Debit Risk (Collecting),Payment Methods,Beta,Core Network,APM - UK,Klarna Debit Risk (Collecting),Payment Methods,product_name_payment_methods_klarna_debit_risk_collecting,
+MATCH,Klarna (Gateway),Payment Methods,Don't sell,Financial Experiences,Pricing and Billing,Klarna (Gateway),Payment Methods,product_name_payment_methods_klarna_gateway,
+MATCH,Knet,Payment Methods,General availability,Core Network,APM - UK,Knet,Payment Methods,product_name_payment_methods_knet,
+MATCH,Mada,Payment Methods,General availability,Core Network,Card Payments Processing Leads,Mada,Payment Methods,product_name_payment_methods_mada,
+MATCH,Maestro,Payment Methods,Beta,Core Network,CPP - Mastercard & Maestro,Maestro,Payment Methods,product_name_payment_methods_maestro,
+MATCH,Magento 2,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,Magento 2,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_magento_2,
+MATCH,Mastercard,Payment Methods,Mixed availability,Core Network,Card Payments Processing Leads,Mastercard,Payment Methods,product_name_payment_methods_mastercard,
+MATCH (name variant),MB WAY,Payment Methods,General availability,Core Network,APM - UK,MB Way,Payment Methods,product_name_payment_methods_mb_way,Cosmetic name difference only — no field action needed
+MATCH,MobilePay,Payment Methods,Beta,Core Network,APM - UK,MobilePay,Payment Methods,product_name_payment_methods_mobilepay,
+MATCH,Multibanco,Payment Methods,General availability,Core Network,APM - UK,Multibanco,Payment Methods,product_name_payment_methods_multibanco,
+MATCH,Network Tokens,Network Tokens,General availability,Value Added Services,Value Added Services,Network Tokens,Network Tokens,product_name_network_tokens_network_tokens,
+MATCH,Notifications,Internal products,,Merchant Services,Reporting & Analytics,Notifications,Internal products,product_name_internal_products_notifications,
+MATCH,NYCE,Payment Methods,General availability,Core Network,CPP - Visa & Pinless,NYCE,Payment Methods,product_name_payment_methods_nyce,
+MATCH,Octopus,Payment Methods,Beta,Core Network,APM - UK,Octopus,Payment Methods,product_name_payment_methods_octopus,
+MATCH,Omannet,Payment Methods,General availability,Core Network,Card Payments Processing Leads,Omannet,Payment Methods,product_name_payment_methods_omannet,
+MATCH,OpenCart,Partner Integrations and Plugins,Deprecated,Global Partnerships,Partner Engineering,OpenCart,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_opencart,
+MATCH,Payment Links,Payments Links,General availability,Consumer,Flow Leads,Payment Links,Payments Links,product_name_payments_links_payment_links,
+MATCH,PayNow,Payment Methods,Beta,Core Network,APM - UK,PayNow,Payment Methods,product_name_payment_methods_paynow,
+MATCH,PayPal,Payment Methods,General availability,Core Network,APM - UK,PayPal,Payment Methods,product_name_payment_methods_paypal,
+MATCH,Payrails,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,Payrails,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_payrails,
+MATCH,Physical Cards,Issuing,Mixed availability,Emerging Products,Issuing Experience,Physical Cards,Issuing,product_name_issuing_physical_cards,
+MATCH,Pix,Payment Methods,Roadmap,Core Network,APM - UK,Pix,Payment Methods,product_name_payment_methods_pix,
+MATCH,Pre-Disputes,Disputes,General availability,Merchant Services,Payment Infrastructure,Pre-Disputes,Disputes,product_name_disputes_pre_disputes,
+MATCH,Predictive Interchange,Reporting,Mixed availability,Financial Infrastructure,Cost of Sales & Settlement Prediction,Predictive Interchange,Reporting & Analytics,product_name_reporting_analytics_predictive_interchange,
+MATCH,Przelewy24,Payment Methods,General availability,Core Network,APM - UK,Przelewy24,Payment Methods,product_name_payment_methods_przelewy24,
+MATCH,PTC - FX based on Scheme FX rates (VISA/MC only),Treasury & FX,General availability,Financial Experiences,Merchant FX / Rev Ops,PTC - FX based on Scheme FX rates (VISA/MC only),Treasury & FX,product_name_treasury_fx_ptc_fx_based_on_scheme_fx_rates_visa_mc_only,
+MATCH,Pulse,Payment Methods,General availability,Core Network,CPP - Visa & Pinless,Pulse,Payment Methods,product_name_payment_methods_pulse,
+MATCH,QPay,Payment Methods,General availability,Core Network,APM - UK,QPay,Payment Methods,product_name_payment_methods_qpay,
+MATCH,Real-Time Account Updater,Real-Time Account Updater,Mixed availability,Value Added Services,Value Added Services,Real-Time Account Updater,Real-Time Account Updater,product_name_real_time_account_updater_real_time_account_updater,
+MATCH,Remember Me,Flow,General availability,Consumer,Remember Me Leads,Remember Me,Flow,product_name_flow_remember_me,
+MATCH,Reporting,Issuing,Mixed availability,Emerging Products,Issuing Cards,Reporting,Issuing,product_name_issuing_reporting,
+MATCH,Salesforce Commerce Cloud,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,Salesforce Commerce Cloud,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_salesforce_commerce_cloud,
+MATCH,Samsung Pay,Payment Methods,Roadmap,Value Added Services,Value Added Services,Samsung Pay,Payment Methods,product_name_payment_methods_samsung_pay,
+MATCH,SAP Commerce Cloud,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,SAP Commerce Cloud,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_sap_commerce_cloud,
+MATCH,SEPA Direct Debit B2B,Payment Methods,Beta,Core Network,APM - UK,SEPA Direct Debit B2B,Payment Methods,product_name_payment_methods_sepa_direct_debit_b2b,
+MATCH,SEPA Direct Debit Core,Payment Methods,General availability,Core Network,APM - UK,SEPA Direct Debit Core,Payment Methods,product_name_payment_methods_sepa_direct_debit_core,
+MATCH,SeQura,Payment Methods,Beta,Core Network,APM - UK,SeQura,Payment Methods,product_name_payment_methods_sequra,
+MATCH,Shopify (offsite),Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,Shopify (offsite),Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_shopify_offsite,
+MATCH,Shopify (onsite),Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,Shopify (onsite),Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_shopify_onsite,
+MATCH,Sofort,Payment Methods,Deprecated,,,Sofort,Payment Methods,product_name_payment_methods_sofort,
+MATCH,Spreedly,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,Spreedly,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_spreedly,
+MATCH,Standalone Vault,Vault,Beta,Value Added Services,Value Added Services,Standalone Vault,Vault,product_name_vault_standalone_vault,
+MATCH,STAR,Payment Methods,General availability,Core Network,CPP - Visa & Pinless,STAR,Payment Methods,product_name_payment_methods_star,
+MATCH,STC Pay,Payment Methods,General availability,Core Network,APM - UK,STC Pay,Payment Methods,product_name_payment_methods_stc_pay,
+MATCH,Swish,Payment Methods,Beta,Core Network,APM - UK,Swish,Payment Methods,product_name_payment_methods_swish,
+MATCH,Tabby (Collecting),Payment Methods,Beta,Core Network,APM - UK,Tabby (Collecting),Payment Methods,product_name_payment_methods_tabby_collecting,
+MATCH,Tabby (Gateway),Payment Methods,Beta,Core Network,APM - UK,Tabby (Gateway),Payment Methods,product_name_payment_methods_tabby_gateway,
+MATCH,Tamara (Collecting),Payment Methods,Beta,Core Network,APM - UK,Tamara (Collecting),Payment Methods,product_name_payment_methods_tamara_collecting,
+MATCH,Tamara (Gateway),Payment Methods,Beta,Core Network,APM - UK,Tamara (Gateway),Payment Methods,product_name_payment_methods_tamara_gateway,
+MATCH,Touch 'n Go,Payment Methods,Mixed availability,Core Network,APM - UK,Touch 'n Go,Payment Methods,product_name_payment_methods_touch_n_go,
+MATCH,TrueMoney,Payment Methods,Mixed availability,Core Network,APM - UK,TrueMoney,Payment Methods,product_name_payment_methods_truemoney,
+MATCH,Twint,Payment Methods,Beta,Core Network,APM - UK,Twint,Payment Methods,product_name_payment_methods_twint,
+MATCH,Venmo,Payment Methods,General availability,Core Network,APM - UK,Venmo,Payment Methods,product_name_payment_methods_venmo,
+MATCH,Vipps,Payment Methods,Beta,Core Network,APM - UK,Vipps,Payment Methods,product_name_payment_methods_vipps,
+MATCH,Visa,Payment Methods,Mixed availability,Core Network,Card Payments Processing Leads,Visa,Payment Methods,product_name_payment_methods_visa,
+MATCH,WeChat Pay CN,Payment Methods,Mixed availability,Core Network,APM - UK,WeChat Pay CN,Payment Methods,product_name_payment_methods_wechat_pay_cn,
+MATCH,WeChat Pay HK,Payment Methods,Mixed availability,Core Network,APM - UK,WeChat Pay HK,Payment Methods,product_name_payment_methods_wechat_pay_hk,
+MATCH,Wero,Payment Methods,Roadmap,Core Network,APM - UK,Wero,Payment Methods,product_name_payment_methods_wero,
+MATCH,WooCommerce,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,WooCommerce,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_woocommerce,
+MATCH,Zuora,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,Zuora,Partner Integrations and Plugins,product_name_partner_integrations_and_plugins_zuora,
+CATALOGUE ONLY — not on roadmap,Aani,Payment Methods,Not on roadmap,Core Network,APM - UK,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Account Settings,Dashboard,General availability,Merchant Services,Dashboard,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,ACI,Partner Integrations and Plugins,Roadmap,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Address Document Verification,Identity Verification,Roadmap,Emerging Products,Identity Verification,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Affirm,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Afterpay,Payment Methods,Not on roadmap,Core Network,APM - UK,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Amazon Pay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,AML Screening,Identity Verification,Beta,Emerging Products,Identity Verification,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Analytics AI Assistant,Analytics,,Merchant Services,Data Connectivity & Analytics,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Atome,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,auPay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Autogiro,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Avtalegiro,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Bancomat,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Bancomat Pay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,BankAxept,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,BECS Direct Debit,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Betailingsservice,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Boost,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Bre-B,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Bundled Authentication,Authentication,General availability,Value Added Services,Value Added Services Leads,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Capitecpay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Cash App,Payment Methods,Roadmap,Core Network,APM - UK,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Clearpay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Commerce Protocols,Agentic Commerce,Mixed availability,Value Added Services,Value Added Services Leads,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,CommerceTools,Partner Integrations and Plugins,Roadmap,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Configuration,Issuing,Mixed availability,Emerging Products,Issuing Experience,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Control spending,Issuing,Mixed availability,Emerging Products,Issuing Experience,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Custom Analytics,Analytics,,Merchant Services,Data Connectivity & Analytics,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Dankort,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Daviplata,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,dBarai,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,DBS PayLah!,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Developer needs,Issuing,Mixed availability,Payment Services,Issuing,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,DragonPay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,DuitNow,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Dwolla,Partner Integrations and Plugins,Mixed availability,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,eFaktura,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,EFT Pre-Authorized Debit,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Elo,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,eps (Hong Kong),Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Financial Report,Reporting,,Financial Experiences,Client Reporting,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,FPS,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,FPX,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Fund Acceleration,Business Account,Mixed availability,Financial Experiences,Client Balances,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Girocard,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,GiroPay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,GoPay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,GrabPay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Illicado,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Interac (E-Transfer),Payment Methods,Not on roadmap,Core Network,APM - UK,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Issuing for Platforms,Issuing,Roadmap,Emerging Products,Issuing Experience,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Issuing Report,Reporting,,Emerging Products,Issuing Cards,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,IXOPay,Partner Integrations and Plugins,Roadmap,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Konbini Payments,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,LINE Pay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,LiqPay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,LPay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,MACH,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,maximum,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Mercado Pago,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,MoMo,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,MonoPay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Movement Protocols,Agentic Commerce,Roadmap,Value Added Services,Value Added Services Leads,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,MyDebit,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,NaverPay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Nequi,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Nordea,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Ocado Group,Partner Integrations and Plugins,General availability,Global Partnerships,UK & EEA Partnerships,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Oney,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Orb (WithOrb),Partner Integrations and Plugins,Not on roadmap,Global Partnerships,Partner Engineering,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,papara,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Pay to Self,Payouts,Mixed availability,Financial Infrastructure,Financial Infrastructure Leads,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,paycell,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Payco,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Payconiq,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,PayID,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,PayMe,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Payment Lifecycle Analytics,Analytics,,Merchant Services,Data Connectivity & Analytics,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Payment Operations Report,Reporting,,Merchant Services,Data Connectivity & Analytics,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Payment Setup API,Payment Setup,Beta,Merchant Services,Payment Routing,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,PayPay,Payment Methods,Roadmap,Core Network,APM - UK,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,PayPo,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,PaysafeCard,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Paytm,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,PayTO,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Paze,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,PLIN,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,POLi,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,PostFinance,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Prestashop,Partner Integrations and Plugins,Deprecated,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Primer.io,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Privat24,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,PromptPay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,PSE,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,PTB - FX based on Live Market Rates,Treasury & FX,Not on roadmap,Financial Experiences,Merchant FX / Rev Ops,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Rabbit LINE PAY,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Rakuten Pay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Ratepay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Recurly,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Red Compra,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Riverty,Payment Methods,Not on roadmap,Financial Experiences,Pricing and Billing,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Same and Cross-currency Transfers,Business Account,Beta,Financial Experiences,Client Balances,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,SAP OPF,Partner Integrations and Plugins,General availability,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Satispay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Settings & Access,Dashboard,General availability,Merchant Services,Dashboard,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,ShopeePay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,SoftPOS SDK,In-person payments,Roadmap,Core Network,Card Payments Processing Leads,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,SPEI,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Splitit,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,SSGPAY,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Stablecoin Settlement,Payouts,Roadmap,Merchant Services,Card Payouts,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Standalone Authentication,Authentication,General availability,Value Added Services,Value Added Services Leads,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Stripe Orchestration,Partner Integrations and Plugins,Roadmap,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Sunbit,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Third Party Payouts,Payouts,Mixed availability,Emerging Products,Bank Payouts,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Toss Pay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Traditional HardPOS,In-person payments,Not on roadmap,Core Network,Card Payments Processing Leads,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,troy,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Trust Protocols,Agentic Commerce,Roadmap,Value Added Services,Value Added Services Leads,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Trustly,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Unified Commerce,In-person payments,Roadmap,Core Network,Card Payments Processing Leads,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Unified Payments API (UPAPI),Unified Payments API,General availability,Merchant Services,Core Processing,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,UnionPay,Payment Methods,Beta,Core Network,Card Payments Processing Leads,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,UPI,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,ViaBill,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Visualsoft,Partner Integrations and Plugins,Mixed availability,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Website Screening,Internal products,Beta,Emerging Products,Identity Verification,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,Yape,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,YUNO,Partner Integrations and Plugins,Roadmap,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — not on roadmap,ZaloPay,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — not on roadmap,Zelle,Payment Methods,Not on roadmap,,,,,,Expected absence from live Zendesk field
+CATALOGUE ONLY — review for addition,Zingfit,Partner Integrations and Plugins,Mixed availability,Global Partnerships,Partner Engineering,,,,Active/roadmap product with no Zendesk field value
+CATALOGUE ONLY — review for addition,Zip,Payment Methods,Roadmap,Core Network,APM - UK,,,,Active/roadmap product with no Zendesk field value
+ZENDESK ONLY — no catalogue match,,,,,,Analytics Assistant,Reporting & Analytics,product_name_reporting_analytics_analytics_assistant,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Bank Payouts,Payouts,product_name_payouts_bank_payouts,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,BIN Management,Issuing,product_name_issuing_bin_management,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Business Screening,Identity Verification,product_name_identity_verification_business_screening,
+ZENDESK ONLY — no catalogue match,,,,,,Business Verification,Identity Verification,product_name_identity_verification_business_verification,
+ZENDESK ONLY — no catalogue match,,,,,,Card Payouts,Payouts,product_name_payouts_card_payouts,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Card Product,Issuing,product_name_issuing_card_product,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Cardholder,Issuing,product_name_issuing_cardholder,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Dashboard Reports,Reporting & Analytics,product_name_reporting_analytics_dashboard_reports,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Dashboard Reports (non-financial reports),Reporting & Analytics,product_name_reporting_analytics_dashboard_reports_non_financial_reports,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Digital Wallets,Issuing,product_name_issuing_digital_wallets,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Entity Structure,Issuing,product_name_issuing_entity_structure,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Fraud,Issuing,product_name_issuing_fraud,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Issuing Region,Issuing,product_name_issuing_issuing_region,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Physical card PIN,Issuing,product_name_issuing_physical_card_pin,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Reports API,Reporting & Analytics,product_name_reporting_analytics_reports_api,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Reports API (non-financial reports),Reporting & Analytics,product_name_reporting_analytics_reports_api_non_financial_reports,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,SCA Exemptions,Issuing,product_name_issuing_sca_exemptions,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,SCA Out of Scope,Issuing,product_name_issuing_sca_out_of_scope,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Settlements,Business Account,product_name_business_account_settlements,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,SFTP (non-financial reports),Reporting & Analytics,product_name_reporting_analytics_sftp_non_financial_reports,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,SFTP Reports,Reporting & Analytics,product_name_reporting_analytics_sftp_reports,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Simulation,Issuing,product_name_issuing_simulation,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Spending Controls,Issuing,product_name_issuing_spending_controls,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Transactions,Issuing,product_name_issuing_transactions,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Transfers,Business Account,product_name_business_account_transfers,"Likely a sub-feature under a broader catalogue product, not a missing product"
+ZENDESK ONLY — no catalogue match,,,,,,Unclassified Product,,product_name_unclassified_product,"Catch-all value, not a real product"
+ZENDESK ONLY — no catalogue match,,,,,,UnionPay - Gateway,Payment Methods,product_name_payment_methods_unionpay_gateway,Likely corresponds to catalogue's 'UnionPay' with a suffix retained in Zendesk

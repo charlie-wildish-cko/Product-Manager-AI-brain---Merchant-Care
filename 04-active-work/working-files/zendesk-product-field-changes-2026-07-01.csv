@@ -1,0 +1,171 @@
+Zendesk product field action,Catalogue metadata changed (informational only),Product category,Category changed,Product name,Product pillar,Pillar changed,Product team,Team changed,Product state,State changed,Zendesk tag,Note
+ADD NEW VALUE,YES,Agentic Commerce,NO,Commerce Protocols,Value Added Services,NO,Value Added Services Leads,YES,Mixed availability,NO,product_name_agentic_commerce_commerce_protocols,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Agentic Commerce,NO,Movement Protocols,Value Added Services,NO,Value Added Services Leads,YES,Roadmap,NO,product_name_agentic_commerce_movement_protocols,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Agentic Commerce,NO,Trust Protocols,Value Added Services,NO,Value Added Services Leads,YES,Roadmap,NO,product_name_agentic_commerce_trust_protocols,Not currently in Zendesk product field
+RENAME VALUE,YES,Analytics,NO,Analytics AI Assistant,Merchant Services,YES,Data Connectivity & Analytics,YES,,NO,product_name_reporting_analytics_analytics_assistant,"Likely a rename of existing Zendesk value 'Analytics Assistant' (same tag) — rename in place rather than creating a new value, to preserve historical ticket tagging."
+ADD NEW VALUE,YES,Analytics,NO,Custom Analytics,Merchant Services,YES,Data Connectivity & Analytics,YES,,NO,product_name_analytics_custom_analytics,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Analytics,NO,Payment Lifecycle Analytics,Merchant Services,YES,Data Connectivity & Analytics,YES,,NO,product_name_analytics_payment_lifecycle_analytics,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Authentication,NO,Bundled Authentication,Value Added Services,NO,Value Added Services Leads,YES,General availability,NO,product_name_authentication_bundled_authentication,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Authentication,NO,Standalone Authentication,Value Added Services,NO,Value Added Services Leads,YES,General availability,NO,product_name_authentication_standalone_authentication,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Business Account,NO,Fund Acceleration,Financial Experiences,NO,Client Balances,YES,Mixed availability,NO,product_name_business_account_fund_acceleration,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Business Account,NO,Same and Cross-currency Transfers,Financial Experiences,NO,Client Balances,YES,Beta,NO,product_name_business_account_same_and_cross_currency_transfers,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Dashboard,N/A (new product),Account Settings,Merchant Services,N/A (new product),Dashboard,N/A (new product),General availability,N/A (new product),product_name_dashboard_account_settings,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Dashboard,N/A (new product),Settings & Access,Merchant Services,N/A (new product),Dashboard,N/A (new product),General availability,N/A (new product),product_name_dashboard_settings_access,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Identity Verification,NO,AML Screening,Emerging Products,NO,Identity Verification,NO,Beta,NO,product_name_identity_verification_aml_screening,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Identity Verification,NO,Address Document Verification,Emerging Products,NO,Identity Verification,NO,Roadmap,NO,product_name_identity_verification_address_document_verification,Not currently in Zendesk product field
+ADD NEW VALUE,YES,In-person payments,NO,SoftPOS SDK,Core Network,NO,Card Payments Processing Leads,YES,Roadmap,NO,product_name_in_person_payments_softpos_sdk,Not currently in Zendesk product field
+ADD NEW VALUE,YES,In-person payments,NO,Unified Commerce,Core Network,NO,Card Payments Processing Leads,YES,Roadmap,NO,product_name_in_person_payments_unified_commerce,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Internal products,NO,Website Screening,Emerging Products,NO,Identity Verification,NO,Beta,NO,product_name_internal_products_website_screening,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Issuing,NO,Configuration,Emerging Products,NO,Issuing Experience,NO,Mixed availability,NO,product_name_issuing_configuration,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Issuing,NO,Control spending,Emerging Products,NO,Issuing Experience,NO,Mixed availability,NO,product_name_issuing_control_spending,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Issuing,NO,Developer needs,Payment Services,NO,Issuing,NO,Mixed availability,NO,product_name_issuing_developer_needs,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Issuing,NO,Issuing for Platforms,Emerging Products,NO,Issuing Experience,NO,Roadmap,NO,product_name_issuing_issuing_for_platforms,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,N/A (new product),ACI,Global Partnerships,N/A (new product),Partner Engineering,N/A (new product),Roadmap,N/A (new product),product_name_partner_integrations_and_plugins_aci,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,NO,CommerceTools,Global Partnerships,NO,Partner Engineering,NO,Roadmap,YES,product_name_partner_integrations_and_plugins_commercetools,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,N/A (new product),Dwolla,Global Partnerships,N/A (new product),Partner Engineering,N/A (new product),Mixed availability,N/A (new product),product_name_partner_integrations_and_plugins_dwolla,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,N/A (new product),IXOPay,Global Partnerships,N/A (new product),Partner Engineering,N/A (new product),Roadmap,N/A (new product),product_name_partner_integrations_and_plugins_ixopay,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,N/A (new product),Ocado Group,Global Partnerships,N/A (new product),UK & EEA Partnerships,N/A (new product),General availability,N/A (new product),product_name_partner_integrations_and_plugins_ocado_group,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,NO,Prestashop,Global Partnerships,NO,Partner Engineering,NO,Deprecated,NO,product_name_partner_integrations_and_plugins_prestashop,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,NO,Primer.io,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_primer_io,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,NO,Recurly,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_recurly,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,NO,SAP OPF,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_sap_opf,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,N/A (new product),Stripe Orchestration,Global Partnerships,N/A (new product),Partner Engineering,N/A (new product),Roadmap,N/A (new product),product_name_partner_integrations_and_plugins_stripe_orchestration,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,NO,Visualsoft,Global Partnerships,NO,Partner Engineering,NO,Mixed availability,NO,product_name_partner_integrations_and_plugins_visualsoft,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,N/A (new product),YUNO,Global Partnerships,N/A (new product),Partner Engineering,N/A (new product),Roadmap,N/A (new product),product_name_partner_integrations_and_plugins_yuno,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Partner Integrations and Plugins,NO,Zingfit,Global Partnerships,NO,Partner Engineering,NO,Mixed availability,NO,product_name_partner_integrations_and_plugins_zingfit,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Payment Methods,NO,Cash App,Core Network,YES,APM - UK,YES,Roadmap,YES,product_name_payment_methods_cash_app,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Payment Methods,NO,PayPay,Core Network,YES,APM - UK,YES,Roadmap,YES,product_name_payment_methods_paypay,Not currently in Zendesk product field
+NO CHANGE — verify spelling,YES,Payment Methods,NO,UnionPay,Core Network,NO,Card Payments Processing Leads,YES,Beta,NO,product_name_payment_methods_unionpay_gateway,Zendesk currently shows 'UnionPay - Gateway' vs catalogue 'UnionPay' — likely the same network; confirm naming with ZD admins rather than creating a duplicate value.
+ADD NEW VALUE,YES,Payment Methods,NO,Zip,Core Network,NO,APM - UK,YES,Roadmap,YES,product_name_payment_methods_zip,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Payment Setup,NO,Payment Setup API,Merchant Services,NO,Payment Routing,NO,Beta,YES,product_name_payment_setup_payment_setup_api,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Payouts,NO,Pay to Self,Financial Infrastructure,YES,Financial Infrastructure Leads,YES,Mixed availability,NO,product_name_payouts_pay_to_self,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Payouts,NO,Stablecoin Settlement,Merchant Services,NO,Card Payouts,NO,Roadmap,NO,product_name_payouts_stablecoin_settlement,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Payouts,NO,Third Party Payouts,Emerging Products,NO,Bank Payouts,NO,Mixed availability,NO,product_name_payouts_third_party_payouts,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Reporting,NO,Financial Report,Financial Experiences,YES,Client Reporting,YES,,NO,product_name_reporting_financial_report,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Reporting,NO,Issuing Report,Emerging Products,YES,Issuing Cards,YES,,NO,product_name_reporting_issuing_report,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Reporting,NO,Payment Operations Report,Merchant Services,YES,Data Connectivity & Analytics,YES,,NO,product_name_reporting_payment_operations_report,Not currently in Zendesk product field
+ADD NEW VALUE,YES,Unified Payments API,NO,Unified Payments API (UPAPI),Merchant Services,NO,Core Processing,NO,General availability,NO,product_name_unified_payments_api_unified_payments_api_upapi,Not currently in Zendesk product field
+NO CHANGE — verify spelling,YES,Payment Methods,NO,MB WAY,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_mb_way,Zendesk currently shows 'MB Way' vs catalogue 'MB WAY' — cosmetic difference only
+NO CHANGE,YES,Business Account,NO,Balances,Financial Experiences,NO,Client Balances,YES,General availability,NO,product_name_business_account_balances,
+NO CHANGE,YES,Dashboard,NO,Dashboard,Merchant Services,NO,Dashboard,NO,General availability,YES,product_name_dashboard_dashboard,
+NO CHANGE,YES,Disputes,YES,Disputes,Merchant Services,YES,Payment Infrastructure,YES,General availability,YES,product_name_disputes_disputes,
+NO CHANGE,YES,Flow,NO,Flow Web,Consumer,NO,Flow Leads,YES,General availability,NO,product_name_flow_flow_web,
+NO CHANGE,YES,Flow,NO,Remember Me,Consumer,NO,Remember Me Leads,YES,General availability,NO,product_name_flow_remember_me,
+NO CHANGE,YES,Hosted Payment Page,NO,Hosted Payment Page,Consumer,NO,Flow Leads,YES,General availability,NO,product_name_hosted_payment_page_hosted_payment_page,
+NO CHANGE,YES,Internal products,NO,Airtable Product Catalogue,Product Operations,NO,Product Operations,NO,General availability,YES,product_name_internal_products_airtable_product_catalogue,
+NO CHANGE,YES,Issuing,NO,Reporting,Emerging Products,NO,Issuing Cards,YES,Mixed availability,NO,product_name_issuing_reporting,
+NO CHANGE,YES,"Mobile SDK, Flow",NO,Flow Android SDK,Consumer,NO,Flow Leads,YES,General availability,NO,product_name_flow_mobile_sdk_flow_android_sdk,
+NO CHANGE,YES,"Mobile SDK, Flow",NO,Flow React Native SDK,Consumer,NO,Flow Leads,YES,Don't sell,NO,product_name_flow_mobile_sdk_flow_react_native_sdk,
+NO CHANGE,YES,"Mobile SDK, Flow",NO,Flow iOS SDK,Consumer,NO,Flow Leads,YES,General availability,NO,product_name_flow_mobile_sdk_flow_ios_sdk,
+NO CHANGE,YES,Partner Integrations and Plugins,NO,GIG,Global Partnerships,NO,Partner Engineering,NO,Roadmap,YES,product_name_partner_integrations_and_plugins_gig,
+NO CHANGE,YES,Payment Methods,NO,ACH Direct Debit,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_ach_direct_debit,
+NO CHANGE,YES,Payment Methods,NO,Accel,Core Network,NO,CPP - Visa & Pinless,YES,General availability,NO,product_name_payment_methods_accel,
+NO CHANGE,YES,Payment Methods,NO,AlipayCN,Core Network,NO,APM - UK,YES,Mixed availability,NO,product_name_payment_methods_alipaycn,
+NO CHANGE,YES,Payment Methods,NO,AlipayHK,Core Network,NO,APM - UK,YES,Mixed availability,NO,product_name_payment_methods_alipayhk,
+NO CHANGE,YES,Payment Methods,NO,Alma,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_alma,
+NO CHANGE,YES,Payment Methods,NO,BLIK,Core Network,NO,APM - UK,YES,Beta,YES,product_name_payment_methods_blik,
+NO CHANGE,YES,Payment Methods,NO,Bacs,Core Network,NO,APM - UK,YES,Roadmap,NO,product_name_payment_methods_bacs,
+NO CHANGE,YES,Payment Methods,NO,Bancontact,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_bancontact,
+NO CHANGE,YES,Payment Methods,NO,Benefit Payment Gateway,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_benefit_payment_gateway,
+NO CHANGE,YES,Payment Methods,NO,BenefitPay,Core Network,NO,APM - UK,YES,Deprecated,NO,product_name_payment_methods_benefitpay,
+NO CHANGE,YES,Payment Methods,NO,Bizum,Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_bizum,
+NO CHANGE,YES,Payment Methods,NO,Cartes Bancaires,Core Network,NO,Card Payments Processing Leads,YES,General availability,NO,product_name_payment_methods_cartes_bancaires,
+NO CHANGE,YES,Payment Methods,NO,DANA,Core Network,NO,APM - UK,YES,Mixed availability,NO,product_name_payment_methods_dana,
+NO CHANGE,YES,Payment Methods,NO,Diners Club International,Core Network,NO,Card Payments Processing Leads,YES,General availability,NO,product_name_payment_methods_diners_club_international,
+NO CHANGE,YES,Payment Methods,NO,Discover,Core Network,NO,Card Payments Processing Leads,YES,General availability,NO,product_name_payment_methods_discover,
+NO CHANGE,YES,Payment Methods,NO,EFTPOS,Core Network,NO,Card Payments Processing Leads,YES,Roadmap,NO,product_name_payment_methods_eftpos,
+NO CHANGE,YES,Payment Methods,NO,Fawry,Core Network,NO,APM - UK,YES,Don't sell,NO,product_name_payment_methods_fawry,
+NO CHANGE,YES,Payment Methods,NO,GCash,Core Network,NO,APM - UK,YES,Mixed availability,NO,product_name_payment_methods_gcash,
+NO CHANGE,YES,Payment Methods,NO,JCB,Core Network,NO,Card Payments Processing Leads,YES,Mixed availability,NO,product_name_payment_methods_jcb,
+NO CHANGE,YES,Payment Methods,NO,Jaywan,Core Network,NO,Card Payments Processing,YES,Roadmap,NO,product_name_payment_methods_jaywan,
+NO CHANGE,YES,Payment Methods,NO,KakaoPay,Core Network,NO,APM - UK,YES,Mixed availability,NO,product_name_payment_methods_kakaopay,
+NO CHANGE,YES,Payment Methods,NO,Klarna BNPL (Collecting),Core Network,NO,APM - UK,YES,Mixed availability,NO,product_name_payment_methods_klarna_bnpl_collecting,
+NO CHANGE,YES,Payment Methods,NO,Klarna Crypto,Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_klarna_crypto,
+NO CHANGE,YES,Payment Methods,NO,Klarna Debit Risk (Collecting),Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_klarna_debit_risk_collecting,
+NO CHANGE,YES,Payment Methods,NO,Knet,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_knet,
+NO CHANGE,YES,Payment Methods,NO,Mada,Core Network,NO,Card Payments Processing Leads,YES,General availability,NO,product_name_payment_methods_mada,
+NO CHANGE,YES,Payment Methods,NO,Maestro,Core Network,NO,CPP - Mastercard & Maestro,YES,Beta,NO,product_name_payment_methods_maestro,
+NO CHANGE,YES,Payment Methods,NO,Mastercard,Core Network,NO,Card Payments Processing Leads,YES,Mixed availability,NO,product_name_payment_methods_mastercard,
+NO CHANGE,YES,Payment Methods,NO,MobilePay,Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_mobilepay,
+NO CHANGE,YES,Payment Methods,NO,Multibanco,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_multibanco,
+NO CHANGE,YES,Payment Methods,NO,NYCE,Core Network,NO,CPP - Visa & Pinless,YES,General availability,NO,product_name_payment_methods_nyce,
+NO CHANGE,YES,Payment Methods,NO,Octopus,Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_octopus,
+NO CHANGE,YES,Payment Methods,NO,Omannet,Core Network,NO,Card Payments Processing Leads,YES,General availability,NO,product_name_payment_methods_omannet,
+NO CHANGE,YES,Payment Methods,NO,PayNow,Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_paynow,
+NO CHANGE,YES,Payment Methods,NO,PayPal,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_paypal,
+NO CHANGE,YES,Payment Methods,NO,Pix,Core Network,NO,APM - UK,YES,Roadmap,NO,product_name_payment_methods_pix,
+NO CHANGE,YES,Payment Methods,NO,Przelewy24,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_przelewy24,
+NO CHANGE,YES,Payment Methods,NO,Pulse,Core Network,NO,CPP - Visa & Pinless,YES,General availability,NO,product_name_payment_methods_pulse,
+NO CHANGE,YES,Payment Methods,NO,QPay,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_qpay,
+NO CHANGE,YES,Payment Methods,NO,SEPA Direct Debit B2B,Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_sepa_direct_debit_b2b,
+NO CHANGE,YES,Payment Methods,NO,SEPA Direct Debit Core,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_sepa_direct_debit_core,
+NO CHANGE,YES,Payment Methods,NO,STAR,Core Network,NO,CPP - Visa & Pinless,YES,General availability,NO,product_name_payment_methods_star,
+NO CHANGE,YES,Payment Methods,NO,STC Pay,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_stc_pay,
+NO CHANGE,YES,Payment Methods,NO,SeQura,Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_sequra,
+NO CHANGE,YES,Payment Methods,NO,Swish,Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_swish,
+NO CHANGE,YES,Payment Methods,NO,Tabby (Collecting),Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_tabby_collecting,
+NO CHANGE,YES,Payment Methods,NO,Tabby (Gateway),Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_tabby_gateway,
+NO CHANGE,YES,Payment Methods,NO,Tamara (Collecting),Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_tamara_collecting,
+NO CHANGE,YES,Payment Methods,NO,Tamara (Gateway),Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_tamara_gateway,
+NO CHANGE,YES,Payment Methods,NO,Touch 'n Go,Core Network,NO,APM - UK,YES,Mixed availability,NO,product_name_payment_methods_touch_n_go,
+NO CHANGE,YES,Payment Methods,NO,TrueMoney,Core Network,NO,APM - UK,YES,Mixed availability,NO,product_name_payment_methods_truemoney,
+NO CHANGE,YES,Payment Methods,NO,Twint,Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_twint,
+NO CHANGE,YES,Payment Methods,NO,Venmo,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_venmo,
+NO CHANGE,YES,Payment Methods,NO,Vipps,Core Network,NO,APM - UK,YES,Beta,NO,product_name_payment_methods_vipps,
+NO CHANGE,YES,Payment Methods,NO,Visa,Core Network,NO,Card Payments Processing Leads,YES,Mixed availability,NO,product_name_payment_methods_visa,
+NO CHANGE,YES,Payment Methods,NO,WeChat Pay CN,Core Network,NO,APM - UK,YES,Mixed availability,NO,product_name_payment_methods_wechat_pay_cn,
+NO CHANGE,YES,Payment Methods,NO,WeChat Pay HK,Core Network,NO,APM - UK,YES,Mixed availability,NO,product_name_payment_methods_wechat_pay_hk,
+NO CHANGE,YES,Payment Methods,NO,Wero,Core Network,NO,APM - UK,YES,Roadmap,NO,product_name_payment_methods_wero,
+NO CHANGE,YES,Payment Methods,NO,eps,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_eps,
+NO CHANGE,YES,Payment Methods,NO,iDEAL,Core Network,NO,APM - UK,YES,General availability,NO,product_name_payment_methods_ideal,
+NO CHANGE,YES,Payments Links,NO,Payment Links,Consumer,NO,Flow Leads,YES,General availability,NO,product_name_payments_links_payment_links,
+NO CHANGE,YES,Reporting,NO,Predictive Interchange,Financial Infrastructure,NO,Cost of Sales & Settlement Prediction,YES,Mixed availability,NO,product_name_reporting_analytics_predictive_interchange,
+NO CHANGE,YES,Treasury & FX,NO,Acquiring - Custom FX markup per currency pair,Financial Experiences,NO,Merchant FX / Rev Ops,YES,General availability,NO,product_name_treasury_fx_acquiring_custom_fx_markup_per_currency_pair,
+NO CHANGE,YES,Treasury & FX,NO,Acquiring - Daily FX Rates,Financial Experiences,NO,Merchant FX / Rev Ops,YES,General availability,NO,product_name_treasury_fx_acquiring_daily_fx_rates,
+NO CHANGE,YES,Treasury & FX,NO,Acquiring - FX Live Market Rates,Financial Experiences,NO,Merchant FX / Rev Ops,YES,General availability,NO,product_name_treasury_fx_acquiring_fx_live_market_rates,
+NO CHANGE,YES,Treasury & FX,NO,Acquiring - Scheme FX Rates,Financial Experiences,NO,Merchant FX / Rev Ops,YES,General availability,NO,product_name_treasury_fx_acquiring_scheme_fx_rates,
+NO CHANGE,YES,Treasury & FX,NO,Internal - Cash ladder reporting,Financial Infrastructure,YES,Financial Applications,YES,,NO,product_name_treasury_fx_internal_cash_ladder_reporting,
+NO CHANGE,YES,Treasury & FX,NO,Internal - FX Blotter reporting,Financial Infrastructure,YES,Financial Applications,YES,General availability,NO,product_name_treasury_fx_internal_fx_blotter_reporting,
+NO CHANGE,YES,Treasury & FX,NO,PTC - FX based on Scheme FX rates (VISA/MC only),Financial Experiences,NO,Merchant FX / Rev Ops,YES,General availability,NO,product_name_treasury_fx_ptc_fx_based_on_scheme_fx_rates_visa_mc_only,
+NO CHANGE,NO,Business Account,NO,Corporate Cards,Emerging Products,NO,Issuing Experience,NO,Beta,NO,product_name_business_account_corporate_cards,
+NO CHANGE,NO,Disputes,NO,Pre-Disputes,Merchant Services,NO,Payment Infrastructure,NO,General availability,NO,product_name_disputes_pre_disputes,
+NO CHANGE,NO,Fraud Detection,NO,Fraud Detection,Payment Performance,NO,Fraud Detection Pro,NO,General availability,NO,product_name_fraud_detection_fraud_detection,
+NO CHANGE,NO,Fraud Detection,NO,Fraud Detection Pro,Payment Performance,NO,Fraud Detection Pro,NO,General availability,NO,product_name_fraud_detection_fraud_detection_pro,
+NO CHANGE,NO,Identity Verification,NO,Face Authentication,Emerging Products,NO,Identity Verification,NO,Beta,NO,product_name_identity_verification_face_authentication,
+NO CHANGE,NO,Identity Verification,NO,ID Document Verification,Emerging Products,NO,Identity Verification,NO,Beta,NO,product_name_identity_verification_id_document_verification,
+NO CHANGE,NO,Identity Verification,NO,Identity Verification,Emerging Products,NO,Identity Verification,NO,General availability,NO,product_name_identity_verification_identity_verification,
+NO CHANGE,NO,Intelligent Acceptance,NO,Intelligent Acceptance,Payment Performance,NO,Intelligent Acceptance,NO,General availability,NO,product_name_intelligent_acceptance_intelligent_acceptance,
+NO CHANGE,NO,Internal products,NO,Notifications,Merchant Services,NO,Reporting & Analytics,NO,,NO,product_name_internal_products_notifications,
+NO CHANGE,NO,Issuing,NO,Authentication,Payment Services,NO,Issuing,NO,Mixed availability,NO,product_name_issuing_authentication,
+NO CHANGE,NO,Issuing,NO,Cards,Emerging Products,NO,Issuing Experience,NO,Mixed availability,NO,product_name_issuing_cards,
+NO CHANGE,NO,Issuing,NO,Disputes,Payment Services,NO,Issuing,NO,Mixed availability,NO,product_name_disputes_disputes,
+NO CHANGE,NO,Issuing,NO,Physical Cards,Emerging Products,NO,Issuing Experience,NO,Mixed availability,NO,product_name_issuing_physical_cards,
+NO CHANGE,NO,Network Tokens,NO,Network Tokens,Value Added Services,NO,Value Added Services,NO,General availability,NO,product_name_network_tokens_network_tokens,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,BR-DGE,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_br_dge,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,Basis Theory,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_basis_theory,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,BigCommerce,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_bigcommerce,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,Chargebee,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_chargebee,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,Chargify,Global Partnerships,NO,Partner Engineering,NO,Don't sell,NO,product_name_partner_integrations_and_plugins_chargify,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,Gr4vy,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_gr4vy,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,Magento 2,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_magento_2,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,OpenCart,Global Partnerships,NO,Partner Engineering,NO,Deprecated,NO,product_name_partner_integrations_and_plugins_opencart,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,Payrails,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_payrails,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,SAP Commerce Cloud,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_sap_commerce_cloud,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,Salesforce Commerce Cloud,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_salesforce_commerce_cloud,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,Shopify (offsite),Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_shopify_offsite,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,Shopify (onsite),Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_shopify_onsite,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,Spreedly,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_spreedly,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,WooCommerce,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_woocommerce,
+NO CHANGE,NO,Partner Integrations and Plugins,NO,Zuora,Global Partnerships,NO,Partner Engineering,NO,General availability,NO,product_name_partner_integrations_and_plugins_zuora,
+NO CHANGE,NO,Payment Methods,NO,American Express - Collecting,Core Network,NO,Payment Specialists,NO,Mixed availability,NO,product_name_payment_methods_american_express_collecting,
+NO CHANGE,NO,Payment Methods,NO,American Express - Gateway,Core Network,NO,Payment Specialists,NO,Mixed availability,NO,product_name_payment_methods_american_express_gateway,
+NO CHANGE,NO,Payment Methods,NO,Apple Pay,Value Added Services,NO,Value Added Services,NO,General availability,NO,product_name_payment_methods_apple_pay,
+NO CHANGE,NO,Payment Methods,NO,Boleto Bancario,,NO,,NO,Deprecated,NO,product_name_payment_methods_boleto_bancario,
+NO CHANGE,NO,Payment Methods,NO,Google Pay,Value Added Services,NO,Value Added Services,NO,General availability,NO,product_name_payment_methods_google_pay,
+NO CHANGE,NO,Payment Methods,NO,Klarna (Gateway),Financial Experiences,NO,Pricing and Billing,NO,Don't sell,NO,product_name_payment_methods_klarna_gateway,
+NO CHANGE,NO,Payment Methods,NO,Samsung Pay,Value Added Services,NO,Value Added Services,NO,Roadmap,NO,product_name_payment_methods_samsung_pay,
+NO CHANGE,NO,Payment Methods,NO,Sofort,,NO,,NO,Deprecated,NO,product_name_payment_methods_sofort,
+NO CHANGE,NO,Real-Time Account Updater,NO,Real-Time Account Updater,Value Added Services,NO,Value Added Services,NO,Mixed availability,NO,product_name_real_time_account_updater_real_time_account_updater,
+NO CHANGE,NO,Vault,NO,Forward API,Value Added Services,NO,Value Added Services,NO,Beta,NO,product_name_vault_forward_api,
+NO CHANGE,NO,Vault,NO,Integrated Vault,Value Added Services,NO,Value Added Services,NO,General availability,NO,product_name_vault_integrated_vault,
+NO CHANGE,NO,Vault,NO,Standalone Vault,Value Added Services,NO,Value Added Services,NO,Beta,NO,product_name_vault_standalone_vault,

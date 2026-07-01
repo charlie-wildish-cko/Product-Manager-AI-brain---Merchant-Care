@@ -1,7 +1,7 @@
 ---
 name: taxonomy-classification-qa
-description: QA Fin AI's contact classifications against the support taxonomy. Scores case type, issue type, and reason as a cascade (issue type only scored if case type is correct; reason only scored if issue type is correct), validates both parties' labels against the taxonomy, and identifies definition gaps and taxonomy gaps. Outputs a per-row TSV for Google Sheets plus a ranked fix hitlist (markdown) for triaging large batches. Invoke with /taxonomy-classification-qa <file-path>
-tools: Read, Glob, Grep, Bash, Write, Agent
+description: QA Fin AI's contact classifications against the support taxonomy. Pulls the current QA batch directly from Looker Look 18808 by default (no export step needed) — or accepts a CSV/markdown file if given one. Runs incrementally — appends to the same persistent log files every time rather than creating a new dated file per run, and skips any ticket already reviewed in a prior run. Scores case type, issue type, and reason as a cascade (issue type only scored if case type is correct; reason only scored if issue type is correct), validates both parties' labels against the taxonomy, and identifies definition gaps and taxonomy gaps. Outputs a cumulative per-row TSV for Google Sheets plus a ranked fix hitlist (markdown) for triaging large batches. Invoke with /taxonomy-classification-qa [file-path | look:<id>] — defaults to look:18808 if no argument given.
+tools: Read, Glob, Grep, Bash, Write, Agent, mcp__looker-toolbox__run_look
 ---
 
 # Taxonomy Classification QA
@@ -11,9 +11,11 @@ QA Fin AI's contact classifications against the 3-level support taxonomy (Case T
 2. **Label validity** — did either party use a label that actually exists in the taxonomy? (fin_label_valid, agent_label_valid)
 3. **Taxonomy coverage** — does the contact fit the taxonomy at all, or does it expose a gap? (taxonomy_gap_candidate)
 
-Two outputs:
-- **Per-row TSV** for Google Sheets — every contact, one row each, for spot-checking and filtering.
-- **Fix hitlist (markdown)** — the per-row gap analysis clustered into the top 5-10 highest-impact patterns, ranked so you can work a backlog of 200+ rows without reading each one. This is the actionable output; the TSV is the audit trail behind it.
+Two outputs, both **persistent and cumulative** — the same two files are appended to on every run, not recreated per run:
+- **Per-row TSV** for Google Sheets — every contact ever reviewed, one row each, tagged with the `run_date` it was reviewed on, for spot-checking and filtering.
+- **Fix hitlist (markdown)** — a running log of dated sections, each holding that run's cluster analysis for the top 5-10 highest-impact patterns found in the rows new to that run. This is the actionable output; the TSV is the audit trail behind it.
+
+**Incremental behaviour**: each run only analyses tickets not already present in the log from a prior run (see "Incremental runs & dedup" below). This means re-running the skill regularly (e.g. weekly, as Look 18808's batch rolls over) never re-scores or re-clusters the same ticket twice.
 
 ---
 
@@ -21,23 +23,24 @@ Two outputs:
 
 | Argument | Values | Notes |
 |----------|--------|-------|
-| `file-path` | Absolute or relative path to CSV or markdown file | Required |
+| *(none)* | — | Defaults to `look:18808` — pulls the current QA batch straight from Looker |
+| `look:<id>` | Looker Look ID | Pulls directly via `mcp__looker-toolbox__run_look`, no export step |
+| `file-path` | Absolute or relative path to CSV or markdown file | Use when someone hands you an export instead of a live Look |
 
 Example:
+- `/taxonomy-classification-qa` (defaults to Look 18808)
+- `/taxonomy-classification-qa look:19042`
 - `/taxonomy-classification-qa 04-active-work/fin-qa-batch-2026-05.csv`
 - `/taxonomy-classification-qa ~/Downloads/fin classification QA 18 May.md`
 
 ---
 
-## Input file — accepted formats
-
-Accepts **CSV** or **markdown table** (`.md`) files. Detect format by file extension.
-
-### Canonical column names (used internally after normalisation)
+## Canonical fields (used internally after normalisation, regardless of source)
 
 | Canonical name | Required | Notes |
 |----------------|----------|-------|
 | `contact_id` | Required | Row identifier |
+| `ticket_id` | Optional | Zendesk ticket ID — used as the dedup key across runs when present (see "Incremental runs & dedup"); falls back to `contact_id` if absent |
 | `contact_text` | Required | Contact transcript or message body |
 | `fin_case_type` | Required | Fin's assigned Case Type (blank = unclassified) |
 | `fin_issue_type` | Required | Fin's assigned Issue Type (blank = unclassified) |
@@ -45,6 +48,62 @@ Accepts **CSV** or **markdown table** (`.md`) files. Detect format by file exten
 | `correct_case_type` | Required | Human ground truth Case Type |
 | `correct_issue_type` | Required | Human ground truth Issue Type |
 | `correct_reason` | Optional | Human ground truth Reason |
+
+---
+
+## Incremental runs & dedup
+
+The skill maintains two persistent files across runs (see "Output files" below) instead of writing a new dated file per invocation. Every run:
+
+1. Fetches the current source batch (Look or file) in full, same as before.
+2. Loads the existing `04-active-work/classification-qa-log.tsv` if it exists, and builds a set of already-reviewed keys from its `ticket_id` column (falling back to `contact_id` for any historical rows that predate the `ticket_id` column).
+3. Filters the freshly-fetched batch down to rows whose dedup key (`ticket_id`, or `contact_id` if `ticket_id` is blank) is **not** already in that set.
+4. Runs Steps 2-6 only on this new subset. Already-reviewed tickets are never re-scored, re-sent to the Opus gap-analysis agent, or re-counted in this run's cluster stats — this keeps repeat runs cheap and keeps the log free of duplicate rows.
+5. If a Look batch happens to include a ticket that changed classification since it was last reviewed (e.g. a Zendesk agent re-tagged it), that ticket is still skipped — the dedup key match is on identity, not on content. If the user wants a re-review of specific tickets, they should say so explicitly rather than relying on a normal run to catch it.
+
+If zero new rows remain after filtering, skip Steps 2-6 entirely and report: "N rows fetched, all N already reviewed. Nothing new to QA this run."
+
+---
+
+## Source: Looker Look (default)
+
+Look 18808 is a live Fin-vs-Zendesk classification comparison — no CSV export needed. Fetch it directly and work from the JSON rows in memory; do not write an intermediate CSV to disk.
+
+### Fetch procedure
+
+1. Call `mcp__looker-toolbox__run_look` with `look_id` and an explicit `limit` of at least **1000**. Always pass this explicitly — the tool's own schema default (500) can silently truncate a saved Look's row limit below its true current size, and this batch's size **changes week to week** as the underlying QA sample rolls over. Passing a generous explicit limit ensures the full current batch comes back rather than a stale or arbitrary cutoff.
+2. The result is large (typically 200K+ characters) and will be saved to a file rather than returned inline — expect a message like "result exceeds maximum allowed tokens... saved to [path]". Do not try to read that file directly with `Read`; it's a JSON array of `{type, text}` objects where each `text` is itself a JSON string.
+3. Extract rows with `jq -r '.[].text' <file> > rows.jsonl`, giving one JSON object per line.
+4. If the returned row count exactly equals the limit you passed, the batch may still be truncated — retry with a higher limit (e.g. 5000) and warn the user.
+5. Print the row count fetched before proceeding.
+
+### Field mapping (Looker column name → canonical name)
+
+| Looker field | Canonical name |
+|---|---|
+| `fct_support_contact.conversation_id` | `contact_id` |
+| `fct_support_contact_thread.plain_body` | `contact_text` |
+| `fct_support_contact.fin_case_type` | `fin_case_type` |
+| `fct_support_contact.fin_issue_type` | `fin_issue_type` |
+| `fct_support_contact.fin_reason` | `fin_reason` |
+| `fct_support_contact.zendesk_case_type` | `correct_case_type` |
+| `fct_support_contact.zendesk_issue_type` | `correct_issue_type` |
+| `fct_support_contact.zendesk_reason` | `correct_reason` |
+| `fct_support_contact.ticket_id` | `ticket_id` |
+
+Carry through unchanged for context (not scored, but useful in the TSV or gap analysis): `fct_support_contact.zendesk_company_tier`, `fct_support_contact.zendesk_ticket_channel`, `fct_support_contact.zendesk_ticket_sub_channel`.
+
+Treat `null` values as blank (equivalent to an empty string) for all verdict logic.
+
+### Thread rows
+
+The Look includes `fct_support_contact_thread.message_order`. If a conversation has multiple rows (multiple thread messages), keep only `message_order = 1` (the initial contact) as `contact_text` — QA is scored at the contact level, not the thread-message level. Deduplicate on `contact_id` after filtering.
+
+---
+
+## Source: file (CSV or markdown)
+
+Accepts **CSV** or **markdown table** (`.md`) files, for when someone hands you an export instead of pulling live. Detect format by file extension.
 
 ### Column name mapping
 
@@ -60,8 +119,9 @@ When loading the file, apply this mapping using **contains-match** (case-insensi
 | `Case Type (Zendesk)` | `correct_case_type` |
 | `Issue Type (Zendesk)` | `correct_issue_type` |
 | `Reason (Zendesk)` | `correct_reason` |
+| `Ticket ID` | `ticket_id` |
 
-Any column not matched is carried through unchanged (e.g. `Ticket ID`, `Zendesk Ticket Channel`).
+Any other column not matched is carried through unchanged (e.g. `Zendesk Ticket Channel`).
 
 ### Markdown table parsing
 
@@ -145,12 +205,14 @@ Unverifiable rows (at any level) are excluded from that level's accuracy calcula
 ## Output TSV columns
 
 ```
-contact_id	contact_text_truncated	fin_case_type	fin_issue_type	fin_reason	correct_case_type	correct_issue_type	correct_reason	case_type_verdict	issue_type_verdict	verdict	reason_match	fin_label_valid	agent_label_valid	taxonomy_gap_candidate	gap_type	gap_description	recommended_fix
+run_date	contact_id	ticket_id	contact_text_truncated	fin_case_type	fin_issue_type	fin_reason	correct_case_type	correct_issue_type	correct_reason	case_type_verdict	issue_type_verdict	verdict	reason_match	fin_label_valid	agent_label_valid	taxonomy_gap_candidate	gap_type	gap_description	recommended_fix
 ```
 
 | Column | Content |
 |--------|---------|
+| `run_date` | The date (YYYY-MM-DD) this row was reviewed — the run that first processed it, never changed on later runs |
 | `contact_id` | From input |
+| `ticket_id` | From input, or blank if the source had none. This plus `contact_id` form the dedup key for future runs. |
 | `contact_text_truncated` | First 200 chars of contact text |
 | `fin_case_type` … `correct_reason` | Pass-through from input (raw, un-normalised) |
 | `case_type_verdict` | `correct` · `wrong` · `unclassified` · `unverifiable` — always scored |
@@ -210,12 +272,27 @@ Rows are triaged into tiers by which cascade level first failed. A row gets gap 
 
 Read `01-knowledge-base/processes/support-taxonomy.md`.
 
-Read the input file. Use a Python script to load it:
-- Detect format by file extension: `.md` = markdown table, anything else = CSV
-- For markdown: split on `|`, strip cells, skip separator rows, use first row as header
-- Apply the column name mapping using contains-match (see above)
-- Fall back: map the first column to `contact_id` if no match is found
-- Print: row count and column names found (after mapping)
+Determine the source from the argument:
+- No argument, or `look:<id>` → **Looker Look source**. Default to look ID `18808` if none given. Follow the "Source: Looker Look" fetch procedure above: call `run_look` with an explicit high limit, extract rows with `jq`, apply the field mapping, dedupe thread rows to `message_order = 1`. Print the row count fetched.
+- A file path → **file source**. Load with a Python script:
+  - Detect format by file extension: `.md` = markdown table, anything else = CSV
+  - For markdown: split on `|`, strip cells, skip separator rows, use first row as header
+  - Apply the column name mapping using contains-match (see above)
+  - Fall back: map the first column to `contact_id` if no match is found
+  - Print: row count and column names found (after mapping)
+
+Either way, the result of this step is the same shape: a list of dicts keyed by the canonical field names, held in memory (or a scratch JSON/JSONL file) — no intermediate CSV needs to be written to `04-active-work/`.
+
+### Step 1.5 — Filter out already-reviewed tickets
+
+1. Check whether `04-active-work/classification-qa-log.tsv` exists.
+2. If it exists, read it and build a `seen` set from its `ticket_id` column values (using `contact_id` for any row where `ticket_id` is blank — this covers rows logged before the `ticket_id` column existed).
+3. Filter the batch from Step 1: keep only rows whose dedup key (`ticket_id` if non-blank, else `contact_id`) is not in `seen`.
+4. Print: `Fetched N rows. M already reviewed (skipped). K new rows to process this run.`
+5. If `K == 0`: skip Steps 2-6, report `"N rows fetched, all N already reviewed. Nothing new to QA this run."`, and stop.
+6. If `04-active-work/classification-qa-log.tsv` does not exist yet (first-ever run), treat all fetched rows as new.
+
+All subsequent steps operate only on the K new rows.
 
 ### Step 2 — Compute verdicts and label validity (Python)
 
@@ -319,46 +396,60 @@ Opus agent instruction:
 
 Wait for the Opus agent to return this JSON object before proceeding.
 
-### Step 5 — Merge, output, and save (per-row TSV)
+### Step 5 — Merge, output, and append (per-row TSV)
 
-1. Merge gap analysis into the full row set using `contact_id` as key
+This step operates only on the K new rows identified in Step 1.5 — never rewrites or reprocesses rows already in the log.
+
+1. Merge gap analysis into the new row set using `contact_id` as key
 2. Apply row rules from the Output TSV columns section above
 3. For rows with no gap analysis entry (correct + reason_match=yes + both labels valid): set `gap_type=none`, leave description and fix blank
 4. Truncate `contact_text` to first 200 chars for the `contact_text_truncated` column
-5. Produce the TSV: tab-separated, replace any embedded tabs with a space
-6. Save to: `04-active-work/classification-qa-<YYYY-MM-DD>.tsv`
+5. Stamp every new row's `run_date` with today's date
+6. Produce TSV lines: tab-separated, replace any embedded tabs with a space
+7. Append to `04-active-work/classification-qa-log.tsv` — write the header row only if the file doesn't already exist; otherwise open in append mode and write only the new data rows. Never overwrite existing rows.
 
-### Step 6 — Save the fix hitlist (markdown)
+### Step 6 — Append the fix hitlist section (markdown)
 
-Write the Step 4 output to `04-active-work/classification-qa-fixes-<YYYY-MM-DD>.md` in this format:
+`04-active-work/classification-qa-fixes.md` is a running log — each run prepends a new dated section rather than replacing the file's contents. If the file doesn't exist yet, create it with just the header line below and this run's section.
+
+Prepend (directly under the top-level `# Classification QA — Fix Hitlist` header, above all prior dated sections) a new section built from the Step 4 output for this run's new rows only:
 
 ```
-# Classification QA — Fix Hitlist — YYYY-MM-DD
+# Classification QA — Fix Hitlist
 
-Source: classification-qa-YYYY-MM-DD.tsv (N rows, N verifiable)
+## Run: YYYY-MM-DD
+
+Source: classification-qa-log.tsv — N new rows this run (N verifiable), M total rows in log to date
 Ranked by impact — Tier 1 (case type) first, since a case type fix also recovers Issue Type and Reason accuracy for every affected contact. Within a tier, ranked by contacts affected.
 
-## 1. [Tier N] Cluster name — N contacts (X% of batch)
+### 1. [Tier N] Cluster name — N contacts (X% of this run's batch)
 **Gap type:** gap_type
 **Pattern:** pattern_description
 **Recommended fix:** recommended_fix
 **Example contacts:** contact_id, contact_id, contact_id — (full text and raw labels in the TSV)
 
-## 2. ...
+### 2. ...
+
+[If overflow is non-null:] N additional smaller clusters not listed above, covering N contacts. See the TSV (gap_type, taxonomy_gap_candidate columns) for the long tail.
 
 ---
-[If overflow is non-null:] N additional smaller clusters not listed above, covering N contacts. See the TSV (gap_type, taxonomy_gap_candidate columns) for the long tail.
+
+[...prior dated sections follow unchanged below...]
 ```
+
+Compute "M total rows in log to date" by counting data rows in `classification-qa-log.tsv` after Step 5's append.
 
 ### Step 7 — Report to user
 
 Print the following in this exact format:
 
 ```
-Saved to: 04-active-work/classification-qa-YYYY-MM-DD.tsv (per-row detail)
-Saved to: 04-active-work/classification-qa-fixes-YYYY-MM-DD.md (ranked fix hitlist)
+Fetched N rows from source. M already reviewed (skipped). K new rows QA'd this run.
 
-=== ACCURACY SUMMARY — YYYY-MM-DD (cascade: Case Type → Issue Type → Reason) ===
+Appended to: 04-active-work/classification-qa-log.tsv (per-row detail, M+K total rows to date)
+Updated: 04-active-work/classification-qa-fixes.md (new dated section prepended, ranked fix hitlist for this run)
+
+=== ACCURACY SUMMARY — YYYY-MM-DD, this run's K new rows only (cascade: Case Type → Issue Type → Reason) ===
 Case type accuracy:     N/N = XX%   (case_type_verdict:correct ÷ case-type-verifiable)
 Issue type accuracy:    N/N = XX%   (issue_type_verdict:correct ÷ rows with correct case type, excl. unverifiable)
 Reason accuracy:        N/N = XX%   (reason_match:yes ÷ rows with correct case type AND issue type, both reasons populated)
@@ -380,7 +471,7 @@ INVALID LABEL DETAILS (if any):
   Fin:   "[raw value]" → correct path: [Case Type / Issue Type] (N occurrences)
   Agent: "[raw value]" → correct path: [Case Type / Issue Type] (N occurrences)
 
-TOP 5 FIXES (Tier 1 case type fixes first — highest leverage, since a case type gap suppresses issue type and reason accuracy for every affected contact. Full ranked list of up to 10 clusters in classification-qa-fixes-YYYY-MM-DD.md):
+TOP 5 FIXES (Tier 1 case type fixes first — highest leverage, since a case type gap suppresses issue type and reason accuracy for every affected contact. Full ranked list of up to 10 clusters in classification-qa-fixes.md, under today's date section):
 1. [Tier N] Cluster name — N contacts (X% of batch) — recommended_fix
 2. ...
 [If overflow: "+ N more smaller clusters covering N contacts — see the fix hitlist file."]
