@@ -50,7 +50,7 @@ Before writing any requirements, deeply understand the problem you're solving.
 
 ### Research Sources
 
-- [ ] **Support tickets**: What are customers reporting? When the problem is support-driven, name the **Case Type** and **Issue Type** (and Reason if useful) from [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) (e.g. PAYMENTS (IN) → Refunds → Refund status enquiry). Use [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) to size the problem (e.g. “X contacts in last 6m in this case_type/issue_type, by segment/channel if relevant”).
+- [ ] **Support tickets**: What are customers reporting? When the problem is support-driven, name the **Case Type** and **Issue Type** (and Reason if useful) from [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) (e.g. PAYMENTS (IN) → Refunds → Refund status enquiry). Use [Contact breakdown since April 2026.md](../04-active-work/working-files/Contact%20breakdown%20since%20April%202026.md) to size the problem by case_type/issue_type (e.g. “X contacts since April 2026 in this case_type/issue_type”); use the archived [support_contacts_flat_table_2025_last_6m.csv](../05-archive/2026/data-exports/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) for segment/channel/territory breakdowns.
 - [ ] **User interviews**: Direct feedback from affected users
 - [ ] **Analytics data**: Usage patterns and drop-off points
 - [ ] **Competitive analysis**: How do others solve this? (See Competitive analysis below.)
@@ -133,7 +133,7 @@ Metrics:
 ### Set Targets
 
 For each metric:
-- **Baseline**: Current state. For contact volume or involvement, use [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) so baselines match the canonical dataset (support_contacts, fin_only_resolved, channel, case_type, issue_type).
+- **Baseline**: Current state. For case_type/issue_type contact volume, use [Contact breakdown since April 2026.md](../04-active-work/working-files/Contact%20breakdown%20since%20April%202026.md); for Fin involvement, segment, or territory, use the archived [support_contacts_flat_table_2025_last_6m.csv](../05-archive/2026/data-exports/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) so baselines match the canonical definitions.
 - **Target**: Goal to hit
 - **Timeline**: When to measure
 - **Threshold**: Minimum acceptable improvement

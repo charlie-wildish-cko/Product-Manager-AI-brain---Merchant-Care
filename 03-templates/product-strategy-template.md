@@ -84,7 +84,7 @@ If the answer to any question is "not yet", do not share this document.
 
 ## 2. Problem Framing
 
-*[Rumelt: DIAGNOSIS — the crux. Name the pivotal difficulty in the first sentence. Then support it with data. Use the support contact CSV (`01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv`) and taxonomy (`01-knowledge-base/processes/support-taxonomy.md`) to ground the problem in real volumes and cost. Never use placeholder numbers. The crux is singular — if you have five "core problems", you have not done the diagnosis.]*
+*[Rumelt: DIAGNOSIS — the crux. Name the pivotal difficulty in the first sentence. Then support it with data. Use the contact breakdown (`04-active-work/working-files/Contact breakdown since April 2026.md`) and taxonomy (`01-knowledge-base/processes/support-taxonomy.md`) to ground the problem in real volumes and cost. Never use placeholder numbers. The crux is singular — if you have five "core problems", you have not done the diagnosis.]*
 
 **The crux:** [One sentence. The pivotal difficulty this strategy must address.]
 

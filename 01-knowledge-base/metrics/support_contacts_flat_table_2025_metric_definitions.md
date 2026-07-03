@@ -1,6 +1,6 @@
 # Support Contacts Flat Table 2025 — Metric Definitions
 
-**Scope:** Definitions apply to both the full-year export (`support_contacts_flat_table_2025.csv`) and the **last 6 months** view (`support_contacts_flat_table_2025_last_6m.csv`). The last-6m file is the current canonical source for volume and involvement metrics.
+**Scope:** Definitions apply to the full-year export (`support_contacts_flat_table_2025.csv`), still canonical for Fin involvement rate, segment, sales_territory, and billing_region. The last-6m view (`support_contacts_flat_table_2025_last_6m.csv`) is archived as of 2026-07-02 (`05-archive/2026/data-exports/`) — for case-type/issue-type volume, use `04-active-work/working-files/Contact breakdown since April 2026.md` instead.
 
 
 ## Count Metrics

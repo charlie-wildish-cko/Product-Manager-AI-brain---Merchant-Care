@@ -376,6 +376,8 @@ Team capacity is 4 engineers + 1 EM. Building and maintaining enterprise-grade t
 
 ## Related Documents
 
+- `04-active-work/research/support-platform-vendor-scorecard.md` — weighted, numeric scorecard for leadership; operationalises the Appendix below into scores per vendor
+- `04-active-work/research/vendor-poc-scope.md` — POC gate and differentiator test flows that feed the scorecard
 - `01-knowledge-base/products/zendesk.md` — Checkout.com Zendesk setup and capabilities
 - `04-active-work/Zendesk Viability_ AI, Pricing, Market.md` — External market research on Zendesk strategic position
 - `01-knowledge-base/strategy/care-capability-model.md` — Year-by-year capability requirements 2026–2030
@@ -387,7 +389,7 @@ Team capacity is 4 engineers + 1 EM. Building and maintaining enterprise-grade t
 
 ## Appendix: Vendor Assessment Requirements
 
-Derived from [support platform flows](support%20platform%20flows.md). Use as a scorecard when evaluating any platform candidate — including Zendesk in renewal negotiation.
+Derived from [support platform flows](support%20platform%20flows.md). Scored in `support-platform-vendor-scorecard.md` — use these requirement definitions as the reference detail when scoring.
 
 ### 1. Multi-channel entry points
 

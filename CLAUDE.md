@@ -108,13 +108,13 @@ For Leadership, Engineering, Slack, and Reports style: see `01-knowledge-base/pr
 **Large files in 04-active-work/:** Files exported from Google Docs or containing embedded images may exceed the Read tool limit despite having few lines. Use `strings <file> | grep -v "^data:"` to extract readable text content.
 
 **Always use real data; never use placeholder numbers:**
-- Source: `01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv`
-- Column definitions: `01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md`
+- Source (case type / issue type / reason volume, native V4 taxonomy, since 1 April 2026): `04-active-work/working-files/Contact breakdown since April 2026.md`
 - Case-type breakdown: `01-knowledge-base/processes/support-taxonomy.md`
+- Column definitions: `01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md`
 
-**Note:** Volume totals in `support-taxonomy.md` and the flat CSV will differ — the taxonomy doc draws on a broader dataset. Use the CSV for relative prioritisation and actuals; use the taxonomy doc for issue type structure.
+**Archived (2026-07-02):** `support_contacts_flat_table_2025_last_6m.csv` is superseded by the file above for taxonomy mix and volume actuals — moved to `05-archive/2026/data-exports/support_contacts_flat_table_2025_last_6m.csv`. It has no live replacement yet for Fin involvement rate, segment (Premium/Enterprise/Standard), sales_territory, or billing_region — those dimensions aren't in the new file. Use the archived CSV only for those metrics until a refreshed source exists; do not use it for case-type/issue-type volume.
 
-**To aggregate volumes from the CSV:** Use a Python script to sum `support_contacts` grouped by `case_type` and `issue_type` — rows are split by segment/channel/territory so individual rows are not totals. Run `pip3 install pandas` first if pandas is not available.
+**Note:** Volume totals in `support-taxonomy.md` and the archived CSV will differ — the taxonomy doc draws on a broader dataset.
 
 **Payment domain terms**: When defining or using payment/fintech terms (e.g. authorization, capture, settlement, chargeback, APM, SCA, MID, acquirer, issuer), use `01-knowledge-base/payment-domain/checkout-terminology.md` as the authoritative source. Do not paraphrase or re-define terms that already exist there.
 

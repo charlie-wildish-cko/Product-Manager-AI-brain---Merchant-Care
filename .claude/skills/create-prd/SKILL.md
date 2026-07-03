@@ -60,16 +60,23 @@ Fill the alignment table before any other section:
 | **How it fits** | 1–2 sentences connecting the initiative to the deliverable and goal |
 
 ### Data — no placeholders
-Pull real contact volume from the CSV data source:
+Pull real contact volume from the current data source (`support_contacts_flat_table_2025_last_6m.csv` is archived — see `05-archive/2026/data-exports/`):
 
 ```python
 import pandas as pd
-df = pd.read_csv('01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv')
-summary = df.groupby(['case_type', 'issue_type'])['support_contacts'].sum().sort_values(ascending=False)
+df = pd.read_csv(
+    "04-active-work/working-files/Contact breakdown since April 2026.md",
+    sep="|", skiprows=[1], skipinitialspace=True, engine="python"
+).iloc[:, 1:-1]
+df.columns = [c.strip() for c in df.columns]
+for c in df.columns:
+    df[c] = df[c].astype(str).str.strip()
+df["Support Contact Contacts (#)"] = pd.to_numeric(df["Support Contact Contacts (#)"], errors="coerce")
+summary = df.groupby(["Support Contact Case Type (Unified)", "Support Contact Issue Type (Unified)"])["Support Contact Contacts (#)"].sum().sort_values(ascending=False)
 print(summary.head(30))
 ```
 
-Run this from the repo root. Use output for problem sizing in the Problem Space section.
+Run this from the repo root. Use output for problem sizing in the Problem Space section. For Fin involvement rate, segment, sales_territory, or billing_region (not present in the file above), use the archived CSV instead.
 
 Column definitions: `01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md`
 Issue type structure: `01-knowledge-base/processes/support-taxonomy.md`

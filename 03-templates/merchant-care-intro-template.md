@@ -34,7 +34,7 @@ We think about the domain as a six-stage flywheel. Each stage enables the next, 
 
 | Stage | What it covers |
 |---|---|
-| **Input** | The channels merchants use to contact us, and the query taxonomy that classifies what they're asking. Canonical classification: [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) (Case Type → Issue Type → Reason). Canonical volume and involvement: [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md). |
+| **Input** | The channels merchants use to contact us, and the query taxonomy that classifies what they're asking. Canonical classification: [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) (Case Type → Issue Type → Reason). Canonical volume: [Contact breakdown since April 2026.md](../04-active-work/working-files/Contact%20breakdown%20since%20April%202026.md). Canonical involvement (Fin, segment, territory): archived [support_contacts_flat_table_2025_last_6m.csv](../05-archive/2026/data-exports/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md). |
 | **Orchestration** | Triage logic and routing rules: where the contact goes and who is best placed to answer it |
 | **Fuel** | The data and knowledge content that powers both AI and human agents to resolve issues accurately |
 | **Agent Experience** | The tooling human agents use inside Zendesk to investigate and resolve tickets |

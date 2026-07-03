@@ -54,7 +54,8 @@
 
 ### Canonical volume and taxonomy (Care)
 - **Support taxonomy**: Use [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) as the standard schema. When exporting or slicing Zendesk data, align categories to **Case Type → Issue Type → Reason**. Note any unmapped tags or "Other" so analysis uses consistent labels.
-- **Last-6m flat table**: For volume, channel mix, segment, and Fin vs Zendesk splits, use [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) as the canonical source. Slice by case_type, issue_type, channel, support_segment, sales_territory, billing_region so frequency tables match how leadership already sees the data.
+- **Contact breakdown (case type / issue type / reason volume)**: Use [Contact breakdown since April 2026.md](../04-active-work/working-files/Contact%20breakdown%20since%20April%202026.md) as the canonical source. Slice by Case Type, Issue Type, Reason, Channel, Sub Channel.
+- **Fin involvement, segment, sales_territory, billing_region**: Not covered by the file above. Use the archived [support_contacts_flat_table_2025_last_6m.csv](../05-archive/2026/data-exports/support_contacts_flat_table_2025_last_6m.csv) and [support_contacts_flat_table_2025_metric_definitions.md](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) for these dimensions until a refreshed source exists.
 
 
 ## Step 2: Quantitative Analysis
@@ -240,7 +241,7 @@ Use 2x2 matrix: **Impact vs. Effort**
 When escalating a contact driver to product or feeding the contact reduction programme:
 
 - **Taxonomy**: Use [support-taxonomy.md](../01-knowledge-base/processes/support-taxonomy.md) to name the **Case Type** and **Issue Type** (and Reason if useful). Prioritise categories that the taxonomy flags as high-leverage (Accepting payments, Account management & access, then Payouts, Funds and fees). Escalation evidence should use the same labels so product and reporting stay aligned.
-- **Evidence pack**: Use [support_contacts_flat_table_2025_last_6m.csv](../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) (and [metric definitions](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md)) to build the evidence pack. Filter by case_type, issue_type, and optionally segment, channel, region. Include: contact count in period, trend, Fin vs Zendesk split. That gives product a reproducible, consistent basis for “how big is this?” and for tracking impact after fixes.
+- **Evidence pack**: Use [Contact breakdown since April 2026.md](../04-active-work/working-files/Contact%20breakdown%20since%20April%202026.md) to size case_type/issue_type volume; use the archived [support_contacts_flat_table_2025_last_6m.csv](../05-archive/2026/data-exports/support_contacts_flat_table_2025_last_6m.csv) (and [metric definitions](../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md)) for segment, channel, region, and Fin vs Zendesk split. Include: contact count in period, trend, Fin vs Zendesk split. That gives product a reproducible, consistent basis for “how big is this?” and for tracking impact after fixes.
 
 ### Generate Recommendations
 

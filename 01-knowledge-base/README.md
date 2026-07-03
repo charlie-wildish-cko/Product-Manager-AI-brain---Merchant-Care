@@ -46,7 +46,7 @@ KPIs and measurement frameworks
 - `support_contacts_flat_table_2025_metric_definitions.md` - Count and derived metric definitions for support contacts flat table (full-year and last-6m)
 - `Q4_2025_metrics_handover.md` - Q4 2025 Fin metrics: formulas and how to compute (Total support contacts, Fin involved, Fin involvement/resolution rates)
 - `q4_2025_metrics.py` - Script to compute Q4 2025 Fin metrics from the flat table CSV
-- `support_contacts_flat_table_2025.csv`, `support_contacts_flat_table_2025_last_6m.csv`, `support_contacts_flat_table_2025_q4.csv` - Canonical data for volume and involvement metrics
+- `support_contacts_flat_table_2025.csv`, `support_contacts_flat_table_2025_q4.csv` - Canonical data for Fin involvement rate, segment, sales_territory, and billing_region metrics. **`support_contacts_flat_table_2025_last_6m.csv` is archived** (`05-archive/2026/data-exports/`) — superseded by `04-active-work/working-files/Contact breakdown since April 2026.md` for case-type/issue-type volume
 
 ### 🗄️ `bigquery-queries/`
 Saved SQL query library for Zendesk ticket analysis
