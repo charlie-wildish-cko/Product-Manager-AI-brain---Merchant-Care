@@ -1,5 +1,90 @@
 # Classification QA — Fix Hitlist
 
+## Run: 2026-07-07
+
+Source: classification-qa-log.tsv — 107 new rows this run (103 verifiable), 179 total rows in log to date
+Ranked by impact — Tier 1 (case type) first, since a case type fix also recovers Issue Type and Reason accuracy for every affected contact. Within a tier, ranked by contacts affected.
+
+### 1. [Tier 1] Account management over-capture (account/config/reset language) — 3 contacts (2.8% of this run's batch)
+**Gap type:** ambiguous_boundary
+**Pattern:** Account management's Enablement / Account-changes scope is unbounded, so any contact using 'account', 'configuration', 'reset', or 'setup' language is absorbed here even when the real object is a decline on an already-live method, API keys, or integration design. All three were wrongly routed to Account management.
+**Recommended fix:** Tighten the Account management (and access) case-type scope to only enable/activate a not-yet-live payment method or change account-level settings. Add exclude_when + disambiguation so that (a) declines/failures of an already-enabled method route to Accepting payments → Transaction status even when 'setup/configuration' is mentioned, (b) API-key issues including keys missing after an account reset route to Technical issue → API keys, and (c) integration-approach/API-capability questions route to Technical issue → API integration. Words like 'account', 'reset', 'configuration', 'setup' must not by themselves pull a contact to Account management.
+**Example contacts:** 215561052998551, 215561053088988, 215561053051903 — (full text and raw labels in the TSV)
+
+### 2. [Tier 1] Payouts vs Accepting payments boundary (money-out vs money-in) — 2 contacts (1.9% of this run's batch)
+**Gap type:** ambiguous_boundary
+**Pattern:** The money-out (Payouts) vs money-in (Accepting payments) boundary is undefined, so generic 'status'/withdrawal/refund language crosses it in both directions — a remittance status query fell into Accepting payments, and a refund request carrying withdrawal/WPID IDs fell into Payouts.
+**Recommended fix:** Define the Payouts vs Accepting payments boundary by money direction and explicit merchant framing. Add include_when to Payouts for money-out/remittance status requests naming a remitter/beneficiary or partner/remittance reference, and exclude_when to Accepting payments → Transaction status for money-out status queries. Conversely, when the merchant explicitly frames the request as a refund, classify as Accepting payments → Refunds even if withdrawal/WPID identifiers are present.
+**Example contacts:** 215561053519679, 215561052885589 — (full text and raw labels in the TSV)
+
+### 3. [Tier 1] Non-canonical 'Fraud detection' case type emitted — 1 contacts (0.9% of this run's batch)
+**Gap type:** invalid_label
+**Pattern:** Fin invented a non-canonical Case Type ('Fraud detection'). Fraud is an issue type within Accepting payments, not a standalone top-level Case Type.
+**Recommended fix:** Constrain classifier output to the 14 canonical Case Types (never emit 'Fraud detection'). Add a note to Accepting payments that blocked/fraud-flagged transaction investigations belong here via the Fraud & risk controls issue type; this contact maps to Accepting payments → Transaction status → Declined / failed action.
+**Example contacts:** 215561052631619 — (full text and raw labels in the TSV)
+
+### 4. [Tier 1] Non-actionable query worded as a payout status request → General — 1 contacts (0.9% of this run's batch)
+**Gap type:** ambiguous_boundary
+**Pattern:** A non-actionable follow-up/duplicate superficially worded as a payout status query was pulled to Payouts; the General case type has no criteria to reclaim superficially-genuine but unactionable contacts.
+**Recommended fix:** Add a disambiguation to the General case type and an exclude_when to Payouts: contacts presenting as withdrawal/payout status queries that are non-actionable, unresolvable, or follow-ups/duplicates route to General → Inquiries → Spam/duplicate/no action, not Payouts.
+**Example contacts:** 215561052598028 — (full text and raw labels in the TSV)
+
+### 5. [Tier 1] Per-transaction settlement state → Transaction status (not Settlements) — 1 contacts (0.9% of this run's batch)
+**Gap type:** ambiguous_boundary
+**Pattern:** The word 'settlement' pulled a single named-transaction settlement-state query into Funds and fees → Settlements; Settlements is not bounded against per-transaction queries.
+**Recommended fix:** Add an exclude_when to Funds and fees → Settlements and a disambiguation: merchant-balance settlement/reconciliation stays in Settlements, but the settlement state or outcome of a single named transaction goes to Accepting payments → Transaction status.
+**Example contacts:** 215561052758654 — (full text and raw labels in the TSV)
+
+### 6. [Tier 1] Return of merchant's own settled funds → Settlements (not Payouts) — 1 contacts (0.9% of this run's batch)
+**Gap type:** ambiguous_boundary
+**Pattern:** 'Returns/reversals' language routed a re-release of the merchant's own settled balance to their own bank account into Payouts → Bank payout returns; the payouts-to-recipients vs settlement-of-own-balance distinction was lost.
+**Recommended fix:** Strengthen the Payouts scope note and add a disambiguation: returns/re-releases of the merchant's own settled funds to their own bank account are Funds and fees → Settlements; Payouts covers only payouts to end recipients.
+**Example contacts:** 215561052831201 — (full text and raw labels in the TSV)
+
+### 7. [Tier 1] Tokenisation-attributed declines → Technical Tokens (not Transaction status) — 1 contacts (0.9% of this run's batch)
+**Gap type:** ambiguous_boundary
+**Pattern:** The presence of a decline code overrode the tokenisation root-cause signal, routing a network-token / card-on-file configuration query to Transaction status instead of Technical issue → Tokens.
+**Recommended fix:** Add a disambiguation to Technical issue → Tokens and an exclude_when to Accepting payments → Transaction status: when the merchant attributes declines to tokenisation / card-on-file / network-token configuration, classify as Technical issue → Tokens even when a decline code is present.
+**Example contacts:** 215561052961861 — (full text and raw labels in the TSV)
+
+### 8. [Fin abstention, not a taxonomy gap] Payouts case matched but Fin left Issue Type blank — 4 contacts (3.7% of this run's batch)
+**Gap type:** fin_abstention (corrected from invalid_label on 2026-07-07 — see note below)
+**Pattern:** Fin correctly matched Case Type (Payouts) on all 4 contacts but left Issue Type blank rather than committing to Card payouts. All 4 had a reachable, correct answer in Zendesk (Card payouts, in 3 different Reasons) — this is a completion/confidence failure in the classifier, not an ambiguous or missing taxonomy definition. No taxonomy or classifier-definitions change will fix this.
+**Recommended fix:** Fix at the Fin/classifier configuration level: require Fin to always emit an Issue Type once Case Type is resolved with confidence, applying the documented 'default to Card payouts when the rail is ambiguous' rule instead of abstaining. If Fin's confidence threshold for Issue Type is set higher than for Case Type, lower it or add a fallback default rather than leaving the field null. This also blocks Reason scoring downstream for all 4 contacts — fixing abstention here recovers Issue Type AND Reason accuracy for this cluster.
+**Example contacts:** 215561053715242, 215561053324955, 215561051845290, 215561052799516 — (full text and raw labels in the TSV)
+
+**Correction note (2026-07-07):** this cluster was originally logged with `gap_type=invalid_label` and a taxonomy-definition-flavored fix ("codify a default rule"). On review, blank ≠ wrong label — Fin didn't misclassify, it declined to classify. Reclassified as `fin_abstention`. See "What to fix" summary at the bottom of this run's section.
+
+### 9. [Tier 2 (invalid_label_only)] Issue Type left blank by both Fin and agent (field-enforcement gap) — 4 contacts (3.7% of this run's batch)
+**Gap type:** invalid_label
+**Pattern:** Case type was correct but both Fin and the agent left the Issue Type blank/invalid — a field-enforcement gap rather than a definition boundary, spanning login, account-settings/config, and no-action contacts.
+**Recommended fix:** Enforce a non-null Issue Type in both classifier output and the Zendesk agent field. Map the recurring cases: login/password-failure → Account management and access → Login & access → Login error / MFA / SSO; API-key/processing-channel and billing-descriptor configuration → Account management and access → Account changes → Account settings update; contacts with no actionable request → General → Inquiries → Spam/duplicate/no action.
+**Example contacts:** 215561052623197, 215561053064854, 215561052904889, 215561053298227 — (full text and raw labels in the TSV)
+
+### 10. [Tier 2] Bank vs Card payouts classified by proof document, not actual rail — 3 contacts (2.8% of this run's batch)
+**Gap type:** ambiguous_boundary
+**Pattern:** Bank payouts keywords fire on the proof document requested (SWIFT/MT103) or a generic 'bank account number' rather than the actual payout rail, misrouting card payouts to Bank payouts → Proof of bank payout.
+**Recommended fix:** Tighten the Bank payouts include_when to require true bank-rail identifiers (IBAN, SWIFT/BIC, MT103, wire reference) and add an exclude_when: classify payouts by the actual payment instrument's rail (pay_/scheme), not by the receipt document the customer requests or a generic 'bank account number'. A SWIFT-receipt request against a card payout stays Card payouts → Proof of card payout.
+**Example contacts:** 215561053547131, 215561053137042, 215561052681814 — (full text and raw labels in the TSV)
+
+### 11. [Fin abstention, not a taxonomy gap] Reason left blank despite correct Case Type + Issue Type — 1 contact (0.9% of this run's batch, newly surfaced 2026-07-07)
+**Gap type:** fin_abstention
+**Pattern:** Contact 215561052778684 — Fin correctly matched both Case Type (Data and analytics) and Issue Type (Reporting) but left Reason blank instead of committing to "Data mismatch / missing." This row was invisible to the original verdict logic: `reason_match` scores `n/a` whenever Fin's Reason field is blank, so a row where Fin is on the exact right branch and simply stops short gets silently treated as "no gap" rather than flagged. Worth checking whether other runs have the same blind spot.
+**Recommended fix:** Same as cluster 8 — a classifier/prompt-level completion fix, not a taxonomy fix. Additionally, consider a QA-logic improvement: distinguish `reason_match=n/a (Fin abstained, ground truth exists)` from `reason_match=n/a (no ground truth to check against)` in future runs, since only the first is an actionable signal.
+**Example contacts:** 215561052778684 — (full text and raw labels in the TSV)
+
+---
+
+**What to fix, this run — three separate root causes, not one:**
+
+1. **Fin abstention on Issue Type/Reason (clusters 8, 11 — 5 contacts, but the highest-leverage single fix)**: this is a classifier confidence/completion problem, not a taxonomy problem. Fin reaches the correct branch and stops. No amount of editing `support-taxonomy.md` or the classifier definitions will fix this — it requires either lowering Fin's confidence threshold for Issue Type/Reason once Case Type is resolved, or adding an explicit "always commit to the best-fit label, never leave blank" instruction/fallback in the Fin classifier configuration itself. This is an Fin-administration fix (see CLAUDE.md note: "Fin administration is a shared responsibility across Product and Content with no dedicated owner") — flag to whoever owns Fin's classification prompt/confidence config.
+2. **Taxonomy definition gaps (clusters 1–7, 10 — 12 contacts)**: genuine ambiguous boundaries or missing disambiguation in `support-taxonomy.md` (Account management over-capture, Payouts vs Accepting payments, Bank vs Card payouts by rail not document type, etc.). These *do* need definition edits — see each cluster's recommended_fix above.
+3. **Zendesk agent tagging gaps (cluster 9 — 4 contacts)**: both Fin and the human agent left Issue Type blank. Not fixable via Fin or the taxonomy — this needs Zendesk-side enforcement that agents must populate Issue Type before closing a ticket, otherwise these rows can never be used as ground truth for QA.
+
+10 additional smaller clusters not listed above, covering 12 contacts. See the TSV (gap_type, taxonomy_gap_candidate columns) for the long tail.
+
+---
+
 ## Run: 2026-07-01
 
 Source: classification-qa-log.tsv — 72 new rows this run (70 verifiable), 72 total rows in log to date

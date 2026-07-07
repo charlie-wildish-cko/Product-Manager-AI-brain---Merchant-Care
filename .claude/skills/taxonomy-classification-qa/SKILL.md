@@ -141,6 +141,31 @@ If the file extension is `.md`:
 
 ---
 
+## Fin Attributes reference
+
+Fin's classification behaviour is configured via **Fin Attributes** (Intercom), not directly via `support-taxonomy.md` — the taxonomy doc is our internal reference for what the correct tree *should* be, but the actual fix for most classifier errors is a change to an Attribute value's description in Intercom. Every `recommended_fix` this skill outputs for a classifier-definition gap (not a pure taxonomy-tree gap) must be written as a ready-to-paste Attribute value update in this format, per Intercom's own best practice:
+
+```
+<Attribute value name>
+<One-sentence description of what this value covers>
+
+Applies if the customer:
+- <specific signal 1>
+- <specific signal 2>
+
+Does not apply if the customer:
+- <closely related case that should route elsewhere, and where>
+
+Likely keywords: <comma-separated phrases customers actually use>
+```
+
+Key implications for gap analysis and recommended fixes:
+- **Fin abstains (leaves a field blank) when attribute value descriptions are underspecified, overlapping, or there's no safe "Other/Uncategorized" catch-all** — not because of a confidence-threshold setting. When a row shows Fin leaving a field blank despite the level above being correctly classified and a valid answer existing in the taxonomy, the fix is a better/more complete Attribute description (or adding a documented default / "Other" value), never "lower Fin's confidence" or "require non-null output."
+- **Abstention is a distinct defect from a wrong or invalid label.** A row where Fin left a field blank is not the same defect as a row where Fin confidently picked a label that doesn't exist or is a genuine mismatch — use `gap_type=fin_abstention` for the former (see gap_type list below) and keep `invalid_label` / `ambiguous_boundary` / `wrong_scope` for the latter.
+- Genuine ambiguous-boundary or missing-coverage fixes should still be phrased as an Attribute value update (Applies if / Does not apply if / Likely keywords) at the specific level that failed (Case Type, Issue Type, or Reason), not as vague prose like "add a disambiguation note."
+
+---
+
 ## Label normalisation map
 
 Before comparing any label, apply this canonical mapping (case-insensitive) to both Fin and ground truth values. This prevents false `wrong` verdicts caused by label formatting variants rather than genuine classification errors.
@@ -194,6 +219,8 @@ Precedence (when not `n/a`): `unverifiable` > `unclassified` > `wrong` > `correc
 - `yes`: `issue_type_verdict = correct` AND reasons match (after normalisation)
 - `no`: `issue_type_verdict = correct` AND reasons do NOT match — flag for reason gap analysis
 
+**Abstention blind spot**: `reason_match=n/a` because `fin_reason` is blank looks identical, in the accuracy math, to a row where `correct_reason` is also blank (nothing to check against) — but these are not the same signal. If `issue_type_verdict=correct` AND `fin_reason` is blank AND `correct_reason` is populated, Fin was on the exact right branch and simply stopped short of committing to a Reason. This is a real defect (Fin abstention) and must be surfaced in gap analysis (see Step 3's "reason abstention" candidate) even though `reason_match` itself stays `n/a` for accuracy-math purposes. Do not let this case silently fall into `gap_type=none`.
+
 ### Overall `verdict` (kept for backward-compatible top-line scoring)
 
 `verdict = case_type_verdict` if `case_type_verdict != correct`, otherwise `verdict = issue_type_verdict`. In other words: the overall verdict is whichever level first fails in the cascade, or `correct` if both Case Type and Issue Type match.
@@ -219,28 +246,30 @@ run_date	contact_id	ticket_id	contact_text_truncated	fin_case_type	fin_issue_typ
 | `issue_type_verdict` | `correct` · `wrong` · `unclassified` · `unverifiable` · `n/a` (n/a when `case_type_verdict` isn't `correct`) |
 | `verdict` | Overall verdict: `case_type_verdict` if not `correct`, else `issue_type_verdict`. `correct` · `wrong` · `unclassified` · `unverifiable` |
 | `reason_match` | `yes` · `no` · `n/a` (n/a when `issue_type_verdict` isn't `correct`, or either reason field is blank) |
-| `fin_label_valid` | `yes` if Fin's (case_type, issue_type) pair is a valid path in the taxonomy; `no` if either level doesn't exist; `n/a` if Fin left both blank |
-| `agent_label_valid` | `yes` if the agent's (case_type, issue_type) pair is a valid path in the taxonomy; `no` if either level doesn't exist; `n/a` if agent left both blank |
+| `fin_label_valid` | `yes` if Fin's (case_type, issue_type) pair is fully populated and a valid path in the taxonomy; `no` only if both levels are non-blank but the pair doesn't exist (a genuinely wrong label); `n/a` if either field is blank (abstention — see Label validity rules) |
+| `agent_label_valid` | `yes` if the agent's (case_type, issue_type) pair is fully populated and a valid path in the taxonomy; `no` only if both levels are non-blank but the pair doesn't exist; `n/a` if either field is blank |
 | `taxonomy_gap_candidate` | `yes` if the contact likely exposes a gap in the taxonomy itself (see rules below); `no` otherwise |
-| `gap_type` | `ambiguous_boundary` · `missing_coverage` · `wrong_scope` · `reason_mismatch` · `invalid_label` · `none` · `n/a` |
+| `gap_type` | `ambiguous_boundary` · `missing_coverage` · `wrong_scope` · `reason_mismatch` · `invalid_label` · `fin_abstention` · `none` · `n/a` |
 | `gap_description` | 1–2 sentences: what signal led Fin astray, or what is absent from the definitions |
-| `recommended_fix` | Specific, actionable change — for classifier definition gaps: name the field and class; for taxonomy gaps: name the missing node and where to add it; for invalid labels: the correct canonical label to use |
+| `recommended_fix` | For `ambiguous_boundary` / `wrong_scope` / `missing_coverage` / `invalid_label`: a ready-to-paste Fin Attribute value update (Applies if / Does not apply if / Likely keywords — see "Fin Attributes reference" above), naming the exact level (Case Type/Issue Type/Reason). For `fin_abstention`: point at strengthening that Attribute value's description or adding a safe default/"Other" value — never "lower confidence" or "require non-null output," and never a `support-taxonomy.md` edit. For `reason_mismatch`: the Reason-level Attribute update. |
 
 ### Label validity rules
 
 Extract the full set of valid (case_type, issue_type) pairs from `support-taxonomy.md` as a Python set. Use normalised lowercase for comparison.
 
+**Important distinction**: a blank field is not the same thing as an invalid label. Leaving a field blank is Fin (or the agent) declining to classify — that's abstention. Populating a field with a value that doesn't exist in the taxonomy is a genuinely wrong label. Conflating the two (treating "blank issue_type" as "invalid label") was a bug found in production use — it misdirected fix recommendations toward taxonomy/definition edits when the real fix was a Fin Attributes completion problem. The rules below fix this: `no` only fires when a non-blank value was given that doesn't exist in the taxonomy; any blank field (whole pair, or just one level) is `n/a`.
+
 `fin_label_valid`:
-- `yes` — Fin's normalised (case_type, issue_type) pair exists in the valid-pairs set
-- `no` — one or both levels do not exist in the taxonomy (even if Fin's intent is clear)
-- `n/a` — Fin left case_type AND issue_type both blank (unclassified rows)
+- `yes` — Fin's normalised (case_type, issue_type) pair is fully populated (both non-blank) and exists in the valid-pairs set
+- `no` — both case_type and issue_type are non-blank, but the pair does not exist in the taxonomy (a genuinely wrong/non-canonical label was used — e.g. a non-existent Case Type, or an Issue Type that doesn't belong under that Case Type)
+- `n/a` — Fin left case_type blank, OR left issue_type blank while case_type is populated (incomplete classification / abstention, not an invalid label call)
 
 `agent_label_valid`:
-- `yes` — agent's normalised (case_type, issue_type) pair exists in the valid-pairs set
-- `no` — one or both levels do not exist in the taxonomy
-- `n/a` — agent left case_type AND issue_type both blank (unverifiable rows)
+- `yes` — agent's normalised (case_type, issue_type) pair is fully populated and exists in the valid-pairs set
+- `no` — both levels are non-blank, but the pair does not exist in the taxonomy
+- `n/a` — agent left case_type blank, OR left issue_type blank while case_type is populated
 
-When `fin_label_valid=no` or `agent_label_valid=no`, set `gap_type=invalid_label` and populate `gap_description` with the invalid value and the closest valid taxonomy path. Do not change the verdict — label validity is independent of the Fin-vs-agent comparison.
+When `fin_label_valid=no` or `agent_label_valid=no`, set `gap_type=invalid_label` and populate `gap_description` with the invalid value and the closest valid taxonomy path. Do not change the verdict — label validity is independent of the Fin-vs-agent comparison. When a field is blank (fin_label_valid or agent_label_valid = `n/a`) and the level above was correctly classified with a valid answer existing on the other side, that is a `fin_abstention` (or, for the agent's own blank field, a Zendesk-tagging gap — see Row rules below), not `invalid_label`.
 
 If a row already has a gap_type from the Fin-vs-agent analysis (ambiguous_boundary, missing_coverage, etc.) AND also has an invalid label, report both: set gap_type to the Fin-vs-agent type and note the invalid label issue in gap_description.
 
@@ -251,18 +280,22 @@ Set `taxonomy_gap_candidate=yes` when ANY of the following are true:
 - `gap_type=missing_coverage` — Opus identified the contact as genuinely uncovered by the taxonomy
 - `agent_label_valid=no` AND verdict=`correct` — agent used an invalid label and Fin matched it (both wrong against the taxonomy, but agreeing with each other)
 
-`taxonomy_gap_candidate=no` in all other cases.
+`taxonomy_gap_candidate=no` in all other cases. **`gap_type=fin_abstention` is always `taxonomy_gap_candidate=no`** — abstention means a valid answer exists and Fin failed to commit to it, which is a Fin Attributes configuration issue, never evidence that the taxonomy itself is missing something.
 
 ### Row rules for gap columns
 
-Rows are triaged into tiers by which cascade level first failed. A row gets gap analysis from exactly one tier (whichever level failed first), plus a separate invalid-label note if applicable:
+Rows are triaged into tiers by which cascade level first failed, and — within Tier 1/2 — by whether Fin left the field blank (abstention) or populated it with a wrong/non-existent value. A row gets gap analysis from exactly one tier, plus a separate note if the *agent's* label was also invalid:
 
-- **Tier 1 — Case Type** (`case_type_verdict` = `wrong` or `unclassified`): classification gap populated by Opus, scoped to Case Type only. Issue Type and Reason are not analysed for these rows — they're `n/a`/unscored, and any gap there would just be an artefact of the wrong branch.
-- **Tier 2 — Issue Type** (`case_type_verdict=correct` AND `issue_type_verdict` = `wrong` or `unclassified`): classification gap populated by Opus, scoped to Issue Type within the (correctly identified) Case Type.
-- **Tier 3 — Reason** (`case_type_verdict=correct` AND `issue_type_verdict=correct` AND `reason_match=no`): `gap_type=reason_mismatch`, reason gap populated by Opus.
-- **No gap** (`case_type_verdict=correct` AND `issue_type_verdict=correct` AND `reason_match=yes`, or `reason_match=n/a` because reasons weren't populated) + both labels valid: `gap_type=none`, blank description and fix, `taxonomy_gap_candidate=no`.
-- `fin_label_valid=no` or `agent_label_valid=no`: `gap_type=invalid_label` (combined with the tier's gap_type if the row also failed a cascade level), description names the invalid value and correct path.
-- `unverifiable` (at whichever level `verdict` reports): `gap_type=n/a`, `gap_description` = "Human ground truth not populated in Zendesk — unable to verify Fin classification.", `recommended_fix` = "Ensure Zendesk agents classify all tickets; untagged rows cannot contribute to QA."
+- **Tier 1 — Case Type, wrong** (`case_type_verdict=wrong`, i.e. Fin populated a non-blank Case Type that doesn't match): classification gap populated by Opus, scoped to Case Type only — `gap_type` is `ambiguous_boundary` / `wrong_scope` / `missing_coverage`, or `invalid_label` if the value Fin used doesn't exist in the taxonomy at all (e.g. a non-canonical Case Type name).
+- **Tier 1 — Case Type, abstention** (`case_type_verdict=unclassified`, i.e. Fin left Case Type blank entirely): `gap_type=fin_abstention`. This should be rare in practice (Fin generally always assigns some Case Type) — if it occurs, the fix is a Fin Attributes completeness/default fix at the Case Type level, not a taxonomy edit.
+- **Tier 2 — Issue Type, wrong** (`case_type_verdict=correct` AND `issue_type_verdict=wrong`, i.e. Fin populated a non-blank Issue Type that doesn't match): classification gap populated by Opus, scoped to Issue Type within the (correctly identified) Case Type — `gap_type` is `ambiguous_boundary` / `wrong_scope` / `missing_coverage`, or `invalid_label` if Fin's Issue Type value doesn't exist under that Case Type (e.g. an Issue Type borrowed from a different Case Type's list).
+- **Tier 2 — Issue Type, abstention** (`case_type_verdict=correct` AND `issue_type_verdict=unclassified`, i.e. Fin left Issue Type blank while Case Type was correct): `gap_type=fin_abstention`. This is the most common abstention pattern — Fin found the right branch and stopped. `recommended_fix` must target the Fin Attributes Issue Type value description (Applies if / Does not apply if / Likely keywords, or a documented safe default), never a taxonomy-doc edit.
+- **Tier 3 — Reason, mismatch** (`case_type_verdict=correct` AND `issue_type_verdict=correct` AND `reason_match=no`): `gap_type=reason_mismatch`, reason gap populated by Opus.
+- **Tier 3 — Reason, abstention** (`case_type_verdict=correct` AND `issue_type_verdict=correct` AND `fin_reason` is blank AND `correct_reason` is non-blank): `gap_type=fin_abstention`, even though `reason_match` itself is `n/a` for accuracy-math purposes (see the "Abstention blind spot" callout under Verdict logic). Do not let this fall through to `gap_type=none` — it must be surfaced.
+- **No gap** (`case_type_verdict=correct` AND `issue_type_verdict=correct` AND `reason_match=yes`, or `reason_match=n/a` because **both** reason fields were blank) + both labels valid: `gap_type=none`, blank description and fix, `taxonomy_gap_candidate=no`.
+- `agent_label_valid=no` (agent populated a non-blank, non-canonical Zendesk label): note this alongside whatever `gap_type` the row already has from the tiers above, or set `gap_type=invalid_label` on its own if the row is otherwise `correct`.
+- Agent left a field blank while Fin's classification at that level is `unverifiable`: this is a Zendesk agent-tagging gap, not a Fin defect — `gap_type=n/a`, `gap_description` = "Human ground truth not populated in Zendesk at this level — unable to verify Fin classification.", `recommended_fix` = "Enforce that Zendesk agents populate this field before closing a ticket; untagged rows cannot contribute to QA or serve as Fin training signal."
+- `unverifiable` (at whichever level `verdict` reports, driven by a blank `correct_*` field): same as above.
 
 ---
 
@@ -330,43 +363,49 @@ Print: total rows, verdict breakdown, invalid label counts (Fin and agent separa
 
 ### Step 3 — Gap analysis (Opus agent)
 
-Assign each row to at most one tier, by which cascade level first failed:
-- **Tier 1 (case_type)**: `case_type_verdict` is `wrong` or `unclassified`
-- **Tier 2 (issue_type)**: `case_type_verdict=correct` AND `issue_type_verdict` is `wrong` or `unclassified`
-- **Tier 3 (reason)**: `case_type_verdict=correct` AND `issue_type_verdict=correct` AND `reason_match=no`
+Assign each row to at most one tier, by which cascade level first failed and whether it was a wrong value or a blank (abstention):
+- **Tier 1, wrong**: `case_type_verdict=wrong`
+- **Tier 1, abstention**: `case_type_verdict=unclassified`
+- **Tier 2, wrong**: `case_type_verdict=correct` AND `issue_type_verdict=wrong`
+- **Tier 2, abstention**: `case_type_verdict=correct` AND `issue_type_verdict=unclassified`
+- **Tier 3, mismatch**: `case_type_verdict=correct` AND `issue_type_verdict=correct` AND `reason_match=no`
+- **Tier 3, abstention**: `case_type_verdict=correct` AND `issue_type_verdict=correct` AND `fin_reason` is blank AND `correct_reason` is non-blank (include this even though `reason_match=n/a` — see the abstention blind-spot note)
 
-Separately, flag rows where `fin_label_valid=no` or `agent_label_valid=no` (invalid label — can co-occur with any tier, or occur alone if verdict is otherwise correct).
+Separately, flag rows where `agent_label_valid=no` (agent used a non-blank, non-canonical label — can co-occur with any tier, or occur alone if Fin's side is otherwise correct).
 
-Spawn an Opus agent for the union of: all Tier 1/2/3 rows, plus any invalid-label rows not already included.
+Spawn an Opus agent for the union of: all Tier 1/2/3 rows (wrong or abstention), plus any agent-invalid-label rows not already included.
 
 Pass to the agent:
 - The full content of `support-taxonomy.md`
-- All qualifying rows, each tagged with its tier (1/2/3/invalid_label_only), plus contact_id, contact_text, fin values, correct values, case_type_verdict, issue_type_verdict, reason_match, fin_label_valid, agent_label_valid
+- The "Fin Attributes reference" section from this skill file (Applies-if/Does-not-apply-if/Likely-keywords template and the abstention-vs-invalid-label distinction)
+- All qualifying rows, each tagged with its tier+mode (e.g. `1-wrong`, `2-abstention`, `3-mismatch`, `3-abstention`, `agent_invalid_label_only`), plus contact_id, contact_text, fin values, correct values, case_type_verdict, issue_type_verdict, reason_match, fin_label_valid, agent_label_valid
 - The verdict and validity summary
 
 Opus agent instruction:
 
-> "You are auditing AI classification errors against a support taxonomy. Each contact is tagged with a tier — the tier tells you which taxonomy level to analyse. Do not analyse or comment on levels below the tagged tier: a Tier 1 (case_type) row failed at the root of the taxonomy, so its Issue Type and Reason fields are not meaningful signal and must not be used to justify a fix.
+> "You are auditing AI classification errors against a support taxonomy that is enforced through Fin Attributes (Intercom's classification configuration). Each contact is tagged with a tier+mode — the tier tells you which taxonomy level to analyse, and the mode tells you whether Fin used a wrong value or abstained (left the field blank). Do not analyse or comment on levels below the tagged tier: a Tier 1 (case_type) row failed at the root of the taxonomy, so its Issue Type and Reason fields are not meaningful signal and must not be used to justify a fix.
 >
-> - Tier 1 rows: diagnose the Case Type error only. Ignore fin_issue_type / correct_issue_type content when reasoning about the fix — the fix must be a Case Type definition change.
-> - Tier 2 rows: diagnose the Issue Type error only, within the (correctly matched) Case Type branch.
-> - Tier 3 rows: diagnose the Reason mismatch only, within the (correctly matched) Case Type and Issue Type.
-> - invalid_label_only rows (no tier, or already covered above): diagnose the invalid label.
+> - `1-wrong` / `2-wrong` rows: Fin populated a non-blank value that doesn't match. Diagnose why the wrong class was chosen — this is a classifier-definition gap (ambiguous_boundary, wrong_scope, missing_coverage) or an invalid_label if the value doesn't exist in the taxonomy at all.
+> - `1-abstention` / `2-abstention` rows: Fin left the field blank despite the level(s) above it being correctly resolved. This is NEVER a taxonomy or definition gap — a valid answer existed and Fin declined to commit to it. Diagnose what in the contact text should have driven Fin to the correct value (or to a documented default, if one exists), and set gap_type=fin_abstention.
+> - `3-mismatch` rows: diagnose the Reason mismatch only, within the (correctly matched) Case Type and Issue Type — gap_type=reason_mismatch.
+> - `3-abstention` rows: Fin left Reason blank despite Case Type and Issue Type both being correct and a ground-truth Reason existing. Same logic as 2-abstention, scoped to Reason. gap_type=fin_abstention.
+> - `agent_invalid_label_only` rows: diagnose the agent's invalid label only (their Zendesk tag doesn't exist in the taxonomy).
 >
-> For each contact, identify (1) the gap in the classifier definitions or taxonomy that caused the error and (2) a specific recommended fix.
+> For each contact, identify (1) the gap that caused the error and (2) a specific recommended fix.
 >
 > gap_type must be exactly one of:
 > - ambiguous_boundary: the contact could fit multiple classes and the definitions don't clearly disambiguate
 > - missing_coverage: no existing definition covers this contact type
 > - wrong_scope: the definition's scope is too broad and incorrectly captures this contact
 > - reason_mismatch: case type and issue type are correct but the reason label is wrong or inconsistently defined
-> - invalid_label: Fin or the agent used a label that does not exist in the canonical taxonomy (wrong spelling, deprecated name, or non-existent path)
+> - invalid_label: Fin or the agent populated a field with a non-blank value that does not exist in the canonical taxonomy (wrong spelling, deprecated name, borrowed from another branch, or non-existent path)
+> - fin_abstention: Fin left a field blank despite the level(s) above being correctly resolved and a valid taxonomy answer existing. This is a Fin Attributes completeness problem (an underspecified attribute description, missing keywords, or no safe default/"Other" value), never a taxonomy-tree or classifier-definition gap.
 >
-> If a row has both a classification error AND an invalid label, use the classification gap_type and mention the invalid label in gap_description.
+> If a row has both a classification error AND an invalid agent label, use the classification gap_type and mention the invalid label in gap_description.
 >
-> gap_description: 1–2 sentences describing what caused the error, scoped to the row's tier. For invalid_label rows: name the invalid value and the correct canonical path.
+> gap_description: 1–2 sentences describing what caused the error, scoped to the row's tier+mode. For invalid_label rows: name the invalid value and the correct canonical path. For fin_abstention rows: name the specific signal in the contact text that should have driven Fin to commit to the correct value.
 >
-> recommended_fix: A specific, actionable change, scoped to the row's tier. For classifier definition gaps: name the field (include_when, exclude_when, disambiguation, scope) and target class at the tier's level (Case Type for Tier 1, Issue Type for Tier 2, Reason for Tier 3). For taxonomy gaps (missing_coverage): name the missing node and where to add it. For invalid labels: state the correct canonical label to use and whether Zendesk field config or the classifier output needs updating.
+> recommended_fix: For ambiguous_boundary / wrong_scope / missing_coverage / reason_mismatch / invalid_label: a ready-to-paste Fin Attribute value update in the Applies-if / Does-not-apply-if / Likely-keywords format (see the Fin Attributes reference), naming the exact level (Case Type, Issue Type, or Reason) and the correct value name. For fin_abstention: the same format, but framed as strengthening the target Attribute value's existing description (tighter Applies-if/Does-not-apply-if, more Likely Keywords) or adding/clarifying a safe default/'Other' value at that level — never propose lowering a confidence threshold or a support-taxonomy.md edit, since the taxonomy already has a correct answer that Fin failed to select.
 >
 > Output format: one JSON object per contact, with keys: contact_id, tier, gap_type, gap_description, recommended_fix. Return a JSON array. No prose, no explanation outside the JSON."
 
@@ -384,15 +423,19 @@ Opus agent instruction:
 
 > "You are clustering AI classification errors into a prioritized fix backlog. You've been given per-contact gap analysis (tier, gap_type, gap_description, recommended_fix) for a batch of contacts.
 >
-> Group contacts into clusters by shared root cause — not just by matching gap_type, but by whether the underlying definition gap is actually the same one. Two `ambiguous_boundary` rows are only the same cluster if the same two classes are being confused for the same reason.
+> Group contacts into clusters by shared root cause — not just by matching gap_type, but by whether the underlying gap is actually the same one. Two `ambiguous_boundary` rows are only the same cluster if the same two classes are being confused for the same reason. Two `fin_abstention` rows are only the same cluster if they'd be fixed by the same Attribute value description update (e.g. multiple contacts abstaining on the same Issue Type for the same missing-default reason).
 >
-> For each cluster, produce: a short cluster name, the tier (1/2/3) and gap_type, the count and list of contact_ids affected, a single merged recommended_fix that would resolve all contacts in the cluster, and 1-2 sentences on the shared pattern.
+> **Never merge a `fin_abstention` cluster with an `ambiguous_boundary` / `wrong_scope` / `missing_coverage` / `invalid_label` / `reason_mismatch` cluster, even if they land at the same tier and level.** Abstention (Fin left it blank, valid answer existed) and a classification error (Fin picked wrong, or a value that doesn't exist) are different defects with different owners and different fixes — abstention fixes go to whoever owns Fin Attributes config, classification-error fixes go to the taxonomy/classifier-definitions owner. Prefix abstention cluster names with '[Fin abstention]' so this is unambiguous downstream.
+>
+> For each cluster, produce: a short cluster name, the tier (1/2/3) and gap_type, the count and list of contact_ids affected, a single merged recommended_fix (in the Fin Attribute Applies-if/Does-not-apply-if/Likely-keywords format from the gap analysis, merged/generalized where the same fix covers multiple contacts) that would resolve all contacts in the cluster, and 1-2 sentences on the shared pattern.
 >
 > Rank clusters by impact: Tier 1 (case type) clusters first — a case type fix also recovers Issue Type and Reason scoring for every contact in it, since those levels were unscored (n/a) while case type was wrong. Within a tier, rank by number of contacts affected, descending.
 >
 > Return the top 10 clusters, or fewer if there are fewer than 10 distinct clusters. If more than 10 distinct clusters exist, cap at 10 and separately report the count of remaining smaller clusters and total contacts they cover — do not silently drop them.
 >
-> Output format: a single JSON object with keys: clusters (array of {rank, tier, gap_type, cluster_name, pattern_description, recommended_fix, affected_count, affected_contact_ids}), and overflow ({cluster_count, contact_count} for clusters beyond the top 10, or null if none). No prose outside the JSON."
+> Finally, produce a `root_cause_summary`: exactly three buckets — 'fin_abstention' (contacts needing a Fin Attributes config/description fix, owner: whoever administers Fin's classification prompt/attributes), 'taxonomy_definition' (contacts needing a `support-taxonomy.md` / classifier-definition edit — ambiguous_boundary, wrong_scope, missing_coverage, reason_mismatch, and invalid_label rows where Fin used the bad value), and 'zendesk_tagging' (contacts where the agent's own label was invalid or blank, not fixable by Fin or taxonomy changes at all — needs Zendesk-side ticket-closing enforcement). For each bucket report the contact count and one sentence on what needs to happen.
+>
+> Output format: a single JSON object with keys: clusters (array of {rank, tier, gap_type, cluster_name, pattern_description, recommended_fix, affected_count, affected_contact_ids}), overflow ({cluster_count, contact_count} for clusters beyond the top 10, or null if none), and root_cause_summary (array of exactly 3 objects: {bucket, contact_count, note}). No prose outside the JSON."
 
 Wait for the Opus agent to return this JSON object before proceeding.
 
@@ -432,12 +475,18 @@ Ranked by impact — Tier 1 (case type) first, since a case type fix also recove
 
 [If overflow is non-null:] N additional smaller clusters not listed above, covering N contacts. See the TSV (gap_type, taxonomy_gap_candidate columns) for the long tail.
 
+**What to fix, this run — three separate root causes, not one:**
+
+1. **Fin abstention (N contacts)**: <note from root_cause_summary>. Not fixable via taxonomy edits — flag to whoever owns Fin's Attributes/classification config.
+2. **Taxonomy definition gaps (N contacts)**: <note from root_cause_summary>. These need `support-taxonomy.md` / classifier-definition edits — see the fin_abstention-excluded clusters above.
+3. **Zendesk agent tagging gaps (N contacts)**: <note from root_cause_summary>. Not fixable via Fin or taxonomy changes — needs Zendesk ticket-closing enforcement.
+
 ---
 
 [...prior dated sections follow unchanged below...]
 ```
 
-Compute "M total rows in log to date" by counting data rows in `classification-qa-log.tsv` after Step 5's append.
+Compute "M total rows in log to date" by counting data rows in `classification-qa-log.tsv` after Step 5's append. Populate the "What to fix" block directly from Step 4's `root_cause_summary` — do not paraphrase away the fin_abstention / taxonomy_definition / zendesk_tagging distinction, since collapsing it back into one undifferentiated list re-introduces the original bug.
 
 ### Step 7 — Report to user
 
@@ -459,17 +508,23 @@ Case type verdicts:   correct: N | wrong: N | unclassified: N | unverifiable: N 
 Issue type verdicts:  correct: N | wrong: N | unclassified: N | unverifiable: N | n/a (case type already wrong): N
 Reason match:         yes: N | no: N | n/a: N
 
-Gap types:  ambiguous_boundary: N | missing_coverage: N | wrong_scope: N | reason_mismatch: N | invalid_label: N
+Gap types:  ambiguous_boundary: N | missing_coverage: N | wrong_scope: N | reason_mismatch: N | invalid_label: N | fin_abstention: N
 By tier:    Tier 1 (case type): N | Tier 2 (issue type): N | Tier 3 (reason): N
 
 === TAXONOMY HEALTH ===
-Invalid Fin labels:       N rows — labels Fin output that don't exist in the taxonomy
-Invalid agent labels:     N rows — Zendesk labels that don't match the canonical taxonomy
+Invalid Fin labels:       N rows — non-blank Fin values that don't exist in the taxonomy (excludes abstentions — see below)
+Invalid agent labels:     N rows — non-blank Zendesk labels that don't match the canonical taxonomy
+Fin abstentions:          N rows — Fin left a field blank despite a valid answer existing (Fin Attributes config issue, not a taxonomy gap)
 Taxonomy gap candidates:  N contacts — may need new case type, issue type, or reason added
 
 INVALID LABEL DETAILS (if any):
   Fin:   "[raw value]" → correct path: [Case Type / Issue Type] (N occurrences)
   Agent: "[raw value]" → correct path: [Case Type / Issue Type] (N occurrences)
+
+=== WHAT TO FIX (three separate owners — do not collapse) ===
+1. Fin abstention:        N contacts — <root_cause_summary note> — owner: Fin Attributes/classification config
+2. Taxonomy definition:   N contacts — <root_cause_summary note> — owner: support-taxonomy.md / classifier definitions
+3. Zendesk tagging:       N contacts — <root_cause_summary note> — owner: Zendesk ticket-closing enforcement
 
 TOP 5 FIXES (Tier 1 case type fixes first — highest leverage, since a case type gap suppresses issue type and reason accuracy for every affected contact. Full ranked list of up to 10 clusters in classification-qa-fixes.md, under today's date section):
 1. [Tier N] Cluster name — N contacts (X% of batch) — recommended_fix
