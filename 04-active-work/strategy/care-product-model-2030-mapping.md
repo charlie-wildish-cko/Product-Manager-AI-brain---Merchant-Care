@@ -55,17 +55,19 @@ Classification key:
 | Capability | Products | Build/Buy/Existing | Gap by 2030 | Dependencies |
 |---|---|---|---|---|
 | Customer context data | Customer 360; Agent Toolkit; **Customer 360 MCP (BUILD)** — MCP interface to Customer 360 for Fin and Agent Consultant | EXISTING + BUILD | Customer 360 is a data surface in Agent Toolkit; needs an MCP to be AI-addressable at low latency | Customer 360 data completeness |
+| Customer context knowledge (user + business level) | Customer 360; Customer 360 MCP; **Identity Resolution Service (BUILD)** — links an individual user (email address) to their business/merchant account so Fin and Agent Consultant can reason across both levels | EXISTING + BUILD | Customer 360 today is a data lookup surface (transactions, products, prior issues), not a reasoning input at two distinct levels: the individual contact (who is emailing, what have they personally raised before) and the business (what products this merchant runs, what their support history looks like as an account). Fin/Consultant currently see whichever level the query happens to surface; nothing stitches user identity to business identity | Customer 360 MCP; Salesforce/Zendesk identity fields; Platform Identity Service (for Platform-tier users) |
 | Payments data | Agent Toolkit; Agent Consultant; Fin; **Payments MCP (BUILD)** — payin/payout data served to Fin/Consultant | EXISTING + BUILD | Exists as agent tool but not as MCP; high latency today | MCP infra; data team capacity |
 | Settlements and balances data | Agent Toolkit; Agent Consultant; Fin; **Settlements MCP (BUILD)**; **Balances MCP (BUILD)** | EXISTING + BUILD | Data latency is the critical blocker for Agent Consultant phase 2 and Fin settlement resolution | Settlements team data product; latency fix |
 | Webhooks and error data | Agent Toolkit; **Datadog RUM Connector (BUILD on EXISTING Checkout)** — Datadog RUM is already collected by Engineering but not piped to Care tools; **VisionNotify Connector (BUILD on EXISTING Checkout)** — NOC incident data surfaced to Fin/Consultant for outage queries | EXISTING + BUILD | Datadog RUM and VisionNotify exist but are not connected to Care. Fin should detect incidents in-progress and adjust responses | Datadog RUM API access; VisionNotify owner alignment |
 | Content coverage — customer-facing | Docs and Education Hub; **Knowledge Graph (BUILD)** — Reason ↔ Article ↔ Data edges; currently in design | EXISTING + BUILD | Knowledge Graph is vision; no authoritative gap matrix exists today | Reflex MCP; Taxonomy Registry |
 | Content coverage — internal (SOPs and agent knowledge) | Docs and Education Hub; Agent Consultant; **SOP Management System (BUILD or BUY)** — structured SOP authoring, versioning, and Fin Procedure generation; current SOPs are Confluence pages | EXISTING + BUILD/BUY | SOPs are unstructured Confluence pages that Fin/Consultant cannot reliably parse. Need structured authoring with validation | Process Architect capacity; Fin Procedures spec |
+| Ticket history knowledge (golden set) | Reflex; Zendesk; QA Criteria Service; **Golden Ticket Set (BUILD)** — curated corpus of top-QA-scored tickets, correctly tagged to taxonomy and resolved per SOP; **Resolution Retrieval Service (BUILD)** — surfaces the nearest golden-set precedent to Fin/Agent Consultant at resolution time | BUILD | Does not exist. Past resolved tickets are not reused as a knowledge source — SOPs describe how a Reason should be resolved in the abstract, but there is no curated set of actual best-in-class resolutions (correct taxonomy, correct SOP adherence, high QA score) that Fin or agents can retrieve as a worked example. Distinct knowledge type from static content or SOPs | QA Criteria Service; Taxonomy Registry; SOP Management System; QA scoring history |
 | Content review cadence — reactive | Reflex; Docs and Education Hub; **Content Ops Agent (AGENTIC)** — scans Fin failure signals, drafts content updates, queues for Content team | EXISTING + AGENTIC | Weekly auto-review is vision; currently monthly and manual | Reflex MCP; Knowledge Graph |
 | Content review cadence — proactive | Docs and Education Hub; **Product Release Content Workflow** — Engineering outputs technical docs and a support article draft at ship time; Content team reviews, tags to taxonomy Reason nodes, maps to product, publishes. Workflow: `02-workflows/product-release-content-workflow.md` | BUILD (process) | Not enforced today. Requires ship gate: release is not complete until documentation outputs exist. Prevents content gaps before they produce Fin failures or contacts. | Engineering ship process; Content team capacity; Knowledge Graph for coverage tracking |
 | B2C knowledge base | Docs and Education Hub; Fin; Knowledge Graph | EXISTING | Net-new content build for wallet. Product exists, content does not | Wallet scope; B2C taxonomy |
 | B2B Banking knowledge base | Docs and Education Hub; Fin; Knowledge Graph; **Sonar (EXISTING Checkout)** — AM/TAM knowledge tool owned outside Care; needs banking content and bidirectional flow with Care KB | EXISTING (Care + Checkout) | Sonar is not in the Care model today but is the AM/TAM knowledge tool. Banking content must land in both | Banking product scope; Sonar ownership alignment |
 
-**Stage summary.** Fuel is the rate-limiting flywheel stage and has the largest product-mapping gap. Two structural issues: (1) the "MCP layer" is referenced as a single concept but is actually 5+ distinct data products (Customer 360, Payments, Settlements, Balances, Webhooks/Errors, Platform), each with its own owner and latency profile; (2) Sonar is in the 2028 critical path but is not listed as a Care product — ownership and content-sync are unresolved. Net-new: Customer 360 MCP, Payments MCP, Settlements MCP, Balances MCP, Datadog RUM Connector, VisionNotify Connector, Knowledge Graph, SOP Management System, Content Ops Agent. Adjacent products to bring into the model: Sonar.
+**Stage summary.** Fuel is the rate-limiting flywheel stage and has the largest product-mapping gap. Three structural issues: (1) the "MCP layer" is referenced as a single concept but is actually 5+ distinct data products (Customer 360, Payments, Settlements, Balances, Webhooks/Errors, Platform), each with its own owner and latency profile; (2) Sonar is in the 2028 critical path but is not listed as a Care product — ownership and content-sync are unresolved; (3) two knowledge use cases are missing entirely — customer context reasoned at both the individual user and business/merchant level (not just data lookup), and a golden set of best-resolved tickets that Fin and agents can retrieve as precedent, distinct from static SOPs. Net-new: Customer 360 MCP, Payments MCP, Settlements MCP, Balances MCP, Datadog RUM Connector, VisionNotify Connector, Knowledge Graph, SOP Management System, Content Ops Agent, Identity Resolution Service, Golden Ticket Set, Resolution Retrieval Service. Adjacent products to bring into the model: Sonar.
 
 ---
 
@@ -194,6 +196,7 @@ Classification key:
 | User Management API Connector | Identity/auth queries | BUILD on EXISTING Checkout |
 | Salesforce Connector | Tier of truth, CS context | BUILD on EXISTING Checkout |
 | Jira Connector | Engineering escalation | BUILD on EXISTING Checkout |
+| Identity Resolution Service | Links individual user identity to business/merchant account | BUILD |
 
 **Layer summary.** The "Integration and Data" box hides the largest number of net-new products in the entire model — 10+. Each MCP/connector is a distinct product with its own owner, SLO, and roadmap. The current Care product list under-represents this layer by a factor of ~10.
 
@@ -209,8 +212,10 @@ Classification key:
 | Sonar | AM/TAM knowledge tool | EXISTING Checkout (not in Care model today) |
 | Content Ops Agent | Continuous gap detection and draft proposal | AGENTIC BUILD |
 | Taxonomy Registry | Canonical taxonomy as a product | BUILD |
+| Golden Ticket Set | Curated corpus of top-QA-scored, correctly-tagged, SOP-compliant resolved tickets | BUILD |
+| Resolution Retrieval Service | Surfaces nearest golden-set precedent to Fin/Consultant at resolution time | BUILD |
 
-**Layer summary.** The KB is modelled as a single product today but is architecturally three: customer-facing content, internal SOPs, and AM/TAM knowledge in Sonar. All three will need banking content by 2028 and there is no product owner for sync across them. Sonar must be brought into the Care model.
+**Layer summary.** The KB is modelled as a single product today but is architecturally four: customer-facing content, internal SOPs, AM/TAM knowledge in Sonar, and a golden set of best-resolved ticket precedent. All will need banking content or coverage by 2028 and there is no product owner for sync across them. Sonar must be brought into the Care model; the golden set does not exist in any form today.
 
 ---
 
@@ -219,7 +224,7 @@ Classification key:
 | Product | Role | Build/Buy/Existing |
 |---|---|---|
 | Reflex | Core insights product | EXISTING |
-| Reflex MCP | Programmatic API layer | EXISTING (in delivery) |
+| Reflex MCP | Programmatic API layer | TBC — timing dependent on Phase 3 attribution model stability |
 | Action Plan Agent | Autonomous plan generator | AGENTIC BUILD |
 | Reflex Fix Agent | Code-level PR generator | AGENTIC BUILD |
 | VoC Aggregator | Merged support+NPS+research | BUILD |
@@ -265,55 +270,58 @@ Consolidated list of products not currently named in the Care model that need sc
 12. **Platform Identity Service** (Input)
 13. **Platform Merchant Directory** (Orchestration)
 14. **User Management API Connector** (Fuel)
+15. **Identity Resolution Service** — links user identity to business/merchant account (Fuel)
 
 ### Knowledge layer
-15. **Knowledge Graph** — Reason↔Content↔Data edges (Fuel, Insight)
-16. **SOP Management System** — structured authoring + Fin Procedure generation
-17. **Sonar** (existing at Checkout) — needs bringing into Care model for banking
+16. **Knowledge Graph** — Reason↔Content↔Data edges (Fuel, Insight)
+17. **SOP Management System** — structured authoring + Fin Procedure generation
+18. **Sonar** (existing at Checkout) — needs bringing into Care model for banking
+19. **Golden Ticket Set** — curated best-resolved (top-QA, taxonomy-correct, SOP-compliant) ticket corpus (Fuel, Agent Experience)
+20. **Resolution Retrieval Service** — surfaces golden-set precedent to Fin/Consultant (Fuel, Agent Experience)
 
 ### Channel layer
-18. **Dashboard In-Product Support SDK** (Input B2B)
-19. **Mobile Support SDK** (Input B2C)
-20. **Voice Platform** — buy decision (Input B2B Premium + B2C)
-21. **IM/Slack Connector** (Input B2B)
-22. **Platform Portal SDK** (Input Platform)
-23. **Complaint Intake Portal** (Governance, B2C)
+21. **Dashboard In-Product Support SDK** (Input B2B)
+22. **Mobile Support SDK** (Input B2C)
+23. **Voice Platform** — buy decision (Input B2B Premium + B2C)
+24. **IM/Slack Connector** (Input B2B)
+25. **Platform Portal SDK** (Input Platform)
+26. **Complaint Intake Portal** (Governance, B2C)
 
 ### Agent Experience
-24. **Walled Permissions Layer** (B2B/B2C isolation)
-25. **Agent Skill Profile Service** (skill-based routing)
-26. **Agent NL Query Interface** (Agent Consultant UI)
-27. **QA Criteria Service** (versioned QA rubric)
-28. **Per-team Escalation Connectors** — Treasury, Card Processing, Engineering
-29. **Workforce Management (WFM)** — buy (Assembled / Playvox / Verint)
+27. **Walled Permissions Layer** (B2B/B2C isolation)
+28. **Agent Skill Profile Service** (skill-based routing)
+29. **Agent NL Query Interface** (Agent Consultant UI)
+30. **QA Criteria Service** (versioned QA rubric)
+31. **Per-team Escalation Connectors** — Treasury, Card Processing, Engineering
+32. **Workforce Management (WFM)** — buy (Assembled / Playvox / Verint)
 
 ### Governance
-30. **Complaint Management System** — build or buy; distinct from ticketing
-31. **Consumer Duty Audit Trail**
-32. **Vulnerability Detection Model** — NLU classifier embedded in Fin
-33. **Vulnerability Specialist Queue** (Zendesk config + ops)
-34. **Real-Time SLA Dashboard**
-35. **CSAT Attribution Service**
-36. **Agentic Commerce Verification Service** — 2027 wallet liability capability
+33. **Complaint Management System** — build or buy; distinct from ticketing
+34. **Consumer Duty Audit Trail**
+35. **Vulnerability Detection Model** — NLU classifier embedded in Fin
+36. **Vulnerability Specialist Queue** (Zendesk config + ops)
+37. **Real-Time SLA Dashboard**
+38. **CSAT Attribution Service**
+39. **Agentic Commerce Verification Service** — 2027 wallet liability capability
 
 ### Insight
-37. **VoC Aggregator** (Insight)
-38. **Contact Reduction Scorecard** — Product team accountability surface
-39. **Escalation Policy Engine** — declarative Fin→human rules
+40. **VoC Aggregator** (Insight)
+41. **Contact Reduction Scorecard** — Product team accountability surface
+42. **Escalation Policy Engine** — declarative Fin→human rules
 
 ### Agentic products (discrete AI agents with defined scope)
-40. **Taxonomy Curator Agent** — proposes taxonomy changes (Input)
-41. **Content Ops Agent** — drafts content updates from gaps (Fuel)
-42. **Action Plan Agent** — generates weekly product-fix plans (Insight)
-43. **Reflex Fix Agent** — generates PRs in product team repos (Insight)
-44. **Vulnerable Customer Triage Agent** — protective routing (Orchestration/Governance)
-45. **Agent Coaching Agent** — real-time agent coaching from QA signals (Agent AI Assistant)
+43. **Taxonomy Curator Agent** — proposes taxonomy changes (Input)
+44. **Content Ops Agent** — drafts content updates from gaps (Fuel)
+45. **Action Plan Agent** — generates weekly product-fix plans (Insight)
+46. **Reflex Fix Agent** — generates PRs in product team repos (Insight)
+47. **Vulnerable Customer Triage Agent** — protective routing (Orchestration/Governance)
+48. **Agent Coaching Agent** — real-time agent coaching from QA signals (Agent AI Assistant)
 
 ---
 
 ## Part 4: Cross-cutting observations
 
-**1. The current Care product list is 10 products; the 2030 model requires ~45.** The 4.5x expansion is not evenly distributed: the Integration/Data layer alone adds 10+ products, and Governance adds 7. The current model under-represents these two layers specifically because they are largely invisible from the flywheel narrative. Every unnamed product is an unowned product.
+**1. The current Care product list is 10 products; the 2030 model requires ~48.** The near-5x expansion is not evenly distributed: the Integration/Data layer alone adds 10+ products, and Governance adds 7. The current model under-represents these two layers specifically because they are largely invisible from the flywheel narrative. Every unnamed product is an unowned product.
 
 **2. "Care product" is conflated with "product Care builds."** Several products in the 2030 model already exist at Checkout but sit outside the Care product set (Salesforce, Jira, Sonar, Datadog RUM, VisionNotify, User Management API). Treating them as external integrations rather than as Care-managed surfaces means SLAs, roadmap influence, and data contracts are unowned. A "Care-adjacent product" register with a named counterpart PM for each is the structural fix.
 
@@ -326,3 +334,5 @@ Consolidated list of products not currently named in the Care model that need sc
 **6. Build vs buy decisions are concentrated in three areas, all 2027-forced.** Zendesk (RFC in flight), Voice Platform, and Complaint Management are three independent buy decisions, all with regulatory or SLA consequences at wallet launch. Running them as a single 2026 "support platform buy cycle" rather than three sequential decisions would reduce vendor integration overhead and give commercial leverage.
 
 **7. Fuel is the critical path but has the most diffused ownership.** MCPs for Payments, Settlements, Balances, and Customer 360 depend on data teams outside Care. If any of the four slips, Agent Consultant and Fin resolution rates plateau. A dedicated "Care Data Product" workstream with its own PM is the organisational gap that matches the product gap.
+
+**8. A pre-Input stage ("Stage 0: Product Onboarding") is now conceptually defined but not yet product-mapped.** See [Care Product Model](../../01-knowledge-base/strategy/care-product-model.md) → "Stage 0: Product Onboarding." It emerged from a Care/Risk/Compliance product HBR (July 2026) on servicing readiness for the 150+ initiatives reviewed at 2027 planning. Conceptually it's a registration interface across the Input, Orchestration, Fuel, and Insight stages, not a new stack layer. When it's scoped, expect it to consume several BUILD items already listed above (Taxonomy Registry, Entitlements Service, Escalation Policy Engine, the MCP/data-contract pattern, Contact Reduction Scorecard) rather than requiring net-new backend products — the open question is whether a net-new registration surface is needed on top of them. Not yet added to Part 3 pending scoping.

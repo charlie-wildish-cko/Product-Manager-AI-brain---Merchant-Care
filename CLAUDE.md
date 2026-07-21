@@ -51,6 +51,7 @@ Every document, analysis, or recommendation must connect to:
 | Team structure & stakeholders | `01-knowledge-base/teams.md` |
 | Support workflows & operations | `01-knowledge-base/processes/support-workflows.md` |
 | Ticket taxonomy & contact volumes | `01-knowledge-base/processes/support-taxonomy.md` |
+| Fin Attribute value definitions (Intercom-ready format) | `01-knowledge-base/processes/fin-attributes-definitions.md` |
 | Care Agent SOPs & KB (526 articles, 125 folders from Zendesk KB) | `01-knowledge-base/processes/Care Agent SOPs/INDEX.md` |
 | Merchant segments | `01-knowledge-base/products/customer-segments.md` |
 | Product catalogue (products, teams, pillars) | `01-knowledge-base/Checkout Products and teams.csv` |
@@ -88,20 +89,24 @@ Every document, analysis, or recommendation must connect to:
 - Always end with a clear next step or recommendation
 
 ### Always avoid
-- Em dashes (`—`) as clause connectors
-- Hedging language ("may", "could potentially", "somewhat")
+- Em dashes (`—`) as clause connectors (use a colon or full stop). Max 2-3 per document.
+- Hedging language: "may", "could potentially", "somewhat", "we believe", "we could", "may not necessarily", "suggest a [timeframe]". State claims directly. For an estimate, write "estimate: X%", not "we estimate it could be around X%".
 - Burying the conclusion or leading with context instead of the point
 - Semicolons to connect clauses
 - Flattery or affirmations ("Great question!", "Certainly!", "Absolutely!")
 - Padding or filler sentences
 - Rewriting entire files when only a small change is needed
 - Unsolicited summaries of what was just done
+- Unicode decoration: curly/smart quotes, `->` arrows. Type straight quotes and plain ASCII.
+- AI writing tropes (applies to all output, not just formal docs). Top offenders: magic adverbs ("quietly", "deeply", "fundamentally", "arguably"); "leverage"/"utilize"/"robust"/"streamline"/"harness"; grandiose nouns ("tapestry", "landscape", "ecosystem", "paradigm", "synergy"); "serves as"/"represents" instead of "is"; negative parallelism ("it's not X, it's Y"); rhetorical Q&A ("The result? ..."); empty transitions ("it's worth noting", "notably", "importantly"); signposted conclusions ("in summary", "in conclusion"). Full list: `01-knowledge-base/processes/writing-style-guide.md` → "AI Writing Tropes to Avoid".
 
-For Leadership, Engineering, Slack, and Reports style: see `01-knowledge-base/processes/writing-style-guide.md`.
+**Before writing any styled document, consult `01-knowledge-base/processes/writing-style-guide.md` and apply the matching audience profile:** Leadership / C-suite · Slack updates · Engineering · Reports & readouts · Strategy & analysis. That guide is the source of truth for audience-specific structure (exec-summary length, TLDR/Note/Ask callouts, hypothesis framing, action-item rules); the tropes and hedging bans above are always on regardless of audience.
 
 ---
 
 ## Data Rules
+
+**Deliverable dates and quarters**: `2026 deliverables.md` is the single source of truth for what quarter a deliverable or sub-component is scoped to, including TBC/unscheduled items. When writing or editing any doc that states a quarter for a deliverable (e.g. "Q3 2026," "in delivery"), verify it against `2026 deliverables.md` first — do not carry forward a date from another doc without checking it there. If `2026 deliverables.md` marks something TBC, downstream docs must say TBC too, not assert a settled quarter. When editing any file that states deliverable timing, grep other active docs for the same deliverable name and fix mismatches in the same pass rather than leaving them to drift.
 
 **Interview transcripts**: WEBVTT format. Stored in `04-active-work/merchant-interview-transcripts-2025/`. Two subfolders: `Direct merchants/` (Participant 2 is the merchant) and `Platforms/` (Alcinda Lee is the interviewer; other speakers are Platform ops users). Files are large — use Explore agents with chunked reads.
 
@@ -142,6 +147,8 @@ For product strategy documents (1–3 year horizon, VP/Director audience): use `
 
 ## Workflows & Skills
 
+**Keep this section in sync with `.claude/skills/`** — when a skill is added or removed, update its entry here too.
+
 ### Document Review Panel
 Apply to any PRD, memo, or spec before finalising.
 - Workflow: `02-workflows/document-review-panel.md`
@@ -153,8 +160,15 @@ Run for any significant document from scratch: Draft → Critique (panel) → Re
 - Workflow: `02-workflows/draft-critique-refine.md`
 
 ### PRD Re-Review
-Run against any existing PRD when the template has been updated or scope has changed significantly.
-- Skill: `/prd-review [file path]` — audits PRD against current `03-templates/prd-template.md`, produces gap report, offers to apply fixes
+No dedicated re-review skill exists yet. Use `/create-prd` for new PRDs; for auditing an existing PRD against the current template, do it manually against `03-templates/prd-template.md`.
+
+### Create PRD
+Run the full PRD creation workflow (Draft → Review Panel Critique → Refine → Condense).
+- Skill: `/create-prd [topic or deliverable name]` — outputs a finished PRD to `04-active-work/`
+
+### Strategic Review
+Deep strategic review of any initiative, topic, or document. Opus analyses alignment and surfaces tensions; Sonnet writes the output.
+- Skill: `/strategic-review [topic, file path, or initiative name]` — outputs a memo to `04-active-work/`
 
 ### Sync Meeting Notes
 Pull new Gemini-generated meeting notes from Google Drive and write structured notes files. Run weekly or monthly to keep the PM brain current.
@@ -168,6 +182,22 @@ Generate AI-readable classification definitions (TSV, paste-ready for Google She
 - Skill: `/classify-definitions [taxonomy|products|both] [optional filter]`
 - Output: one row per class, columns include include_when, exclude_when, disambiguation, keywords, phrases, entities, examples
 - Saved to: `04-active-work/classifier-definitions-<scope>-<date>.tsv`
+
+### Sync Product Catalogue
+Sync the Airtable Product Catalogue to local files: updates `Checkout Products and teams.csv`, adds new product definitions to `product-definitions.md`, and (given a Zendesk export) produces an implementation sheet for Zendesk admins.
+- Skill: `/sync-product-catalogue`
+
+### Taxonomy Classification QA
+QA Fin's contact classifications against the support taxonomy. Pulls the current batch from Looker (Look 18808) by default. Runs incrementally, appends to persistent log files, skips already-reviewed tickets.
+- Skill: `/taxonomy-classification-qa [file-path | look:<id>]` — defaults to `look:18808`
+
+### Workspace Review
+Audit `04-active-work/`, assign keep/update/archive/delete verdicts per file, execute cleanup on confirmation. Also checks `04-active-work/` and `01-knowledge-base/` for deliverable dates/status that drift from `2026 deliverables.md`, and fixes them on confirmation.
+- Skill: `/workspace-review`
+
+### Write Fin Attribute
+Draft or update a single Fin Attribute value definition (Case Type, Issue Type, Reason) in Intercom's Applies-if/Does-not-apply-if/Likely-keywords format. Writes to both `fin-attributes-definitions.md` (Intercom-ready) and `support-taxonomy.md` (QA skill's parseable source). Enforces Intercom's 2500-character limit.
+- Skill: `/write-fin-attribute` — then supply value name, taxonomy path, definition, example queries
 
 ### Model Routing in Skills
 Skills use Opus for strategic/analytical phases and Sonnet for writing/output phases.

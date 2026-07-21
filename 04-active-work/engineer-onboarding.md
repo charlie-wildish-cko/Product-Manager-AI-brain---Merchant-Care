@@ -101,7 +101,7 @@ SLA adherence, QA, and complaint handling govern the whole flow (layer 8).
 - **Data (layer 5) is the main bottleneck.** Every new API we connect expands what Fin and Agent Consultant can resolve. Build data integrations to serve both simultaneously — the same data source powers Fin Procedures and Agent Consultant lookups.
 - **Knowledge (layer 6) depends on data.** The knowledge graph needs the data graph to know whether a gap is a content problem or a data problem. Don't treat them as independent.
 - **Reflex (layer 7) depends on ticket quality.** LLM analysis is only as good as the taxonomy tagging and Fin metadata in the tickets. Work that improves ticket data quality directly improves Reflex output.
-- **Reflex MCP** (in delivery, Q3 2026) exposes layer 7 insights as a read API so Fin, Agent Consultant, and other internal tools can query contact drivers programmatically — without manual reporting. This is a cross-deliverable dependency.
+- **Reflex MCP** (TBC — timing dependent on Phase 3 attribution model stability) exposes layer 7 insights as a read API so Fin, Agent Consultant, and other internal tools can query contact drivers programmatically — without manual reporting. This is a cross-deliverable dependency.
 - **Zendesk config is not Engineering work.** Triggers, routing rules, ticket forms, and SLAs are owned by the Zendesk Admins. Engineering builds around Zendesk via API — not inside it.
 
 ---

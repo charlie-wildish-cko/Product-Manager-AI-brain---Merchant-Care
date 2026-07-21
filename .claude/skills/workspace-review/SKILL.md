@@ -8,6 +8,8 @@ tools: Read, Bash, Write, Edit, Agent
 
 Scans `04-active-work/` (including subdirectories), assesses every file against the current roadmap and recency, assigns a verdict, produces a report, and on confirmation moves or deletes files.
 
+Also runs a **deliverable date consistency check** across `04-active-work/` and `01-knowledge-base/`, flagging any doc that states a quarter or delivery status for a named deliverable that doesn't match `2026 deliverables.md` — the single source of truth per `CLAUDE.md`'s Data Rules.
+
 ---
 
 ## Verdicts
@@ -18,6 +20,8 @@ Scans `04-active-work/` (including subdirectories), assesses every file against 
 | **Update** | Topic still active but content references past quarters as future, has stale dates, or has been partially superseded |
 | **Archive** | Work complete, deliverable shipped, or file superseded by a newer doc — worth preserving as a historical record |
 | **Delete** | Dated data export (`.tsv`, `.csv`) with a newer version in the same directory; scratch/duplicate content; safely regenerable |
+
+Date-drift findings (see Phase 1b) are reported separately from these verdicts — they apply to any file in `04-active-work/` or `01-knowledge-base/`, including files that would otherwise be Keep.
 
 ---
 
@@ -51,6 +55,46 @@ for f in "04-active-work/roadmap-items/"*.md; do
   echo ""
 done
 ```
+
+---
+
+## Phase 1b — Deliverable Date Consistency Check
+
+Independent of the keep/archive/delete verdicts. Runs across `04-active-work/` and `01-knowledge-base/` (not just the root of `04-active-work/`).
+
+1. From the `2026 deliverables.md` read in step 1, extract every named deliverable, its named phases/sub-components, and the quarter or status (including TBC) assigned to each. This is the reference table for the check.
+
+2. Grep both trees for deliverable names alongside quarter markers, so you only pull lines that assert a date rather than every mention of the deliverable:
+```bash
+grep -rn -iE "(Q[1-4] ?2026|Q[1-4] ?2027|TBC|in delivery)" 01-knowledge-base/ 04-active-work/ --include="*.md" | grep -v "05-archive"
+```
+
+3. For each hit, check whether the surrounding line names a deliverable or sub-component from step 1's reference table. Discard hits that aren't attached to a named deliverable (e.g. unrelated quarter references like "Q3 hiring plan").
+
+4. For each remaining hit, compare the stated quarter/status against `2026 deliverables.md`. Flag a mismatch when:
+   - A doc states a fixed quarter for something `2026 deliverables.md` marks as TBC or unscheduled
+   - A doc states a different quarter than the one assigned in `2026 deliverables.md`
+   - A doc asserts a phase is "in delivery" or "live" when `2026 deliverables.md` shows it as not yet started or still TBC
+
+5. Do not flag: files under `05-archive/` (historical snapshots, frozen by convention — see `feedback_check_archive` memory); dates that already say TBC and match; dates that already match `2026 deliverables.md` exactly.
+
+Skip this phase's agent step (6 below) and go straight to producing an empty Date Drift section if no candidate hits survive step 3.
+
+6. Spawn an Agent with `model: "opus"` and pass: the reference table from step 1, and the filtered candidate lines from step 4. Prompt:
+
+> Below is the reference table of deliverable names, phases, and quarters/status from `2026 deliverables.md`, followed by candidate lines from other docs that assert a quarter or delivery status for a deliverable.
+>
+> [REFERENCE TABLE]
+>
+> [CANDIDATE LINES WITH FILE:LINE]
+>
+> For each candidate line, decide: does it match the reference table? If not, return a finding.
+>
+> Return a JSON array. Each element: { "file": "<relative path>", "line": <line number>, "current_text": "<the exact stale text>", "correct_anchor": "<what 2026 deliverables.md actually says>", "suggested_fix": "<corrected text preserving the sentence's original phrasing as much as possible>" }
+>
+> Only return genuine mismatches. Do not flag a line that already says TBC and the deliverable is genuinely TBC.
+
+Capture the JSON array output as the Date Drift findings.
 
 ---
 
@@ -121,19 +165,26 @@ X keep · Y update · Z archive · N delete
 
 ## Files to delete
 [list each Delete file]
+
+## Date drift (deliverable dates vs 2026 deliverables.md)
+| File | Line | Current | Should be |
+|---|---|---|---|
+| 01-knowledge-base/products/reflex.md | 68 | Phase 3 Q3 2026: Reflex MCP | TBC — no fixed quarter in 2026 deliverables.md |
+...
+(if none found: "No date drift found.")
 ```
 
-Sort the table: Delete first, then Archive, then Update, then Keep.
+Sort the verdicts table: Delete first, then Archive, then Update, then Keep. Sort the Date Drift table by file path.
 
 Save to `04-active-work/workspace-review-[DATE].md`.
 
-Print the summary line and the full table to the terminal, then print:
+Print the summary line and both tables to the terminal, then print:
 
 ```
 ---
 Report saved to 04-active-work/workspace-review-[DATE].md
-Ready to execute: move [Z] files to archive, delete [N] files.
-Confirm? Type yes to proceed, or no to stop here.
+Ready to execute: move [Z] files to archive, delete [N] files, fix [M] date drift findings.
+Confirm? Type yes to proceed, or no to stop here. You can also confirm subsets, e.g. "fix dates only" or "cleanup only".
 ```
 
 ---
@@ -170,12 +221,17 @@ For each Delete file:
 git rm "<file>"
 ```
 
+### Date drift fixes
+
+For each Date Drift finding, apply `suggested_fix` in place of `current_text` at the given file/line using the Edit tool (read the file first if not already read this session). Do not touch files under `05-archive/`. If `suggested_fix` would change the meaning of the sentence beyond the date/quarter itself, apply a minimal edit to just the date/status portion instead.
+
 ### Completion message
 
 ```
 Done.
 Moved [Z] files to 05-archive/2026/.
 Deleted [N] files.
+Fixed [M] date drift findings across [K] files.
 
 Review file kept at: 04-active-work/workspace-review-[DATE].md
 Changes are staged but not committed. Commit when ready.
@@ -190,3 +246,6 @@ Do NOT run `git commit`.
 - Never delete files from `roadmap-items/`, `merchant-interview-transcripts-2025/`, or `stakeholder-updates/` without explicit instruction — these subdirs are always treated as Keep by default.
 - If the JSON from Opus cannot be parsed, print the raw output and ask Charlie to confirm verdicts manually before executing.
 - If `05-archive/2026/` does not exist, create it before running any moves.
+- The date consistency check (Phase 1b) never touches `05-archive/` — archived docs are frozen historical snapshots by convention, not live docs to keep current.
+- `2026 deliverables.md` itself is the reference, never the target of a date-drift fix — if it looks wrong, flag it to Charlie instead of editing it under this skill.
+- The cleanup verdicts (keep/update/archive/delete) and the date-drift findings are independent outputs — a file can be Keep and still have a date-drift fix applied.

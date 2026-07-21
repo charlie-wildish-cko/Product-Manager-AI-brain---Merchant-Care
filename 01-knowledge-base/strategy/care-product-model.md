@@ -69,6 +69,27 @@ A consumer asks where their disputed transaction is. Channel is in-app chat; res
 
 ---
 
+## Stage 0: Product Onboarding (pre-Input)
+
+> Concept raised at the Care/Risk/Compliance product HBR, July 2026, on servicing readiness at scale. Product mapping not yet started — see `care-product-model-2030-mapping.md` for status.
+
+Every stage below assumes the flywheel is already spinning for the product generating the contact. That holds for existing products. It breaks the moment a new or changed product launches — taxonomy, routing, content, and data access don't exist yet, so Care discovers the gap from live contacts instead of ahead of them. The B2C and B2B Banking sections in this doc already treat their launches as a discrete transition to plan for, not something the flywheel absorbs automatically. Stage 0 generalises that same discipline to every product launch, not just major segment launches — the volume that makes this necessary: 150+ initiatives reviewed at 2027 planning, several of which (BlueEMI, Ray, eFX, Interest) shipped with no Care assessment at all.
+
+**What it is.** A stage that runs once per product launch, not once per contact. A launching product team declares, before the first contact arrives, what Input, Orchestration, and Fuel need to already contain. This turns "Care discovers this after the fact" into "the product team configures this before launch," gated by the intake process product teams already go through.
+
+**How it interacts with the rest of the flywheel:**
+- **Input** — new query types are classified against the existing taxonomy at intake, not discovered from ticket backlog after launch.
+- **Orchestration** — routing, SLA, and resolution complexity (does this need a data lookup, an action, or does content alone answer it?) are declared at intake, not improvised per ticket.
+- **Fuel** — a content commitment and a data-access commitment are made explicit before launch, closing the gap between "product ships" and "content or data exists to support it."
+- **Insight and Prevention** — the product is tagged for attribution from day one, so contact volume is owned by the launching team from the first contact, not discovered later.
+- **Agent Experience and Governance** are not configured by Stage 0 — they operate on whatever Stage 0 has already set up, the same as any other contact.
+
+**How it sits on the stack.** Stage 0 is not a ninth stack layer. It's a standard registration interface across the existing stack — Channel, Customer AI Agent, Routing and Human Agent Experience, Integration and Data, Knowledge, and Analytics and Insight each need a defined way for a new product to plug in, rather than being configured bespoke per launch. It behaves like Operations and Governance, which is already cross-cutting across the stack below, except Stage 0 acts at registration time rather than at run time.
+
+**Why it matters at scale.** Contact rate and cost per contact only compound correctly if the flywheel is fully configured when volume starts. A launch that skips Stage 0 isn't a visible failure at launch — it shows up later as elevated cost per contact and unattributed contact volume.
+
+---
+
 ## Operating model: the Care flywheel
 
 | Stage | Components | Definition | Metrics | Product capabilities | Vision state |
@@ -110,6 +131,8 @@ Every stack layer maps to one or more flywheel stages, and every flywheel stage 
 | Knowledge | Fuel (content) and Input (publishing to support site) |
 | Analytics and Insight | Insight and Prevention |
 | Operations and Governance | Governance |
+
+**Note:** Stage 0 (Product Onboarding, above) doesn't appear in this table because it isn't a stack layer — it's a registration interface across six of the layers above (Channel, Customer AI Agent, Routing and Human Agent Experience, Integration and Data, Knowledge, Analytics and Insight), used once per product launch rather than continuously.
 
 **When to use which lens.** Use the flywheel for roadmap narrative, the metric compounding story (contact rate and cost per contact), and the year-by-year maturity view in [`care-capability-model.md`](care-capability-model.md). Use the stack for vendor and build/buy/keep decisions, eng investment framing, and architectural diagrams that show where a given system fits.
 

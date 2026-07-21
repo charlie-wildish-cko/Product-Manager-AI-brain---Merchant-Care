@@ -85,11 +85,13 @@ Data integrations are accessed via Procedures, not ad hoc — this is the mechan
 ### Tasks
 Simpler automation for multi-step processes. Use Data Connectors to pull external data and return personalised answers. Less structured than Procedures; appropriate for lower-complexity retrieval flows.
 
+**Migration note (2026-07-08 QA finding):** several June QA failures traced back to lookups still running on the legacy Task rather than the newer Procedure (e.g. a proof-of-payment request wrongly triggering a payment lookup). Migrating remaining lookups from Tasks to Procedures is a live improvement lever, not just a nice-to-have.
+
 ### Data Connectors
 API integrations that give Fin access to external systems — e.g. order management, account data, payment status. The mechanism by which Fin delivers data-driven responses rather than generic knowledge-base answers.
 
 ### MCP Connectors
-Model Context Protocol connectors. Supported for popular third-party apps and custom integrations. Relevant to Checkout.com's **Reflex MCP (Q3 2026)** deliverable — Reflex insights could be made available to Fin via an MCP connector.
+Model Context Protocol connectors. Supported for popular third-party apps and custom integrations. Relevant to Checkout.com's **Reflex MCP (TBC)** deliverable — Reflex insights could be made available to Fin via an MCP connector.
 
 ### When to use Procedures vs Tasks vs Workflows
 Intercom documents this comparison explicitly. Rule of thumb:
@@ -146,6 +148,13 @@ Simulations are specific to Procedures. Batch Testing measures aggregate resolut
 - **Custom Reports**: build tailored dashboards; can be shared externally without login or scheduled for automated distribution
 - **Chart Drill-in**: interactive exploration from charts into underlying conversations
 - **Reporting Datasets**: structured data layer with documented column definitions
+
+### 2026 target and QA process (as of 2026-07-08)
+- Fin Involvement Rate: ~15% as of July 2026. 2026 goal: ~80% involvement, resolution 40–50% by year-end.
+- Monthly QA reviews sample escalated + negative conversations (last 7 days, ~30–50 items/week) via Intercom Analyze → Monitors (email and chat escalated conversations monitors).
+- Each review is categorized into one of three failure types: **product gap** (missing/broken feature), **missing content** (agent knew the answer, undocumented), or **bot issue** (Fin misbehaved). Reviewer cross-checks the Zendesk ticket for the human agent's actual resolution.
+- The reviewer's written note is the primary output — it carries the actionable fix, not the auto-generated score.
+- Guardrail: a meaningful share of escalations are pure AI-aversion (merchant bypasses Fin to reach a human even when Fin works correctly), not Fin failures. Resolution rate alone won't capture this and caps deflection regardless of content quality.
 
 ---
 

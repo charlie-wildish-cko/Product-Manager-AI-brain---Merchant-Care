@@ -95,8 +95,9 @@ The actions below map to the Care flywheel stages and build on each other in seq
 
 **Insight and Prevention**
 - Reflex phase 1: AI-powered contact analysis dashboard live Q1
-- Reflex phase 2: merged support + NPS + research view; proactive spike analysis Q2
-- Reflex MCP: queryable by AI tools Q3 — this is the unlock for AI action plans to Product
+- Reflex phase 2: theme aggregation, product mapping, Insights Query Interface Q2
+- Reflex phase 3: merged support + NPS view; proactive spike detection Q3
+- Reflex MCP: queryable by AI tools (TBC) — this is the unlock for AI action plans to Product
 
 **Governance**
 - SLA rules per merchant level enforced in Zendesk from Q3
@@ -215,6 +216,36 @@ Three roles become load-bearing as AI resolution scales — currently these resp
 These roles do not require net-new headcount immediately — in 2026 they are responsibilities assigned to existing team members. By 2027, as B2C volume arrives, the AI Ops Lead and Knowledge Manager become full-time functions. *[Fin Blueprint: Org and System Design — Essential Scaling Roles]*
 
 When AI absorbs 80%+ of contact volume, agent capacity does not simply reduce — it unlocks. That unlocked time is reinvested into proactive customer success (outreach to at-risk merchants before they contact), revenue influence (passing high-value expansion signals to account management), and structured product intelligence (human-resolved contacts feeding Reflex). This is how Care shifts from cost centre to value driver — and why headcount reduction is not the goal. *[Fin Blueprint: Economics — Capacity as Currency]*
+
+---
+
+## Flagged for 2027 Planning: Off-the-Shelf Servicing & Product Launch Intake (Unscoped)
+
+**Not a named 2026 deliverable. Not yet scoped or resourced. Logged here so it surfaces at 2027 planning rather than being rediscovered.**
+
+**Source:** Product HBR across Care, Risk, and Compliance product teams, July 2026.
+
+**TLDR:** the bespoke model, where Care discovers a launch's servicing impact after it ships, breaks down at current initiative volume. The fix is a library of standard servicing components that product teams configure at launch, gated by Product Ops' intake process, instead of Care building bespoke support infrastructure per launch.
+
+**Evidence:**
+- 2027 planning required review of 150+ initiatives. Bespoke servicing per launch does not scale at 1 PM and 4 engineers.
+- BlueEMI, Ray, eFX, and Interest shipped with no Care assessment. No capacity is planned in H2 2026 to address any of them.
+- Cost of the gap is direct: every contact Fin can't resolve because servicing infrastructure is missing costs **$40 per human contact vs $0.90 for Fin** — a 44x difference that compounds with each unscoped launch.
+
+**Proposed components** (each maps to a Care flywheel stage; product teams configure, Care approves):
+
+| Component | Flywheel stage | What it replaces |
+|---|---|---|
+| Taxonomy contribution | Input | Reasons discovered from ticket backlog after launch |
+| Content ship-gate | Fuel | Reactive content written weeks after launch |
+| Query triage + Fin Procedure templates | Orchestration | Every new query defaulting to a bespoke procedure build |
+| Customer Agent data contract | Fuel | Bespoke data integration per product |
+| Routing + SLA declaration | Orchestration | Manually configured routing rules per launch |
+| Reflex auto-instrumentation | Insight and Prevention | No accountability for contact volume by owning product team |
+
+**Note:** the query triage step is the one most likely to be skipped if this isn't designed deliberately — teams default to building a procedure for every new query type when most informational queries need only the content ship-gate. See the Interest launch example: accrual-definition queries route to content only, current-balance queries route to a data-backed procedure, and discrepancy queries route to a procedure with a human escalation branch.
+
+**Ask:** VP of Product to confirm whether this becomes a scoped 2027 initiative or is held for the next planning cycle, given the volume of unscoped launches already in flight.
 
 ---
 

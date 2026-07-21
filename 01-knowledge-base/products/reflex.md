@@ -49,17 +49,25 @@ Reflex also creates the data foundation for the rest of the Care AI stack.
 
 Question: do our Knowledge and data graphs live in Reflex or is Reflex a consumer of the graph to match to the contacts it analyses?
 
+## How It's Built (Data Flow)
+
+1. **Fivetran** syncs Zendesk data into BigQuery source tables.
+2. **AWS Step Functions** orchestrates the pipeline.
+3. **Summary generation** via AWS Bedrock produces per-ticket summaries, written to a `ticket_summaries` table along with additional metadata.
+4. **Clustering**: summaries are aggregated into theme clusters using AWS Bedrock agents.
+5. **Access**: internal users view themed insights via the Insights Dashboard. Simple lookups query BigQuery directly; more complex requests route through a Bedrock agent that queries the tables and returns AI-generated suggestions.
+
 ## 2026 Roadmap
 
 **Jira**: MCD-565 · **Full phased plan**: `04-active-work/prds/reflex/phased-plan.md`
 
-| Phase   | Quarter           | Goal                                                                |
-| ------- | ----------------- | ------------------------------------------------------------------- |
-| Phase 1 | Q1 2026           | BQ data foundation + per-ticket LLM root cause summaries            |
-| Phase 2 | Q2 2026           | Theme aggregation + product team mapping + Insights Query Interface |
-| Phase 3 | Q3 2026           | Reflex MCP                                                          |
-| Phase 4 | Q4 2026           | VoC, spike detection, governance automation                         |
-| Phase 5 | Q4 2026 / Q1 2027 | Jira integration (TBC)                                              |
+| Phase   | Quarter | Goal                                                                |
+| ------- | ------- | ------------------------------------------------------------------- |
+| Phase 1 | Q1 2026 | BQ data foundation + per-ticket LLM root cause summaries            |
+| Phase 2 | Q2 2026 | Theme aggregation + product team mapping + Insights Query Interface |
+| Phase 3 | Q3 2026 | VoC, spike detection, governance automation                         |
+| Phase 4 | Q4 2026 | Jira integration (TBC)                                              |
+| TBC     | TBC     | Reflex MCP — timing dependent on Phase 3 attribution model stability |
 
 ## Success Metrics
 

@@ -2,7 +2,7 @@
 
 **Status**: Template — scores to be filled in during Q3 2026 POC and RFI (see `vendor-poc-scope.md`)
 **Owner**: Charlie Wildish
-**Related**: `zendesk-platform-decision-rfc.md` (Appendix defines the requirements this scorecard scores) · `vendor-poc-scope.md` (POC test flows that produce gate pass/fail and several requirement scores)
+**Related**: `support-platform-vendor-requirements.md` (defines the requirements this scorecard scores, one-to-one) · `zendesk-platform-decision-rfc.md` (decision context and options) · `vendor-poc-scope.md` (POC test flows that produce gate pass/fail and several requirement scores)
 
 Purpose: turn the RFC's qualitative comparison into a weighted, numeric instrument that produces a defensible total per vendor for the Q4 2026 leadership decision. Fill in scores as POC results and RFI responses land; do not estimate scores from vendor marketing material alone — each score needs one line of evidence.
 
@@ -20,7 +20,7 @@ Purpose: turn the RFC's qualitative comparison into a weighted, numeric instrume
 
 A failed gate disqualifies the vendor regardless of weighted score below — record the fail and stop scoring that vendor.
 
-**Step 2 — Requirement scores.** For every requirement in the 11 categories below, score each vendor 0–3:
+**Step 2 — Requirement scores.** For every requirement in the 11 categories below (each maps one-to-one to a requirement in `support-platform-vendor-requirements.md`), score each vendor 0–3:
 
 | Score | Meaning |
 |---|---|
@@ -43,17 +43,17 @@ Weighted by how directly each category maps to a gap the RFC names as a decision
 
 | Tier | Weight | Categories |
 |---|---|---|
-| **High** | 15% each (60%) | 4. Agent workspace · 5. Data and permissions · 11. Pricing · 10. Vendor reliability and operational trust |
-| **Medium** | 8% each (32%) | 1. Multi-channel entry points · 3. Routing & field logic · 7. Integrations · 8. Analytics and data extract |
-| **Low** | ~2.7% each (8%) | 2. AI triage and classification · 6. Customer-facing experience · 9. Environment and configuration deployment |
+| **High** | 14% each (70%) | 3. Routing & field logic · 4. Agent workspace · 5. Data and permissions · 10. Vendor reliability and operational trust · 11. Pricing |
+| **Medium** | 7% each (21%) | 1. Multi-channel entry points · 7. Integrations · 8. Analytics and data extract |
+| **Low** | 3% each (9%) | 2. AI triage and classification · 6. Customer-facing experience · 9. Environment and configuration deployment |
 
-Rationale: agent workspace, data/permissions, pricing and vendor trust are the four gaps the RFC's problem statement calls out by name and carry the highest switching/renewal risk. Routing, integrations and analytics are core to today's operation but largely proven or in delivery. AI triage, customer-facing UX and environment tooling are lower risk — either already working via Agent Consultant or not yet load-bearing.
+Rationale: routing, agent workspace, data/permissions, pricing and vendor trust carry the highest switching/renewal risk. Routing joins the High tier because presence-aware cross-region ("follow-the-sun") routing is the largest capability gap in the current Zendesk setup and a hard dependency for the EOY 2026 operating model. Integrations and analytics are core to today's operation but largely proven or in delivery. AI triage, customer-facing UX and environment tooling are lower risk: either already working via existing AI tooling or not yet load-bearing.
 
 If Legal/Compliance input (Consumer Duty, Open Question 3) raises B2C readiness to a harder blocker, move Multi-channel entry points and Customer-facing experience into the High tier and rebalance.
 
 ---
 
-## 1. Multi-channel entry points — weight 8%
+## 1. Multi-channel entry points — weight 7%
 
 | # | Requirement | Zendesk | Intercom | Plain | Pylon | Evidence |
 |---|---|---|---|---|---|---|
@@ -66,11 +66,13 @@ If Legal/Compliance input (Consumer Duty, Open Question 3) raises B2C readiness 
 | 1.7 | Phone channel (B2C IVR + routing) | | | | | |
 | 1.8 | Mobile app chat (B2C, 2027) | | | | | |
 | 1.9 | Internal ticket submission (Account teams) | | | | | |
+| 1.10 | Multi-environment support (identify sandbox vs prod user/business) | | | | | |
+| 1.11 | Region / contracting-entity enrichment (write routing attribute via API) | | | | | |
 | | **Category score (avg)** | | | | | |
 
 ---
 
-## 2. AI triage and classification — weight 2.7%
+## 2. AI triage and classification — weight 3%
 
 | # | Requirement | Zendesk | Intercom | Plain | Pylon | Evidence |
 |---|---|---|---|---|---|---|
@@ -81,7 +83,7 @@ If Legal/Compliance input (Consumer Duty, Open Question 3) raises B2C readiness 
 
 ---
 
-## 3. Routing & field logic — weight 8%
+## 3. Routing & field logic — weight 14%
 
 | # | Requirement | Zendesk | Intercom | Plain | Pylon | Evidence |
 |---|---|---|---|---|---|---|
@@ -90,11 +92,20 @@ If Legal/Compliance input (Consumer Duty, Open Question 3) raises B2C readiness 
 | 3.3 | SLA per tier and taxonomy value | | | | | |
 | 3.4 | Customisable ticket and customer fields | | | | | |
 | 3.5 | Flexible tagging / field system | | | | | |
+| 3.6 | Flexible routing system (branching + fallbacks on any attribute) | | | | | |
+| 3.7 | Presence-aware / follow-the-sun routing (real-time agent presence) | | | | | |
+| 3.8 | Business-hours schedules per site/timezone (in/out-of-hours, hold queues) | | | | | |
+| 3.9 | Geographic / entity-based routing (region → site/team) | | | | | |
+| 3.10 | Queue-view scoping by attribute (prevent cherry-picking / segregation) | | | | | |
+| 3.11 | Push and pull queue models (both supported; view lock at shift end) | | | | | |
+| 3.12 | Capacity controls and handoff mode (concurrent caps, block near logoff) | | | | | |
+| 3.13 | Conditional routing on computed thresholds (rolling-metric caps) | | | | | |
+| 3.14 | Automated ownership release on SLA-breach risk (predictive reassignment) | | | | | |
 | | **Category score (avg)** | | | | | |
 
 ---
 
-## 4. Agent workspace — weight 15%
+## 4. Agent workspace — weight 14%
 
 | # | Requirement | Zendesk | Intercom | Plain | Pylon | Evidence |
 |---|---|---|---|---|---|---|
@@ -109,7 +120,7 @@ If Legal/Compliance input (Consumer Duty, Open Question 3) raises B2C readiness 
 
 ---
 
-## 5. Data and permissions — weight 15%
+## 5. Data and permissions — weight 14%
 
 | # | Requirement | Zendesk | Intercom | Plain | Pylon | Evidence |
 |---|---|---|---|---|---|---|
@@ -121,7 +132,7 @@ If Legal/Compliance input (Consumer Duty, Open Question 3) raises B2C readiness 
 
 ---
 
-## 6. Customer-facing experience — weight 2.7%
+## 6. Customer-facing experience — weight 3%
 
 | # | Requirement | Zendesk | Intercom | Plain | Pylon | Evidence |
 |---|---|---|---|---|---|---|
@@ -132,7 +143,7 @@ If Legal/Compliance input (Consumer Duty, Open Question 3) raises B2C readiness 
 
 ---
 
-## 7. Integrations (must-have) — weight 8%
+## 7. Integrations (must-have) — weight 7%
 
 | # | Requirement | Zendesk | Intercom | Plain | Pylon | Evidence |
 |---|---|---|---|---|---|---|
@@ -145,7 +156,7 @@ If Legal/Compliance input (Consumer Duty, Open Question 3) raises B2C readiness 
 
 ---
 
-## 8. Analytics and data extract — weight 8%
+## 8. Analytics and data extract — weight 7%
 
 | # | Requirement | Zendesk | Intercom | Plain | Pylon | Evidence |
 |---|---|---|---|---|---|---|
@@ -157,7 +168,7 @@ If Legal/Compliance input (Consumer Duty, Open Question 3) raises B2C readiness 
 
 ---
 
-## 9. Environment and configuration deployment — weight 2.7%
+## 9. Environment and configuration deployment — weight 3%
 
 | # | Requirement | Zendesk | Intercom | Plain | Pylon | Evidence |
 |---|---|---|---|---|---|---|
@@ -167,7 +178,7 @@ If Legal/Compliance input (Consumer Duty, Open Question 3) raises B2C readiness 
 
 ---
 
-## 10. Vendor reliability and operational trust — weight 15%
+## 10. Vendor reliability and operational trust — weight 14%
 
 | # | Requirement | Zendesk | Intercom | Plain | Pylon | Evidence |
 |---|---|---|---|---|---|---|
@@ -181,7 +192,7 @@ If Legal/Compliance input (Consumer Duty, Open Question 3) raises B2C readiness 
 
 ---
 
-## 11. Pricing — weight 15%
+## 11. Pricing — weight 14%
 
 | # | Requirement | Zendesk | Intercom | Plain | Pylon | Evidence |
 |---|---|---|---|---|---|---|
@@ -211,17 +222,17 @@ Any fail = disqualified. Record fail reason; do not proceed to weighted scoring 
 
 | Category | Weight | Zendesk | Intercom | Plain | Pylon |
 |---|---|---|---|---|---|
-| 1. Multi-channel entry points | 8% | | | | |
-| 2. AI triage and classification | 2.7% | | | | |
-| 3. Routing & field logic | 8% | | | | |
-| 4. Agent workspace | 15% | | | | |
-| 5. Data and permissions | 15% | | | | |
-| 6. Customer-facing experience | 2.7% | | | | |
-| 7. Integrations | 8% | | | | |
-| 8. Analytics and data extract | 8% | | | | |
-| 9. Environment and configuration | 2.7% | | | | |
-| 10. Vendor reliability and trust | 15% | | | | |
-| 11. Pricing | 15% | | | | |
+| 1. Multi-channel entry points | 7% | | | | |
+| 2. AI triage and classification | 3% | | | | |
+| 3. Routing & field logic | 14% | | | | |
+| 4. Agent workspace | 14% | | | | |
+| 5. Data and permissions | 14% | | | | |
+| 6. Customer-facing experience | 3% | | | | |
+| 7. Integrations | 7% | | | | |
+| 8. Analytics and data extract | 7% | | | | |
+| 9. Environment and configuration | 3% | | | | |
+| 10. Vendor reliability and trust | 14% | | | | |
+| 11. Pricing | 14% | | | | |
 | **Weighted total (/3.0)** | 100% | | | | |
 | **Gate status** | — | | | | |
 
@@ -229,5 +240,5 @@ Feed this table into the RFC's Comparison Matrix and Recommendation section once
 
 ---
 
-**Last updated**: 2026-07-02
+**Last updated**: 2026-07-17
 **Owner**: Charlie Wildish

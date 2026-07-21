@@ -53,7 +53,7 @@
 
 
 ### Payouts
-*Refers to the lifecycle of a payout made by card or bank payout. Includes status, declines, reversals, and proofs of payout. Does NOT include settlement of merchant balances (use FUNDS AND FEES instead).*
+*Refers to the lifecycle of a payout made by card or bank payout. Includes status, declines, reversals, and proofs of payout. Does NOT include settlement of merchant balances (use FUNDS AND FEES instead). Does NOT include managing, activating, or controlling a Checkout-issued card (create/activate, freeze, spend limits) — that's Card issuing, not a payout, even though both mention "card."*
 
 **Bank payouts** — Queries about payouts sent via bank transfer rails (SEPA, SWIFT, Faster Payments, ACH, wire transfers). Select this IF the ticket explicitly mentions: bank account, IBAN, SWIFT/BIC codes, MT103, beneficiary bank, wire transfer, bank-specific references, sanctions/AML screening holds, Inpay references, or name discrepancy verification. Also select this for payouts requiring RFI (Request for Information) for compliance screening. Do NOT select this if the payout method is unclear—use Card Payouts instead
 - *Declined / failed bank payout* — IF a bank payout was declined THEN select this.
@@ -63,9 +63,9 @@
 
 **Card payouts** — Queries about payouts sent via card networks (Visa Direct, Mastercard Send, Pay to Card/PTC, OCT). Select this IF the ticket mentions: Visa, Mastercard, card payout, card-based, ARN (Acquirer Reference Number), RRN, issuing bank, issuer, cardholder, or any card scheme reference. When the payout method is ambiguous or unclear (e.g., generic "withdrawal" or "payout" without specifying the rail), default to Card Payouts as they represent the majority of payout volume.
 - *Card payout stuck in pending or status inquiry* — If a merchant asks why a card payout is stuck in Pending then select this
-- *Declined / failed card payout* — If a merchant asks why a card payout was declined Paid but customer didn't receive money then select this
+- *Declined / failed card payout* — If a merchant asks why a card payout was declined, Paid but customer didn't receive money, or asks to cancel/reject a payout BEFORE it has processed THEN select this. Do NOT select this if the merchant asks to reverse a payout that has ALREADY completed successfully (use Card payout reversal).
 - *Proof of card payout* — IF merchant needs a card payout proof or Retrieval Reference Number (RRN) to give to a customer THEN select this.
-- *Card payout reversal* — If a merchant asks to reverse a card payout then select this
+- *Card payout reversal* — If a merchant asks to reverse or undo a card payout that has ALREADY completed successfully then select this. Do NOT select this if the merchant asks to cancel or reject a payout BEFORE it has processed (use Declined / failed card payout).
 
 
 ### Funds and fees
@@ -74,16 +74,17 @@
 **Key distinctions:**
 - *Reconciliation* — settlement reconciliation and cash-movement interpretation, or mismatched financial amounts (wrong settlement amount, unexpected fee), belong here.
 - *Fees* — questions about fees (interchange/scheme/gateway fees, tax invoices, pricing checks), including "why fee wasn't refunded", belong here.
+- *Not a data-format issue* — a reconciliation problem caused by a data-format/export defect (Excel truncation, unreadable ARNs, encoding issues) belongs to Data and analytics, not here.
 
 **Settlements** — Queries about Settlement lifecycle and reconciliation
 - *Delayed / missing settlement* — IF an expected settlement is not showing on Dashboard or not arrived in the merchant's bank account THEN select this.
-- *Reconciliation issue* — IF merchant is struggling to match report or Dashboard data to their bank statement entries or is reporting a discrepancy between expected and actual balances THEN select this.
+- *Reconciliation issue* — IF merchant is struggling to match report or Dashboard data to their bank statement entries or is reporting a discrepancy between expected and actual balances THEN select this. Do NOT select this if the merchant is confused about their balance figure itself or fund allocation with no bank-statement matching involved (use Balance explanation), or if the mismatch is caused by a data-format/export defect (use Data and analytics → Data mismatch / missing data).
 
 **Balances** — Queries about Balance status and confirmation
 - *Balance confirmation* — If the merchant needs a Statement of account (SOA) or balance confirmation document for audit purposes THEN select this
 - *Negative balance* — IF the merchant is struggling to understand why they have a negative balance on their account THEN select this
 - *Balance top up* — IF the merchant needs to top up their balance THEN select this
-- *Balance explanation* — IF the merchant needs help understanding their balance or how funds are allocated, reports balance discrepancies or is unable to reconcile figures between reports or different balance types
+- *Balance explanation* — IF the merchant needs help understanding their balance or how funds are allocated, reports balance discrepancies or is unable to reconcile figures between reports or different balance types. Do NOT select this if the merchant is specifically trying to match Dashboard/report data to their bank statement entries (use Reconciliation issue).
 
 **Billing & fees** — Queries about fees charged
 - *Invoice request* — IF merchant needs a copy of their tax or service invoice THEN select this.
@@ -98,12 +99,15 @@
 - *Integration symptoms* — plugin/checkout UI/integration behaviour (redirects, saved cards, a payment method disappearing from the site) belongs here.
 - *Network tokens* — Network Tokenization / Network Tokens / token migration / enabling NT questions belong here.
 - *Unexplained charges* — a customer charged an amount not reflected in Checkout.com records (wallet surcharge, 3DS fee, issuer fee) belongs here as an integration-layer investigation.
+- *Merchant-side data capture* — questions about form/checkout fields in the merchant's own website integration belong here, not Identity Verification (which covers the Checkout.com IDV product itself: document checks, facial recognition).
+- *Acquiring-side MCC* — MCC restrictions on processing channels (`pc_*` IDs) belong here, not Card issuing (which covers issued-card spend controls, not acquiring-side channel restrictions).
+- *Sandbox/test environment* — any change to the sandbox or test environment belongs here, not Account management and access (which is production-account only).
 
 **API keys** — Queries regarding the management of authentication keys (Secret/Public OAuth) and their access permissions.
 - *Create / edit keys* — If the merchant is asking about how to create, edit or troubleshoot API keys then select this
 - *Key scopes* — Select this if the merchant is inquiring about which permissions are required or if they are explicitly requesting that specific scopes, such as /metadata/card, be granted to their API keys.
 
-**API integration** — Queries regarding raw API responses, HTTP status codes, and network connectivity. (Use this as the "catch-all" for API errors that are not specific to a Plugin, Flow, Frames, SDK or Payment Links).
+**API integration** — Queries regarding raw API responses, HTTP status codes, and network connectivity. (Use this as the "catch-all" for API errors that are not specific to a Plugin, Flow, Frames, SDK or Payment Links). Does NOT include webhook delivery, signature-verification, or payload-content issues — use Webhooks for those.
 - *API error 4XX / logic error* — IF the merchant encounters HTTP 400-level errors (e.g., 404 Not Found, 422 Validation Error) indicating the issue lies with the request, OR reports functional integration bugs. Specific scenarios include redirect parameter mismatches, invalid data formats, missing response payloads, or logic errors where the system rejects the input.
 - *API error 5XX* — Choose this category when the merchant reports HTTP 500-level errors, indicating that the request was valid but the server failed to fulfill it due to technical faults like Service Unavailable (503). This definition applies to broader infrastructure problems, including issues with the overall API status, synchronization failures caused by server crashes, or internal system errors that prevent the completion of the request. It is the correct selection for outages or downtimes where the provider's system is unresponsive.
 - *Idempotency / timeout* — If the merchant is getting timeout or idempotency issues on API requests then select this
@@ -119,7 +123,7 @@
 - *E-commerce plugin* — If a merchant is asking about an Plugin issue like Shopify, Woocommerce and others then select this
 - *Apple Pay / Google Pay* — IF the merchant is asking about Apple Pay or Google Pay setup, integration, certificates, domain verification, or method-specific errors THEN select this.
 
-**Webhooks** — Queries about webhooks
+**Webhooks** — Queries about webhooks. Does NOT include a general API 4XX/5XX error on a synchronous API call with no webhook/async-delivery context — use API integration for those.
 - *Webhook setup* — Select this category when a merchant is unable to successfully configure or connect their webhooks, including errors within third-party plugins like Shopify or requests for initial registration in environments like Sandbox. This definition covers all configuration-stage inquiries, such as Endpoint Registration Failures, where the listener URL cannot be saved, or when the merchant needs assistance enabling the service before any live transactions occur.
 - *Signature verification or delivery failure* — Select this category if the merchant reports webhook delivery issues, including: Delivery Latency, missed notifications/callbacks for specific events (like entity creation), synchronization failures where a Status Mismatch occurs because the webhook never arrived to update their system, dispatch timing investigations, or timeouts where the merchant questions if the webhook failed to sync a successful capture to their dashboard. Also select this for signature verification issues, including: questions about security headers, source IP verification, how to cryptographically verify the webhook signature, the secret key, the hashing algorithm used, or why their local verification logic is failing to authenticate the incoming request.
 - *Missing webhook data* — Select this category if the merchant reports inconsistent metadata, such as a missing orderId, or specifically points out that the Payload Data Format does not match their expectations. This definition applies when the webhook was successfully delivered, but the content inside was incomplete or incorrect, necessitating an investigation into why specific fields were excluded from the payload.
@@ -135,10 +139,11 @@
 - *Report data vs access* — a report that's missing/incorrect/not generated, a data mismatch, or a time-range/filter/SFTP-delivery issue belongs here.
 - *Network tokens reporting* — questions about which report/API field shows NT status, or an NT flag mismatch between systems, belong here.
 - *Data quality* — reconciliation issues caused by data format/export problems (Excel truncation, unreadable ARNs, missing columns, encoding issues) belong here.
+- *Not a financial reconciliation* — a financial/balance reconciliation problem (wrong settlement amount, balance vs bank statement mismatch) with no data-format/export defect involved belongs to Funds and fees → Settlements, not here. A card-issuing-specific settlement/report mismatch belongs to Card issuing, not here.
 
 **Reporting** — Queries about Reports and data within
 - *Report not generated / missing* — IF the merchant is unable to successfully generate, download, or access a specific report for any reason. Select this for issues regarding file availability, download failures, missing formats, or requests for manual extraction due to dashboard access limitations.
-- *Data mismatch / missing data* — IF there is a discrepancy or data gap in reports THEN select this.
+- *Data mismatch / missing data* — IF there is a discrepancy or data gap in reports THEN select this. Do NOT select this if the merchant is reporting a financial/balance mismatch with no data-format/export defect involved (use Funds and fees → Reconciliation issue).
 - *Custom report request* — IF the merchant requires a specific data set or column configuration not available by default THEN select this.
 - *SFTP configuration* — If a merchant is asking about reporting using SFTP then select this
 
@@ -157,7 +162,14 @@
 
 
 ### Card issuing
-*Refers to issuing-related issues. Includes physical or virtual card issues and controls on these cards, issuing transactions, digital wallets, and SDK integration.*
+*Refers to card issuing related queries. Includes physical or virtual card issues and controls on these cards, issuing transactions, digital wallets, and SDK integration.*
+
+**Key distinctions:**
+- *Card lifecycle signal* — a customer-provided ID matching the regex `^trx_[a-z0-9]{26}$` is an issued-card transaction ID and is a strong signal this case type applies.
+- *Not a BIN/metadata inquiry* — queries about BIN lookup, BIN expansion, issuer identification, or card scheme/issuer metadata inquiries are general inquiries (General → Inquiries → Reference data request), not issued card lifecycle actions — do not select this case type for those.
+- *Not acquiring-side MCC* — acquiring-side MCC restrictions on processing channels (`pc_*` IDs) are not issued-card spend controls — select Technical issue instead.
+- *Not an acquiring transaction* — an ID matching the regex `^(pay)_(\w{26})$` is an acquiring/acceptance-side transaction, not an issued-card transaction; do not treat it as evidence for this case type.
+- *Not a card payout* — a request to send money via a card network (Visa Direct, Mastercard Send) to an end recipient is Payouts → Card payouts, not an issued-card lifecycle action, even though both mention "card."
 
 **Card management** — Queries about managing cards
 - *Create / activate card* — IF merchant is having trouble setting up or enabling a new card THEN select this.
@@ -181,21 +193,23 @@
 
 
 ### Account management and access
-*Refers to access to the Dashboard/Portal to use a feature, or making structural changes to the account. Includes login issues, user permissions, and account configuration. Select this if the merchant requests to add, enable, or configure specific payment methods (e.g. Amex, SEPA, APMs), currencies, schemes, or processing channels, or to update billing/statement descriptors. Does NOT include payment processing or integration issues.*
+*Refers to access to the Dashboard/Portal, or making structural changes to the production account. Includes login issues, missing permissions, audit logs, and account configuration (e.g., bank accounts). Select this if the merchant requests to add, enable, or configure specific Payment Methods (e.g., Amex, SEPA, APMs), currencies, schemes, processing channels, or to update billing/statement descriptors. Only use when the merchant explicitly requests a change to their own account settings. Does NOT include payment processing or integration issues, changes to the sandbox/test environment (use Technical issue), or internal Checkout staff coordination/migration logistics/call-scheduling threads with no merchant action requested (use Non-merchant requests).*
 
 **Key distinctions:**
 - *Enablement* — a request to enable/configure a payment method, currency, scheme, MID, or processing channel, or to update billing/statement descriptors, belongs here, not Accepting payments.
-- *Access blockers* — if the primary blocker is access/permissions (can't access/view/download a report or section, missing permission), it belongs here.
+- *Access blockers* — if the PRIMARY blocker is access/permissions (can't access/view/download a report or section, missing permission), it belongs here.
+- *Production only* — changes to the sandbox or test environment belong to Technical issue, not here.
+- *Not internal coordination* — internal Checkout staff coordination, migration logistics, or call-scheduling threads with no merchant action requested belong to Non-merchant requests, not here.
 
-**Login & access** — Queries about Dashboard login failures or setup
+**Login & access** — 2FA/login/MFA errors, user permissions, SSO configuration, activity evidence, adding/removing users, dashboard access/ownership, and Checkout Dashboard UI failure (pages not saving, blank pages, broken buttons) regardless of whether login is involved
 - *Login error / MFA / SSO* — IF merchant cannot enter the Dashboard due to password issues, MFA/2FA problems, SSO errors, or requires assistance setting up or troubleshooting SAML/Single Sign-On configuration THEN select this
 - *User permissions* — IF adding/removing merchants or changing what a specific merchant can see/do THEN select this.
 - *Dashboard user audit evidence* — IF merchant wants an audit log of who performed which action in the portal THEN select this.
-- *Dashboard error* — IF the merchant reports a Dashboard page or feature that fails to load, displays an error message or error code, or behaves unexpectedly after successful login such as pages showing "Unable to load", transaction details not opening, or specific Dashboard sections returning errors THEN select this. Do NOT select this for login/authentication failures (use Login Error / 2FA) or permission-related access issues (use User Permissions).
+- *Dashboard error* — IF the merchant reports a Checkout Dashboard UI failure — pages not saving, blank pages, broken buttons — regardless of whether login is involved, including pages showing "Unable to load", transaction details not opening, or specific Dashboard sections returning errors THEN select this. Do NOT select this for login/authentication failures (use Login Error / 2FA) or permission-related access issues (use User Permissions).
 
-**Account changes** — Requests regarding overall Account changes such as the merchant entity's commercial terms, structural platform configuration, or lifecycle status. Also select this for configuration updates, including retrieving identifiers or correcting settings like Billing Descriptors and MCCs.
+**Account changes** — Pricing changes, account settings updates (bank account change, legal entity updates), terminations, and general account setup and configuration in the production environment
 - *Pricing change* — IF merchant is requesting to update their contract or commission rates THEN select this.
-- *Account settings update* — IF the request involves configuring processing channels (e.g., new MIDs, environment setup), retrieving account identifiers (e.g., BINs, MCCs), changing account status (e.g., activation, restriction), or updating administrative profile details (bank info, legal address), THEN select this.
+- *Account settings update* — IF the request involves a bank account change, legal entity update, configuring processing channels (e.g., new MIDs, environment setup), retrieving account identifiers tied to the merchant's own account (e.g., MID, CID, BINs, MCCs, entity-to-channel mappings), or changing account status (e.g., activation, restriction) in the production environment THEN select this. Do NOT select this for external/reference identifier lookups not tied to the merchant's own account configuration (BIN ranges, issuer identification, scheme metadata, Checkout's own acquirer ID/BIN sponsor/scheme IDs) — use General → Inquiries → Reference data request instead.
 - *Terminations* — IF merchant explicitly asks to Terminate or close their account THEN select this.
 
 
@@ -213,20 +227,21 @@
 **Compliance evidence** — Queries about requesting compliance documentation from Checkout
 - *PCI / AOC request* — IF merchant asks for security compliance certificates (AOC/PCI-DSS) THEN select this.
 - *Audit request* — IF query is for formal audit evidence or due diligence questionnaires THEN select this.
-- *Sensitive data request* — IF the merchant requests sensitive customer information such as full PAN (Primary Account Number), unmasked card numbers, or other protected cardholder data, typically in response to legal authorities, law enforcement, regulatory bodies, or court orders THEN select this.
+- *Sensitive data request* — IF the merchant requests sensitive customer information such as full PAN (Primary Account Number), unmasked card numbers, or other protected cardholder data, typically in response to legal authorities, law enforcement, regulatory bodies, or court orders THEN select this. Do NOT select this if the request is for deletion, access, or correction of the requester's OWN personal/identity-verification data under GDPR (use Identity Verification → Data privacy).
 - *Other compliance docs*
 
 
 ### General
-*Refers to general inquiries which do not fit other case types.*
+*Refers to general inquiries which do not fit other case types. Includes sales inquiries, spam, duplicate tickets (no action needed), empty/OOO/no-action messages, and requests for BIN ranges, issuer identification, scheme metadata, or card categorisation reference data. Also includes requests for Checkout's acquirer ID, BIN sponsor, merchant identifiers, or scheme IDs needed for local tax authority or regulatory reporting. Does NOT include requests for reference/configuration data such as MID, CID, or entity-to-channel mappings tied to the merchant's own account — use Account management and access instead.*
 
-**Inquiries** — Queries about buying our services or Sales or anything else
+**Inquiries** — Queries about buying our services or Sales or anything else, or requests for external/reference identifier data not tied to the merchant's own account configuration
 - *Sales inquiry* — IF a prospect wants to buy services or add new products THEN select this.
 - *Spam / duplicate / no action / follow ups* — IF the ticket is spam, empty, a follow up. an OOO reply, or an accidental double-post THEN select this.
+- *Reference data request* — IF the merchant requests BIN ranges, issuer identification, scheme metadata, card categorisation reference data, OR Checkout's own acquirer ID, BIN sponsor, merchant identifiers, or scheme IDs needed for local tax authority or regulatory reporting THEN select this. Do NOT select this if the request is for reference/configuration data (MID, CID, entity-to-channel mappings) tied to the merchant's own account — use Account management and access → Account changes → Account settings update instead.
 
 
 ### Identity Verification
-*Refers to the Identity Verification (IDV) product and services, which use document checks, facial recognition, and automation to verify identity. Includes verification support, compliance, and security queries.*
+*Refers to the Identity Verification (IDV) product and services, which use document checks, facial recognition, and automation (with manual review where needed) to verify a person's identity. Merchants use IDV for onboarding, KYC compliance, and fraud prevention. Includes verification support, compliance, and security queries. Does NOT include queries about form/checkout fields in the merchant's own website integration — IDV covers the Checkout.com IDV product (document checks, facial recognition), not merchant-side data-capture fields, which belong in Technical issue.*
 
 **Verification and technical support** — Review rejected verifications, update configurations and resolve technical errors.
 - *Verification inquiry* — Queries about specific identity verification results, including requests to correct extracted data (name, DOB), re-verification due to suspected fraud, understanding why a verification was rejected, or inquiries about a specific IDV ID.
@@ -234,7 +249,7 @@
 - *Technical & platform* — Technical issues with the IDV platform, including verifications stuck in pending, document capture failures, API errors, webhook issues, or integration problems.
 
 **Security, privacy and compliance** — Submit requests related to data privacy rights, report security incidents, or request compliance documentation.
-- *Data privacy* — Requests related to data privacy rights, including data deletion/erasure requests (GDPR), requests for copies of personal data, identity theft reports, or questions about privacy policy and data handling.
+- *Data privacy* — Requests related to data privacy rights, including data deletion/erasure requests (GDPR), requests for copies of personal data, identity theft reports, or questions about privacy policy and data handling. Do NOT select this if the merchant requests full PAN, unmasked card numbers, or other protected cardholder data typically for law enforcement/audit purposes (use Compliance and audit → Sensitive data request).
 - *Account & compliance* — Queries about IDV account-level compliance, regulatory requirements, or compliance certifications.
 - *Security* — Queries related to IDV security concerns, security incidents, or security certifications.
 
@@ -244,9 +259,9 @@
 **N/A** — Tickets that do not require action or do not fit other IDV issue types.
 - *3rd party* — IF the ticket was submitted by or relates to a third party and does not require IDV team action THEN select this.
 - *Automated* — IF the ticket was generated automatically by a system and does not require manual action THEN select this.
-- *Follow up* — IF the ticket is a follow-up to a previous request that has already been resolved THEN select this.
+- *Follow up* — IF the ticket is a follow-up to a previous request that has already been resolved THEN select this. Do NOT select this if the merchant resolved the CURRENT, not-yet-actioned issue themselves before any agent action (use Self resolved).
 - *Sales lead* — IF the ticket is a sales inquiry or lead rather than a support request THEN select this.
-- *Self resolved* — IF the issue was resolved by the merchant before agent intervention THEN select this.
+- *Self resolved* — IF the issue was resolved by the merchant before agent intervention THEN select this. Do NOT select this if the ticket is merely referencing or following up on a request Care already resolved in a prior interaction (use Follow up).
 - *Spam* — IF the ticket is spam or irrelevant THEN select this.
 
 
@@ -259,7 +274,7 @@
 
 
 ### Non-merchant requests
-*Manual classification by agents only. Contacts originating from parties other than the merchant — routed or closed without standard support handling.*
+*Manual classification by agents only. Contacts originating from parties other than the merchant — routed or closed without standard support handling. Also covers internal Checkout staff coordination, migration logistics, or call-scheduling threads with no merchant action requested.*
 
 - **Cardholder Complaints**
 - **Issuing Bank Requests**

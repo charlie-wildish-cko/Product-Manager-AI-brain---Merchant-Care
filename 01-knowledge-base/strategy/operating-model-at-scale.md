@@ -103,7 +103,7 @@ The 2030 operating model is only reachable if the 2026 foundations are built cor
 | 2030 requirement | 2026 deliverable that lays the foundation |
 |---|---|
 | Fin as primary support product | AI First Resolution Using Fin (Q2-Q3); Replace Webform with Fin (Q3) |
-| AI audit and QA function | Reflex dashboards (Q1-Q2); Reflex MCP (Q3) |
+| AI audit and QA function | Reflex dashboards (Q1-Q2); Reflex MCP (TBC) |
 | Knowledge base as infrastructure | Content gap analysis in Reflex; Merchant Education Hub |
 | Escalation design with full context (AI-to-human) | Merchant Context for Fin and Agents (Q1-Q2); Agent Consultant (Q1-Q4) |
 | Cross-team escalation design (agent-to-team) | Agent Productivity Tools: Zendesk/Jira integration (Q1/Q2); custom API integrations scoped H2 |

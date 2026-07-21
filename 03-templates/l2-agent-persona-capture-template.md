@@ -75,3 +75,31 @@
 - Products confirmed: `[ ]`
 - Escalation paths confirmed: `[ ]`
 - Gaps / follow-up needed: `[ ]`
+
+---
+
+## Processing Instructions (for Claude)
+
+When given a transcript of this interview, produce a structured persona by matching the agent's answers to canonical values — do not alter what the agent said, only normalise the output fields.
+
+**Taxonomy matching** — cross-reference `01-knowledge-base/processes/support-taxonomy.md`:
+- Map the agent's described case types and issue types to the exact taxonomy labels in that file
+- Where the agent's language doesn't match a taxonomy label exactly, pick the closest match and note the discrepancy
+- Flag any case types or issue types the agent mentions that don't exist in the taxonomy
+
+**Product matching** — cross-reference `01-knowledge-base/products/product-definitions.md` and `01-knowledge-base/Checkout Products and teams.csv`:
+- Map product names to exact names in the product catalogue
+- Where the agent uses informal names or abbreviations, resolve to the canonical product name and note the alias used
+- Flag any products mentioned that don't appear in either reference file
+
+**Preserve verbatim**: keep the agent's own words for triage heuristics, resolution patterns, escalation behaviour, and tribal knowledge — these are prompt-ready and must not be paraphrased.
+
+**Output format**: produce a markdown persona file with sections:
+1. Identity (name, focus area, date)
+2. Taxonomy coverage (canonical labels, with confidence: primary / secondary / handles-sometimes)
+3. Product depth (canonical names, with confidence: expert / familiar / avoid)
+4. Triage heuristics (verbatim)
+5. Resolution patterns (verbatim)
+6. Escalation rules (verbatim + escalation targets)
+7. Tribal knowledge (verbatim)
+8. Matching notes (discrepancies, unresolved names, taxonomy gaps)
