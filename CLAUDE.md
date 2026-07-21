@@ -38,6 +38,8 @@ Every document, analysis, or recommendation must connect to:
 05-archive/          # Completed work by year/quarter
 ```
 
+**Keep `README.md` in sync with this structure** — when a top-level directory is added, removed, or its purpose changes, update `README.md`'s directory tree and key reference table in the same pass, not as separate cleanup later.
+
 ---
 
 ## Key Reference Files
@@ -147,7 +149,7 @@ For product strategy documents (1–3 year horizon, VP/Director audience): use `
 
 ## Workflows & Skills
 
-**Keep this section in sync with `.claude/skills/`** — when a skill is added or removed, update its entry here too.
+**Keep this section in sync with `.claude/skills/`** — when a skill is added or removed, update its entry here too, and update the skills table in `README.md` in the same pass.
 
 ### Document Review Panel
 Apply to any PRD, memo, or spec before finalising.

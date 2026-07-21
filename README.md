@@ -1,382 +1,108 @@
-# Charlie PM Brain - Checkout.com Customer Support PM Workspace
+# Charlie PM Brain
 
-Welcome to your AI-enhanced Product Management workspace! This directory is designed to help Claude assist you more effectively with your day-to-day PM work at Checkout.com.
+Charlie Wildish's workspace for Merchant Care (Customer Support) PM work at Checkout.com. A markdown-native second brain: knowledge base, templates, workflows, active work, and archive, with Claude Code operating on top via `CLAUDE.md`, skills, and agents.
 
-## 🎯 What This Workspace Does
+## The One Principle
 
-This workspace serves as:
-- **Knowledge repository**: Domain knowledge about payments, PSPs, and customer support
-- **Process documentation**: Your workflows and best practices
-- **Template library**: Reusable formats for common deliverables
-- **AI context**: Rules that help Claude understand your role and needs
-- **Active workspace**: Where your current projects and work live
+All work ties back to strategy. Never produce work that floats.
 
-## 📁 Directory Structure
+Every document, analysis, or recommendation connects to a strategic goal (reduce contact rate, reduce cost of support), a north star metric (contact rate, cost per contact), a guardrail metric (merchant CSAT), a named 2026 deliverable, and a flywheel domain (Input → Orchestration → Fuel → Agent Experience → Insight & Prevention → Governance).
+
+Full detail: [CLAUDE.md](CLAUDE.md) — the source of truth for how Claude should work in this repo. Read it before making structural changes here.
+
+## Directory Structure
 
 ```
 Charlie PM brain/
-├── .cursor/rules/                        # AI context (role, domain, style, stakeholders)
-│   ├── context.mdc                       # Role, team, goals, flywheel model, care tiers
-│   ├── customer-support.mdc              # Support structure, channels, SLAs
-│   ├── payment-domain.mdc                # PSP fundamentals and terminology
-│   └── communication-style.mdc           # Writing style by audience
+├── CLAUDE.md                       # AI context: role, principles, style, workflows, stakeholders
+├── 2026 deliverables.md            # 2026 roadmap: goals, quarters, flywheel map (source of truth for dates)
 │
-├── 01-knowledge-base/                    # Domain knowledge and reference
-│   ├── strategy/                         # Strategic frameworks and source docs
-│   │   ├── care-product-model.md         # The Care Product flywheel (6-domain model)
-│   │   ├── support-scale-principles.md   # Scaling principles to 2030
-│   │   ├── competitive-support-audit-2026.md # Competitor support benchmarks (Stripe, Adyen, etc.)
-│   │   ├── care-success-plans-proposal.md    # Source proposal for support tiers
-│   │   └── rumelt-strategy-kernel.md         # Strategy Kernel (Diagnosis → Guiding Policy → Coherent Actions)
-│   ├── products/                         # Product reference docs
-│   │   ├── customer-segments.md         # All segments overview
-│   │   ├── care-success-plans.md         # Tier model (Standard/Enterprise/Premium)
-│   │   ├── platform-segment.md           # Platform/ISV deep-dive (primary 2026 focus)
-│   │   ├── reflex.md                     # Reflex — AI contact insights product
-│   │   └── checkout-products.md          # Checkout.com product overview
-│   ├── processes/                        # Support process documentation
-│   │   ├── support-workflows.md          # Ticket handling procedures
-│   │   ├── socratic-questioning-prds.md  # Socratic questions to sharpen PRDs
-│   │   ├── ai-agent-operations.md        # Fin AI Agent operations
-│   │   ├── incident-response.md          # Incident response process
-│   │   └── known-challenges.md           # Known operational challenges
-│   ├── payment-domain/                   # Payment industry knowledge
-│   ├── metrics/                          # KPI definitions (flywheel-organised) + P&L reporting
-│   ├── bigquery-queries/                 # Saved SQL query library
-│   ├── checkout-business-context.md      # Company overview, product pillars, P&L context
-│   ├── data-sources.md                   # All data source access and usage guide
-│   └── teams.md                          # Internal team names and stakeholder groups
+├── 01-knowledge-base/              # Reference — strategy, products, processes, payment domain, metrics
+│   ├── strategy/                   # Flywheel model, scaling principles, competitive audits
+│   ├── products/                   # Product reference docs (segments, Reflex, Agent Consultant, Fin, Zendesk)
+│   ├── processes/                  # Support workflows, taxonomy, SOPs, review panel personas
+│   ├── payment-domain/             # Payment/fintech terminology (200 terms)
+│   ├── metrics/                    # KPI definitions, contact forecasts
+│   ├── bigquery-queries/           # Saved SQL query library
+│   ├── Support content/            # Support articles, tech docs, API reference (exported)
+│   └── Checkout Products and teams.csv
 │
-├── 02-workflows/                         # Step-by-step process guides
-│   ├── ticket-analysis.md
-│   ├── requirement-writing.md
-│   ├── stakeholder-updates.md
-│   └── integrated-analysis.md            # Multi-source analysis workflow
+├── 02-workflows/                   # Step-by-step process guides (ticket analysis, PRD writing, reviews)
+├── 03-templates/                   # Reusable document templates (PRD, memo, RFC, postmortem, etc.)
+├── 04-active-work/                 # Active work — prds/, strategy/, research/, working-files/, meeting-notes/
+├── 05-archive/                     # Completed work, by year/quarter
 │
-├── 03-templates/                         # Reusable document templates
-│   ├── prd-template.md
-│   ├── user-story-template.md
-│   ├── stakeholder-update-template.md
-│   ├── ticket-analysis-template.md
-│   ├── rfc-template.md
-│   └── postmortem-template.md
-│
-├── 04-active-work/                       # Current projects and work-in-progress
-│   ├── roadmap-items/                    # PRDs and specs for features in flight
-│   │   ├── fin-email-auth-data-policy-prd.md
-│   │   ├── zendesk-org-domain-mapping-prd.md
-│   │   └── blue-emi-zendesk-support-prd.md
-│   └── fin-email-behaviour-spec.md
-│
-├── 05-archive/                           # Completed work
-│
-├── 2026 deliverables.md                  # 2026 product roadmap (goals, quarters, flywheel map)
-└── README.md                             # You are here
+└── .claude/skills/                 # Slash-command skills (see below)
 ```
 
-## 🚀 Getting Started
+Each major directory has its own `README.md` with a current file-by-file index — check there for specifics.
 
-### First Time Here?
+## Starting a New Task
 
-1. **Review the Cursor rules** (`.cursor/rules/`) to see how Claude understands your role
-2. **Browse the knowledge base** (`01-knowledge-base/`) to familiarize yourself with the structure
-3. **Check out the templates** (`03-templates/`) for documents you'll create frequently
-4. **Read the workflows** (`02-workflows/`) for process guidance
+1. **Orient** — check `04-active-work/` for existing work before starting from scratch. PRDs live in `04-active-work/prds/<initiative>/`, strategy in `04-active-work/strategy/`, research in `04-active-work/research/`, data artefacts in `04-active-work/working-files/`.
+2. **Anchor** — confirm the task maps to a named deliverable and quarter in `2026 deliverables.md`. Flag it if it doesn't.
+3. **Clarify the output format** — PRD, memo, Slack update, stakeholder update, analysis, exploration.
+4. **Draft** — use the relevant template and writing style (see `01-knowledge-base/processes/writing-style-guide.md`).
 
-### Daily Usage
+## Skills
 
-**When you need to...**
+Invoke with `/<skill-name> [args]`. Full definitions in `.claude/skills/`.
 
-📝 **Write requirements** → Use `02-workflows/requirement-writing.md` + `03-templates/prd-template.md`
+| Skill | Purpose |
+|---|---|
+| `/create-prd [topic]` | Full PRD workflow: Draft → Review Panel Critique → Refine → Condense. Saves to `04-active-work/` |
+| `/strategic-review [topic]` | Deep strategic review of an initiative or document; surfaces tensions and alignment |
+| `/sync-meeting-notes [cutoff date]` | Pull new Gemini meeting notes from Drive, write structured notes to `04-active-work/meeting-notes/` |
+| `/classify-definitions [taxonomy\|products\|both]` | Generate AI-readable classification definitions (TSV) from taxonomy or product catalogue |
+| `/sync-product-catalogue` | Sync the Airtable product catalogue to local CSV + product definitions |
+| `/taxonomy-classification-qa [source]` | QA Fin's contact classifications against the support taxonomy (defaults to Looker Look 18808) |
+| `/workspace-review` | Audit `04-active-work/`, assign keep/update/archive/delete verdicts, fix deliverable-date drift |
+| `/write-fin-attribute` | Draft or update a single Fin Attribute value definition (Intercom format) |
 
-📊 **Analyze support tickets** → Follow `02-workflows/ticket-analysis.md` + use `03-templates/ticket-analysis-template.md`
+## Key Reference Files
 
-📢 **Update stakeholders** → Follow `02-workflows/stakeholder-updates.md` + use `03-templates/stakeholder-update-template.md`
+| Purpose | File |
+|---|---|
+| 2026 roadmap (goals, quarters, flywheel map) | `2026 deliverables.md` |
+| Care Product flywheel model | `01-knowledge-base/strategy/care-product-model.md` |
+| Care Product strategy 2026-2030 (Rumelt kernel) | `04-active-work/strategy/care-product-strategy-2026-2030.md` |
+| Team structure & stakeholders | `01-knowledge-base/teams.md` |
+| Support taxonomy & contact volumes | `01-knowledge-base/processes/support-taxonomy.md` |
+| Fin Attribute definitions (Intercom-ready) | `01-knowledge-base/processes/fin-attributes-definitions.md` |
+| Care Agent SOPs & KB index | `01-knowledge-base/processes/Care Agent SOPs/INDEX.md` |
+| Product catalogue | `01-knowledge-base/Checkout Products and teams.csv` |
+| Product definitions + contact risk tags | `01-knowledge-base/products/product-definitions.md` |
+| Payment domain terminology (200 terms) | `01-knowledge-base/payment-domain/checkout-terminology.md` |
+| KPI definitions | `01-knowledge-base/metrics/kpi-definitions.md` |
+| Contact volume forecasts 2026-2030 | `01-knowledge-base/metrics/contact forecasting.md` |
+| Reflex product reference | `01-knowledge-base/products/reflex.md` |
+| Fin AI Agent reference | `01-knowledge-base/products/fin-ai-agent.md` |
+| Zendesk reference | `01-knowledge-base/products/zendesk.md` |
+| PRD template + example | `03-templates/prd-template.md`, `03-templates/prd-template-example.md` |
+| Writing style guide (by audience) | `01-knowledge-base/processes/writing-style-guide.md` |
 
-❓ **Understand payment concepts** → Reference `01-knowledge-base/payment-domain/`
+See `CLAUDE.md` for the full reference table, data rules (real data only, no placeholders), and PRD framework.
 
-🔧 **Handle support processes** → Check `01-knowledge-base/processes/`
+## Working with Claude
 
-📈 **Define or track metrics** → See `01-knowledge-base/metrics/kpi-definitions.md`
-
-🔗 **Work with data sources** → See `01-knowledge-base/data-sources.md`
-
-🎯 **Frame product/roadmap strategy** → Use `01-knowledge-base/strategy/rumelt-strategy-kernel.md`
-
-✏️ **Sharpen PRD or feature thinking** → Use `01-knowledge-base/processes/socratic-questioning-prds.md`
-
-🔄 **Do integrated analysis** → Follow `02-workflows/integrated-analysis.md`
-
-### Working with Claude
-
-Claude has context about:
-- Your role as Customer Support PM at Checkout.com
-- Payment industry fundamentals and PSP concepts
-- Common support workflows and processes
-- Your communication style preferences
-
-**Ask Claude to**:
-- Draft documents using your templates
-- Analyze ticket data you provide
-- Answer questions about payment concepts
-- Suggest approaches to PM challenges
-- Review and improve your drafts
-- Explain complex technical topics in simple terms
+Ask Claude to draft documents, analyze ticket data, explain payment concepts, review drafts, or run any skill above. Claude has role and domain context loaded from `CLAUDE.md` — no need to re-explain who you are or what the strategic goals are each time.
 
 **Examples**:
-> "Help me draft a PRD for a self-service password reset feature"
+> "Draft a PRD for [feature] — run `/create-prd`"
 
-> "Analyze these ticket trends and identify the top 3 product opportunities"
+> "What quarter is [deliverable] scoped to?"
 
-> "Explain how 3D Secure works in simple terms for a stakeholder update"
+> "Analyze this ticket data and identify the top 3 product opportunities"
 
-> "Review this requirements doc and flag anything unclear or missing"
+> "Run a strategic review on [initiative]"
 
-## 📂 Directory Details
+## Maintenance
 
-### `.cursor/rules/` - AI Context
+- **Deliverable dates**: `2026 deliverables.md` is the single source of truth for quarters. When editing any doc that states a quarter, verify against it first; fix drift in the same pass.
+- **Archive before drafting**: search `05-archive/` and `04-active-work/` for prior versions before creating a new document from scratch.
+- **Run `/workspace-review` periodically** to catch stale `04-active-work/` files and deliverable-date drift.
+- **Real data only**: never use placeholder numbers. See the Data Rules section in `CLAUDE.md` for canonical sources.
 
-Rules that give Claude context about your work:
+---
 
-- **context.mdc**: Your role, responsibilities, stakeholders
-- **payment-domain.mdc**: PSP and payment processing fundamentals
-- **customer-support.mdc**: Support processes, escalations, metrics
-- **communication-style.mdc**: How to communicate with different audiences
-
-**When to update**: When your role changes, new processes are added, or you join new teams
-
-
-### `2026 deliverables.md` - Active Roadmap
-
-The 2026 product roadmap organised by goal (reduce contact rate / reduce cost of support), with quarterly delivery targets, flywheel domain mapping, and roadmap dependencies. Update as quarters progress and deliverables are refined.
-
-
-### `01-knowledge-base/` - Domain Knowledge
-
-Centralized reference information organized by topic:
-
-**strategy/** - Strategic frameworks and source docs
-- Care Product flywheel, scaling principles, competitor audit
-- Rumelt Strategy Kernel (Diagnosis → Guiding Policy → Coherent Actions) for product/roadmap strategy
-
-**products/** - Checkout.com products and features
-- Starter doc for product info (add your specific product details)
-- Subdirectories for feature specs and integration guides
-
-**processes/** - Internal workflows and procedures
-- Support ticket handling workflows, Socratic questioning for PRDs, review panel personas
-- Incident response processes
-- Release and deployment procedures
-
-**payment-domain/** - Payment industry knowledge
-- PSP fundamentals and payment flows
-- Common payment issues and solutions
-- Compliance and regulations
-
-**metrics/** - KPIs and measurement
-- Standard metric definitions
-- Dashboard locations and links
-
-**When to update**: As you learn new information, document it here for future reference
-
-
-### `02-workflows/` - Process Documentation
-
-Step-by-step guides for repeatable PM tasks:
-
-- **ticket-analysis.md**: How to analyze support data
-- **requirement-writing.md**: Writing clear, actionable requirements
-- **stakeholder-updates.md**: Creating effective status updates
-
-**When to add new workflows**: When you develop a reliable process you use repeatedly
-
-
-### `03-templates/` - Document Templates
-
-Reusable formats for common PM deliverables:
-
-- **prd-template.md**: Product Requirements Document
-- **user-story-template.md**: User story with acceptance criteria
-- **stakeholder-update-template.md**: Regular status update
-- **ticket-analysis-template.md**: Support data analysis
-- **rfc-template.md**: Request for Comment
-- **postmortem-template.md**: Incident postmortem
-
-**How to use**: Copy template to your working directory, rename, and fill in
-
-
-### `04-active-work/` - Current Projects
-
-Your work-in-progress organized by type:
-
-**roadmap-items/** - Features being planned or built
-
-**stakeholder-updates/** - Draft and sent updates
-
-**How to organize**:
-- Create subdirectory per major project/initiative
-- Move to `05-archive/` when complete
-- Keep this directory focused on active work only
-
-
-### `05-archive/` - Completed Work
-
-Historical projects and documentation:
-
-- Completed PRDs and feature specs
-- Past analysis reports
-- Finished projects
-- Deprecated documentation
-
-**When to archive**: Once work is complete and no longer actively referenced
-
-
-## 🛠️ Best Practices
-
-### Keep It Current
-
-This workspace is most valuable when it's up-to-date:
-- Document new processes as you develop them
-- Add learnings to knowledge base as you discover them
-- Update metrics and definitions as they change
-- Archive completed work regularly
-
-### Link Liberally
-
-Connect related documents:
-- Link from PRDs to related user stories
-- Reference knowledge base articles in updates
-- Connect analysis reports to resulting features
-- Cross-link workflows and templates
-
-### Use Consistent Naming
-
-Makes it easier to find things:
-- Use date prefixes for time-based docs: `2024-02-18-weekly-update.md`
-- Use descriptive names: `password-reset-prd.md` not `feature-doc.md`
-- Keep naming conventions consistent across similar documents
-
-### Customize for Your Needs
-
-This structure is a starting point:
-- Add directories for your specific needs
-- Modify templates to match your style
-- Adjust workflows based on what works
-- Remove sections you don't use
-
-### Review Periodically
-
-**Monthly**: 
-- Clean up `04-active-work/`
-- Archive completed projects
-- Update knowledge base with new learnings
-
-**Quarterly**:
-- Review and update templates
-- Refresh workflows based on experience
-- Update Cursor rules if role changes
-- Audit metrics definitions for accuracy
-
-## 💡 Tips for Success
-
-### For Better AI Assistance
-
-**Be specific in your requests**:
-- ❌ "Help me with this feature"
-- ✅ "Draft a PRD for multi-currency refunds using our template"
-
-**Provide context**:
-- Reference relevant knowledge base articles
-- Share data or examples
-- Explain constraints or requirements
-
-**Iterate together**:
-- Start with a draft and refine
-- Ask for specific improvements
-- Request alternative approaches
-
-### For Better Documentation
-
-**Write for your future self**:
-- Will you understand this in 6 months?
-- Is the rationale clear?
-- Are decisions documented?
-
-**Include examples**:
-- Real ticket IDs
-- Actual error messages
-- Specific merchant scenarios
-
-**Update timestamps**:
-- Mark "Last Updated" dates
-- Note when information may be stale
-
-### For Better Collaboration
-
-**Make it accessible**:
-- Clear headers and structure
-- Concise language
-- Links to source materials
-
-**Share appropriately**:
-- Not everything needs wide distribution
-- Sensitive info stays internal
-- Public-facing docs in separate location
-
-## 📚 Additional Resources
-
-### Checkout.com Resources
-- [Add links to internal wiki, docs, dashboards]
-- [Ticketing system]
-- [Analytics platform]
-- [Product roadmap]
-
-### External Learning
-- [Payment industry resources]
-- [Product management communities]
-- [Support best practices]
-
-## 🤝 Feedback & Improvements
-
-This workspace should evolve based on your needs:
-
-**What's working?** Keep doing it!
-
-**What's not working?** Change it!
-
-**What's missing?** Add it!
-
-The goal is to make your PM work more efficient and effective. Customize this structure to match your workflow and preferences.
-
-
-## Quick Reference
-
-### Most Used Commands
-
-**Ask Claude**:
-- "Walk me through the ticket analysis workflow"
-- "Draft a stakeholder update for [project]"
-- "Help me write requirements for [feature]"
-- "Explain [payment concept] in simple terms"
-
-**Common Files**:
-- Payment fundamentals: `01-knowledge-base/payment-domain/psp-fundamentals.md`
-- Support workflows: `01-knowledge-base/processes/support-workflows.md`
-- Metric definitions: `01-knowledge-base/metrics/kpi-definitions.md`
-- PRD template: `03-templates/prd-template.md`
-
-### Next Steps
-
-1. ✅ Workspace structure created
-2. 📝 Start adding your existing documentation to knowledge base
-3. 🎯 Use templates for your next deliverable
-4. 🔄 Follow workflows for your next analysis or requirement
-5. 🚀 Iterate and improve based on what works!
-
-
-**Workspace Owner**: Charlie Wildish  
-**Role**: Product Manager, Customer Support  
-**Company**: Checkout.com  
-**Last Updated**: February 18, 2026
-
-**Questions or suggestions?** Update this README or the relevant section directly!
+**Owner**: Charlie Wildish, PM — Merchant Care (Customer Support), Checkout.com
