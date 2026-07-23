@@ -1,6 +1,6 @@
 # Debugging Payment Declines
 
-How I diagnose declines from the **Payment Search API** record, using Checkout.com's own code references. Give me a payment `id`, `reference`, or a filter (BIN, issuer, scheme, country, date range) and I work from the structured record.
+How I diagnose declines from the **Payment Search API** record, using Checkout.com's own code references. Give me a payment `id`, an `arn`/RRN, or a `reference` — single-identifier lookups only, no filters (BIN, issuer, scheme, country, date range) and no multi-payment search — and I work from that one structured record.
 
 This doc cross-references:
 - Field schema: `01-knowledge-base/metrics/payment search API schema.md`
@@ -89,7 +89,7 @@ The raw 3DS `transStatus`/CAVV payload and the applied SCA exemption flag (TRA, 
 - **Cross-border** — `issuer_country` against the acquiring geography (via `processing_channel_id`, `scheme_merchant_id`, `card_acceptor_id`) flags issuer default-blocks on international transactions. *Fix: evaluate local acquiring.*
 - **Currency** — `currency` is the original request currency; conversion friction can drive soft declines.
 - **MCC** — a Merchant Category Codes reference exists in the code docs, but the **four-digit MCC is not in the search schema**. I can read merchant identity, not category.
-- **Acquirer routing** — payload-formatting variations during network routing can inadvertently trigger an issuer risk block. The record shows the outcome, not the malformed field; confirming a formatting delta needs a good-vs-bad comparison (section 7).
+- **Acquirer routing** — payload-formatting variations during network routing can inadvertently trigger an issuer risk block. The record shows the outcome, not the malformed field — the record alone cannot confirm a formatting delta.
 - **Soft declines are often risk scores, not hard blocks** — a `20xxx` is frequently an issuer risk-*score* outcome (velocity, cross-border, anomalous MCC evaluated by engines like Falcon), which is exactly why it is advisory and retry-timed rather than a Checkout fault.
 
 ## 6. Credential lifecycle (recurring / card-on-file)
@@ -101,18 +101,9 @@ This is the schema's weakest area. Reference docs exist for **Network token prov
 
 A `recommendation_code: 01` on a recurring decline is the cue to run Account Updater before retrying.
 
-## 7. Good-vs-bad comparison (the primary diagnostic)
+## 7. When not to debug in-house (spike, TPA)
 
-The fastest way from "the issuer declined" to "*why this one and not the others*" is to compare the failed payment against a **successful** one on the **same merchant** with the closest matching profile (same BIN or issuer, scheme, currency, similar amount), field by field. Look for the single field that differs:
-
-- 3DS present on the failed payment, absent on the successful ones → the 3DS upgrade is the cause, not the issuer or card.
-- A field populated on the good payment and missing on the bad one → trace where it should have originated. The record tells me *that* a field is missing; it usually cannot tell me *where* it dropped (Gateway, CAT, or merchant not sending it) — that needs internal events. Name the missing field and route the origin question to L2.
-
-If all similar payments also fail, the issue is not specific to this payment: widen to issuer behaviour, card-level restriction, or merchant config.
-
-## 8. When not to debug in-house (spike, TPA)
-
-- **Spike vs one-off.** One or two payments = analyse in-house. A spike in the same decline (issuer + `response_code`) is not a per-payment bug — route it to issuer outreach / the performance team (they have a bot), do not attempt a per-payment root cause on a systemic pattern.
+- **Spike vs one-off.** Single-identifier scope means I cannot count occurrences across a merchant's traffic myself. If the context indicates a pattern (several payments failing the same way), don't hunt for a per-payment root cause — flag it as likely systemic and route to issuer outreach / the performance team (they have a bot) to confirm and size it.
 - **TPA declines.** If the acquiring route is a Third Party Acquirer (e.g. Omanet, Cyber Source, MENA acquirers), ~95% of TPA declines cannot be resolved internally and must go to the TPA directly. Checkout and Card Processing have no additional visibility. Surface the TPA reference and route via the TPA escalation process; do not investigate further in-house.
 
 ---
@@ -120,8 +111,8 @@ If all similar payments also fail, the issue is not specific to this payment: wi
 ## Sequential debugging checklist
 
 ```
-[Isolate scope]    -> filter records: single card, one issuer, one country, or global?
-       │              (bin · issuer · issuer_country · scheme)
+[Identify]         -> single-identifier lookup only: id · arn/RRN · reference
+       │              (no filters, no multi-payment search)
        ▼
 [Read code range]  -> 2xxxx/3xxxx = issuer/scheme · 4xxxx = Checkout risk engine
        │              INTERNAL* = Card Processing pre-scheme reject
