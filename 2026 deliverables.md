@@ -296,7 +296,7 @@ A tiered support model that matches each merchant segment to the right channels 
 
 ### Customer Agent
 
-Care-owned data and reasoning layer that Fin calls to retrieve and reason over merchant data. Customer Agent queries BigQuery and internal systems, reasons over results, and returns structured output to Fin, which converts it to merchant-facing language. Data does not leave Care's systems.
+Care-owned data and reasoning layer that Fin calls to retrieve and reason over merchant data (referred to as the Payment Diagnostics Agent in HBR reporting — same initiative). Customer Agent queries BigQuery and internal systems, reasons over results, and returns structured output to Fin, which converts it to merchant-facing language. Data does not leave Care's systems. Expands the share of contacts Fin can resolve and lifts chat CSAT by handling more complex payment queries.
 
 **Q3**
 
@@ -395,16 +395,16 @@ Consumer Duty obligations apply from day one of launch. Complaint handling and v
 - Define consumer care taxonomy (contact types, issue types, reasons) for the Braavos wallet
 - Set up Zendesk brand, forms, triggers, automations, and routing for B2C contacts
 - Author agent content and macros for launch contact types
+- Agent Toolkit and Consultant for Consumer — configure agent-facing tools for B2C support workflows
+- CRM integration — connect consumer contact data to CRM for case tracking and customer history
 
 **Q4**
 
 - Install Fin mobile into the Braavos app as the primary support entry point
 - Configure Fin for B2C: content, Guidance, escalation rules, and Procedures for top consumer contact types
-- Agent Toolkit and Consultant for Consumer — configure agent-facing tools for B2C support workflows
-- CRM integration — connect consumer contact data to CRM for case tracking and customer history
 - Validate support model against Consumer Duty obligations before launch
 
-**Future phases (2027)**
+**Future phases — External Launch (Q1 2027)**
 
 - Complaint handling workflow (Consumer Duty compliant)
 - Vulnerable customer identification in Fin
@@ -421,6 +421,8 @@ Evaluate whether Zendesk remains the right long-term platform for Care, ahead of
 - **Q4**: Decision made; recommendation approved; contract negotiation or replacement programme initiated by Q1 2027
 
 **Trigger**: Contract renewal June 2027; known capability gaps (Platform merchant data, AI workflow execution, B2C readiness)
+
+**Sequencing with Consumer (TBC)**: Current plan is Zendesk first for Braavos B2C launch, with migration to a new platform afterward if the decision lands on replacement. Consumer-first migration (new platform before Zendesk) was raised as an option but is not the current plan.
 
 **Flywheel**: Governance (underpins all flywheel stages — ticketing, routing, SLA, QA, data pipeline)
 

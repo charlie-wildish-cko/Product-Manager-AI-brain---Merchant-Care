@@ -38,30 +38,37 @@ All analytics events are emitted to BigQuery. Looker dashboards are built on top
 ### Zendesk
 
 **Routing and queue setup**
-- **[ZD]** Create Braavos group in Zendesk with dedicated agent queue
+- **[ZD]** Create Braavos BPO & internal group in Zendesk with dedicated agent queue
+  - Different role for Consumer/Braavos to restrict access
+  - All within consumer brand (Remember Me is staying)
 - **[ZD]** Create Braavos ticket form with the following custom fields:
   - `consumer_case_type` (dropdown) — top-level category from consumer care taxonomy: Account Access, Card & Payment Instrument, Payments & Transactions, Fraud & Security, Account Management, Product & Features, Technical & App, Wellbeing
   - `consumer_issue_type` (dropdown, conditional on `consumer_case_type`) — sub-issue level from consumer care taxonomy; values per category defined in `consumer-app-care-taxonomy.md`. Must be set on every ticket — by Fin on escalation (from External Launch), by agent manually in Phase 2. Field must exist from Phase 2 so data is consistent from day one.
   - `vulnerability_indicator` (checkbox) — flags the ticket for specialist handling
   - `complaint_flag` (checkbox) — marks the contact as a formal complaint (not used in Phase 2 but field must exist so Phase 3 data is consistent from day one)
-  - `fca_category` (dropdown) — FCA taxonomy codes (see External Launch for full list; Phase 2 uses simplified version). These should map to case/issue types.
+  - `fca_category` — mapped automatically from the taxonomy selection when `complaint_flag` is checked (see External Launch for full FCA code list; Phase 2 uses simplified version)
 - **[ZD]** Configure SLA policy for Braavos queue:
   - First reply time: 2 hours (working hours)
   - Next reply time: 8 hours (working hours)
   - Resolution: 48 hours
-- **[ZD]** Configure views:
+- **[ZD]** Configure views (for Leads, Seniors and maybe open for Phase 2):
   - Braavos open tickets (sorted by created date)
   - Braavos tickets breaching SLA
   - Braavos vulnerability-flagged tickets
+  - Complaint flagged
 - **[ZD]** Configure triggers:
   - Auto-tag `braavos` on all tickets submitted via Braavos escalation channel
-  - Notify assignee on new Braavos ticket
-  - Escalation alert if ticket unassigned after 1 hour
-- **[ZD]** Configure skill-based routing:
-  - Define agent skills: `general-consumer`, `fraud-specialist`, `wellbeing-specialist`, `complaints-handler`
+  - Auto replies to customer
+  - Routing to the agent
+  - Re-routing if not picked up in X time or no skill match
+- **[ZD]** Configure skill-based routing using taxonomy:
+  - Define agent skills: base this on the taxonomy list
   - Assign skills to agents based on training and accreditation
+  - Priority based on taxonomy value
   - Routing rules: tickets tagged `fraud` or `ato` → agents with `fraud-specialist` skill; tickets with `vulnerability_indicator` checked → agents with `wellbeing-specialist` skill; tickets with `complaint_flag` checked → agents with `complaints-handler` skill; all others → `general-consumer`
-  - Overflow rule: if no skilled agent available within SLA threshold, escalate to team lead
+- **[ZD]** Operations team transfers
+  - Auto routing/transfer as needed based on taxonomy
+  - Macros to send to other teams — TBC
 
 **Ticket entry point**
 - **[BRAAVOS] / [CARE-ENG]** Confirm mechanism for consumers to submit tickets into Zendesk — options are a simple web form or email proxy (e.g. support@braavos.example routes to Zendesk). Decision needed before build starts: form requires frontend work by Braavos app team; email proxy is faster to stand up but less structured.
@@ -191,7 +198,7 @@ Five Fin Procedures are required for External Launch. Each Procedure requires a 
 - **[FIN]** Tag all KB articles to the consumer care taxonomy before loading: each article must carry `consumer_case_type` and `consumer_issue_type` metadata. This enables taxonomy-level retrieval accuracy measurement in BigQuery and ensures Fin surfaces the correct content per classification. Articles covering multiple issue types must be tagged to each applicable type.
 
 **Escalation and classification**
-- **[FIN]** Configure Fin escalation routing: unresolved conversations create a Zendesk ticket in the Braavos queue with full conversation transcript attached
+- **[FIN]** Configure Fin escalation routing: unresolved conversations create a Zendesk ticket in the Braavos queue with full conversation transcript attached — open question: do we need to route to other Checkout teams, e.g. Fraud?
 - **[FIN]** Configure Fin attributes for automatic classification on every conversation: `consumer_case_type` and `consumer_issue_type` (mapped to Zendesk dropdown values), resolution status, CSAT. Both taxonomy attributes must be passed to the Zendesk ticket on escalation so BigQuery events carry full taxonomy metadata from External Launch go-live.
 - **[FIN]** Configure Fin complaint identification: if a conversation contains an expression of dissatisfaction, Fin must set `complaint_flag = true` on the resulting Zendesk ticket and route to the complaints queue — Fin must not attempt to resolve a complaint as a standard query
 

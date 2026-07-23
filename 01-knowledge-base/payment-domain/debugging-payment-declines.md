@@ -19,8 +19,13 @@ Checkout.com does **not** return raw ISO 8583 codes in `response_code`. It retur
 | `30xxx` | Hard decline (fix required before retry) | Issuer / scheme |
 | `4xxxx` | Risk response | **Checkout.com / risk engine** |
 | `50xxx` | Payout decline | Checkout.com |
+| `INTERNAL*` | Pre-scheme validation reject | **Checkout.com / Card Processing** |
 
 The single most useful read: a `4xxxx` code means *we* declined it (maps to `risk_flagged: true` / `risk_score` in the schema), while `20xxx`/`30xxx` means the **issuer** declined it. That distinction changes the fix entirely (tune our rules vs. cardholder/issuer action).
+
+**Internal vs acquirer — the "internal 12 vs plain 12" rule.** An `INTERNAL*` code (e.g. `INTERNAL12` invalid transaction, `INTERNAL2` invalid value/amount) is a Card Processing validation reject that happened *before* the request reached the scheme. A plain `12` (surviving in a `20xxx`) is a straight issuer/scheme decline. They look alike and are the most common L1 misread. Tell them apart with **`acquirer_response`**: a pre-scheme internal reject has no acquirer authorisation data (`acquirer_response.acquirer_response_code` / `authorisation_description` empty or absent — the message never left Checkout), whereas an issuer decline carries an acquirer code and description. If you see an `INTERNAL*` code, name the internal reason and stop; do not narrate a 3DS/issuer story.
+
+**Issuer declines are advisory only.** For a `20xxx`/`30xxx`, Checkout has no more insight than the record shows unless the scheme/issuer gives explicit feedback that a specific data element was missing. Card Processing knows no more than the record either. Give the reason and the retry recommendation as *guidance*; do not assert a definitive root cause the record does not support.
 
 Common codes, corrected against the real taxonomy:
 
@@ -84,6 +89,8 @@ The raw 3DS `transStatus`/CAVV payload and the applied SCA exemption flag (TRA, 
 - **Cross-border** — `issuer_country` against the acquiring geography (via `processing_channel_id`, `scheme_merchant_id`, `card_acceptor_id`) flags issuer default-blocks on international transactions. *Fix: evaluate local acquiring.*
 - **Currency** — `currency` is the original request currency; conversion friction can drive soft declines.
 - **MCC** — a Merchant Category Codes reference exists in the code docs, but the **four-digit MCC is not in the search schema**. I can read merchant identity, not category.
+- **Acquirer routing** — payload-formatting variations during network routing can inadvertently trigger an issuer risk block. The record shows the outcome, not the malformed field; confirming a formatting delta needs a good-vs-bad comparison (section 7).
+- **Soft declines are often risk scores, not hard blocks** — a `20xxx` is frequently an issuer risk-*score* outcome (velocity, cross-border, anomalous MCC evaluated by engines like Falcon), which is exactly why it is advisory and retry-timed rather than a Checkout fault.
 
 ## 6. Credential lifecycle (recurring / card-on-file)
 
@@ -94,6 +101,20 @@ This is the schema's weakest area. Reference docs exist for **Network token prov
 
 A `recommendation_code: 01` on a recurring decline is the cue to run Account Updater before retrying.
 
+## 7. Good-vs-bad comparison (the primary diagnostic)
+
+The fastest way from "the issuer declined" to "*why this one and not the others*" is to compare the failed payment against a **successful** one on the **same merchant** with the closest matching profile (same BIN or issuer, scheme, currency, similar amount), field by field. Look for the single field that differs:
+
+- 3DS present on the failed payment, absent on the successful ones → the 3DS upgrade is the cause, not the issuer or card.
+- A field populated on the good payment and missing on the bad one → trace where it should have originated. The record tells me *that* a field is missing; it usually cannot tell me *where* it dropped (Gateway, CAT, or merchant not sending it) — that needs internal events. Name the missing field and route the origin question to L2.
+
+If all similar payments also fail, the issue is not specific to this payment: widen to issuer behaviour, card-level restriction, or merchant config.
+
+## 8. When not to debug in-house (spike, TPA)
+
+- **Spike vs one-off.** One or two payments = analyse in-house. A spike in the same decline (issuer + `response_code`) is not a per-payment bug — route it to issuer outreach / the performance team (they have a bot), do not attempt a per-payment root cause on a systemic pattern.
+- **TPA declines.** If the acquiring route is a Third Party Acquirer (e.g. Omanet, Cyber Source, MENA acquirers), ~95% of TPA declines cannot be resolved internally and must go to the TPA directly. Checkout and Card Processing have no additional visibility. Surface the TPA reference and route via the TPA escalation process; do not investigate further in-house.
+
 ---
 
 ## Sequential debugging checklist
@@ -103,7 +124,9 @@ A `recommendation_code: 01` on a recurring decline is the cue to run Account Upd
        │              (bin · issuer · issuer_country · scheme)
        ▼
 [Read code range]  -> 2xxxx/3xxxx = issuer/scheme · 4xxxx = Checkout risk engine
-       │              (cross-check risk_flagged · risk_score for 4xxxx)
+       │              INTERNAL* = Card Processing pre-scheme reject
+       │              (cross-check risk_flagged · risk_score for 4xxxx;
+       │               empty acquirer_response confirms an internal reject)
        ▼
 [Read retry rec]   -> recommendation_code 01/02/03 + partner_merchant_advice_code window
        │
