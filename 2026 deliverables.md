@@ -71,12 +71,17 @@ Real-time alerts for critical payment events so merchants are informed before th
 
 A centralised place in Dashboard for merchants to submit and track all their support requests.
 
-**Q3**
+**Q2 ✓ → Q4 (candidate)**
 
 > As a merchant, I want a centralised place to submit new support requests and track the status of all my tickets in one place.
 
-- List view in Dashboard ticket page pulling ticket data and statuses
-- Admins in Dashboard can see all their business' support requests
+**Q2 ✓**
+
+- List view in Dashboard ticket page pulling ticket data and statuses — Owner role — Complete
+
+**Q4 — Candidate**
+
+- Extend list view access to Admin and custom roles
 
 **Flywheel**: Input + Orchestration (reduces friction in submission; improves routing accuracy)
 
@@ -104,8 +109,11 @@ AI-powered analysis of support tickets to surface the top contact drivers to Pro
 
 **Done when**: Aggregated theme clusters live; top 10 contact drivers quantified and shared with VP Product and Director of Operations; at least one Product team using Reflex output for prioritisation
 
-**Q3 — Reflex V2 (scope shaped by Q2 feedback)**
+**Status (2026-07-26)**: Not complete — Reflex V1 has not launched yet; carrying into Q3.
 
+**Q3 — Reflex V1 completion + V2 scope**
+
+- Reflex V1 (Q2 scope: theme clusters, product mapping, query interface) still in progress, not yet launched
 - Set up fix implementation measurement from Product teams
 - NPS data merge into VoC view (Airtable source; joined via client ID)
 - Spike detection and alert mechanism for recent contacts on specific themes/clusters
@@ -302,8 +310,8 @@ Care-owned data and reasoning layer that Fin calls to retrieve and reason over m
 
 > As Fin, I want to call a single Care-owned endpoint to retrieve and reason over merchant payment data, so I can serve accurate, data-driven answers without calling other teams' APIs directly.
 
-- Source payment data from multiple internal systems (Payin BQ, PLC Payments Search API) via a unified Customer Agent interface
-- Fin calls Customer Agent endpoints for payment status, response code explanation, and transaction detail queries
+- Start by replicating existing payment lookup capability, using the knowledge base Fin already has access to
+- Test and refine using newly drafted Procedures, with human agent review before wider rollout
 
 **Q4**
 
@@ -371,14 +379,6 @@ More data in the Agent Toolkit and smarter routing rules so agents spend less ti
 ## Other Goals / Asks
 
 > Other asks or areas which don't contribute to our 2026 goals
-
-### Blue EMI support
-
-Enable merchant support through Zendesk for merchants with Blue EMI entity
-
-H2
-
-* Build Zendesk brand and configuration; user identification from Dashboard webform and link to Blue EMI entity for reporting
 
 ### Consumer Support — Braavos App
 
@@ -453,7 +453,7 @@ Reference: `01-knowledge-base/metrics/contact forecasting.md`
 | **Insight & Prevention** | Reflex (all phases), Education Hub, Knowledge and Data Graph                                                       |
 | **Governance**           | Agent productivity tools (SLAs, routing), Support model (SLA framework)                                            |
 
-**Last Updated**: 2026-06-29
+**Last Updated**: 2026-07-26
 **Owner**: Charlie Wildish
 **Status**: Q1 complete / in-flight. Detail to be added per deliverable.
 

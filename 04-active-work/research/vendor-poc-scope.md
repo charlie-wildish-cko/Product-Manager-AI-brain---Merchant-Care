@@ -80,6 +80,21 @@ _Scoring_: Native isolation = full marks. Achievable via config = partial. Requi
 
 ---
 
+## Plain-Specific POC Scope (Q3 2026)
+
+Agreed scope for the Plain assessment. Overlaps with the gates/differentiators above where the underlying flow is the same (taxonomy, routing, SLA, tenancy); listed separately because this is the scope agreed specifically for Plain, not the general vendor comparison.
+
+- Three-layered taxonomy matching ours (case type / issue type / reason)
+- Ticket routing to queues
+- Ticket routing to queues with SLAs based on taxonomy — **note**: our SLA model is changing to use Workflows; assess Plain against the Workflows-based model, not the current one
+- Routing on dynamic fields (e.g. location — route North American client tickets to Mexico-based agents)
+- Modelling of users and organisations (tenants)
+- Separation of Merchant vs. Consumer tickets — proposed approach: separate Workspaces
+- Robust, reliable deployment via IaC and pipelines
+- Plan for integrating our existing apps — Plain does not currently support iframes, so existing sidebar apps (e.g. Agent Consultant, Customer 360) need an alternative integration path
+
+---
+
 **Owner**: Charlie Wildish
 **Created**: 2026-06-11
 **Related**: `04-active-work/research/zendesk-platform-decision-rfc.md`

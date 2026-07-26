@@ -243,11 +243,11 @@ If you cannot write this sentence, the bets are not yet coherent.
 
 *[Map the deliverables that execute against this strategy. Every bet in Section 4 should map to at least one deliverable here. If a bet has no corresponding deliverable, flag it as a gap — it is either not yet on the roadmap or requires a new PRD. Reference: `2026 deliverables.md`.]*
 
-| Deliverable | Quarter | Bet(s) it serves | Goal | Jira |
-|---|---|---|---|---|
-| [Deliverable name from roadmap] | Q[X] [YEAR] | Bet [#] | Reduce contact rate / Reduce cost | [MCD-XXX] |
-| [Deliverable name] | Q[X] [YEAR] | Bet [#] | Reduce cost | [MCD-XXX] |
-| [Deliverable name] | Q[X] [YEAR] | Bet [#] | Reduce contact rate | [MCD-XXX] |
+| Deliverable | Quarter | Bet(s) it serves | Goal |
+|---|---|---|---|
+| [Deliverable name from roadmap] | Q[X] [YEAR] | Bet [#] | Reduce contact rate / Reduce cost |
+| [Deliverable name] | Q[X] [YEAR] | Bet [#] | Reduce cost |
+| [Deliverable name] | Q[X] [YEAR] | Bet [#] | Reduce contact rate |
 
 **Roadmap gaps:** [List any bets in Section 4 that do not yet have a corresponding deliverable. Each gap is a planning action to take forward.]
 

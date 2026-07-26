@@ -48,7 +48,6 @@ Every document, analysis, or recommendation must connect to:
 |---|---|
 | Strategic goals & 2026 roadmap | `2026 deliverables.md` |
 | Care Product flywheel model | `01-knowledge-base/strategy/care-product-model.md` |
-| Care Product strategy 2026–2030 (Rumelt strategy kernel, VP/Director audience) | `04-active-work/strategy/care-product-strategy-2026-2030.md` |
 | Care strategy 2026–2030 (narrative + TPV/contact forecasts, co-authored with Oliver Westlake-Simm) | `04-active-work/strategy/care-strategy-2026-2030.md` |
 | Team structure & stakeholders | `01-knowledge-base/teams.md` |
 | Support workflows & operations | `01-knowledge-base/processes/support-workflows.md` |
@@ -269,9 +268,5 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 **Reflex MCP (TBC)**: Surfaces Reflex insights in engineering workflows. Timing is TBC — dependent on Phase 3 (Q3 2026) attribution model stability. Insights available via data product regardless; MCP improves shareability.
 
 **B2C wallet launch (2027)**: Consumer Duty obligations apply from day one. Complaint handling and vulnerable customer identification in Fin must be live at launch, not added post-launch.
-
-**Care product model 2030 mapping**: Full product mapping per flywheel stage and stack layer (existing, build, buy, agentic) is in `04-active-work/strategy/care-product-model-2030-mapping.md`.
-
-**Operating model at scale**: Implications of 80%+ AI resolution by 2030 (agent roles, governance, knowledge infra, ownership, successor metrics) in `01-knowledge-base/strategy/operating-model-at-scale.md`.
 
 **Platform segment (2026)**: Distinct B2B customer segment alongside Direct Merchants. Checkout is L2; Platform is L1 for its Platform merchants. US ISV launch in active delivery 2026. Platform Embedded AI (Fin in ISV portals) is a 2027 capability. Checkout-as-PayFac (2028+, unconfirmed) would make Checkout L1 for Platform merchants directly.

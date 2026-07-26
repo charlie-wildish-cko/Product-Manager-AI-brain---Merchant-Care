@@ -156,7 +156,6 @@ Request these:
 | **Zendesk** | View ticket lifecycle, routing, and configuration; context for what agents experience |
 | **Intercom** | Fin AI Agent config — Procedures, Guidance, Attributes, Copilot |
 | **BigQuery** | Support contact data, Reflex pipelines, analytics |
-| **Jira** | Tickets tracked under MCD-* in the Care board |
 | **Airtable** | Product Catalogue (product → team mapping); NPS data |
 | **Confluence** | Team documentation; Agent Consultant task backlog (page ID 7847149938) |
 | **GitHub** | Org: `github.com/cko-compass` — Care team repos are prefixed `care-` |

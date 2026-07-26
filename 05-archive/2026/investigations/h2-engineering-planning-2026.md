@@ -41,7 +41,6 @@ All items below are scoped in the 2026 roadmap unless marked **(TBC)**. Nothing 
 | Agent Productivity — Salesforce case numbers | Q4 | S | Salesforce API access | No |
 | Merchant Education Hub — Tutorials (10) | Q3 | S | Q2 site structure complete | No |
 | Merchant Education Hub — Tutorials (5) | Q4 | S | Q3 batch complete | No |
-| Blue EMI — Zendesk brand + config | H2 | S | None | No |
 
 **Effort signal key**: S = days · M = 2–4 weeks · L = 4–8 weeks · XL = quarter+  
 These are conversation starters, not estimates.
@@ -275,12 +274,6 @@ Map the relationship between support taxonomy, products, content, and data to id
 
 **Dependencies**: Salesforce API access; confirm data availability with Commercial/CRM team
 
-### Blue EMI — Zendesk Brand + Configuration
-**Scope**: Build Zendesk brand and configuration; user identification from Dashboard webform; link to Blue EMI entity for reporting  
-**Effort**: S  
-**Dependencies**: None critical  
-**Decision needed**: Prioritisation slot in H2 — which quarter?
-
 ### Help Desk Platform Evaluation
 **(Q3 analysis · Q4 decision)**  
 **Scope**: Q3 — capability gap analysis, light spikes and trials of alternatives (Plain, Pylon, Intercom). Q4 — decision, recommendation approved, contract negotiation or replacement programme initiated.  
@@ -320,7 +313,6 @@ Items that need a decision before or early in Q3 to avoid blockers:
 | Reflex V2 | Active | Jira (TBC) | M + M |
 | Merchant Ticket Submission | — | Active | L |
 | Braavos | — | Active | M |
-| Blue EMI | Slot TBC | | S |
 
 **Observation**: Q3 has the highest concentration of parallel work. Fin data & procedures (L) and Replace Webform (M) both touch the Fin/Zendesk integration layer simultaneously — consider sequencing or splitting ownership.
 
@@ -332,7 +324,7 @@ Use these to drive the planning session:
 
 1. **Capacity ceiling**: With 4 engineers, what's the maximum parallel workstream count without quality risk? Which items should be serialised?
 2. **Fin integration layer**: Fin Data & Procedures and Replace Webform both touch the same integration surface in Q3. Is there a sequencing risk? Should one engineer own this whole layer?
-3. **Support Model timing**: If the Ops decision on tiers doesn't land before Q3 starts, does Support Model enforcement shift to Q4? What's the knock-on to Blue EMI and ZD config work?
+3. **Support Model timing**: If the Ops decision on tiers doesn't land before Q3 starts, does Support Model enforcement shift to Q4? What's the knock-on to ZD config work?
 5. **Q4 capacity**: Merchant Ticket Submission (L) and Braavos (M) are both Q4. Combined with any Q3 spillover, is Q4 viable as-is?
 6. **Reflex Jira Integration**: Is the attribution model stable enough by end of Q3 to make Jira integration trustworthy in Q4? If not, defer.
 7. **What's not on this list**: Are there tech-debt, platform, or infrastructure items that should be protected in H2 but aren't on the roadmap?

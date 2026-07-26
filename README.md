@@ -65,7 +65,6 @@ Invoke with `/<skill-name> [args]`. Full definitions in `.claude/skills/`.
 |---|---|
 | 2026 roadmap (goals, quarters, flywheel map) | `2026 deliverables.md` |
 | Care Product flywheel model | `01-knowledge-base/strategy/care-product-model.md` |
-| Care Product strategy 2026-2030 (Rumelt kernel) | `04-active-work/strategy/care-product-strategy-2026-2030.md` |
 | Team structure & stakeholders | `01-knowledge-base/teams.md` |
 | Support taxonomy & contact volumes | `01-knowledge-base/processes/support-taxonomy.md` |
 | Fin Attribute definitions (Intercom-ready) | `01-knowledge-base/processes/fin-attributes-definitions.md` |
