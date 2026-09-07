@@ -97,7 +97,9 @@
 **Key distinctions:**
 - *HTTP codes* — explicit HTTP status codes (400/401/403/404/409/422/429/500/502/503) or API/endpoint/SDK failures (e.g. "API returned 500") belong here.
 - *Integration symptoms* — plugin/checkout UI/integration behaviour (redirects, saved cards, a payment method disappearing from the site) belongs here.
-- *Network tokens* — Network Tokenization / Network Tokens / token migration / enabling NT questions belong here.
+- *Network Tokens vs Vault* — Network Tokenization / Network Tokens onboarding, provisioning, billing, performance, and API-error questions belong to the Network Tokens issue type. Vault instrument/token/customer questions and merchant token import/export belong to the Vault issue type, not Network Tokens.
+- *Card Metadata vs reference data* — a data-accuracy dispute on a specific BIN/issuer value already returned for a transaction or card belongs to Card Metadata. A generic request for BIN ranges, issuer identification, or scheme metadata with no specific dispute belongs to General → Inquiries → Reference data request, not here.
+- *Wallets (acceptance) vs Issuing digital wallets* — a merchant asking about Apple Pay/Google Pay domain onboarding or a domain-registration error belongs to the Wallets issue type here. A cardholder unable to add their Checkout-issued card to Apple Pay/Google Pay belongs to Card issuing → Issuing digital wallets, not here.
 - *Unexplained charges* — a customer charged an amount not reflected in Checkout.com records (wallet surcharge, 3DS fee, issuer fee) belongs here as an integration-layer investigation.
 - *Merchant-side data capture* — questions about form/checkout fields in the merchant's own website integration belong here, not Identity Verification (which covers the Checkout.com IDV product itself: document checks, facial recognition).
 - *Acquiring-side MCC* — MCC restrictions on processing channels (`pc_*` IDs) belong here, not Card issuing (which covers issued-card spend controls, not acquiring-side channel restrictions).
@@ -107,21 +109,45 @@
 - *Create / edit keys* — If the merchant is asking about how to create, edit or troubleshoot API keys then select this
 - *Key scopes* — Select this if the merchant is inquiring about which permissions are required or if they are explicitly requesting that specific scopes, such as /metadata/card, be granted to their API keys.
 
-**API integration** — Queries regarding raw API responses, HTTP status codes, and network connectivity. (Use this as the "catch-all" for API errors that are not specific to a Plugin, Flow, Frames, SDK or Payment Links). Does NOT include webhook delivery, signature-verification, or payload-content issues — use Webhooks for those.
+**API integration** — Queries regarding raw API responses, HTTP status codes, and network connectivity. (Use this as the "catch-all" for API errors that are not specific to a Plugin, Flow, Frames, SDK, Payment Links, Network Tokens, Vault, Card Metadata, Forwarding API, or Wallets). Does NOT include webhook delivery, signature-verification, or payload-content issues — use Webhooks for those.
 - *API error 4XX / logic error* — IF the merchant encounters HTTP 400-level errors (e.g., 404 Not Found, 422 Validation Error) indicating the issue lies with the request, OR reports functional integration bugs. Specific scenarios include redirect parameter mismatches, invalid data formats, missing response payloads, or logic errors where the system rejects the input.
 - *API error 5XX* — Choose this category when the merchant reports HTTP 500-level errors, indicating that the request was valid but the server failed to fulfill it due to technical faults like Service Unavailable (503). This definition applies to broader infrastructure problems, including issues with the overall API status, synchronization failures caused by server crashes, or internal system errors that prevent the completion of the request. It is the correct selection for outages or downtimes where the provider's system is unresponsive.
 - *Idempotency / timeout* — If the merchant is getting timeout or idempotency issues on API requests then select this
 
-**Tokens** — Queries about tokens (including token migration and network tokens)
-- *Network tokens* — IF the issue involves Network Tokens, including inquiries about token migration, provisioning status, or specific technical errors related to tokenization logic (e.g., PEM values or cryptograms).
-- *Token migration* — If the merchant is asking about import or export of their Tokens then select this
+**Network Tokens** — Queries about Network Tokens: onboarding, provisioning, billing, performance, and API errors. *(Renamed from "Tokens" — token migration moved to Vault below.)*
+- *Onboarding* — IF the merchant is asking about turning on or configuring network-token settings for a card scheme (e.g. an "Onboard to Mastercard" toggle) and it isn't saving/applying THEN select this.
+- *Provisioning* — IF the merchant asks why they have few or no network tokens provisioned, whether it's a provisioning failure vs. not attempted, or how async provisioning / provision_networktoken works THEN select this.
+- *Billing* — IF the merchant raises concerns about Network Token fees (spikes, accuracy, or fees on declined transactions) THEN select this.
+- *API errors* — IF the merchant reports an API error in network-token services (cryptogram retrieval failures, INVALID_REQUESTOR, TRID format questions, fallback to FPAN) THEN select this.
+- *Performance* — IF the merchant asks for an acceptance-rate/performance analysis tied specifically to Network Token usage, or is deciding whether to disable NT THEN select this.
 
-**Integration methods** — IF the merchant is inquiring about the specific interface, library, or platform used to process payments, including hosted pages, plugins, SDKs, payment links, or digital wallets, THEN select this.
+**Vault** — Queries about Vault instruments, tokens, and customers — the card/customer data storage layer, distinct from Network Tokens.
+- *API errors* — IF the merchant reports an API error from a Vault endpoint (e.g. payment-sessions submit failure, public-key/vault-ID mismatch) THEN select this.
+- *Instruments* — IF the merchant reports issues creating, fetching, or listing a stored Instrument (e.g. Get Instrument returning 404 despite the instrument existing) THEN select this.
+- *Tokens* — IF the merchant asks what makes a Vault token invalid, or reports errors on a specific tok_ value distinct from a network token THEN select this.
+- *Customers* — IF the merchant reports a Vault customer record missing or behaving unexpectedly (e.g. customer_not_found after a migration) THEN select this.
+- *Token migration* — IF the merchant is asking about import or export of merchant tokens between Vault and another system THEN select this.
+
+**Card Metadata** — Queries about Card Metadata: BIN/issuer data-accuracy disputes on a specific card or transaction, card-payout eligibility fields, and API errors. Distinct from a generic reference-data request with no specific dispute.
+- *BIN/Issuer data* — IF the merchant flags a specific BIN/card as returning an incorrect issuer name or other BIN/issuer data point and asks Checkout to validate THEN select this. Does NOT apply to a generic request for BIN ranges/issuer identification with no specific dispute — use General → Inquiries → Reference data request instead.
+- *Card Payout eligibility* — IF the merchant asks which Card Metadata field (e.g. domestic vs. cross-border eligibility) applies for a specific card-payout scenario THEN select this.
+- *API errors* — IF the merchant reports an API error from Card Metadata endpoints, or a decline/failure traced to a Card Metadata field (e.g. local_scheme, preferred_scheme_not_applicable) THEN select this.
+
+**Forwarding API** — Queries about Forwarding API: enabling merchants, allow-listing destination URLs, and API errors.
+- *Enablement* — IF the merchant requests Forwarding API be enabled for a client ID, in Sandbox or Production THEN select this.
+- *URL Allow listing* — IF the merchant requests a destination URL/domain be added to the allow list, or asks how domain vs. endpoint allow-listing scope works THEN select this.
+- *API errors* — IF the merchant reports an API/HTTP error on forwarded traffic and asks whether the failure originates from Checkout or the destination THEN select this.
+
+**Wallets** — Queries about merchant-side Wallet payment onboarding and processing for Apple Pay and Google Pay, on the acceptance side. Distinct from Card issuing → Issuing digital wallets (a cardholder adding a Checkout-issued card to their own wallet).
+- *Domain onboarding* — IF the merchant requests a domain be onboarded/registered for Apple Pay or Google Pay, in production or sandbox THEN select this.
+- *Domain errors* — IF the merchant reports a wallet payment failing due to a domain/merchant-ID registration error (e.g. "not registered for service") THEN select this.
+- *API errors* — IF the merchant reports an API/HTTP error specific to an Apple Pay or Google Pay payment attempt THEN select this.
+
+**Integration methods** — IF the merchant is inquiring about the specific interface, library, or platform used to process payments, including hosted pages, plugins, SDKs, or payment links, THEN select this. Does NOT include Apple Pay/Google Pay domain onboarding, domain errors, or wallet-specific API errors — use Wallets for those.
 - *Flow / frames* — If the merchant is asking about Flow or Frames or migration to Flow
 - *Payment links / hosted payment pages* — If a merchant is asking about Payment Links or Hosted Payment Page issues then select this
 - *SDK issue* — If a merchant is asking about an SDK issue then select this
 - *E-commerce plugin* — If a merchant is asking about an Plugin issue like Shopify, Woocommerce and others then select this
-- *Apple Pay / Google Pay* — IF the merchant is asking about Apple Pay or Google Pay setup, integration, certificates, domain verification, or method-specific errors THEN select this.
 
 **Webhooks** — Queries about webhooks. Does NOT include a general API 4XX/5XX error on a synchronous API call with no webhook/async-delivery context — use API integration for those.
 - *Webhook setup* — Select this category when a merchant is unable to successfully configure or connect their webhooks, including errors within third-party plugins like Shopify or requests for initial registration in environments like Sandbox. This definition covers all configuration-stage inquiries, such as Endpoint Registration Failures, where the listener URL cannot be saved, or when the merchant needs assistance enabling the service before any live transactions occur.
@@ -170,6 +196,7 @@
 - *Not acquiring-side MCC* — acquiring-side MCC restrictions on processing channels (`pc_*` IDs) are not issued-card spend controls — select Technical issue instead.
 - *Not an acquiring transaction* — an ID matching the regex `^(pay)_(\w{26})$` is an acquiring/acceptance-side transaction, not an issued-card transaction; do not treat it as evidence for this case type.
 - *Not a card payout* — a request to send money via a card network (Visa Direct, Mastercard Send) to an end recipient is Payouts → Card payouts, not an issued-card lifecycle action, even though both mention "card."
+- *Not acceptance-side wallet onboarding* — a merchant asking about onboarding a website domain for Apple Pay/Google Pay acceptance, or a domain-registration error, is Technical issue → Wallets, not an issued-card wallet-provisioning issue.
 
 **Card management** — Queries about managing cards
 - *Create / activate card* — IF merchant is having trouble setting up or enabling a new card THEN select this.
@@ -179,7 +206,7 @@
 **Card deliveries** — Queries about card deliveries
 - *Physical card delivery* — IF merchant is checking status or reporting a card lost in the mail THEN select this.
 
-**Issuing digital wallets** — Queries about adding issued cards to Apple Pay or Google Pay
+**Issuing digital wallets** — Queries about adding issued cards to Apple Pay or Google Pay. Does NOT include a merchant asking about domain onboarding or domain-registration errors on the acceptance side — use Technical issue → Wallets for those.
 - *Apple Pay / Google Pay* — IF a cardholder cannot add their issued card to Apple Pay or Google Pay, or the card is not working correctly in their digital wallet (e.g., provisioning failures, token errors) THEN select this.
 
 **Issuing mobile SDK** — Queries about the Issuing mobile SDK
@@ -237,7 +264,7 @@
 **Inquiries** — Queries about buying our services or Sales or anything else, or requests for external/reference identifier data not tied to the merchant's own account configuration
 - *Sales inquiry* — IF a prospect wants to buy services or add new products THEN select this.
 - *Spam / duplicate / no action / follow ups* — IF the ticket is spam, empty, a follow up. an OOO reply, or an accidental double-post THEN select this.
-- *Reference data request* — IF the merchant requests BIN ranges, issuer identification, scheme metadata, card categorisation reference data, OR Checkout's own acquirer ID, BIN sponsor, merchant identifiers, or scheme IDs needed for local tax authority or regulatory reporting THEN select this. Do NOT select this if the request is for reference/configuration data (MID, CID, entity-to-channel mappings) tied to the merchant's own account — use Account management and access → Account changes → Account settings update instead.
+- *Reference data request* — IF the merchant requests BIN ranges, issuer identification, scheme metadata, card categorisation reference data, OR Checkout's own acquirer ID, BIN sponsor, merchant identifiers, or scheme IDs needed for local tax authority or regulatory reporting THEN select this. Do NOT select this if the request is for reference/configuration data (MID, CID, entity-to-channel mappings) tied to the merchant's own account — use Account management and access → Account changes → Account settings update instead. Do NOT select this if the merchant flags a specific data-accuracy dispute on a BIN/issuer value already returned for a transaction or card — use Technical issue → Card Metadata → BIN/Issuer data instead.
 
 
 ### Identity Verification

@@ -255,7 +255,7 @@ Checkout.com supports an exceptionally broad range of payment methods globally:
 Checkout.com is on a trajectory towards becoming a **bank** — moving beyond payment processing into storing funds and holding interest on balances. The timeline differs by segment:
 
 - **B2C (2027)**: The consumer wallet launches as a banking product — Checkout.com will hold consumer funds and earn interest on consumer balances from day one
-- **B2B (2028+)**: Merchant banking follows — storing merchant funds and offering interest/yield products to merchants
+- **B2B (2027+)**: Merchant banking follows — storing merchant funds and offering interest/yield products to merchants
 
 This represents a fundamental shift in the business model:
 
@@ -264,12 +264,12 @@ This represents a fundamental shift in the business model:
 
 **Implications for the support model:**
 - A banking licence (FCA/PRA in UK, equivalent in other jurisdictions) brings materially different regulatory obligations than an e-money licence — including mandatory complaint handling timelines, FOS referral rights, Consumer Duty, and accessible channel requirements (typically including phone)
-- New query categories will emerge: B2C from 2027 (savings, interest, balance disputes); B2B from 2028 (merchant balance management, yield queries, treasury-style questions)
-- The competitive set broadens: Checkout will compete with Monzo, Revolut, and Starling for consumer banking relationships (2027) and Revolut Business, Starling Business, and Tide for merchant banking (2028+)
+- New query categories will emerge: B2C from 2027 (savings, interest, balance disputes); B2B from 2027 (merchant balance management, yield queries, treasury-style questions)
+- The competitive set broadens: Checkout will compete with Monzo, Revolut, and Starling for consumer banking relationships (2027) and Revolut Business, Starling Business, and Tide for merchant banking (2027+)
 - Support becomes a regulated function, not just a commercial one — standards, response times, and escalation paths will have compliance obligations attached
 
 > B2C support implications (2027): `care-product-model.md` → B2C Launch Considerations, point 5.  
-> B2B support implications (2028+): `care-product-model.md` → B2B Banking Evolution.
+> B2B support implications (2027+): `care-product-model.md` → B2B Banking Evolution.
 
 ### Agentic Commerce
 

@@ -1,5 +1,7 @@
 # Braavos B2C Care Issue Taxonomy
 
+**Archived 2026-08-18: Braavos is paused.** Ray (consumer crypto/stablecoin wallet) is going ahead in its place — see `04-active-work/prds/ray-care/`. This taxonomy is built entirely on UK neobank banking regulation (Consumer Duty, FCA DISP, FOS, PSD2, BACS, POCA, UK GDPR) that does not apply to Ray: Ray is non-custodial and not launching in the UK. Do not reuse this taxonomy for Ray without rebuilding the regulatory basis from scratch (global AML/Travel Rule, KYC via Ubble, no Consumer Duty).
+
 First draft. Last updated: 2026-05-21.
 
 **Phase definitions:**

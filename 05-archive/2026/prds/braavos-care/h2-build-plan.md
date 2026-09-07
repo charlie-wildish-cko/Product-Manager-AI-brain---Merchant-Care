@@ -17,6 +17,8 @@ This document lists every technical deliverable required for Phase 2 (October 20
 
 All analytics events are emitted to BigQuery. Looker dashboards are built on top. Neither Zendesk Explore nor Intercom Analytics are used for reporting.
 
+> **Readiness position (2026-08-07, Hélder Gonçalves / Gilles Beausseron / Charlie):** a January external launch is not feasible functionally or operationally. Working assumption is a closed beta with a hard onboarding cap (Monzo waiting-list model). Anything shipping in Q1 must reuse existing infrastructure, so no new case management system. Operational tooling direction agreed: a central orchestration layer (Plain) routes work and integrates with Zendesk and Salesforce via adapters, rather than migrating teams onto one platform. Consumer Duty requirements are still undefined (legal assessment started 2026-08-06), which is the main rework risk on case management and data-access design. Notes: `04-active-work/meeting-notes/2026-08/2026-08-07-consumer-ops-readiness.md`
+
 ---
 
 ## Cross-team dependencies summary

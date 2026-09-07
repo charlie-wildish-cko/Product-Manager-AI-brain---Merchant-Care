@@ -69,6 +69,16 @@ Question: do our Knowledge and data graphs live in Reflex or is Reflex a consume
 | Phase 4 | Q4 2026 | Jira integration (TBC)                                              |
 | TBC     | TBC     | Reflex MCP — timing dependent on Phase 3 attribution model stability |
 
+## Scope beyond Care (2026-08-20)
+
+Source: `04-active-work/meeting-notes/2026-08/2026-08-20-reflex-insight-consolidation.md`, `2026-08-20-ray-taxonomy-review.md`.
+
+- Reflex is positioned as the **customer** insights platform, not the Care insights platform, and is becoming the de facto company-wide customer-insight ingestion layer. Three overlapping tools met on 2026-08-20 (Charles Forson's conversational-intelligence prototype, the commercial intake app from Philippe Leonhardt and Andy Cornforth, and Reflex) and agreed to consolidate into a single roadmap-prioritisation view.
+- **Direction of integration: commercial feeds into Reflex.** Reflex publishes minimum requirements for adding a new data source and contributing teams react, rather than Reflex absorbing each source's schema.
+- Merge model: insights carry a `type` (support, commercial insight), filterable alongside merchant entities, so a PM sees per-merchant support cost next to TPV and opportunity.
+- Integration blocker is schema, not intent. It needs a data contract joining on merchant identifier plus the Airtable product catalogue entry. The commercial intake app is already fully mapped to the Airtable catalogue, so that join is simple. **The Airtable product catalogue plus merchant ID is emerging as the company-wide join key for insight tooling.**
+- Capacity caveat: Reflex engineering was scoped for deployment and maintenance, not for onboarding new sources. Each new source is a reason to reinvest in clustering methodology and evals, and that has to be funded separately.
+
 ## Success Metrics
 
 **North Star**: % volume of support contact reductions post-fix (contact volume reduction attributable to product fixes surfaced by Reflex)
@@ -90,4 +100,4 @@ Question: do our Knowledge and data graphs live in Reflex or is Reflex a consume
 
 [Stripe Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) are Stripe’s internal AI coding agents: they write code end-to-end in one shot, producing 1000+ merged PRs per week. Humans review and merge; Minions do the work. The parallel for Reflex: autonomous agents that produce actionable outputs (action plans, PRs) for humans to triage and ship — rather than humans doing the analysis and drafting from scratch.
 
-**Related**: [Care Product Model](../strategy/care-product-model.md) (Insight & Prevention domain), [Support Scale Principles](../strategy/support-scale-principles.md)
+**Related**: [Care Product Model](../strategy/care-product-model.md) (Insight & Prevention domain)

@@ -98,14 +98,14 @@ What Claude does NOT need from you:
 ## 6. Customer Segments
 
 > Which segments does this strategy apply to, and what (if anything) differs per segment?
-> Segments: Direct Merchant / Platform / ISV / B2C (2027) / B2B Banking (2028+)
+> Segments: Direct Merchant / Platform / ISV / B2C (2027) / B2B Banking (2027+)
 
 | Segment | In scope? | Notes (what differs, if anything) |
 |---|---|---|
 | Direct Merchant | | |
 | Platform / ISV | | |
 | B2C (2027) | | |
-| B2B Banking (2028+) | | |
+| B2B Banking (2027+) | | |
 
 **Segments explicitly not in scope:**
 

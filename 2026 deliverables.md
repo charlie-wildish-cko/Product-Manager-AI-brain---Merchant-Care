@@ -296,7 +296,7 @@ A tiered support model that matches each merchant segment to the right channels 
 > As a merchant, I want multiple support channels so I can contact support in my preferred way that is contextual for me.
 
 * **Q2**: Add relevant merchant attributes to determine support tier — not yet enforced
-* **Q3**: Enable support model for Enterprise and Premium merchants; enforce tier routing for Standard
+* **Q3**: Enable support model for Enterprise and Premium merchants; enforce tier routing for Growth
 
 **Dependency**: Ops decision on support model tiers and SLA rules — TBC.
 
@@ -341,11 +341,13 @@ Zendesk configuration and routing improvements to reduce manual triage work and 
 
 **Q2**
 
-* Pilot domain mapping for big merchants with missing users: Exness/Danibrook, Bytedance, MAF Holding, Yango - Eng needed
-* Set Closed rules on non business emails - e.g. gmail/hotmail etc - ZD Config
-* Close internal ticket creation bar exceptions & enforce internal form adoption for Commercial - ZD config
-* Enable internally created tickets to enrich using client id
+* Pilot domain mapping for big merchants with missing users: Exness/Danibrook, Bytedance, MAF Holding, Yango - Eng needed — **open, carrying into Q3**
+* Set Closed rules on non business emails - e.g. gmail/hotmail etc - ZD Config — Complete
+* Close internal ticket creation bar exceptions & enforce internal form adoption for Commercial - ZD config — Complete
+* Enable internally created tickets to enrich using client id — Complete
 * Trigger weekly sync for AM/TAM records from SF accounts — Deprioritised
+
+**Status (2026-08-10)**: Only the domain mapping pilot remains open (Eng needed). All ZD config items complete.
 
 **Flywheel**: Agent Experience
 
@@ -372,7 +374,7 @@ More data in the Agent Toolkit and smarter routing rules so agents spend less ti
 - Add Fraud Detection data to the Agent Toolkit
 - Consolidation of Agent Tools — unified agent toolkit experience bringing together existing tools into a coherent interface
 - Routing by taxonomy Reason (route tickets based on contact reason classification) — ZD config
-- SLAs based on issue type, per Segment (Standard/Enterprise/Premium) — ZD config
+- SLAs based on issue type, per Segment (Growth/Enterprise/Premium) — ZD config
 
 **Flywheel**: Agent Experience + Governance
 
@@ -380,34 +382,32 @@ More data in the Agent Toolkit and smarter routing rules so agents spend less ti
 
 > Other asks or areas which don't contribute to our 2026 goals
 
-### Consumer Support — Braavos App
+### Consumer Support — Ray
 
-Establish the support infrastructure for Checkout.com's first B2C product: the Braavos consumer wallet app. This is a new customer segment requiring a distinct support channel, contact taxonomy, agent content, and AI resolution layer — separate from the existing B2B merchant support model.
+*(Note: Braavos, Checkout.com's earlier B2C consumer wallet proposition, is ended as of 2026-08-18 (announced internally as a pause; confirmed ended). Ray — a consumer stablecoin wallet + USD Visa card — is going ahead in its place. Ray is non-custodial and not launching in the UK, so Consumer Duty does not apply. See `05-archive/2026/prds/braavos-care/README.md` for what changed.)*
 
-Consumer Duty obligations apply from day one of launch. Complaint handling and vulnerable customer identification must be live at launch, not added post-launch.
+Establish the support infrastructure for Checkout.com's first B2C product: the Ray consumer wallet. This is a new customer segment requiring a distinct support channel, contact taxonomy, agent content, and AI resolution layer — separate from the existing B2B merchant support model.
 
-**Q3–Q4** · PRDs to be added per phase
+Ray's Care model is AI-first: an AI L1 layer resolves contacts across launch languages, escalating to a single L2 human queue (lanes: KYC, Deposit & recovery, Disputes, Account ops, Complaints, Data rights) and/or BPO overflow. AML/Travel Rule screening, sanctions/PEP, and KYC verdicts are Compliance-owned, not Care — Care never sees screening dispositions (silent handoff only).
 
-> As a Braavos consumer, I want fast, accessible support so I can resolve payment and account issues without friction, through the app I'm already using.
+**Milestones**: internal launch end Dec 2026 (50–100 people) · external beta end Q1 2027 · PRDs to be added per phase
 
-**Q3**
+> As a Ray consumer, I want fast, accessible support so I can resolve wallet, card, and deposit issues without friction, through the app I'm already using.
 
-- Define consumer care taxonomy (contact types, issue types, reasons) for the Braavos wallet
+**H2 2026 (through internal launch)**
+
+- Define consumer care taxonomy (contact types, issue types, reasons) for the Ray wallet — informed by the Ray Ops & Care operating manual, not carried over from the Braavos taxonomy (UK-neobank-specific, does not transfer)
 - Set up Zendesk brand, forms, triggers, automations, and routing for B2C contacts
-- Author agent content and macros for launch contact types
-- Agent Toolkit and Consultant for Consumer — configure agent-facing tools for B2C support workflows
+- Author agent content and macros for launch contact types (deposit/funding, KYC verification failure, card issuance, disputes, misdirected-deposit recovery)
+- Agent Toolkit and Consultant for Consumer — configure agent-facing tools for B2C support workflows, matching the scoped tool contract (no tool moves funds, changes payout destination, bypasses IDV, or returns raw PII/keys)
 - CRM integration — connect consumer contact data to CRM for case tracking and customer history
 
-**Q4**
+**Through external beta (Q1 2027)**
 
-- Install Fin mobile into the Braavos app as the primary support entry point
+- Install Fin mobile into the Ray app as the primary support entry point
 - Configure Fin for B2C: content, Guidance, escalation rules, and Procedures for top consumer contact types
-- Validate support model against Consumer Duty obligations before launch
-
-**Future phases — External Launch (Q1 2027)**
-
-- Complaint handling workflow (Consumer Duty compliant)
-- Vulnerable customer identification in Fin
+- Complaint handling workflow (no Consumer Duty/FOS — confirm applicable regime, if any, per launch market)
+- BPO overflow contract and 24/7 follow-the-sun L2 coverage live for public beta
 
 **Flywheel**: Input + Orchestration (establishes AI-first entry point and correct routing for a net-new B2C segment)
 
@@ -422,7 +422,7 @@ Evaluate whether Zendesk remains the right long-term platform for Care, ahead of
 
 **Trigger**: Contract renewal June 2027; known capability gaps (Platform merchant data, AI workflow execution, B2C readiness)
 
-**Sequencing with Consumer (TBC)**: Current plan is Zendesk first for Braavos B2C launch, with migration to a new platform afterward if the decision lands on replacement. Consumer-first migration (new platform before Zendesk) was raised as an option but is not the current plan.
+**Sequencing with Consumer (updated 2026-08-18/20)**: Zendesk-first for Ray is no longer the plan. Ray goes straight to Plain, targeted Q1 2027, to avoid building on a stack Care migrates off. The December 2026 internal alpha ships on a lightweight pass-through web form (taxonomy plus a few fields), not the full architecture, and not on Zendesk. Ray is therefore the first Care deployment with no Zendesk and the validation ground for Plain. The Plain POC has ended; the outstanding gate is estimates, roadmap and business sign-off for the build, which is itself blocked on sign-off of the Fin/Plain architecture vision. Source: `04-active-work/meeting-notes/2026-08/2026-08-18-ray-blockchain-consumer-care.md`, `2026-08-20-fin-in-plain-world.md`.
 
 **Flywheel**: Governance (underpins all flywheel stages — ticketing, routing, SLA, QA, data pipeline)
 
@@ -438,7 +438,7 @@ Long-range demand forecast across all segments (Enterprise, Platforms ISV, Platf
 
 - Segment-level contact projections from 2026 to 2030 — Complete
 - B2B and B2C split quantified — Complete
-- Underpins AI investment case and Consumer Duty planning horizon
+- Underpins AI investment case and Consumer Duty planning horizon (Consumer Duty now attaches to open banking in 2027, not to Ray: Ray is issued via Checkout SAS and sits outside SCA)
 
 Reference: `01-knowledge-base/metrics/contact forecasting.md`
 

@@ -1,0 +1,379 @@
+{
+  "taxonomy": [
+    {
+      "case_type": "Accepting payments",
+      "definition": "Refers to the technical lifecycle of customer-initiated transactions (processing, authorization, capture/void, refunds/reversals, disputes) for goods and services. Do NOT select this for requests to enable new payment methods, configuration of processing channels, or update billing/statement descriptors — use ACCOUNT MANAGEMENT instead. Includes: Transaction Status, Refunds, Authentication (3DS), Fraud & Risk Controls, Disputes/Chargebacks, Performance. Key Distinctions: Decline Codes like 20XXX/30XXX/40XXX belong here. Select for lifecycle outcomes (declines, stuck status, missing transaction, refund failure) not configuration.",
+      "issue_types": [
+        {
+          "issue_type": "Transaction status (non 3DS & refunds)",
+          "definition": "Refers to the status, outcome, or root cause of failure for specific payment attempts or individual customers. Select for 'Why did this fail?' or 'Where is the money?' queries. Do NOT select for 3DS/Authentication or refund-related queries.",
+          "reason_types": [
+            { "reason_type": "Declined / failed action", "definition": "IF a customer payment was explicitly rejected with a response code by a bank or scheme, OR if the merchant requests a root cause analysis for specific declined transactions, error codes, or failures related to a single customer/card THEN select this." },
+            { "reason_type": "Stuck in status / status enquiry", "definition": "IF a merchant reports a payment stuck in an intermediate state (e.g. Authorized or Captured), requests confirmation of current status OR questions the root cause and processing logic behind a specific transaction outcome (e.g. unexpected voids or approvals) THEN select this." },
+            { "reason_type": "Missing or unrecognised transaction", "definition": "IF a merchant claims a transaction occurred but cannot find it in the portal/logs OR asks for a general investigation where there is ambiguity about the transaction or its status THEN select this." },
+            { "reason_type": "Customer charged twice", "definition": "IF merchant reports a duplicate charge THEN select this." },
+            { "reason_type": "Proof of payment (ARN, RNN, bulk)", "definition": "IF a merchant requests specific transaction identifiers (e.g., ARN, RRN) to provide to a customer, OR requests bulk transaction metadata/logs THEN select this." },
+            { "reason_type": "Failed but customer charged", "definition": "If merchant says their customer was charged but payment declined then select this." }
+          ]
+        },
+        {
+          "issue_type": "Refunds",
+          "definition": "Includes failed refunds, refunds that need to be reversed, and requests for proof that a refund was issued.",
+          "reason_types": [
+            { "reason_type": "Refund failed / manual refund", "definition": "IF an attempt to return funds results in a decline message or the merchant is unable to process the refund self-service due to technical failures, scheme rules, or acquirer constraints. Also select when the merchant explicitly requests a manual refund or asks the support team to intervene." },
+            { "reason_type": "Refund proof", "definition": "IF a merchant needs documentation to prove a refund was processed to a customer THEN select this." },
+            { "reason_type": "Refund reversal", "definition": "IF a processed refund needs to be undone or was done in error THEN select this." },
+            { "reason_type": "Refund status enquiry", "definition": "IF the merchant is inquiring about the current status of a refund or reporting a status discrepancy. Select for refunds stuck in 'Pending', investigations into why funds have not reached the customer, or general verification of a refund's lifecycle." }
+          ]
+        },
+        {
+          "issue_type": "Authentication (3DS)",
+          "definition": "Queries about 3DS/Authentication issues.",
+          "reason_types": [
+            { "reason_type": "3DS decline", "definition": "IF a transaction fails, is declined with a 3DS-related error, or the authentication process (OTP, App redirect, or initiation) is not triggered or completed as expected THEN select this." },
+            { "reason_type": "Liability shift status", "definition": "If the merchant is asking about liability shift for a 3DS processed payment or chargeback (e.g. chargeback protection logic) then select this." },
+            { "reason_type": "SCA / exemption issue", "definition": "IF query relates to Strong Customer Authentication rules or requests to skip 3DS THEN select this." }
+          ]
+        },
+        {
+          "issue_type": "Fraud & risk controls",
+          "definition": "Queries about Fraud controls and settings.",
+          "reason_types": [
+            { "reason_type": "Risk rules", "definition": "IF a payment was blocked by fraud settings or the Risk engine, OR the merchant requests changes to risk rules, blocklists, allowlists, or threshold settings." },
+            { "reason_type": "Trustlist & decline list", "definition": "IF merchant wants to add/remove specific entities (IP, Email, Card) from a block or allow list THEN select this." },
+            { "reason_type": "AVS / CVV mismatch", "definition": "IF the issue relates to Address Verification Service (AVS) or CVV checks, including payment failures due to mismatches, inquiries about check results, or questions regarding the logic of how these checks are performed." },
+            { "reason_type": "Velocity limit reached", "definition": "IF blocks are occurring due to too many attempts in a short timeframe THEN select this." }
+          ]
+        },
+        {
+          "issue_type": "Disputes",
+          "definition": "Queries about lifecycle of Disputes/Chargebacks.",
+          "reason_types": [
+            { "reason_type": "Dispute status", "definition": "IF the merchant is inquiring about the status, lifecycle, or outcome of a dispute (e.g., Won/Lost, Pre-Arb), or questioning its validity. Also select for operational issues such as locating transactions in disputes, missing notifications, configuring dispute services, or clarifying financial impact on funds." },
+            { "reason_type": "Dispute adjustment", "definition": "IF the merchant is questioning, reporting discrepancies in, or seeking clarification on financial adjustments from disputes or chargebacks such as unexpected debits, duplicate charges, credit adjustments (UPDT), missing chargeback refunds, or confusion about how dispute outcomes impacted their balance." },
+            { "reason_type": "Evidence help and submission", "definition": "IF the merchant is actively defending a dispute or RFI. Select for submitting files, troubleshooting dashboard submission errors, or asking for strategic guidance on which documents are required to contest the case." }
+          ]
+        },
+        {
+          "issue_type": "Performance",
+          "definition": "Queries about acceptance rate performance or multiple payment failures.",
+          "reason_types": [
+            { "reason_type": "Acceptance rate issue / optimisation", "definition": "IF a merchant reports a drop in overall approval ratios, asks for optimization advice, or flags a trend of declines across multiple transactions THEN select this." },
+            { "reason_type": "All payments failing", "definition": "If the merchant is saying they have a large amount of payment failure issues or systemic payment failures then select this." }
+          ]
+        }
+      ]
+    },
+    {
+      "case_type": "Payouts",
+      "definition": "Refers to the lifecycle of a payout made by card or bank payout. Includes status, declines, reversals, and proofs. Covers Bank Payouts (returned/bounced, invalid beneficiary, cut-off times, MT103 proof) and Card Payouts (stuck in pending, declined, card not supported, payout reversals).",
+      "issue_types": [
+        {
+          "issue_type": "Bank payouts",
+          "definition": "Queries about payouts sent via bank transfer rails (SEPA, SWIFT, Faster Payments, ACH, wire transfers). Select if ticket explicitly mentions: bank account, IBAN, SWIFT/BIC codes, MT103, beneficiary bank, wire transfer, sanctions/AML screening holds, Inpay references, or name discrepancy verification. Do NOT select if payout method is unclear.",
+          "reason_types": [
+            { "reason_type": "Declined / failed bank payout", "definition": "IF a bank payout was declined THEN select this." },
+            { "reason_type": "Proof of bank payout", "definition": "IF the recipient claims they haven't received funds from a bank payout and the merchant needs a confirmation receipt THEN select this." },
+            { "reason_type": "Bank payout stuck in pending or status inquiry", "definition": "Select when a merchant inquires about a bank payout that is delayed, stuck in processing, or showing a pending status. Covers payouts held for compliance checks, sanctions reviews, or risk assessments, often requiring an RFI. Also for general status investigations or discrepancies in payout amounts." },
+            { "reason_type": "Bank payout returns", "definition": "If a merchant asks to reverse a bank payout then select this." }
+          ]
+        },
+        {
+          "issue_type": "Card payouts",
+          "definition": "Queries about payouts sent via card networks (Visa Direct, Mastercard Send, Pay to Card/PTC, OCT). Select if ticket mentions: Visa, Mastercard, card payout, ARN, RRN, issuing bank, issuer, cardholder, or any card scheme reference. When payout method is ambiguous, default to Card Payouts.",
+          "reason_types": [
+            { "reason_type": "Card payout stuck in pending or status inquiry", "definition": "If a merchant asks why a card payout is stuck in Pending then select this." },
+            { "reason_type": "Declined / failed card payout", "definition": "If a merchant asks why a card payout was declined or customer didn't receive money then select this." },
+            { "reason_type": "Proof of card payout", "definition": "IF merchant needs a card payout proof or Retrieval Reference Number (RRN) to give to a customer THEN select this." },
+            { "reason_type": "Card payout reversal", "definition": "If a merchant asks to reverse a card payout then select this." }
+          ]
+        }
+      ]
+    },
+    {
+      "case_type": "Funds and fees",
+      "definition": "Refers to the flow of money in the merchant balance, settlements, and associated fees. Includes settlement delays, reconciliation, balance queries, invoices, and fee questions. Key Distinctions: Select for settlement reconciliation or financial amount mismatches. Select for fee questions including interchange/scheme/gateway fees and why fees weren't refunded.",
+      "issue_types": [
+        {
+          "issue_type": "Settlements",
+          "definition": "Queries about Settlement lifecycle and reconciliation.",
+          "reason_types": [
+            { "reason_type": "Delayed / missing settlement", "definition": "IF an expected settlement is not showing on Dashboard or not arrived in the merchant's bank account THEN select this." },
+            { "reason_type": "Reconciliation issue", "definition": "IF merchant is struggling to match report or Dashboard data to their bank statement entries or is reporting a discrepancy between expected and actual balances THEN select this." }
+          ]
+        },
+        {
+          "issue_type": "Balances",
+          "definition": "Queries about Balance status and confirmation.",
+          "reason_types": [
+            { "reason_type": "Balance confirmation", "definition": "If the merchant needs a Statement of account (SOA) or balance confirmation document for audit purposes THEN select this." },
+            { "reason_type": "Negative balance", "definition": "IF the merchant is struggling to understand why they have a negative balance on their account THEN select this." },
+            { "reason_type": "Balance top up", "definition": "IF the merchant needs to top up their balance THEN select this." },
+            { "reason_type": "Balance explanation", "definition": "IF the merchant needs help understanding their balance or how funds are allocated, reports balance discrepancies or is unable to reconcile figures between reports or different balance types." }
+          ]
+        },
+        {
+          "issue_type": "Billing & fees",
+          "definition": "Queries about fees charged.",
+          "reason_types": [
+            { "reason_type": "Invoice request", "definition": "IF merchant needs a copy of their tax or service invoice THEN select this." },
+            { "reason_type": "Fee inquiry", "definition": "IF merchant questions a specific charge (e.g., Interchange, Scheme fee) THEN select this." }
+          ]
+        }
+      ]
+    },
+    {
+      "case_type": "Technical issue",
+      "definition": "Refers to integration or technical issues (API/SDK/webhook/connectivity), including HTTP 4xx/5xx errors, keys, tokens, and environment issues. Key Distinctions: HTTP status codes (400/401/403/404/409/422/429/500/502/503) or explicit API failures belong here. Network Tokenization questions belong here. If customer is charged an amount not in Checkout.com records (wallet surcharge, 3DS fee, issuer fee), select this.",
+      "issue_types": [
+        {
+          "issue_type": "API keys",
+          "definition": "Queries regarding the management of authentication keys (Secret/Public OAuth) and their access permissions.",
+          "reason_types": [
+            { "reason_type": "Create / edit keys", "definition": "If the merchant is asking about how to create, edit or troubleshoot API keys then select this." },
+            { "reason_type": "Key scopes", "definition": "Select if the merchant is inquiring about which permissions are required or explicitly requesting that specific scopes be granted to their API keys." }
+          ]
+        },
+        {
+          "issue_type": "API integration",
+          "definition": "Queries regarding raw API responses, HTTP status codes, and network connectivity. Use as the catch-all for API errors not specific to a Plugin, Flow, Frames, SDK or Payment Links.",
+          "reason_types": [
+            { "reason_type": "API error 4XX / logic error", "definition": "IF the merchant encounters HTTP 400-level errors (e.g., 404, 422) indicating the issue lies with the request, OR reports functional integration bugs including redirect parameter mismatches, invalid data formats, missing response payloads, or logic errors." },
+            { "reason_type": "API error 5XX", "definition": "When the merchant reports HTTP 500-level errors indicating the server failed to fulfill a valid request. Applies to infrastructure problems, outages, Service Unavailable (503), synchronization failures, or internal system errors." },
+            { "reason_type": "Idempotency / timeout", "definition": "If the merchant is getting timeout or idempotency issues on API requests then select this." }
+          ]
+        },
+        {
+          "issue_type": "Tokens",
+          "definition": "Queries about tokens (including token migration and network tokens).",
+          "reason_types": [
+            { "reason_type": "Network tokens", "definition": "IF the issue involves Network Tokens, including inquiries about token migration, provisioning status, or specific technical errors related to tokenization logic (e.g., PEM values or cryptograms)." },
+            { "reason_type": "Token migration", "definition": "If the merchant is asking about import or export of their Tokens then select this." }
+          ]
+        },
+        {
+          "issue_type": "Integration methods",
+          "definition": "IF the merchant is inquiring about the specific interface, library, or platform used to process payments, including hosted pages, plugins, SDKs, payment links, or digital wallets THEN select this.",
+          "reason_types": [
+            { "reason_type": "Flow / frames", "definition": "If the merchant is asking about Flow or Frames or migration to Flow." },
+            { "reason_type": "Payment links / hosted payment pages", "definition": "If a merchant is asking about Payment Links or Hosted Payment Page issues then select this." },
+            { "reason_type": "SDK issue", "definition": "If a merchant is asking about an SDK issue then select this." },
+            { "reason_type": "E-commerce plugin", "definition": "If a merchant is asking about a Plugin issue like Shopify, Woocommerce and others then select this." },
+            { "reason_type": "Apple Pay / Google Pay", "definition": "IF the merchant is asking about Apple Pay or Google Pay setup, integration, certificates, domain verification, or method-specific errors THEN select this." }
+          ]
+        },
+        {
+          "issue_type": "Webhooks",
+          "definition": "Queries about webhooks.",
+          "reason_types": [
+            { "reason_type": "Webhook setup", "definition": "Select when a merchant is unable to successfully configure or connect their webhooks, including errors within third-party plugins or requests for initial registration in Sandbox. Covers Endpoint Registration Failures or when the merchant needs assistance enabling the service before live transactions." },
+            { "reason_type": "Signature verification or delivery failure", "definition": "Select if the merchant reports webhook delivery issues including delivery latency, missed notifications, synchronization failures, dispatch timing investigations, or timeouts. Also select for signature verification issues including questions about security headers, source IP verification, secret key, hashing algorithm, or verification logic failures." },
+            { "reason_type": "Missing webhook data", "definition": "Select if the merchant reports inconsistent metadata (e.g., missing orderId) or that the Payload Data Format does not match expectations. Applies when the webhook was delivered but content was incomplete or incorrect." }
+          ]
+        },
+        {
+          "issue_type": "Test environment",
+          "definition": "IF the issue involves transaction failures, configuration problems, or testing specifically within Sandbox/Test environments THEN select this.",
+          "reason_types": [
+            { "reason_type": "Sandbox issue", "definition": "IF the issue is about the non-production/testing environment THEN select this." }
+          ]
+        }
+      ]
+    },
+    {
+      "case_type": "Data and analytics",
+      "definition": "Refers to issues about reports either from the Dashboard or via SFTP. Includes issues about how to get a report and issues with the report data. Key Distinctions: Select for missing/incorrect/not generated reports, data mismatch, SFTP delivery. Select for Network Tokens reporting questions. Select for reconciliation issues caused by data format/export problems.",
+      "issue_types": [
+        {
+          "issue_type": "Reporting",
+          "definition": "Queries about Reports and data within.",
+          "reason_types": [
+            { "reason_type": "Report not generated / missing", "definition": "IF the merchant is unable to successfully generate, download, or access a specific report for any reason. Select for file availability issues, download failures, missing formats, or requests for manual extraction due to dashboard access limitations." },
+            { "reason_type": "Data mismatch / missing data", "definition": "IF there is a discrepancy or data gap in reports THEN select this." },
+            { "reason_type": "Custom report request", "definition": "IF the merchant requires a specific data set or column configuration not available by default THEN select this." },
+            { "reason_type": "SFTP configuration", "definition": "If a merchant is asking about reporting using SFTP then select this." }
+          ]
+        }
+      ]
+    },
+    {
+      "case_type": "Platforms",
+      "definition": "Covers Independent Software Vendors (ISVs) utilizing Checkout.com's Integrated Platforms product to embed payments. Includes Sub-Merchant Onboarding and Transfers & Splits. Key Distinction: Use ONLY when explicitly dealing with marketplace/ISV AND sub-merchants, splits/transfers, or sub-merchant onboarding.",
+      "issue_types": [
+        {
+          "issue_type": "Sub-merchant onboarding",
+          "definition": "Queries about onboarding merchants.",
+          "reason_types": [
+            { "reason_type": "Merchant activation and verification", "definition": "IF issues relate to the KYC, verification, or creation of a sub-merchant THEN select this." },
+            { "reason_type": "Doc upload error", "definition": "IF issues relate to the sub merchant document upload then select this." }
+          ]
+        },
+        {
+          "issue_type": "Transfers & splits",
+          "definition": "Queries about Transfers to merchants.",
+          "reason_types": [
+            { "reason_type": "Transfer or split failed", "definition": "IF funds were not distributed correctly between the platform and sub-merchant THEN select this." }
+          ]
+        }
+      ]
+    },
+    {
+      "case_type": "Card issuing",
+      "definition": "Refers to issuing-related issues. Includes physical or virtual card issues and controls on these cards. Covers Card Management (create/activate, revoke/suspend, spend controls) and Logistics (physical card delivery).",
+      "issue_types": [
+        {
+          "issue_type": "Card management",
+          "definition": "Queries about managing cards.",
+          "reason_types": [
+            { "reason_type": "Create / activate card", "definition": "IF merchant is having trouble setting up or enabling a new card THEN select this." },
+            { "reason_type": "Revoke / suspend", "definition": "IF merchant needs to cancel or temporarily freeze an active card THEN select this." },
+            { "reason_type": "Spend controls", "definition": "IF query is about adjusting limits or blocking specific categories (MCC) THEN select this." }
+          ]
+        },
+        {
+          "issue_type": "Card deliveries",
+          "definition": "Queries about card deliveries.",
+          "reason_types": [
+            { "reason_type": "Physical card delivery", "definition": "IF merchant is checking status or reporting a card lost in the mail THEN select this." }
+          ]
+        },
+        {
+          "issue_type": "Issuing digital wallets",
+          "definition": "Queries about adding issued cards to Apple Pay or Google Pay.",
+          "reason_types": [
+            { "reason_type": "Apple Pay / Google Pay", "definition": "IF a cardholder cannot add their issued card to Apple Pay or Google Pay, or the card is not working correctly in their digital wallet (e.g., provisioning failures, token errors) THEN select this." }
+          ]
+        },
+        {
+          "issue_type": "Issuing mobile SDK",
+          "definition": "Queries about the Issuing mobile SDK.",
+          "reason_types": [
+            { "reason_type": "Issuing SDK integration / upgrade", "definition": "IF the merchant is integrating, upgrading, or troubleshooting the Issuing mobile SDK THEN select this." }
+          ]
+        },
+        {
+          "issue_type": "Issuing transactions, funds and reports",
+          "definition": "Questions about card transactions, settlement, fees, or balance.",
+          "reason_types": [
+            { "reason_type": "Issuing balance", "definition": "IF the merchant has questions about card funding balance, available funds per currency, insufficient funds errors, or operational reserves THEN select this." },
+            { "reason_type": "Issuing settlement & reconciliation", "definition": "IF the merchant has questions about issuing settlement timing, report mismatches, or reconciliation issues THEN select this." },
+            { "reason_type": "Issuing fees", "definition": "IF the merchant has questions about issuing fees (Interchange, scheme fees, CKO fees) THEN select this." },
+            { "reason_type": "Issuing transaction declined / unexpected behavior", "definition": "IF the merchant needs to understand why an issued card transaction was declined or behaved unexpectedly THEN select this." }
+          ]
+        }
+      ]
+    },
+    {
+      "case_type": "Account management & access",
+      "definition": "Refers to access to the Dashboard/Portal or making structural changes to the account. Includes login issues, missing permissions, audit logs, and account configuration. Select if the merchant requests to add, enable, or configure Payment Methods, currencies, schemes, processing channels, or to update billing/statement descriptors. Key Distinctions: Enablement of payment methods/currencies/schemes = select this. Primary blocker is access/permissions = select this.",
+      "issue_types": [
+        {
+          "issue_type": "Login & access",
+          "definition": "Queries about Dashboard login failures or setup.",
+          "reason_types": [
+            { "reason_type": "Login error / MFA / SSO", "definition": "IF merchant cannot enter the Dashboard due to password issues, MFA/2FA problems, SSO errors, or requires assistance setting up or troubleshooting SAML/Single Sign-On configuration THEN select this." },
+            { "reason_type": "User permissions", "definition": "IF adding/removing merchants or changing what a specific merchant can see/do THEN select this." },
+            { "reason_type": "Dashboard user audit evidence", "definition": "IF merchant wants an audit log of who performed which action in the portal THEN select this." },
+            { "reason_type": "Dashboard error", "definition": "If the merchant reports a Dashboard page or feature that fails to load, displays an error, or behaves unexpectedly after successful login THEN select this. Do NOT select for login/authentication failures or permission-related access issues." }
+          ]
+        },
+        {
+          "issue_type": "Account changes",
+          "definition": "Requests regarding overall Account changes such as the merchant entity's commercial terms, structural platform configuration, or lifecycle status. Also for configuration updates including retrieving identifiers or correcting settings like Billing Descriptors and MCCs.",
+          "reason_types": [
+            { "reason_type": "Pricing change", "definition": "IF merchant is requesting to update their contract or commission rates THEN select this." },
+            { "reason_type": "Account settings update", "definition": "IF the request involves configuring processing channels, retrieving account identifiers (BINs, MCCs), changing account status (activation, restriction), or updating administrative profile details (bank info, legal address) THEN select this." },
+            { "reason_type": "Terminations", "definition": "IF merchant explicitly asks to terminate or close their account THEN select this." }
+          ]
+        }
+      ]
+    },
+    {
+      "case_type": "Feedback",
+      "definition": "Sentiment and product suggestions. Includes feature requests, feature usage questions, thank you messages, resolved confirmations.",
+      "issue_types": [
+        {
+          "issue_type": "Product feedback",
+          "definition": "Queries about providing feedback about the features offered by Checkout and how to request or use them.",
+          "reason_types": [
+            { "reason_type": "Feature request", "definition": "IF merchant suggests a new functionality that does not currently exist THEN select this." },
+            { "reason_type": "Feature usage", "definition": "IF merchant asks 'How do I use this existing feature?' THEN select this." }
+          ]
+        }
+      ]
+    },
+    {
+      "case_type": "Compliance & audit",
+      "definition": "Refers to requests for documentation for audit/compliance purposes. Includes PCI/AOC requests, audit requests, due diligence questionnaires.",
+      "issue_types": [
+        {
+          "issue_type": "Compliance evidence",
+          "definition": "Queries about requesting compliance documentation from Checkout.",
+          "reason_types": [
+            { "reason_type": "PCI / AOC request", "definition": "IF merchant asks for security compliance certificates (AOC/PCI-DSS) THEN select this." },
+            { "reason_type": "Audit request", "definition": "IF query is for formal audit evidence or due diligence questionnaires THEN select this." },
+            { "reason_type": "Sensitive data request", "definition": "IF the merchant requests sensitive customer information such as full PAN, unmasked card numbers, or other protected cardholder data, typically in response to legal authorities, law enforcement, regulatory bodies, or court orders THEN select this." },
+            { "reason_type": "Other compliance docs", "definition": "For other compliance documentation requests not covered by the above." }
+          ]
+        }
+      ]
+    },
+    {
+      "case_type": "General",
+      "definition": "Refers to general inquiries which do not fit other case types. Includes sales inquiries, spam, duplicate tickets, empty/OOO/no-action messages.",
+      "issue_types": [
+        {
+          "issue_type": "Inquiries",
+          "definition": "Queries about buying our services, Sales, or anything else including general follow ups.",
+          "reason_types": [
+            { "reason_type": "Sales inquiry", "definition": "IF a prospect wants to buy services or add new products THEN select this." },
+            { "reason_type": "Spam / duplicate / no action / follow ups", "definition": "IF the ticket is spam, empty, a follow up, an OOO reply, or an accidental double-post THEN select this." }
+          ]
+        }
+      ]
+    },
+    {
+      "case_type": "Identity verification",
+      "definition": "Refers to Identity Verification (IDV) product and services, using document checks, facial recognition, and automation to verify a person's identity. Used for onboarding, KYC compliance, and fraud prevention. Select for queries about verification results, data privacy requests, platform configuration, or technical issues related to the IDV product.",
+      "issue_types": [
+        {
+          "issue_type": "Verification and technical support",
+          "definition": "Review rejected verifications, update configurations and resolve technical errors.",
+          "reason_types": [
+            { "reason_type": "Verification inquiry", "definition": "Queries about specific identity verification results, including requests to correct extracted data (name, DOB), re-verification due to suspected fraud, understanding why a verification was rejected, or inquiries about a specific IDV ID." },
+            { "reason_type": "Setup support", "definition": "Queries about IDV configuration and onboarding, including adding or removing accepted document types or countries, dashboard access, certificate management (mTLS), or customization options." },
+            { "reason_type": "Technical & platform", "definition": "Technical issues with the IDV platform, including verifications stuck in pending, document capture failures, API errors, webhook issues, or integration problems." }
+          ]
+        },
+        {
+          "issue_type": "Security, privacy and compliance",
+          "definition": "Submit requests related to data privacy rights, report security incidents, or request compliance documentation.",
+          "reason_types": [
+            { "reason_type": "Data privacy", "definition": "Requests related to data privacy rights, including data deletion/erasure requests (GDPR), requests for copies of personal data, identity theft reports, or questions about privacy policy and data handling." },
+            { "reason_type": "Account & compliance", "definition": "Queries about IDV account-level compliance, regulatory requirements, or compliance certifications." },
+            { "reason_type": "Security", "definition": "Queries related to IDV security concerns, security incidents, or security certifications." }
+          ]
+        },
+        {
+          "issue_type": "Formal complaint",
+          "definition": "Submit a formal complaint about the identity verification service.",
+          "reason_types": [
+            { "reason_type": "Formal complaint", "definition": "Formal complaints about the IDV service requiring escalation or with legal/compliance implications." }
+          ]
+        },
+        {
+          "issue_type": "N/A",
+          "definition": "Tickets that do not require action or do not fit other IDV issue types.",
+          "reason_types": [
+            { "reason_type": "3rd party", "definition": "IF the ticket was submitted by or relates to a third party and does not require IDV team action THEN select this." },
+            { "reason_type": "Automated", "definition": "IF the ticket was generated automatically by a system and does not require manual action THEN select this." },
+            { "reason_type": "Follow up", "definition": "IF the ticket is a follow-up to a previous request that has already been resolved THEN select this." },
+            { "reason_type": "Sales lead", "definition": "IF the ticket is a sales inquiry or lead rather than a support request THEN select this." },
+            { "reason_type": "Self resolved", "definition": "IF the issue was resolved by the merchant before agent intervention THEN select this." },
+            { "reason_type": "Spam", "definition": "IF the ticket is spam or irrelevant THEN select this." }
+          ]
+        }
+      ]
+    }
+  ]
+}

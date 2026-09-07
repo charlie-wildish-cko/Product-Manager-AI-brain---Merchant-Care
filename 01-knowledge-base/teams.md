@@ -45,7 +45,7 @@ AMs and TAMs raise tickets to the Care team on behalf of their merchants. This i
 
 When an AM or TAM raises a ticket, the ticket must be attributed to the merchant they represent — not to the AM/TAM themselves. This is an important distinction for SLA assignment, routing, and org-level reporting.
 
-**2028+ evolution**: As Checkout introduces B2B banking products (merchant balance holding, interest on deposits), the AM/TAM role will expand to cover banking relationship management alongside payments. This will change the nature of what they escalate to Care (adding treasury, yield, and balance query types) and will require Sonar's knowledge base to include banking product content.
+**2027+ evolution**: As Checkout introduces B2B banking products (merchant balance holding, interest on deposits), the AM/TAM role will expand to cover banking relationship management alongside payments. This will change the nature of what they escalate to Care (adding treasury, yield, and balance query types) and will require Sonar's knowledge base to include banking product content.
 
 ## Other Common Stakeholders
 

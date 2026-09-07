@@ -106,14 +106,14 @@ If the answer to any question is "not yet", do not share this document.
 
 ## 2a. Customer Segments in Scope
 
-*[Who does this strategy apply to? Checkout.com serves three distinct B2B segments (Direct Merchant, Platform/ISV, and B2B Banking 2028+) and will add B2C in 2027. Strategy that applies uniformly to all segments is rare — be explicit about which segments are in scope and what differs for each. The "not in scope" row is mandatory; do not leave it blank.]*
+*[Who does this strategy apply to? Checkout.com serves three distinct B2B segments (Direct Merchant, Platform/ISV, and B2B Banking 2027+) and will add B2C in 2027. Strategy that applies uniformly to all segments is rare — be explicit about which segments are in scope and what differs for each. The "not in scope" row is mandatory; do not leave it blank.]*
 
 | Segment | In scope? | Notes — what differs for this segment |
 |---|---|---|
 | **Direct Merchant** | Yes / No / Partially | [e.g. primary target; full feature set applies] |
 | **Platform / ISV** | Yes / No / Partially | [e.g. in scope from Q3 as Platform Support Channels land; context differs — Checkout is L2] |
 | **B2C (2027 launch)** | Yes / No / Partially | [e.g. out of scope for this strategy horizon; Consumer Duty requirements handled separately] |
-| **B2B Banking (2028+)** | Yes / No / Partially | [e.g. not in scope — taxonomy and support model not yet defined] |
+| **B2B Banking (2027+)** | Yes / No / Partially | [e.g. not in scope — taxonomy and support model not yet defined] |
 
 **Explicitly not in scope:** [Name segments or sub-segments excluded from this strategy and why.]
 

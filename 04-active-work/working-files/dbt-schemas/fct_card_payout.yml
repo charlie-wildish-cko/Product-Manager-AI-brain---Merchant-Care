@@ -1,0 +1,577 @@
+version: 2
+
+models:
+  - name: fct_card_payout
+    description: |
+      Fact table for Pay To Card (PTC) payments / card payouts (PTC payment-level data unioned across Flink/NAS and legacy MBC sources). One row per PTC payment; filtered to `context_category` in ('payout', 'unknown') or NULL (legacy data), and excludes payments whose payout requests were rejected (`decline_reason = 'authorize'`).
+
+      This is a view over `int_card_payout_v2`, which is partitioned by `requested_at`. Please filter by `requested_at` to ensure your query is efficient.
+    meta:
+      refresh_frequency: bihourly
+      severity: p1
+      tech_owner: Shreya.Alva@checkout.com
+      tech_owner_slack_channel: '#ask-analytics'
+      tech_owner_team: Payment Analytics
+      security_classification: confidential
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: payment_id
+        description: "{{ doc('payment_id') }}"
+        data_type: string
+        data_tests:
+          - not_null
+          - unique
+      - name: client_id
+        description: "{{ doc('client_id') }}"
+        data_type: string
+      - name: entity_id
+        description: "{{ doc('entity_id') }}"
+        data_type: string
+      - name: sub_entity_id
+        description: "{{ doc('sub_entity_id') }}"
+        data_type: string
+      - name: processing_channel_id
+        description: "{{ doc('processing_channel_id') }}"
+        data_type: string
+      - name: merchant_account_id
+        description: "[LEGACY] {{ doc('merchant_account_id') }}"
+        data_type: numeric
+      - name: business_id
+        description: "[LEGACY] {{ doc('business_id') }}"
+        data_type: numeric
+      - name: channel_id
+        description: "[LEGACY] {{ doc('channel_id') }}"
+        data_type: numeric
+      - name: context_category
+        description: "Business context for the payment, distinguishing standalone payouts from refunds. Sample values: payout, unknown. NULL for legacy data."
+        data_type: string
+      - name: requested_at
+        description: "{{ doc('requested_at') }}"
+        data_type: timestamp
+      - name: processed_at
+        description: "Timestamp at which the payout reached a terminal state — approved or declined (UTC). NULL while the payout is still in flight."
+        data_type: timestamp
+      - name: event_at
+        description: "Timestamp of the latest event that modified this payment (UTC)."
+        data_type: timestamp
+      - name: declined_at
+        description: "{{ doc('declined_at') }}"
+        data_type: timestamp
+      - name: approved_at
+        description: "{{ doc('approved_at') }}"
+        data_type: timestamp
+      - name: is_gateway_services_only
+        description: "[LEGACY] {{ doc('is_gateway_services_only') }}"
+        data_type: boolean
+      - name: is_gwc
+        description: "{{ doc('is_gwc') }}"
+        data_type: boolean
+      - name: is_nas
+        description: "{{ doc('is_nas') }}"
+        data_type: boolean
+      - name: is_mssql
+        description: "[LEGACY] Indicates whether the payout originated from the legacy MSSQL source (true) or another source (false)."
+        data_type: boolean
+      - name: status
+        description: "Payment status mapped to the analytics-team payin lexicon so PTC payouts align with `fct_payin` reporting. Sample values: Authorised (from approved), Declined, Requested (from pending). Values outside this set fall through unchanged."
+        data_type: string
+      - name: request_correlation_id
+        description: "{{ doc('request_correlation_id') }}"
+        data_type: string
+      - name: payment_currency_iso3
+        description: "{{ doc('payment_currency_iso3') }}"
+        data_type: string
+      - name: currency_name
+        description: "{{ doc('currency_name') }}"
+        data_type: string
+      - name: retrieval_reference_number
+        description: "{{ doc('retrieval_reference_number') }}"
+        data_type: string
+      - name: scheme_transaction_id
+        description: "{{ doc('scheme_transaction_id') }}"
+        data_type: string
+      - name: reference
+        description: "Free-text merchant-supplied reference for the payment, sent on the original payout request."
+        data_type: string
+      - name: instruction_source_amount
+        description: "Source amount funded by the merchant (pre-FX) in major currency units (e.g. dollars, not cents)."
+        data_type: numeric
+      - name: instruction_source_currency
+        description: "ISO-4217 alpha-3 currency code of the source amount funded by the merchant (pre-FX). Sample values: USD, GBP, EUR, RON, DKK."
+        data_type: string
+      - name: segment_dimension_hash
+        description: "{{ doc('segment_dimension_hash') }}"
+        data_type: string
+      - name: authorisation_code
+        description: "Authorisation code returned by the issuer for approved card payouts. Sample value: 006844."
+        data_type: string
+      - name: gateway_response_code
+        description: "{{ doc('payment_gateway_response_code') }} {{ doc('payout_gateway_response_code_samples') }}"
+        data_type: string
+      - name: gateway_response_summary
+        description: "{{ doc('gateway_response_summary') }}"
+        data_type: string
+      - name: card_type
+        description: "{{ doc('card_type') }}"
+        data_type: string
+      - name: billing_descriptor_name
+        description: "{{ doc('billing_descriptor_name') }}"
+        data_type: string
+      - name: billing_descriptor_reference
+        description: "Billing descriptor reference; alias of `billing_descriptor_name` in the NAS source. NULL for legacy MBC records."
+        data_type: string
+      - name: card_verification_value_check
+        description: "[LEGACY] {{ doc('card_verification_value_check') }}"
+        data_type: string
+      - name: address_verification_service_check
+        description: "[LEGACY] {{ doc('address_verification_service_check') }}"
+        data_type: string
+      - name: card_fingerprint
+        description: "{{ doc('card_fingerprint') }}"
+        data_type: string
+      - name: card_holder_name
+        description: "{{ doc('payout_card_holder_name') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: card_holder_first_name
+        description: "First name of the destination party when the recipient is an individual."
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: card_holder_last_name
+        description: "Last name of the destination party when the recipient is an individual."
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: card_expiry_month
+        description: "Expiry month of the destination card (1-12)."
+        data_type: numeric
+      - name: card_expiry_year
+        description: "Expiry year of the destination card (4-digit, e.g. 2027)."
+        data_type: numeric
+      - name: card_masked_number
+        description: "{{ doc('card_masked_number') }}"
+        data_type: string
+      - name: card_wallet
+        description: "{{ doc('card_wallet') }}"
+        data_type: string
+      - name: card_product_id
+        description: "{{ doc('card_product_id') }}"
+        data_type: string
+      - name: card_scheme_type_category
+        description: "[LEGACY] Higher-level grouping of card scheme type. NULL for NAS records."
+        data_type: string
+      - name: card_scheme_type
+        description: "Card type in uppercase. Sample values: DEBIT, CREDIT, PREPAID, UNKNOWN."
+        data_type: string
+      - name: card_brand
+        description: "Card scheme of the destination card, upper-cased for joins/filters consistent with `fct_payin` reporting. Sample values: VISA, MASTERCARD, DISCOVER, AMEX."
+        data_type: string
+      - name: card_category
+        description: "Card category as emitted by the PTC service, re-cased to InitCap. Sample values: Consumer, Commercial, Unknown."
+        data_type: string
+      - name: card_info_card_category
+        description: "Card category from the raw `card.category` field, re-cased to InitCap. NULL for legacy MBC records. Sample values: Consumer, Commercial, Unknown."
+        data_type: string
+      - name: card_info_card_issuer_region
+        description: "[LEGACY] Geographic region of the card issuer from card info. NULL for NAS records."
+        data_type: string
+      - name: card_bin
+        description: "{{ doc('card_bin') }}. Sample values: 514377, 444111, 423223."
+        data_type: string
+      - name: issuing_bank
+        description: "{{ doc('issuing_bank') }}"
+        data_type: string
+      - name: issuing_country_iso2
+        description: "{{ doc('issuing_country_iso2') }}"
+        data_type: string
+      - name: issuing_country
+        description: "{{ doc('issuing_country') }}"
+        data_type: string
+      - name: issuing_region
+        description: "{{ doc('issuing_region') }}"
+        data_type: string
+      - name: acquirer_bin
+        description: "{{ doc('acquirer_bin') }}"
+        data_type: string
+      - name: acquirer_name
+        description: "{{ doc('acquirer_name') }}"
+        data_type: string
+      - name: legal_acquirer_name
+        description: "{{ doc('legal_acquirer_name') }}"
+        data_type: string
+      - name: acquirer_country_iso2
+        description: "{{ doc('acquirer_country_iso2') }}"
+        data_type: string
+      - name: acquirer_country
+        description: "{{ doc('acquirer_country') }}"
+        data_type: string
+      - name: acquirer_region
+        description: "{{ doc('acquirer_region') }}"
+        data_type: string
+      - name: acquirer_credential_id
+        description: "[LEGACY] Acquirer credential identifier used for processing. NULL for NAS records."
+        data_type: numeric
+      - name: acquirer_id
+        description: "Unique identifier of the acquiring bank used to process the payout."
+        data_type: numeric
+      - name: acquirer_processor_name
+        description: "Name of the acquiring processor. Sample values: Checkout Ltd., Checkout SAS, Checkout APAC Pte Ltd., Checkout MENA FZ LLC."
+        data_type: string
+      - name: acquirer_bid
+        description: "Acquirer BID (Visa) / ICA (Mastercard) — scheme-assigned identifier of the acquirer used in scheme settlement and reporting."
+        data_type: string
+      - name: processor_bin_cib
+        description: "Processor BIN CIB (Card Issuer Bank) code. Sample values: 438886, 405982."
+        data_type: string
+      - name: acquirer_reference_number
+        description: "{{ doc('acquirer_reference_number') }}"
+        data_type: string
+      - name: acquirer_transaction_id
+        description: "Unique transaction identifier assigned by the acquirer."
+        data_type: string
+      - name: checkout_legal_entity_code
+        description: "{{ doc('checkout_legal_entity_code') }}"
+        data_type: string
+      - name: acquirer_code
+        description: "{{ doc('acquirer_code') }}"
+        data_type: string
+      - name: acquirer_legal_entity_code
+        description: "{{ doc('acquirer_legal_entity_code') }}"
+        data_type: string
+      - name: global_acquirer_id
+        description: "{{ doc('global_acquirer_id') }}"
+        data_type: string
+      - name: card_acceptor_id
+        description: "{{ doc('card_acceptor_id') }}"
+        data_type: string
+      - name: merchant_account_name
+        description: "[LEGACY] Merchant account name. NULL for NAS records."
+        data_type: string
+      - name: scheme_merchant_country_iso2
+        description: "[LEGACY] ISO-3166-1 alpha-2 country code of the scheme-registered merchant. NULL for NAS records."
+        data_type: string
+      - name: scheme_merchant_city_name
+        description: "[LEGACY] City name of the scheme-registered merchant. NULL for NAS records."
+        data_type: string
+      - name: business_name
+        description: "[LEGACY] Business name. NULL for NAS records."
+        data_type: string
+      - name: channel_name
+        description: "[LEGACY] Channel name. NULL for NAS records."
+        data_type: string
+      - name: mcc_used_payment_level
+        description: "{{ doc('mcc_used_payment_level') }}"
+        data_type: string
+      - name: mcc_desc
+        description: "{{ doc('mcc_desc') }}"
+        data_type: string
+      - name: mcc_group
+        description: "{{ doc('mcc_group') }}"
+        data_type: string
+      - name: industry_name
+        description: "{{ doc('industry_name') }}"
+        data_type: string
+      - name: line_of_business_name
+        description: 'Line-of-business classification of the MCC. NULL for legacy MBC records. Sample values: "Betting including lottery tickets, casino gaming chips, off-track betting and wagers at race tracks", "Non-financial institutions - foreign currency, non-fiat currency, and related services", "Financial institutions - merchandise, services, and debt repayment", "Money transfer services", "Digital books, movies, or music".'
+        data_type: string
+      - name: payment_method_name
+        description: "{{ doc('payment_method_name') }}"
+        data_type: string
+      - name: payment_method_id
+        description: "[LEGACY] Payment method identifier. NULL for NAS records."
+        data_type: numeric
+      - name: payment_type
+        description: "Card type of the destination card, re-cased to InitCap. Sample values: Credit, Debit, Prepaid, Unknown."
+        data_type: string
+      - name: payment_code
+        description: "[LEGACY] Payment code. NULL for NAS records."
+        data_type: string
+      - name: geographic_scope
+        description: "{{ doc('geographic_scope') }} Sample values: Domestic, CrossBorder, Unknown."
+        data_type: string
+      - name: funds_transfer_type
+        description: "{{ doc('funds_transfer_type') }}"
+        data_type: string
+      - name: purpose
+        description: "{{ doc('purpose') }}"
+        data_type: string
+      - name: bai
+        description: "[LEGACY] Business Application Identifier — how the schemes define types of business (e.g. `FXO`). For Visa, this is the BAI; for Mastercard, the Transaction Type Indicator (TTI). NULL for NAS records."
+        data_type: string
+      - name: destination_country_iso2
+        description: "{{ doc('destination_country_iso2') }}"
+        data_type: string
+      - name: destination_type
+        description: "{{ doc('destination_type') }}"
+        data_type: string
+      - name: destination_company_name
+        description: "{{ doc('destination_company_name') }}"
+        data_type: string
+      - name: destination_dob
+        description: "{{ doc('destination_dob') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: destination_country_of_birth
+        description: "{{ doc('destination_country_of_birth') }}"
+        data_type: string
+      - name: destination_address_line_1
+        description: "{{ doc('destination_address_line_1') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: destination_address_line_2
+        description: "{{ doc('destination_address_line_2') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: destination_city
+        description: "{{ doc('destination_city') }}"
+        data_type: string
+      - name: destination_state
+        description: "{{ doc('destination_state') }}"
+        data_type: string
+      - name: destination_zip_code
+        description: "{{ doc('destination_zip_code') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: destination_email
+        description: "{{ doc('destination_email') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: sender_reference
+        description: "Sender reference — free-text identifier supplied by the merchant to identify the sender on their side of the transaction."
+        data_type: string
+      - name: sender_address_city
+        description: "{{ doc('sender_address_town_city') }} Sample values: London, NEW YORK, Tokyo."
+        data_type: string
+      - name: sender_address_country
+        description: "{{ doc('sender_address_country_iso2') }} Upper-cased for joins consistent with `dim_country` / merchant-domain models. Sample values: US, GB, SG, MT, PL, FR, CY."
+        data_type: string
+      - name: sender_address
+        description: "Sender party's address as a single string combining line 1 and line 2. May contain a trailing comma when line 2 is empty."
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: sender_address_state
+        description: "{{ doc('sender_address_state') }}"
+        data_type: string
+      - name: sender_address_postal_code
+        description: "{{ doc('sender_address_postcode') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: sender_first_name
+        description: "First name of the sender party when the originator is an individual."
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: sender_last_name
+        description: "Last name of the sender party when the originator is an individual."
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: sender_full_name
+        description: "{{ doc('sender_name') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: sender_company_name
+        description: "Company name of the sender party when the originator is a corporate entity."
+        data_type: string
+      - name: sender_address_line_1
+        description: "{{ doc('sender_address_line_1') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: sender_address_line_2
+        description: "{{ doc('sender_address_line_2') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: sender_type
+        description: "Type of the sender party, re-cased to PascalCase. Sample values: Corporate, Individual, Unknown."
+        data_type: string
+      - name: sender_source_of_funds
+        description: "Sender's declared source-of-funds classification for AML/regulatory reporting, re-cased to PascalCase. Sample values: DepositAccount, Debit, Credit, Cash, Prepaid, MobileMoneyAccount, Unknown."
+        data_type: string
+      - name: token
+        description: "[LEGACY] Network token for the destination card. NULL for NAS records."
+        data_type: string
+      - name: payout_transaction_id
+        description: "Scheme-agnostic transaction identifier for the payout."
+        data_type: string
+      - name: action_id
+        description: "Gateway payment action identifier — the gateway-side action ID that produced this PTC payment outcome; links a PTC payment back to the gateway's card-processing event."
+        data_type: string
+      - name: mssql_payout_id
+        description: "[LEGACY] Legacy MSSQL payout identifier. NULL for NAS records."
+        data_type: numeric
+      - name: mssql_payout_transaction_id
+        description: "[LEGACY] Legacy MSSQL payout transaction identifier. NULL for NAS records."
+        data_type: numeric
+      - name: action_code_id
+        description: "Action code identifier representing the payout action type. Hardcoded to 14 for NAS records."
+        data_type: numeric
+      - name: action_code_description
+        description: "Human-readable description of the action code. Hardcoded to 'Original Credit' for NAS records."
+        data_type: string
+      - name: encrypted_account_number
+        description: "[LEGACY] Encrypted card account number. NULL for NAS records."
+        data_type: string
+      - name: requested_amount
+        description: "{{ doc('requested_amount') }}"
+        data_type: numeric
+      - name: requested_amount_usd
+        description: "{{ doc('requested_amount_usd') }}"
+        data_type: numeric
+      - name: requested_amount_eur
+        description: "{{ doc('requested_amount_eur') }}"
+        data_type: numeric
+      - name: requested_amount_gbp
+        description: "{{ doc('requested_amount_gbp') }}"
+        data_type: numeric
+      - name: card_payout_abc_ingestion_at
+        description: "[LEGACY] {{ doc('pay_to_card_abc_ingestion_at') }}"
+        data_type: timestamp
+      - name: card_payout_nas_ingestion_at
+        description: "{{ doc('pay_to_card_nas_ingestion_at') }}"
+        data_type: timestamp
+      - name: replication_date
+        description: "[LEGACY] Date when the legacy MBC record was replicated to BigQuery. NULL for NAS records."
+        data_type: timestamp
+      - name: card_payout_outcome_at
+        description: "{{ doc('pay_to_card_outcome_at') }}"
+        data_type: timestamp
+      - name: ingestion_at
+        description: "Generic ingestion timestamp for the source record, coalesced across NAS and legacy MBC pipelines."
+        data_type: timestamp
+      - name: requested_date
+        description: "Date portion of `requested_at` (UTC), used as the partitioning grain for date-level aggregation."
+        data_type: date
+      - name: card_payout_outcome
+        description: "Categorised payout outcome combining status, decline reason and gateway response code. Sample values: approved, balance_reserved_declined, sanction_screening_declined, card_processing_declined, manual_decline_declined, not_available."
+        data_type: string
+      - name: is_internal_decline
+        description: "{{ doc('is_internal_decline') }}"
+        data_type: boolean
+      - name: requested_payments
+        description: "{{ doc('requested_payments') }}"
+        data_type: int64
+      - name: declined_payments
+        description: "{{ doc('declined_payments') }}"
+        data_type: int64
+      - name: declined_amount
+        description: "{{ doc('declined_amount') }}"
+        data_type: numeric
+      - name: declined_amount_usd
+        description: "{{ doc('declined_amount_usd') }}"
+        data_type: numeric
+      - name: declined_amount_eur
+        description: "{{ doc('declined_amount_eur') }}"
+        data_type: numeric
+      - name: declined_amount_gbp
+        description: "{{ doc('declined_amount_gbp') }}"
+        data_type: numeric
+      - name: approved_payments
+        description: "{{ doc('approved_payments') }}"
+        data_type: int64
+      - name: approved_amount
+        description: "{{ doc('approved_amount') }}"
+        data_type: numeric
+      - name: approved_amount_usd
+        description: "{{ doc('approved_amount_usd') }}"
+        data_type: numeric
+      - name: approved_amount_eur
+        description: "{{ doc('approved_amount_eur') }}"
+        data_type: numeric
+      - name: approved_amount_gbp
+        description: "{{ doc('approved_amount_gbp') }}"
+        data_type: numeric
+      - name: balance_reserved_declined_payments
+        description: "{{ doc('balance_reserved_declined_payments') }}"
+        data_type: int64
+      - name: balance_reserved_declined_amount
+        description: "{{ doc('balance_reserved_declined_amount') }}"
+        data_type: numeric
+      - name: balance_reserved_declined_amount_usd
+        description: "{{ doc('balance_reserved_declined_amount_usd') }}"
+        data_type: numeric
+      - name: balance_reserved_declined_amount_eur
+        description: "{{ doc('balance_reserved_declined_amount_eur') }}"
+        data_type: numeric
+      - name: balance_reserved_declined_amount_gbp
+        description: "{{ doc('balance_reserved_declined_amount_gbp') }}"
+        data_type: numeric
+      - name: sanction_screening_declined_payments
+        description: "{{ doc('sanction_screening_declined_payments') }}"
+        data_type: int64
+      - name: sanction_screening_declined_amount
+        description: "{{ doc('sanction_screening_declined_amount') }}"
+        data_type: numeric
+      - name: sanction_screening_declined_amount_usd
+        description: "{{ doc('sanction_screening_declined_amount_usd') }}"
+        data_type: numeric
+      - name: sanction_screening_declined_amount_eur
+        description: "{{ doc('sanction_screening_declined_amount_eur') }}"
+        data_type: numeric
+      - name: sanction_screening_declined_amount_gbp
+        description: "{{ doc('sanction_screening_declined_amount_gbp') }}"
+        data_type: numeric
+      - name: card_processing_declined_payments
+        description: "{{ doc('card_processing_declined_payments') }}"
+        data_type: int64
+      - name: card_processing_declined_amount
+        description: "{{ doc('card_processing_declined_amount') }}"
+        data_type: numeric
+      - name: card_processing_declined_amount_usd
+        description: "{{ doc('card_processing_declined_amount_usd') }}"
+        data_type: numeric
+      - name: card_processing_declined_amount_eur
+        description: "{{ doc('card_processing_declined_amount_eur') }}"
+        data_type: numeric
+      - name: card_processing_declined_amount_gbp
+        description: "{{ doc('card_processing_declined_amount_gbp') }}"
+        data_type: numeric
+      - name: manual_decline_declined_payments
+        description: "{{ doc('manual_decline_declined_payments') }}"
+        data_type: int64
+      - name: manual_decline_declined_amount
+        description: "{{ doc('manual_decline_declined_amount') }}"
+        data_type: numeric
+      - name: manual_decline_declined_amount_usd
+        description: "{{ doc('manual_decline_declined_amount_usd') }}"
+        data_type: numeric
+      - name: manual_decline_declined_amount_eur
+        description: "{{ doc('manual_decline_declined_amount_eur') }}"
+        data_type: numeric
+      - name: manual_decline_declined_amount_gbp
+        description: "{{ doc('manual_decline_declined_amount_gbp') }}"
+        data_type: numeric
+      - name: time_request_to_outcome_seconds
+        description: "{{ doc('time_request_to_outcome_seconds') }}"
+        data_type: int64
+      - name: decline_reason
+        description: "Reason the payment was declined when status is `Declined`. Sample values: card_processing, balance_reserve (insufficient funds), sanctions_screening. Used to classify declined payments into balance-reserved, sanction-screening, and card-processing buckets. `unknown` for approved or pending payments; NULL for legacy MBC records."
+        data_type: string
+      - name: sanctions_screening_manual_review_required
+        description: "Indicates whether the sanctions screening result requires manual review before the payout can proceed (true = manual review required, false = no manual review required). NAS-only; NULL for legacy MBC records or when the upstream BoolValue was not explicitly set."
+        data_type: boolean
+      - name: sanctions_screening_status
+        description: "Sanctions screening result status. Sample values: Pass, Fail. NAS-only; NULL when sanctions screening did not run, has not yet completed, or for legacy MBC records."
+        data_type: string
+      - name: is_full_refresh
+        description: "{{ doc('is_full_refresh') }}"
+        data_type: boolean
+      - name: loaded_at
+        description: "{{ doc('loaded_at') }}"
+        data_type: timestamp
+      - name: updated_at
+        description: "{{ doc('updated_at') }}"
+        data_type: timestamp

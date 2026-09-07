@@ -90,6 +90,14 @@ Simpler automation for multi-step processes. Use Data Connectors to pull externa
 ### Data Connectors
 API integrations that give Fin access to external systems — e.g. order management, account data, payment status. The mechanism by which Fin delivers data-driven responses rather than generic knowledge-base answers.
 
+**Known lookup limitations (2026-07-29 monthly review):**
+- Fin can look up payment IDs only. Merchant reference and payment reference number lookup is not supported, and many merchant queries are reference-based. Known limitation, in progress with Intercom.
+- Email-originated queries cannot share data with Fin, so payout queries arriving by email auto-escalate to a live agent regardless of Fin's lookup capability. This is a channel-architecture blocker on payout deflection, not a knowledge gap.
+- No contextual memory of a merchant's historical questions.
+- The dashboard API is connected, so Fin can look up incidents, but it only surfaces what the incident description contains. No incident documentation exists in Fin's knowledge sources.
+
+**Underlying data gap (2026-08-07, Nexus review with Paul Jaines):** Care needs roughly 40 transaction data points to answer status and fee queries; about 20 exist in the services currently accessible. Where the data does not exist, Fin cannot answer and the contact routes straight to a human. Nexus (live since 1 July 2026, BigQuery + Looker MCP) is the intended single source of truth. The two highest-value additions are `scheme advised` and `cash matched` events, which resolve "the payment says captured but the funds have not arrived" without an agent check. Merchant-facing exposure of these statuses depends on gateway work not expected in 2026, so treat this as internal agent and Fin lookup capability first. Notes: `04-active-work/meeting-notes/2026-08/2026-08-07-nexus-data-model-care-queries.md`
+
 ### MCP Connectors
 Model Context Protocol connectors. Supported for popular third-party apps and custom integrations. Relevant to Checkout.com's **Reflex MCP (TBC)** deliverable — Reflex insights could be made available to Fin via an MCP connector.
 
@@ -155,6 +163,24 @@ Simulations are specific to Procedures. Batch Testing measures aggregate resolut
 - Each review is categorized into one of three failure types: **product gap** (missing/broken feature), **missing content** (agent knew the answer, undocumented), or **bot issue** (Fin misbehaved). Reviewer cross-checks the Zendesk ticket for the human agent's actual resolution.
 - The reviewer's written note is the primary output — it carries the actionable fix, not the auto-generated score.
 - Guardrail: a meaningful share of escalations are pure AI-aversion (merchant bypasses Fin to reach a human even when Fin works correctly), not Fin failures. Resolution rate alone won't capture this and caps deflection regardless of content quality.
+
+### Consumer / Ray deployment (confirmed 2026-08-19)
+- Fin is the confirmed AI layer for consumer support (Ray). Consumer volume is already priced into the renewed contract. Separate consumer workspace, never blended with merchant: blending risks cross-contaminated responses and is hard to unpick later.
+- Segmentation within a workspace uses Audiences plus customer attributes, not extra workspaces (workspaces carry no platform cost). Merchant audiences segment by tier and channel; consumer candidates are subscription plan and region.
+- Two hard launch dependencies only: customer context attributes feeding Fin, and content coverage across the taxonomy. Data connectors are out of scope for day one.
+- The only net-new engineering for mobile is wrapping the Fin web SDK, plus content sync and config.
+
+### Commercial model and cost design (2026-08-19)
+- Intercom charges **per outcome**. An outcome is either a resolution with no follow-up, or a conversation where Fin collects information and hands off cleanly. A handoff still bills.
+- Cost is therefore a design decision: if Fin becomes the default fallback entry point, cost scales badly. At consumer scale an accidental extra 3% of traffic deflected through Fin is roughly $20,000. Answers should be inline and in context at the screen where the problem occurs.
+
+### Back-office task automation (2026-08-17)
+- Fin webhook functionality can automate back-office tasks (TPA lookups, refund reversals, manual refunds). Estimated to remove **10-15% of current agent work volume** from manual Zendesk processing.
+- Refund reversal eligibility logic as articulated: check the 7-day window and eligible payment method, confirm to the customer, set a loop webhook, fetch the transaction, call the endpoint, process the reversal, notify, trigger the Treasury adjustment.
+
+### Known behaviour to design around (2026-08-19)
+- Fin stays assigned to a ticket even where human intervention is needed, and keeps responding until told to route to an agent. This generates repetitive tickets. Mitigation in use is filtering the queue view to Fin-escalated tickets only, not changing Fin behaviour.
+- Fin cannot re-enter a conversation mid-thread today: it is trigger-on-assign only. The planned orchestration layer uses a machine user invoking the Fin API into a thread so Fin can be re-invoked after a human action (for example pasting back a Treasury adjustment ID and closing).
 
 ---
 

@@ -1,0 +1,178 @@
+product	product_category	case_type	issue_type	strength	rationale
+Authentication	Authentication	Accepting payments	Authentication (3DS)	primary	Shares 3DS/SCA/liability-shift terms directly with Authentication (3DS) issue type
+Bundled Authentication	Authentication	Accepting payments	Authentication (3DS)	possible	Passkey/Google SPA + 3DS config for SCA compliance overlaps SCA/exemption issue reason
+Balances	Business Account	Funds and fees	Balances	primary	Shares "balance"/"discrepancy" terms directly with Balances issue type criteria
+Corporate Cards	Business Account	Card issuing	Card management	primary	Card issuance/activation/spend-query language matches Card management's create/activate/spend-controls criteria
+Settlements	Business Account	Funds and fees	Settlements	primary	Shares settlement delay/amount/timing terms directly with Settlements issue type
+Fund Acceleration	Business Account	Funds and fees	Settlements	primary	Accelerated-payout timing mismatch (T+1 vs T+3) matches "Delayed/missing settlement" criteria
+Dashboard	Dashboard	Account management and access	Login & access	primary	Shares login/access/permissions/Dashboard-error terms directly with Login & access issue type
+Disputes	Disputes	Accepting payments	Disputes	primary	Shares chargeback/evidence-submission/dispute-status terms directly with Disputes issue type
+Flow Web	Flow	Technical issue	Integration methods	primary	Exact "Flow"/"Frames" terminology match with Integration methods -> Flow/frames reason
+Flow Android SDK	Flow / Mobile SDK	Technical issue	Integration methods	primary	Exact "SDK issue" terminology match with Integration methods -> SDK issue reason
+Flow iOS SDK	Flow / Mobile SDK	Technical issue	Integration methods	primary	Exact "SDK issue" terminology match with Integration methods -> SDK issue reason
+Flow React Native SDK	Flow / Mobile SDK	Technical issue	Integration methods	primary	Exact "SDK issue" terminology match with Integration methods -> SDK issue reason
+Fraud Detection	Fraud Detection	Accepting payments	Fraud & risk controls	primary	Shares fraud rules, AVS mismatch, and risk lists terminology directly
+Fraud Detection Pro	Fraud Detection	Accepting payments	Fraud & risk controls	primary	Shares layered risk rules and threshold-setting terminology with taxonomy's Risk rules criteria
+Hosted Payment Page	Hosted Payment Page	Technical issue	Integration methods	primary	Taxonomy reason names "Hosted Payment Page" explicitly under Integration methods issue type
+Address Document Verification	Identity Verification	Identity Verification	Verification and technical support	primary	Document rejection matches "understanding why a verification was rejected" criteria
+AML Screening	Identity Verification	Identity Verification	Verification and technical support	primary	Screening hit dispute matches verification-rejection reason for a named individual
+Business Screening	Identity Verification	Identity Verification	Verification and technical support	primary	Business-level screening hit dispute matches same verification-rejection reason logic
+Business Verification	Identity Verification	Identity Verification	Verification and technical support	primary	KYB onboarding document types match Setup support's onboarding/document-type criteria
+Face Authentication	Identity Verification	Identity Verification	Verification and technical support	primary	Face-match/biometric failure matches Technical & platform's document/API failure criteria
+ID Document Verification	Identity Verification	Identity Verification	Verification and technical support	primary	Passport/document rejection matches verification-rejection reason terminology directly
+Identity Verification	Identity Verification	Identity Verification	Verification and technical support	primary	General onboarding friction and false rejections match Verification inquiry criteria
+Intelligent Acceptance	Intelligent Acceptance	Accepting payments	Performance	primary	Expected vs actual acceptance-rate uplift matches Performance's optimisation criteria directly
+Intelligent Acceptance	Intelligent Acceptance	Accepting payments	Authentication (3DS)	primary	Shares explicit SCA/exemption management terminology with SCA exemption issue reason
+Intelligent Acceptance	Intelligent Acceptance	Technical issue	Network Tokens	primary	Shares network token provisioning terminology with taxonomy's Provisioning reason directly
+Notifications	Internal Products	Technical issue	Webhooks	primary	Shares webhook configuration/setup and missed-notification terminology with Webhooks issue type
+Cards	Issuing	Card issuing	Card management	primary	Shares activate/suspend/revoke card terminology with Card management's create/activate and revoke reasons
+Digital Wallets (Issuing)	Issuing	Card issuing	Issuing digital wallets	primary	Exact match: issued card Apple Pay/Google Pay provisioning failure terminology
+Physical Cards	Issuing	Card issuing	Card deliveries	primary	Shares "card lost in mail" and delivery status terminology with Physical card delivery reason
+Reporting (Issuing)	Issuing	Card issuing	Issuing transactions, funds and reports	primary	Shares reconciliation and issuing report terminology with Issuing settlement & reconciliation reason
+Fraud (Issuing)	Issuing	Card issuing	Issuing transactions, funds and reports	possible	Fraud-blocked issued-card transactions read as "unexpected behavior" declines in this issue type
+Simulation (Issuing)	Issuing	Technical issue	Test environment	primary	Product is entirely issuing sandbox testing, matching "sandbox" terminology in Test environment issue type
+Spending Controls	Issuing	Card issuing	Card management	primary	Exact spend-limit and MCC-restriction terminology match with Spend controls reason
+Transactions (Issuing)	Issuing	Card issuing	Issuing transactions, funds and reports	primary	Shares issued-card transaction lookup terminology; matches taxonomy's trx_ regex signal
+Network Tokens	Network Tokens	Technical issue	Network Tokens	primary	Near-verbatim match: onboarding, provisioning, billing, API-error, performance terminology identical
+Payment Links	Payment Links	Technical issue	Integration methods	primary	Exact Payment Links / Hosted Payment Page terminology match with Integration methods reason
+Dwolla	Partner Integrations and Plugins	Payouts	Card payouts	primary	OCT Direct Funds Disbursement to Visa/Mastercard cards matches Card payouts' OCT/card-scheme criteria
+BigCommerce	Partner Integrations and Plugins	Technical issue	Integration methods	primary	Plugin install/update issues match "E-commerce plugin" criteria (Shopify, WooCommerce, others)
+BigCommerce	Partner Integrations and Plugins	Technical issue	Webhooks	possible	Webhook setup criteria explicitly cites third-party plugin errors like Shopify
+Magento 2	Partner Integrations and Plugins	Technical issue	Integration methods	primary	Magento module/plugin issues match "E-commerce plugin" criteria (Shopify, WooCommerce, others)
+Magento 2	Partner Integrations and Plugins	Technical issue	Webhooks	possible	Webhook setup criteria explicitly cites third-party plugin errors like Shopify
+OpenCart	Partner Integrations and Plugins	Technical issue	Integration methods	primary	OpenCart extension/plugin issues match "E-commerce plugin" criteria directly
+OpenCart	Partner Integrations and Plugins	Technical issue	Webhooks	possible	Webhook setup criteria explicitly covers third-party plugin registration errors
+Prestashop	Partner Integrations and Plugins	Technical issue	Integration methods	primary	Deprecated PrestaShop plugin issues match "E-commerce plugin" criteria directly
+Ocado Group	Partner Integrations and Plugins	Technical issue	Integration methods	primary	Explicit "Checkout.com Flow" integration matches "Flow / frames" criteria
+Ocado Group	Partner Integrations and Plugins	Accepting payments	Refunds	primary	Stated capabilities "auto capture; refunds; voids" match Refunds issue type directly
+Ocado Group	Partner Integrations and Plugins	Accepting payments	Transaction status (non 3DS & refunds)	primary	"Voids" capability matches taxonomy's "unexpected voids or approvals" criteria
+Ocado Group	Partner Integrations and Plugins	Accepting payments	Authentication (3DS)	primary	Explicit "integrated 3DS" capability matches Authentication (3DS) issue type directly
+Chargebee	Partner Integrations and Plugins	Accepting payments	Transaction status (non 3DS & refunds)	possible	Subscriptions "failing to charge saved card" matches declined/failed-action criteria
+Chargify	Partner Integrations and Plugins	Accepting payments	Transaction status (non 3DS & refunds)	possible	Recurring charge/sync failures match declined/failed-action criteria
+Basis Theory	Partner Integrations and Plugins	Technical issue	API integration	possible	"Mismatch when passing the token to Checkout.com" matches API integration's data-format/logic-error criteria
+Basis Theory	Partner Integrations and Plugins	Technical issue	Vault	possible	Third-party vault token exchange matches Vault's "Token migration" import/export-between-systems criteria
+Salesforce Commerce Cloud	Partner Integrations and Plugins	Technical issue	Integration methods	primary	Cartridge install/config issue = plugin issue on merchant's own site integration
+SAP Commerce Cloud	Partner Integrations and Plugins	Technical issue	Integration methods	primary	Integration/config issue within SAP Hybris storefront matches plugin issue type
+Shopify (offsite)	Partner Integrations and Plugins	Technical issue	Integration methods	primary	Taxonomy names Shopify explicitly under E-commerce plugin issue type
+Shopify (onsite)	Partner Integrations and Plugins	Technical issue	Integration methods	primary	"Payment methods disappeared from checkout" matches taxonomy's plugin integration symptom
+Spreedly	Partner Integrations and Plugins	Technical issue	Vault	primary	"Token pass-through failing" = import/export of tokens between external vault and Checkout
+Spreedly	Partner Integrations and Plugins	Technical issue	API integration	possible	Multi-gateway routing failure is a generic integration bug, no more specific product named
+WooCommerce	Partner Integrations and Plugins	Technical issue	Integration methods	primary	Taxonomy names WooCommerce explicitly under E-commerce plugin issue type
+YUNO	Partner Integrations and Plugins	Technical issue	API integration	primary	"Route is misconfigured" matches catch-all logic-error definition; Yuno not a named excluded product
+Zingfit	Partner Integrations and Plugins	Technical issue	Integration methods	possible	"Transaction fails at checkout" mirrors taxonomy's plugin/checkout-UI integration symptom
+Zuora	Partner Integrations and Plugins	Technical issue	Webhooks	primary	"Renewal charges not syncing back" matches webhook status-mismatch/sync-failure definition
+CommerceTools	Partner Integrations and Plugins	Technical issue	Webhooks	primary	"Webhook status updates aren't syncing across channels" is a direct status-mismatch match
+CommerceTools	Partner Integrations and Plugins	Technical issue	Integration methods	primary	Product explicitly embeds Checkout.com Flow, matching Flow/frames reason verbatim
+Primer.io	Partner Integrations and Plugins	Funds and fees	Settlements	primary	"Reconciliation reports don't match" shares exact term with Reconciliation issue reason
+Recurly	Partner Integrations and Plugins	Accepting payments	Transaction status (non 3DS & refunds)	possible	"Recurring charges...failing to process" maps to declined/failed-transaction root-cause criteria
+SAP OPF	Partner Integrations and Plugins	Technical issue	API integration	primary	"Rejecting configuration on a new payment method" matches logic-error/system-rejects-input definition
+Visualsoft	Partner Integrations and Plugins	Technical issue	Integration methods	primary	"Storefront isn't showing the payment integration" matches plugin "method disappearing from site"
+Accel	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	possible	Merchant questions why transaction routed via Accel instead of scheme
+ACH Direct Debit	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Contact risk names failed/returned bank debits as ACH's specific failure mode
+ACH Direct Debit	Payment Methods	Accepting payments	Disputes	primary	Customer disputes ACH debit citing no written consent under NACHA rules
+AlipayCN	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Contact risk names "redirect failures" as the specific AlipayCN failure mode
+AlipayHK	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Contact risk explicitly names redirect failures as AlipayHK's failure mode
+Alma	Payment Methods	Accepting payments	Disputes	primary	Contact risk explicitly flags "BNPL dispute risk" for Alma instalment payments
+Alma	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Example: instalment charge "hasn't gone through yet" matches stuck-status reason
+American Express - Collecting	Payment Methods	Accepting payments	Disputes	primary	Contact risk: Amex dispute process differs from Visa/MC, Checkout-settled
+American Express - Collecting	Payment Methods	Funds and fees	Billing & fees	primary	Applies-if names Amex-specific pricing questions through Checkout as a trigger
+American Express - Collecting	Payment Methods	Funds and fees	Settlements	possible	Example cites Amex settlement report not matching expected pricing
+American Express - Gateway	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	possible	Example: transaction shows pending despite Amex settling directly with merchant
+Apple Pay	Payment Methods	Technical issue	Wallets	primary	Taxonomy names Apple Pay domain onboarding/registration errors under Wallets issue type
+Bacs	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Contact risk names mandate failures and timing queries as Bacs-specific issues
+Bancontact	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	possible	Applies-if names "Bancontact-specific redirect/decline behaviour" as distinguishing signal
+Benefit Payment Gateway	Payment Methods	Funds and fees	Settlements	possible	Example cites BHD settlement "not landing correctly" via Benefit gateway
+BenefitPay	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	possible	Example: app payment "not showing in dashboard" matches missing-transaction reason
+Bizum	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Contact risk names "phone number lookup issues" causing Bizum payment failures
+Cartes Bancaires	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Example: CB decline plus failed auto-retry to Visa/MC matches decline reason
+DANA	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Contact risk and example both name redirect failures/stuck status for DANA
+Discover	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	possible	Applies-if names PINless debit routing questions as a specific scenario
+eps	Payment Methods	Accepting payments	Refunds	primary	eps refunds are API-only, not Dashboard-available, per contact risk and Applies-if
+GCash	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Contact risk explicitly names redirect failures for this wallet's checkout flow
+Google Pay	Payment Methods	Technical issue	Wallets	primary	Domain allowlisting and "button not appearing" match Wallets' domain onboarding/errors reasons
+iDEAL	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Applies-if names iDEAL payment status enquiries directly
+iDEAL	Payment Methods	Technical issue	Webhooks	primary	Webhook required; example shows pending order needing webhook delivery check
+JCB	Payment Methods	Account management and access	Account changes	possible	Mixed availability prompts merchants to request or confirm JCB scheme enablement
+KakaoPay	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	possible	Redirect, auto-capture-only pattern shared with GCash's named redirect-failure risk
+Klarna BNPL (Collecting)	Payment Methods	Accepting payments	Disputes	primary	Contact risk names BNPL dispute-prone; Merchant Portal shows dispute notifications
+Klarna BNPL (Collecting)	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Contact risk explicitly cites instalment queries as a driver
+Klarna BNPL (Collecting)	Payment Methods	Accepting payments	Fraud & risk controls	possible	Contact risk cites high-risk order monitoring tied to risk-rule checks
+Klarna Debit Risk (Collecting)	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Example query on voiding matches "unexpected voids" status-enquiry reason exactly
+Klarna Debit Risk (Collecting)	Payment Methods	General	Inquiries	possible	Contact risk names eligibility queries for this restricted-segment product
+Mada	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Contact risk names capture-restriction and Apple Pay routing queries directly
+Maestro	Payment Methods	Account management and access	Account changes	possible	Pilot-status query on whether Maestro is fully supported for their account
+Mastercard	Payment Methods	Funds and fees	Billing & fees	primary	Applies-if names "Mastercard scheme rules/fees" matching scheme-fee inquiry reason
+MB WAY	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	PIN payment not completing after entry matches stuck-in-status criterion directly
+MobilePay	Payment Methods	Account management and access	Account changes	possible	Auto-capture toggle request is a processing-channel configuration change
+Multibanco	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Voucher expiry and async webhook delay cause payment stuck in status
+NYCE	Payment Methods	Funds and fees	Billing & fees	possible	Settlement report routing via NYCE prompts fee-impact inquiry per example
+Octopus	Payment Methods	General	Inquiries	possible	Beta wallet availability question mirrors sales inquiry for new product
+Omannet	Payment Methods	Accepting payments	Authentication (3DS)	primary	OTP not received matches taxonomy's OTP-authentication-not-completed 3DS decline criterion
+PayNow	Payment Methods	Feedback	Product feedback	possible	Merchant requests recurring/chargeback support PayNow explicitly lacks, matching feature request
+PayPal	Payment Methods	Accepting payments	Disputes	primary	PayPal's own dispute process differs from card chargebacks per stated example
+PayPal	Payment Methods	Account management and access	Account changes	possible	Digital goods sales require explicit PayPal agreement, an account configuration step
+PayPay	Payment Methods	General	Inquiries	possible	Roadmap availability question for not-yet-live method mirrors sales inquiry
+Pix	Payment Methods	General	Inquiries	possible	Roadmap timeline question for not-yet-live Brazilian method mirrors sales inquiry
+Przelewy24	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Unfamiliar Przelewy24 response code matches declined/failed-action root-cause criterion directly
+Przelewy24	Payment Methods	Technical issue	Webhooks	possible	Redirect method requires webhook; delivery/sync failures plausible per integration notes
+Pulse	Payment Methods	Funds and fees	Billing & fees	possible	Settlement report routing via Pulse prompts fee-impact inquiry per example
+QPay	Payment Methods	Feedback	Product feedback	possible	Merchant requests recurring/auth-only support QPay explicitly lacks, matching feature request
+Samsung Pay	Payment Methods	General	Inquiries	possible	Roadmap launch-timing question for not-yet-live wallet mirrors sales inquiry
+SEPA Direct Debit B2B	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	High-risk mandate-driven payment failures/R-transaction returns, same driver as Core
+SEPA Direct Debit B2B	Payment Methods	Account management and access	Account changes	primary	B2B mandate and creditor-ID setup is a processing-channel configuration request
+SEPA Direct Debit B2B	Payment Methods	Accepting payments	Refunds	possible	SEPA mandate refund-right window can trigger reversal requests on B2B collections
+SEPA Direct Debit Core	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Mandate-driven direct debit failures (R-transaction returns) are the named risk driver
+SEPA Direct Debit Core	Payment Methods	Account management and access	Account changes	primary	Creditor ID, IBAN/BIC, and mandate setup are processing-channel configuration requests
+SEPA Direct Debit Core	Payment Methods	Accepting payments	Refunds	possible	SEPA's mandate refund-right window generates refund-reversal requests per taxonomy
+SeQura	Payment Methods	Accepting payments	Disputes	primary	BNPL instalment defaults/disputes are the named contact-risk driver for SeQura
+SeQura	Payment Methods	Accepting payments	Refunds	possible	Partial refunds against an active instalment plan are a plausible query
+Sofort	Payment Methods	Account management and access	Account changes	possible	Deprecated method forces migration to active alternative, a channel reconfiguration
+Swish	Payment Methods	Accepting payments	Disputes	possible	Doc's example asks if a Swish payment can be disputed; Swish supports no chargebacks
+Tabby (Collecting)	Payment Methods	Accepting payments	Disputes	primary	Contact risk explicitly flags "dispute-prone"; Collecting model means Checkout handles the dispute lifecycle
+Tabby (Gateway)	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Gateway model means Tabby settles the merchant directly; Checkout only passes through auth
+Tamara (Collecting)	Payment Methods	Accepting payments	Refunds	primary	Doc's own example is refunds on a Tamara deferred-payment purchase in the UAE
+Tamara (Collecting)	Payment Methods	Accepting payments	Disputes	primary	Contact risk explicitly flags "dispute-prone" BNPL; Collecting model puts Checkout in the dispute lifecycle
+Tamara (Gateway)	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Gateway model means Tamara settles the merchant directly; Checkout only passes through auth
+Touch 'n Go	Payment Methods	Feedback	Product feedback	possible	Doc's example asks how to enable TNG recurring billing, a feature-usage type question
+UnionPay	Payment Methods	Accepting payments	Performance	primary	Applies-if names "UnionPay acceptance rates," matching Performance issue type's acceptance-rate criteria directly
+Vipps	Payment Methods	Accepting payments	Disputes	possible	Doc explicitly states Vipps supports no disputes; merchants ask about disputing a Vipps payment
+Visa	Payment Methods	Accepting payments	Disputes	possible	Dispute status reason names Visa-specific RDR (Rapid Dispute Resolution) as a configurable dispute service
+Visa	Payment Methods	Funds and fees	Billing & fees	possible	Billing & fees names "Scheme fee" explicitly; Visa is a card scheme generating scheme-fee queries
+WeChat Pay CN	Payment Methods	Accepting payments	Transaction status (non 3DS & refunds)	primary	Contact risk names "expiry/redirect queries"; example shows a QR code expiring before scan
+Bank Payouts	Payouts	Payouts	Bank payouts	primary	Shared terms: bank payout, bank account, routing failure, landing
+Card Payouts	Payouts	Payouts	Card payouts	primary	Shared terms: card payout, instant disbursement, card payout eligibility
+Pay to Self	Payouts	Funds and fees	Balances	possible	Self-settlement routing confusion matches Balance explanation's fund-allocation criterion
+Third Party Payouts	Payouts	Payouts	Bank payouts	possible	Third-party beneficiary bank disbursement matches Bank payouts' beneficiary/compliance screening terms
+Third Party Payouts	Payouts	Payouts	Card payouts	possible	Third-party card-network disbursement shares Card payouts' card-based beneficiary terminology
+Analytics AI Assistant	Reporting & Analytics	Accepting payments	Performance	primary	Product's own example asks "why did my authorization rate drop"
+Custom Analytics	Reporting & Analytics	Accepting payments	Performance	possible	Alert example "decline rate spikes" matches Performance's decline-trend criterion
+Dashboard Reports	Reporting & Analytics	Data and analytics	Reporting	primary	Shared terms: financial report, CSV download, report access, data discrepancy
+Dashboard Reports (non-financial)	Reporting & Analytics	Data and analytics	Reporting	primary	Non-financial report generation/download matches Reporting's file-availability criterion
+Financial Report	Reporting & Analytics	Funds and fees	Settlements	primary	"Discrepancy between payout amount and balance" matches Reconciliation issue exactly
+Financial Report	Reporting & Analytics	Data and analytics	Reporting	possible	Reporting-suite framing also overlaps with report generation/access issues
+Issuing Report	Reporting & Analytics	Card issuing	Issuing transactions, funds and reports	primary	Shared terms: issuing settlement & reconciliation, card programme, dispute tracking
+Payment Lifecycle Analytics	Reporting & Analytics	Accepting payments	Performance	possible	Funnel view of request-to-acceptance overlaps with acceptance-rate performance queries
+Payment Operations Report	Reporting & Analytics	Data and analytics	Reporting	primary	Named "Report"; non-financial report access/generation matches Reporting issue type
+Predictive Interchange	Reporting & Analytics	Funds and fees	Billing & fees	primary	Both use "interchange" as the named example fee type
+Reports API	Reporting & Analytics	Data and analytics	Reporting	primary	Field definitions/metadata request matches Custom report request's data-set criterion
+Reports API (non-financial)	Reporting & Analytics	Data and analytics	Reporting	primary	Non-financial API report retrieval matches Reporting's general report-access criteria
+SFTP Reports	Reporting & Analytics	Data and analytics	Reporting	primary	Exact term match: SFTP connectivity/RSA key maps to SFTP configuration
+SFTP (non-financial reports)	Reporting & Analytics	Data and analytics	Reporting	primary	Exact term match: SFTP delivery maps to SFTP configuration issue type
+Acquiring - Custom FX markup per currency pair	Treasury & FX	Funds and fees	Settlements	primary	Disputed FX rate differing from standard causes mismatched settlement amount
+Acquiring - Custom FX markup per currency pair	Treasury & FX	Funds and fees	Billing & fees	possible	Bespoke markup pricing resembles a fee-inquiry pricing dispute
+Acquiring - Daily FX Rates	Treasury & FX	Funds and fees	Settlements	possible	Guaranteed daily-locked settlement amount ties to settlement status queries
+Acquiring - FX Live Market Rates	Treasury & FX	Funds and fees	Settlements	possible	Live rate variance at capture creates settled-amount reconciliation queries
+Acquiring - Scheme FX Rates	Treasury & FX	Funds and fees	Settlements	possible	Scheme-set conversion rate dispute affects settled amount accuracy
+PTC - FX based on Scheme FX rates	Treasury & FX	Payouts	Card payouts	primary	Cross-border card payout FX conversion is PTC-FX's core scope
+PTC - FX based on Scheme FX rates	Treasury & FX	Funds and fees	Settlements	possible	Cross-border payout-time conversion can mismatch expected settled amount
+SoftPOS SDK	In-person Payments	Technical issue	Integration methods	primary	SDK issue reason directly covers SoftPOS SDK integration troubleshooting
+SoftPOS SDK	In-person Payments	Technical issue	API integration	possible	NFC terminal SDK may surface generic API errors during integration
+Unified Commerce	In-person Payments	Technical issue	Integration methods	primary	Unifying HardPOS/SoftPOS and online under one API is an integration query
+Unified Commerce	In-person Payments	Funds and fees	Settlements	possible	Reconciling in-person and online transactions matches reconciliation issue wording
+Unified Commerce	In-person Payments	Data and analytics	Reporting	possible	Unified reporting view across channels matches custom report request
+Forward API	Vault	Technical issue	Forwarding API	primary	Product name and function (forwarding CKO-stored credentials to third-party endpoints) match the Forwarding API issue type verbatim
+Integrated Vault	Vault	Technical issue	Vault	primary	Stored payment instruments and tokenised card storage match Vault Instruments/Customers
+Standalone Vault	Vault	Technical issue	Vault	primary	Vault-only credential storage without processing matches Vault Instruments/Tokens reasons
+Unified Payments API (UPAPI)	Unified Payments API	Technical issue	API integration	primary	UPAPI is a generic API surface; migration queries fit the API-errors catch-all
+Payment Setup API	Unified Payments API	Technical issue	API integration	primary	Retry handling across payment attempts matches Idempotency / timeout reason
+Payment Setup API	Unified Payments API	Accepting payments	Transaction status (non 3DS & refunds)	possible	Persistent session across retries can prompt status-enquiry questions on outcome

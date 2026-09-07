@@ -1,6 +1,6 @@
 ---
 name: sync-product-catalogue
-description: Sync the Airtable Product Catalogue to local files. Updates Checkout Products and teams.csv, adds new product definitions with Fin classification guides to product-definitions.md, and — if given a Zendesk product field export — produces a practical implementation sheet for Zendesk admins. Invoke with /sync-product-catalogue.
+description: Sync the Airtable Product Catalogue to local files. Updates Checkout Products and teams.csv, reconciles product-definitions.md against the latest catalogue pull (adds missing definitions, flags anything not eligible for Fin classification, un-flags anything that's gone live), re-sorts the definitions file alphabetically by category, and — if given a Zendesk product field export — produces a practical implementation sheet for Zendesk admins. Invoke with /sync-product-catalogue.
 tools: Read, Write, Edit, Bash, Agent, mcp__airtable__search_bases, mcp__airtable__list_records_for_table
 ---
 
@@ -10,8 +10,14 @@ Pull live data from Airtable and update both local product files. Run whenever A
 
 **Target files:**
 - `01-knowledge-base/Checkout Products and teams.csv` — full product list (Zendesk source of truth)
-- `01-knowledge-base/products/product-definitions.md` — enriched definitions with Fin classification guides
+- `01-knowledge-base/products/product-definitions.md` — Fin classification definitions, one entry per catalogue product
 - `04-active-work/working-files/zendesk-product-field-changes-[date].csv` — practical change sheet for Zendesk admins, only produced if a Zendesk product field export is available (Step 3)
+
+**Ground rules learned the hard way — don't relitigate these mid-run:**
+- **Completeness over curation.** Every product in the catalogue gets an entry in `product-definitions.md`, full stop — including Roadmap, Not on roadmap, Deprecated, Don't sell, and internal/meta products. Never omit a product because it "isn't ready" or "won't get contacts" — that judgment call belongs to a human, not to whether the entry exists. If a product shouldn't be classified, say so *in the entry* (see below), don't leave it out.
+- **Never delete an entry**, even one that's disappeared from the latest catalogue pull. Flag it. The catalogue dropping a row often just means Airtable stopped tracking it as a separate product (see Known mappings below) — the underlying support topic (Settlements, Transfers, bank/card payout rails) is usually still real.
+- **Classification eligibility is a single, mechanical rule**, applied uniformly: a product is eligible for Fin classification only if **(1)** it has a matching row in the current catalogue pull (directly, or via an entry in Known mappings below), **(2)** that row's Product State is `General availability`, `Beta`, or `Mixed availability`, and **(3)** it isn't an internal/meta product (category `Internal products`, or self-evidently internal like anything prefixed `Internal - `). Everything else gets flagged NOT FOR CLASSIFICATION — no exceptions for "but it's probably fine."
+- Do not fabricate a definition for a product with no Airtable overview and no way to verify what it is from public knowledge. Flag it under "Needs review" instead. A wrong definition actively harms Fin; a missing one is just a gap.
 
 ---
 
@@ -23,7 +29,7 @@ Call `mcp__airtable__list_records_for_table` with:
 - `fieldIds`: `["fldfws8lOo3RPMYpp", "fld59M8yoenMGgOU6", "fldIXlbCnIR8yNBG5", "fldfebF9QVwucmDM1", "fldmC0SuZBj4ulqvO", "fld9KEfZODl0bpTlH", "fldp7lqGXxQPn1LqR", "fld00lOOsadW9Vhvs"]`
 - `pageSize`: 8000
 
-The result will be saved to a file path. Use that path in Step 2.
+The result will be saved to a file path (it's too large to inline — read it with Bash/Python, not the Read tool). Use that path in Step 2.
 
 Field ID reference:
 | Field ID | Name |
@@ -194,33 +200,19 @@ if other_changes:
 
 print(f"\nFull change log saved to: {out_path}")
 
-# Active states for definitions work — includes products with NO overview too;
-# Step 4 decides how to handle missing overview instead of silently dropping them here.
-ACTIVE_STATES = {"General availability", "Beta", "Mixed availability", "Pilot", "Live", "Coming soon"}
-new_active = [
-    r for r in rows
-    if r["Product name"] in new_names - old_names
-    and r["Product State"] in ACTIVE_STATES
-]
-
-print(f"\nNew active products (candidates for definitions): {len(new_active)}")
-for p in new_active:
-    has_ov = "has overview" if p["_overview"].strip() else "NO OVERVIEW"
-    print(f"  - {p['Product name']} ({p['Product category']}, {p['Product State']}) [{has_ov}]")
-
-# Save candidates for next step
+# Save the full current catalogue rows for Step 4 (needs every row, not just new ones)
 import json as _json
-with open("/tmp/new_products_for_definitions.json", "w") as f:
-    _json.dump(new_active, f, indent=2)
+with open("/tmp/catalogue_rows_full.json", "w") as f:
+    _json.dump(rows, f, indent=2)
 ```
 
 ---
 
 ## Step 3 — Cross-reference against a Zendesk product field export (optional)
 
-Run this step only if the user has provided (or references) a Zendesk ticket field export for the product field — a CSV with columns `value`, `tag`, `default`, where `value` is `Category::Product Name` (or just `Product Name` for uncategorized values like `Unclassified Product`). If no such file is available, ask once whether the user has one; if not, skip to Step 4 using Step 2's candidate list directly.
+Run this step only if the user has provided (or references) a Zendesk ticket field export for the product field — a CSV with columns `value`, `tag`, `default`, where `value` is `Category::Product Name` (or just `Product Name` for uncategorized values like `Unclassified Product`), or a Google Sheet containing the same. If no such file is available, skip straight to Step 4 — Step 4 covers every catalogue product regardless.
 
-This step produces a practical, action-oriented sheet for whoever implements the change in Zendesk (ZD admins) — it is not the same as Step 2's Airtable-vs-git change log.
+This step produces a practical, action-oriented sheet for whoever implements the change in Zendesk (ZD admins) — it is not the same as Step 2's Airtable-vs-git change log, and it is not required for Step 4 to run.
 
 Run the following Python script via Bash, substituting `ZD_PATH` with the actual Zendesk export path:
 
@@ -254,20 +246,7 @@ with open(ZD_PATH) as f:
             cat, prod = val.split("::", 1)
         else:
             cat, prod = "", val
-        zd_rows.append({"category": cat, "product": prod, "tag": row["tag"]})
-
-# Self-check: does the tag pattern reproduce every existing tag exactly? If not, stop and
-# tell the user the convention has drifted rather than silently generating wrong tags.
-mismatches = []
-for r in zd_rows:
-    expected = make_tag(r["category"], r["product"]) if r["category"] else f"product_name_{snake(r['product'])}"
-    if expected != r["tag"]:
-        mismatches.append((r["category"], r["product"], r["tag"], expected))
-print(f"Tag pattern self-check: {len(zd_rows) - len(mismatches)}/{len(zd_rows)} existing tags reproduced exactly")
-if mismatches:
-    print("MISMATCHES — do not trust generated tags below without checking these first:")
-    for m in mismatches:
-        print(f"  {m}")
+        zd_rows.append({"category": cat, "product": prod, "tag": row.get("tag", "")})
 
 zd_by_norm = defaultdict(list)
 for r in zd_rows:
@@ -283,43 +262,16 @@ old_content = subprocess.run(
 old_by_name = {r["Product name"]: r for r in csv.DictReader(io.StringIO(old_content))} if old_content else {}
 
 in_scope = [r for r in cat_rows if r["Product State"] != "Not on roadmap"]
-
-# Token-overlap check to catch renames the exact/normalized match would miss
-# (e.g. catalogue "Analytics AI Assistant" vs Zendesk's existing "Analytics Assistant").
-zd_all_names = {r["product"] for r in zd_rows}
 in_scope_names = {r["Product name"] for r in in_scope}
-def tokens(s):
-    return set(re.sub(r"[^a-z0-9\s]", " ", s.lower()).split())
-rename_candidates = {}  # catalogue name -> matched zendesk row
-for cr in in_scope:
-    name = cr["Product name"]
-    if norm(name) in zd_by_norm:
-        continue  # already an exact/near match, not a rename case
-    ct = tokens(name)
-    for zr in zd_rows:
-        zt = tokens(zr["product"])
-        if not ct or not zt or zr["product"] in in_scope_names:
-            continue
-        overlap = ct & zt
-        if overlap and len(overlap) >= min(len(ct), len(zt)) and len(overlap) >= 2:
-            rename_candidates[name] = zr
-            break
 
 out_rows = []
 for cr in in_scope:
     name = cr["Product name"]
     matches = zd_by_norm.get(norm(name), [])
-    if name in rename_candidates:
-        zr = rename_candidates[name]
-        action = "RENAME VALUE"
-        tag = zr["tag"]
-        note = f"Likely a rename of existing Zendesk value '{zr['product']}' (same tag) — rename in place rather than creating a new value, to preserve historical ticket tagging. Verify before applying."
-    elif not matches:
+    if not matches:
         action = "ADD NEW VALUE"
         tag = make_tag(cr["Product category"], name)
         note = "Not currently in Zendesk product field"
-        if "," in cr["Product category"]:
-            note += " — multiple categories in catalogue, confirm which one Zendesk should use before creating the value/tag"
     else:
         exact = [m for m in matches if m["product"] == name]
         if exact:
@@ -328,106 +280,166 @@ for cr in in_scope:
             action = "NO CHANGE — verify spelling"
             tag = matches[0]["tag"]
             note = f"Zendesk currently shows '{matches[0]['product']}' vs catalogue '{name}' — cosmetic difference only, or confirm they're the same thing"
+    out_rows.append({"Zendesk product field action": action, "Product category": cr["Product category"],
+                      "Product name": name, "Product state": cr["Product State"], "Zendesk tag": tag, "Note": note})
 
-    old = old_by_name.get(name)
-    if old is None:
-        cat_flag = pillar_flag = team_flag = state_flag = "N/A (new product)"
-    else:
-        cat_flag = "YES" if (old.get("Product category") or "").strip() != cr["Product category"].strip() else "NO"
-        pillar_flag = "YES" if (old.get("Product Pillar") or "").strip() != cr["Product Pillar"].strip() else "NO"
-        team_flag = "YES" if (old.get("Product Team") or "").strip() != cr["Product Team"].strip() else "NO"
-        state_flag = "YES" if (old.get("Product State") or "").strip() != cr["Product State"].strip() else "NO"
-    any_changed = "YES" if action in ("ADD NEW VALUE", "RENAME VALUE") or "YES" in (cat_flag, pillar_flag, team_flag, state_flag) else "NO"
+# Zendesk values with no catalogue match at all — this is the list Step 4's reconciliation
+# pass also produces independently (from product-definitions.md's own headings), but cross-checking
+# against the live Zendesk export catches values that were never added to product-definitions.md
+# at all, not just ones that are there but now stale.
+zendesk_only = [r for r in zd_rows if norm(r["product"]) not in {norm(n) for n in in_scope_names} and r["product"] != "Unclassified Product"]
 
-    out_rows.append({
-        "Zendesk product field action": action,
-        "Catalogue metadata changed (informational only)": any_changed,
-        "Product category": cr["Product category"], "Category changed": cat_flag,
-        "Product name": name,
-        "Product pillar": cr["Product Pillar"], "Pillar changed": pillar_flag,
-        "Product team": cr["Product Team"], "Team changed": team_flag,
-        "Product state": cr["Product State"], "State changed": state_flag,
-        "Zendesk tag": tag, "Note": note,
-    })
-
-order = {"ADD NEW VALUE": 0, "RENAME VALUE": 1, "NO CHANGE — verify spelling": 2, "NO CHANGE": 3}
+order = {"ADD NEW VALUE": 0, "NO CHANGE — verify spelling": 1, "NO CHANGE": 2}
 out_rows.sort(key=lambda r: (order.get(r["Zendesk product field action"], 9), r["Product category"], r["Product name"]))
 
-fieldnames = list(out_rows[0].keys())
 with open(OUT_PATH, "w", newline="") as f:
-    w = csv.DictWriter(f, fieldnames=fieldnames)
+    w = csv.DictWriter(f, fieldnames=list(out_rows[0].keys()))
     w.writeheader()
     w.writerows(out_rows)
 
 from collections import Counter
-print(f"\n{Counter(r['Zendesk product field action'] for r in out_rows)}")
+print(Counter(r['Zendesk product field action'] for r in out_rows))
 print(f"Saved to: {OUT_PATH}")
-
-# Zendesk values with no catalogue match at all — usually finer-grained sub-features
-# (e.g. Zendesk splits "Issuing" into many sub-values the catalogue tracks as one product).
-# Informational only: these have no catalogue fields, so they don't belong in the sheet above.
-zendesk_only = [r for r in zd_rows if norm(r["product"]) not in {norm(n) for n in in_scope_names} and r["product"] not in {zr["product"] for zr in rename_candidates.values()}]
-print(f"\nZendesk values with no catalogue match ({len(zendesk_only)}) — review separately, likely sub-features not missing products:")
+print(f"\nZendesk values with no catalogue match ({len(zendesk_only)}) — feed these into Step 4's reconciliation pass as extra 'live in Zendesk' names to check:")
 for r in zendesk_only:
-    print(f"  - {r['product']} [{r['category']}]")
+    print(f"  - {r['category']}::{r['product']}")
 
-# Save the ADD NEW VALUE + RENAME VALUE candidates for Step 4 (Fin definitions)
 import json as _json
-with open("/tmp/zendesk_add_candidates.json", "w") as f:
-    _json.dump([r for r in out_rows if r["Zendesk product field action"] in ("ADD NEW VALUE", "RENAME VALUE")], f, indent=2)
+with open("/tmp/zendesk_export_names.json", "w") as f:
+    _json.dump([{"category": r["category"], "product": r["product"]} for r in zd_rows], f, indent=2)
 ```
 
-If this step ran, Step 4's candidate list is the `ADD NEW VALUE` rows from this sheet (the RENAME VALUE ones already have a home in Zendesk and don't need a fresh definition unless the product also lacks one). If this step did NOT run, Step 4 falls back to Step 2's `new_active` list.
+If this ran, pass `/tmp/zendesk_export_names.json` into Step 4 so it also reconciles the live Zendesk field values (not just what's already in `product-definitions.md`) — this is how the Stablecoin Settlement / Dashboard Reports naming gaps got caught in practice: they were live in Zendesk but had drifted out of sync with both the catalogue and the definitions file.
 
 ---
 
-## Step 4 — Update product-definitions.md
+## Step 4 — Reconcile product-definitions.md against the latest catalogue
 
-Build the candidate list:
-- If Step 3 ran: read `/tmp/zendesk_add_candidates.json`, take the `ADD NEW VALUE` entries. Look up each product's Airtable overview from Step 2's in-memory `rows` data (or re-derive from the Airtable export file) since the Zendesk sheet doesn't carry overview text.
-- If Step 3 did not run: read `/tmp/new_products_for_definitions.json` from Step 2.
+This is the core step. It has three jobs, in order: **(a)** add an entry for every catalogue product that doesn't have one, **(b)** re-flag classification eligibility on every existing entry (not just new ones) based on the current catalogue state, **(c)** surface anything that needs a human judgment call rather than guessing.
 
-Read `/Users/charlie.wildish/Charlie PM brain/01-knowledge-base/products/product-definitions.md` to understand the current state.
+### Known mappings (maintain this list across runs)
 
-**Filter out** any products already present in product-definitions.md — check by exact product name against markdown table rows (first column), not a raw substring search against the whole file (substring matching produces false positives on short/common names).
+The catalogue periodically renames or consolidates products in ways that break a naive exact-name match. Do not re-derive these from scratch every run — extend this table when you find a new one (verify via Airtable overview text matching, as done historically), and use it going forward:
 
-**Filter out** internal/meta products (category = "Internal products") — flag them in the report instead of silently dropping them, since they may still need a Zendesk field value even without a merchant-facing Fin definition.
+```python
+# doc heading name -> catalogue product name it should be treated as (still eligible if that row is live)
+RENAMED_TO = {
+    "Authentication (Issuing)": "Authentication",
+    "Reporting (Issuing)": "Reporting",
+    "Spending Controls": "Control spending",
+}
+# doc heading name -> catalogue umbrella row it's folded into (still eligible if that row is live)
+FOLDED_INTO = {
+    "BIN Management": "Configuration", "Card Product": "Configuration", "Cardholder": "Configuration",
+    "Entity Structure": "Configuration", "Issuing Region": "Configuration",
+    "Transactions (Issuing)": "Developer needs", "Simulation (Issuing)": "Developer needs",
+}
+# doc heading name -> catalogue product it has been superseded by (NOT eligible — classify under the replacement instead)
+SUPERSEDED_BY = {
+    "Bank Payouts": "Third Party Payouts",
+    "Card Payouts": "Third Party Payouts",
+    "Stablecoin Settlement": "Stablecoin Acceptance (via Coinbase)",
+}
+# doc heading names with genuinely no catalogue match (kept for completeness/context, not eligible)
+NO_CATALOGUE_MATCH = {
+    "Settlements", "Transfers", "Business Screening", "Business Verification",
+    "Digital Wallets (Issuing)", "Fraud (Issuing)", "Physical card PIN",
+    "SCA Exemptions (Issuing)", "SCA Out of Scope (Issuing)",
+    "Dashboard Reports", "Dashboard Reports (non-financial reports)",
+    "Reports API", "Reports API (non-financial reports)",
+    "SFTP Reports", "SFTP (non-financial reports)",
+}
+# doc heading names that are internal/meta tools, never eligible regardless of state
+INTERNAL_META = {
+    "Airtable Product Catalogue", "Website Screening",
+    "Internal - Cash ladder reporting", "Internal - FX Blotter reporting",
+}
+```
 
-For each remaining candidate, classify by information available before writing anything:
+If Step 3 ran and produced `zendesk_only` names not in this table and not in `product-definitions.md`, treat them the same way `Stablecoin Settlement` was handled: check the catalogue for the obvious successor by category + keyword overlap, and if found, add it to `SUPERSEDED_BY`; if not, add it to `NO_CATALOGUE_MATCH` and give it a minimal entry.
 
-1. **Has an Airtable overview** → write the definition grounded in that text.
-2. **No overview, but a well-known real-world company/product** (verifiable from general knowledge, e.g. a named payment orchestration vendor or ecommerce platform) → write a definition using that public knowledge, but explicitly flag it in the report as "based on public knowledge, not an Airtable overview — verify before relying on it for Fin classification." Do not assert integration specifics you can't verify (e.g. exactly how the partner routes to Checkout.com) — describe what the company/product is generically instead.
-3. **No overview, name is vague/internal-sounding, or ambiguous** (e.g. a bare noun phrase that could mean several things, or overlaps with an existing documented sub-feature under a different name) → **do not fabricate a definition.** List it under "Needs review" in the final report with the reason, and don't insert a row. Getting this wrong pollutes a file Fin uses for classification.
+### 4a — Add missing entries
 
-Before writing content for anything in bucket 3, check whether it might already be documented under a different name (e.g. a near-synonym of an existing row, like a product renamed in Airtable but not yet reflected in the docs, or a granular sub-feature already covered by a broader existing row). Flag suspected duplicates/renames instead of creating a parallel entry.
+Load `/tmp/catalogue_rows_full.json` (every current catalogue row, from Step 2) and the current `product-definitions.md`. For every catalogue product with no matching `###` heading:
 
-For each product to add, generate a definitions table row following this format:
+**Eligibility check** — a product is eligible for a full, rich Fin classification entry only if all of:
+1. Product State is `General availability`, `Beta`, or `Mixed availability`
+2. Category is not `Internal products` and the name doesn't start with `Internal - `
+
+**If eligible:**
+- Has an Airtable overview → write the definition grounded in that text.
+- No overview, but a well-known real-world company/product (verifiable from general knowledge — e.g. a named payment orchestration vendor or ecommerce platform) → write from that public knowledge, flagged in the report as "based on public knowledge, not an Airtable overview — verify before relying on it." Don't assert integration specifics you can't verify.
+- No overview, name is vague/internal-sounding, or overlaps with an existing documented sub-feature under a different name → **do not fabricate.** List under "Needs review" and skip.
+
+Full entry format (Applies-if / Does-not-apply-if / Example / Likely-keywords), matching the style of surrounding entries in that section. Payment Methods entries carry `**Geography:**` and `**Payment type:**` fields — infer from the overview text (country/region names, product-type keywords: BNPL, wallet, debit card, bank transfer, direct debit, card scheme, etc.); if genuinely unclear, write "Not specified in catalogue — verify" rather than guessing. Contact risk guidance: Payment Methods match the risk of similar payment types (BNPL = high, wallets = medium/low, card schemes = low); Partner Integrations = medium unless it's an orchestration layer (low); Business Account = medium; Payouts = medium.
+
+**If NOT eligible** (fails the check above), still add an entry — don't skip it — using this minimal stub:
 
 ```
-| [Product name] | [One-sentence definition based on overview] | [Key capabilities from overview, semicolon-separated] | [contact risk level] — [reason] | Merchant references [product name], [2-3 key terms a merchant would use], or [scenario-based phrase]. |
+### [Product name]
+**What it is:** [overview text if available, else a one-line description from public knowledge, else "Catalogue entry for [category] — no Airtable overview text available."]
+**Classification status:** NOT FOR CLASSIFICATION — [catalogue state is 'X', not yet live | internal/meta, not merchant-facing | superseded by [Y]]. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS[ — classify under [Y] instead, if superseded]
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- Should not currently apply — [not yet live | not merchant-facing]
+
+**Does not apply if the merchant:**
+- [Cross-reference to the nearest live sibling/replacement entry, if one exists]
+
+**Example:** N/A — [not yet live | internal tool, not merchant-facing].
+
+**Likely keywords:** [product name], [1-2 category-relevant terms]
 ```
 
-Contact risk guidance:
-- Payment Methods: match risk level of similar payment type (BNPL = high, wallets = medium/low, card schemes = low)
-- Partner Integrations: medium — plugin setup queries (unless orchestration layer = low)
-- New platform APIs: medium — integration complexity
-- Business Account products: medium — financial query risk
-- Payouts: medium
+Insert every new entry (eligible or not) alphabetically within its `##` category section. If the category section doesn't exist yet, create it (heading only — category-level sort happens in Step 5, so don't worry about where in the file it lands).
 
-Fin classification guide guidance — write phrases a merchant would actually say, not internal product names alone. Include:
-- The product name and common abbreviations/aliases
-- Scenario phrases ("payment failing via X", "X not appearing at checkout")
-- Disambiguation where needed ("distinct from X")
+### 4b — Re-flag every existing entry
 
-Insert each new row into the correct section in product-definitions.md, in alphabetical order within its section. If the section doesn't exist, create it with a heading and table header before the Vault section.
+This is what catches drift on products that already have an entry but whose catalogue status has since changed (gone Deprecated, dropped off the roadmap, superseded, or — just as importantly — gone *live* after being flagged not-for-classification).
 
-Use table headers from existing sections as a reference for column order — Payment Methods sections have Geography and Payment type columns; other sections do not.
+For every existing `###` entry in `product-definitions.md`:
+1. Resolve its catalogue status: exact name match → check state directly; else check `RENAMED_TO` / `FOLDED_INTO` (eligible if the target row is live) / `SUPERSEDED_BY` (never eligible, note the replacement) / `NO_CATALOGUE_MATCH` / `INTERNAL_META` (never eligible) → else genuinely new drift, treat as `NO_CATALOGUE_MATCH` and flag for review.
+2. If **not eligible** and the entry has no `**Classification status:**` line yet, or has one with a now-outdated reason → insert/update `**Classification status:**` and `**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS` right after the risk/capability lines (before `**Applies if the merchant:**`). Never touch the Applies-if/Does-not-apply-if/Example/Likely-keywords content — those stay as historical/context documentation.
+3. If **eligible** and the entry still carries a `**Classification status:**` / `**Fin instruction:**` pair from a previous run → remove both lines. The product has gone live; it's eligible for classification again.
+4. Never delete an entry. Never touch entries whose status hasn't changed.
+
+Write a short diff of what changed in this pass (newly flagged, newly un-flagged, still-flagged-same-reason) — this is the most useful part of the report, since it's the part a one-off manual check would miss.
 
 ---
 
-## Step 5 — Report
+## Step 5 — Re-sort product-definitions.md alphabetically by category
 
-Output a summary structured for someone updating Zendesk fields, not just a prose recap. Pull the numbers and groupings straight from Step 2's (and, if it ran, Step 3's) script output.
+Category sections (`## Heading`) go A→Z. The `## How to read this file` intro section stays first, exempt from sorting. Entries within each category keep their existing order (don't re-sort `###` headings within a section — that's a separate, larger change and not part of this skill).
+
+```python
+import re
+
+path = "01-knowledge-base/products/product-definitions.md"
+with open(path) as f:
+    content = f.read()
+
+parts = re.split(r'(?m)^(## .+)$', content)
+preamble = parts[0]
+sections = [(parts[i].strip(), parts[i] + parts[i+1]) for i in range(1, len(parts), 2)]
+
+intro = next((body for h, body in sections if h == "## How to read this file"), "")
+cat_sections = [(h, b) for h, b in sections if h != "## How to read this file"]
+cat_sections.sort(key=lambda hb: hb[0][3:].strip().lower())
+
+new_content = preamble + intro + "".join(b for _, b in cat_sections)
+with open(path, "w") as f:
+    f.write(new_content)
+
+print("Sorted", len(cat_sections), "category sections A-Z.")
+```
+
+---
+
+## Step 6 — Report
+
+Structure the summary so someone can act on it without re-reading the whole diff.
 
 ```
 ## Product Catalogue Sync — [date]
@@ -437,35 +449,32 @@ Output a summary structured for someone updating Zendesk fields, not just a pros
 **Bulk field-value renames** — one edit per row covers all listed products:
 | Field | Old value | New value | # products |
 |---|---|---|---|
-| [Product Team/Pillar/State] | [old] | [new] | [N] |
 ...
 
 **Split values — review individually, do NOT bulk rename**:
-- [Field] '[old value]' now maps to multiple new values: '[new value A]' ([products]), '[new value B]' ([products])
+- [Field] '[old value]' now maps to multiple new values: ...
 
-**Other field changes** (not on a bulk-rename field, e.g. Product category / Marketecture):
-- [Product name] | [field]: '[old]' → '[new]'
-
-[If Step 3 ran, include this block — otherwise use the simpler "Add/Remove to Zendesk product field" lists from the old format:]
-
-**Zendesk product field changes needed** ([N] add, [N] rename, [N] verify spelling):
+[If Step 3 ran:]
+**Zendesk product field changes needed** ([N] add, [N] verify spelling):
 - ADD: [Product name] → tag `[generated tag]`
-- RENAME: [Product name] — likely renames existing Zendesk value '[old value]', same tag `[tag]`
 - VERIFY SPELLING: [Product name] vs Zendesk's '[value]'
+Full sheet: `04-active-work/working-files/zendesk-product-field-changes-[date].csv`
 
-Full sheet (every in-scope product, all 5 catalogue fields, action + tag + change flags): `04-active-work/working-files/zendesk-product-field-changes-[date].csv`
-
-**Definitions updated**: [N new entries added]
+**Definitions added** ([N] eligible, [N] not-for-classification stubs):
 - [Product name] ([category]) [— flag "public knowledge, unverified" if applicable]
-- ...
 
-**Skipped** (already documented, internal, or insufficient information to write reliably):
+**Newly flagged NOT FOR CLASSIFICATION this run** ([N]):
+- [Product name] — [reason, e.g. "went Deprecated" / "dropped from catalogue"]
+
+**Newly un-flagged this run — now eligible** ([N]):
+- [Product name] — [now General availability / Beta / Mixed availability]
+
+**Needs review** (not added — insufficient information, or ambiguous vs. an existing entry):
 - [Product name] — [reason]
 
-**Needs review**:
-- [Product name] — [flag e.g. possible rename/duplicate of an existing row, ambiguous name, Airtable category/naming inconsistency worth flagging to the Product team]
+**Category sections re-sorted A-Z.**
 
-Full catalogue change log (every added/removed/changed row from the Airtable sync itself): `04-active-work/working-files/product-catalogue-changes-[date].csv`
+Full catalogue change log: `04-active-work/working-files/product-catalogue-changes-[date].csv`
 ```
 
-Omit any section with zero entries rather than printing it empty. If nothing changed at all (no added/removed products, no field-level changes, no new definitions needed), say so clearly and skip the rest of the template.
+Omit any section with zero entries. If nothing changed anywhere (CSV, definitions, sort already correct), say so and stop — don't pad the report.

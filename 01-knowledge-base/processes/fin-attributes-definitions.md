@@ -542,7 +542,7 @@ Queries about fees charged.
 
 #### Reason: Invoice request
 
-**Applies if the customer:** Needs a copy of their tax or service invoice.
+**Applies if the customer:** Needs a copy of their tax or service invoice — Checkout.com's own billing to the merchant (see product-definitions.md → Financial Report).
 
 **Likely keywords:** invoice copy, tax invoice request
 
@@ -561,20 +561,22 @@ Refers to integration or technical issues (API/SDK/webhook/connectivity), includ
 **Applies if the customer:**
 - Reports explicit HTTP status codes (**400/401/403/404/409/422/429/500/502/503**) or API/endpoint/SDK failures (e.g. "**API returned 500**").
 - Reports plugin/checkout UI/integration behaviour issues: **redirects, saved cards, a payment method disappearing from the site**.
-- Asks about Network Tokenization, Network Tokens, token migration, or enabling NT.
+- Asks about Network Tokens, Vault, Card Metadata, Forwarding API, or Wallets — see those Issue Types for specifics.
 - Attributes declines to tokenisation, card-on-file configuration, or network-token setup, even if a decline code is also present.
 - Reports a customer charged an amount not reflected in Checkout.com records (**wallet surcharge, 3DS fee, issuer fee**) — treat as an integration-layer investigation.
 - Asks about API key management, sandbox/test environment issues, or webhook setup/delivery.
-- Asks about form/checkout fields in **their own website's data-capture integration** — this is a merchant-side integration issue, distinct from the Checkout.com Identity Verification product's own document checks/facial recognition (which stays in Identity Verification).
-- Reports acquiring-side MCC restrictions on processing channels (**`pc_*` IDs**) — these are not issued-card spend controls (which belong to Card issuing).
+- Asks about form/checkout fields in **their own website's data-capture integration**, distinct from the Checkout.com Identity Verification product itself (stays in Identity Verification).
+- Reports acquiring-side MCC restrictions on processing channels (**`pc_*` IDs**) — not issued-card spend controls (Card issuing).
 
 **Does not apply if the customer:**
 - Reports a payment performance/outcome issue with no technical/integration angle (use Accepting payments).
-- Frames a technical question as "enabling" or "configuring" a payment method that is already live and simply failing — a decline on an already-enabled method is Accepting payments, not this Case Type, even if the customer uses words like "setup" or "configuration."
-- Asks about the Checkout.com Identity Verification product itself (document checks, facial recognition, verification results) — that's Identity Verification, not a merchant-side integration issue.
-- Provides an ID matching the regex `^trx_[a-z0-9]{26}$` in the context of issued-card spend controls or lifecycle — that's Card issuing, not a processing-channel/MCC restriction.
+- Frames a live, already-enabled payment method's decline as "setup"/"configuration" (use Accepting payments).
+- Asks about the Checkout.com Identity Verification product itself (use Identity Verification).
+- Provides a `trx_` ID in the context of issued-card spend controls or lifecycle (use Card issuing).
+- Is a cardholder adding their issued card to Apple Pay/Google Pay (use Card issuing → Issuing digital wallets, not this Case Type's Wallets Issue Type).
+- Requests general BIN/issuer/scheme reference data with no specific data-accuracy dispute (use General → Inquiries → Reference data request, not Card Metadata).
 
-**Likely keywords:** API error, HTTP 500, webhook, SDK, sandbox, API key, network token, integration, wallet surcharge, issuer fee
+**Likely keywords:** API error, HTTP 500, webhook, SDK, sandbox, API key, network token, vault, card metadata, forwarding API, wallet domain, integration, wallet surcharge, issuer fee
 
 ### Issue Type: API keys
 
@@ -603,7 +605,7 @@ Queries regarding the management of authentication keys (**Secret/Public OAuth**
 
 ### Issue Type: API integration
 
-Queries regarding raw API responses, HTTP status codes, and network connectivity. Use this as the "catch-all" for API errors that are **not specific to a Plugin, Flow, Frames, SDK, or Payment Links**.
+Queries regarding raw API responses, HTTP status codes, and network connectivity. Use this as the "catch-all" for API errors that are **not specific to a Plugin, Flow, Frames, SDK, Payment Links, Network Tokens, Vault, Card Metadata, Forwarding API, or Wallets**.
 
 **Applies if the customer:**
 - Encounters HTTP 400-level errors (e.g. **404 Not Found, 422 Validation Error**) indicating the issue lies with the request, or reports functional integration bugs — **redirect parameter mismatches, invalid data formats, missing response payloads, or logic errors** where the system rejects the input.
@@ -614,6 +616,7 @@ Queries regarding raw API responses, HTTP status codes, and network connectivity
 **Does not apply if the customer:**
 - Is asking to enable/activate a payment method rather than a question about integration design or API errors (use Account management and access).
 - Reports a webhook delivery, signature-verification, or payload-content issue rather than a synchronous API call error (use Webhooks).
+- Reports an API error specific to Network Tokens, Vault, Card Metadata, Forwarding API, or Wallets — use that Issue Type instead of this catch-all.
 
 **Likely keywords:** API error, 400, 404, 422, 500, 503, timeout, idempotency, integration approach
 
@@ -635,43 +638,249 @@ Queries regarding raw API responses, HTTP status codes, and network connectivity
 
 **Likely keywords:** timeout, idempotency key, request timed out
 
-### Issue Type: Tokens
+### Issue Type: Network Tokens
 
-Queries about tokens (including token migration and network tokens).
+Queries about Network Tokens: onboarding, provisioning, billing, performance, and API errors. **[Renamed from "Tokens" — token migration moved to Vault]**
 
 **Applies if the customer:**
-- The issue involves Network Tokens, including inquiries about **token migration, provisioning status**, or specific technical errors related to tokenization logic (e.g. **PEM values or cryptograms**).
-- Asks about import or export of their tokens.
+- Reports onboarding issues for Network Tokens (e.g. a scheme-specific "Onboard to Mastercard" toggle not saving/applying for a client ID).
+- Reports provisioning issues — missing or low network-token counts, whether it's a provisioning failure vs. not attempted, or how async provisioning / `provision_networktoken` works.
+- Raises billing/fee concerns specific to Network Token fees (spikes, accuracy, fees charged on declined transactions).
+- Reports an API error specific to network-token services (cryptogram retrieval failures, `INVALID_REQUESTOR`, TRID format questions, fallback to FPAN).
+- Asks for an acceptance-rate/performance analysis tied specifically to Network Token usage, or is deciding whether to disable NT.
 - Attributes declines (even with a decline code present) to tokenisation, card-on-file setup, or missing `payment_type`/`payment_plan` recurring parameters.
 
-**Does not apply if the customer:** Reports a decline with no tokenisation/network-token framing at all (use Accepting payments → Transaction status).
+**Does not apply if the customer:**
+- Asks about importing/exporting Vault tokens or instruments, or Vault customer/API errors — use Vault instead.
+- Reports a decline with no tokenisation/network-token framing at all (use Accepting payments → Transaction status).
 
-**Likely keywords:** network token, token migration, PEM, cryptogram, card on file, payment_type recurring, provisioning status
+**Likely keywords:** network token, NT onboarding, provisioning, MDES, cryptogram, TRID, FPAN fallback, network token fee, NT performance, PEM
 
-#### Reason: Network tokens
+#### Reason: Onboarding
 
-**Applies if the customer:** The issue involves Network Tokens, including inquiries about token migration, provisioning status, or specific technical errors related to tokenization logic (e.g. PEM values or cryptograms).
+**Applies if the customer:** Asks about turning on or configuring network-token settings for a card scheme (e.g. an "Onboard to Mastercard" toggle in CAT) and it isn't saving or applying for their client ID(s).
 
-**Likely keywords:** network token, provisioning, tokenization error, PEM, cryptogram
+**Example:** "I'm trying to turn on 'Onboard to Mastercard' toggle for Network Tokens in CAT. But after saving, I can see that the setting is not applied."
+
+**Likely keywords:** onboard to Mastercard, network token toggle not saving, NT setting not applied
+
+#### Reason: Provisioning
+
+**Applies if the customer:** Asks why they have few or no network tokens provisioned, whether it's a provisioning failure vs. not being attempted, or how async provisioning / the `provision_networktoken` parameter works.
+
+**Example:** "What I see is they have very less network tokens available... Is it because of provisioning failures? Is it because of provisioning not being attempted due to any other reason?"
+
+**Likely keywords:** network token provisioning, async provisioning, provision_networktoken, low token count
+
+#### Reason: Billing
+
+**Applies if the customer:** Raises concerns about Network Token fees — an unexplained spike, accuracy of charges against lifecycle events, or whether fees are being charged on declined transactions.
+
+**Example:** "I am escalating a billing concern... regarding a significant and unexplained surge in Network Token (NT) fees... Are we charging 'Token Creation' fees on transactions that resulted in a decline?"
+
+**Likely keywords:** network token fee spike, NT billing, token creation fee, fee on decline
+
+#### Reason: API errors
+
+**Applies if the customer:** Reports an API error in network-token services — cryptogram retrieval failures, `INVALID_REQUESTOR`, TRID format questions, or payments falling back to FPAN.
+
+**Example:** "100% of the requests for Mastercard is failing with an error 'INVALID_REQUESTOR'... is this a valid value?" (referring to a TRID)
+
+**Likely keywords:** cryptogram error, INVALID_REQUESTOR, TRID, FPAN fallback, network-token-requestor logs
+
+#### Reason: Performance
+
+**Applies if the customer:** Asks for an acceptance-rate/performance analysis specifically tied to Network Token usage, including cost-benefit questions or whether to disable NT.
+
+**Example:** "I need an analysis of Network Token performance for the merchant... they are currently evaluating whether to disable NT... I'm seeing an approximate uplift of just 1.5% in acceptance rate."
+
+**Likely keywords:** NT acceptance rate uplift, network token performance analysis, disable NT
+
+### Issue Type: Vault
+
+Queries about Vault instruments, tokens, and customers — the card/customer data storage layer, distinct from Network Tokens.
+
+**Applies if the customer:**
+- Reports an API error calling a Vault endpoint (e.g. payment-sessions, instruments, a public-key/vault-ID mismatch).
+- Reports issues creating, fetching, or managing a stored Instrument (e.g. Get Instrument returning 404 despite the instrument existing in the dashboard).
+- Asks what makes a Vault token invalid, or reports errors on specific `tok_` values distinct from network tokens.
+- Reports a Vault Customer record missing or behaving unexpectedly (e.g. `customer_not_found` after a migration).
+- Asks about importing or exporting merchant tokens between Vault and another system.
+
+**Does not apply if the customer:**
+- Reports Network Token-specific onboarding, provisioning, billing, API-error, or performance issues — use Network Tokens instead.
+- Reports card scheme/issuer metadata or BIN/issuer-data discrepancies — use Card Metadata instead.
+
+**Likely keywords:** vault, instrument, tok_, token invalid, customer_not_found, vault id, public key mismatch, vault token migration
+
+#### Reason: API errors
+
+**Applies if the customer:** Reports an API error from a Vault endpoint, such as a payment-sessions submit failure or "No public key matching the vault id found."
+
+**Example:** "CMC Markets are hitting a 422 payment_attempt_failed response when trying to call POST /payment-sessions/{id}/submit... No public key matching the vault id found."
+
+**Likely keywords:** vault API error, payment_attempt_failed, public key vault id mismatch, 422 vault
+
+#### Reason: Instruments
+
+**Applies if the customer:** Reports issues creating, fetching, or listing a stored Instrument, such as the Get Instrument API returning 404 despite the instrument existing in the dashboard.
+
+**Example:** "They have raised the issue that they are not able to fetch Instrument using Get Instrument API in Sandbox... I got 404 everytime i call Get Instrument API even the Instrument exist in dashboard."
+
+**Likely keywords:** get instrument 404, instrument not found, vault instrument API
+
+#### Reason: Tokens
+
+**Applies if the customer:** Asks what makes a Vault token invalid, or reports an error on a specific `tok_` value distinct from a network token.
+
+**Example:** "So what makes a token invalid then? Because there are separate errors for token_expired and token_used... so what else can make a token invalid?"
+
+**Likely keywords:** vault token invalid, tok_expired, tok_used
+
+#### Reason: Customers
+
+**Applies if the customer:** Reports a Vault customer record missing, lost, or behaving unexpectedly, such as `customer_not_found` after a migration.
+
+**Example:** "raised a case of customer_not_found errors for the customerId... it seems that this customer is not existing anymore whereas it was present historically."
+
+**Likely keywords:** customer_not_found, vault customer missing, customer lost in migration
 
 #### Reason: Token migration
 
-**Applies if the customer:** Asks about import or export of their tokens.
+**Applies if the customer:** Asks about importing or exporting merchant tokens between Vault and another system or provider.
 
-**Likely keywords:** token import, token export, token migration
+**Likely keywords:** token import, token export, vault token migration
+
+### Issue Type: Card Metadata
+
+Queries about Card Metadata — BIN/issuer data-accuracy disputes on a specific card or transaction, card-payout eligibility fields, and API errors. Distinct from a generic request for reference data with no specific dispute.
+
+**Applies if the customer:**
+- Reports that BIN/issuer/scheme data returned for a specific card or transaction looks wrong, and asks Checkout to validate or correct it.
+- Asks which Card Metadata field determines card-payout eligibility (e.g. domestic vs. cross-border) for a specific payout scenario.
+- Reports an API error calling Card Metadata endpoints, or a downstream failure (e.g. a decline) traced back to a Card Metadata field value.
+
+**Does not apply if the customer:**
+- Asks for general BIN ranges, issuer identification, or scheme metadata with no specific transaction/data-accuracy dispute — use General → Inquiries → Reference data request instead.
+- Asks about issued-card spend controls or lifecycle — use Card issuing instead.
+
+**Likely keywords:** card metadata, BIN issuer mismatch, wrong issuer name, card payout eligibility, domestic cross border, local_scheme, preferred_scheme_not_applicable
+
+#### Reason: BIN/Issuer data
+
+**Applies if the customer:** Flags a specific BIN/card as returning an incorrect issuer name or other BIN/issuer data point, and asks Checkout to validate.
+
+**Does not apply if the customer:** Asks for BIN ranges or issuer identification with no specific data dispute — use General → Inquiries → Reference data request instead.
+
+**Example:** "We are seeing a wrong issuer name being returned for Amazon Cards in UAE... yet our data show them as NETWORK INTERNATIONAL LLC. Can you help me validate...?"
+
+**Likely keywords:** wrong issuer name, BIN issuer mismatch, issuer data validation
+
+#### Reason: Card Payout eligibility
+
+**Applies if the customer:** Asks which Card Metadata field (e.g. domestic vs. cross-border eligibility) applies for a specific card-payout scenario.
+
+**Example:** "Should they check the 'domestic' or 'cross border' eligibility fields in the metadata API response?... USD to USD funded card payout with recipient being a user with a Japan address."
+
+**Likely keywords:** card payout eligibility, domestic cross border field, payout metadata
+
+#### Reason: API errors
+
+**Applies if the customer:** Reports an API error from Card Metadata endpoints, or a decline/failure traced to a Card Metadata field (e.g. `local_scheme`, `preferred_scheme_not_applicable`).
+
+**Example:** "Couple of merchants have raised concerns about CB transactions failing with 422 ['preferred_scheme_not_applicable']... card.local_scheme and card.scheme comes from Card Metadata/Vault API."
+
+**Likely keywords:** card metadata API error, preferred_scheme_not_applicable, local_scheme mismatch
+
+### Issue Type: Forwarding API
+
+Queries about Forwarding API — enabling merchants, allow-listing destination URLs, and API errors.
+
+**Applies if the customer:**
+- Requests Forwarding API be enabled for a client ID in Sandbox or Production.
+- Requests a destination URL/domain be added to the Forwarding API allow list, or asks how allow-listing scope works (per-endpoint vs. domain-level).
+- Reports an API/HTTP error on forwarded traffic and asks whether it originates from Checkout's side or the destination.
+
+**Does not apply if the customer:** Reports a general API 4XX/5XX error with no Forwarding API context — use API integration instead.
+
+**Likely keywords:** forwarding API, enable forwarding, allow list URL, whitelist domain, forward traffic 401
+
+#### Reason: Enablement
+
+**Applies if the customer:** Requests Forwarding API be enabled for a client ID, in Sandbox or Production.
+
+**Example:** "Can you please enable dashboard analytics in sandbox for the client Id: cli_e75smvkyfrhuvmpb35q7gsppcu."
+
+**Likely keywords:** enable forwarding API, forwarding API sandbox, forwarding API production
+
+#### Reason: URL Allow listing
+
+**Applies if the customer:** Requests a destination URL/domain be added to the allow list, or asks how domain vs. endpoint allow-listing scope works.
+
+**Example:** "we need to whitelist some URLs... if we have multiple endpoints on the same domain, do we need to whitelist all of them or can we just whitelist the main domain/subdomain?"
+
+**Likely keywords:** whitelist URL, allow list domain, forwarding destination endpoint
+
+#### Reason: API errors
+
+**Applies if the customer:** Reports an API/HTTP error on forwarded traffic and asks whether the failure originates from Checkout or the destination.
+
+**Example:** "they are facing 401 Unauthorized at our side for a high volume of forward traffic... can you please help us understand is this originating from the destination or our side?"
+
+**Likely keywords:** forwarding 401, forward traffic error, destination vs origin error
+
+### Issue Type: Wallets
+
+Queries about merchant-side Wallet payment onboarding and processing for Apple Pay and Google Pay, on the acceptance side — domain onboarding, domain errors, and API errors. Distinct from Card issuing → Issuing digital wallets, which covers a cardholder adding a Checkout-*issued* card to their own wallet.
+
+**Applies if the customer:**
+- Requests a merchant domain be onboarded for Apple Pay, or asks about Google Pay domain/merchant setup.
+- Reports a wallet payment failing due to a domain/merchant-ID registration error (e.g. "merchant not registered for service").
+- Reports an API error specific to an Apple Pay or Google Pay payment attempt.
+
+**Does not apply if the customer:**
+- Is a cardholder unable to add their Checkout-issued card to Apple Pay/Google Pay, or reports issuing-side provisioning/token errors in their own wallet — use Card issuing → Issuing digital wallets instead.
+- Asks about Flow/Frames/SDK/plugin integration generally with no wallet-specific domain/API error — use Integration methods instead.
+
+**Likely keywords:** apple pay domain onboarding, google pay domain, merchant not registered, wallet domain error, apple pay 403
+
+#### Reason: Domain onboarding
+
+**Applies if the customer:** Requests a merchant domain be onboarded/registered for Apple Pay or Google Pay, in production or sandbox.
+
+**Example:** "Could you please onboard the merchant for Applepay on production... Domain: kaafmeem.api.checkout.com."
+
+**Likely keywords:** apple pay domain onboarding, register domain apple pay, google pay onboarding
+
+#### Reason: Domain errors
+
+**Applies if the customer:** Reports a wallet payment failing due to a domain/merchant-ID registration error, such as "not registered for service."
+
+**Example:** "Merchant... are unable to make Apple Pay payments and getting error - 'Payment Services Exception merchantId=... not registered for service'."
+
+**Likely keywords:** merchant not registered, apple pay domain error, wallet registration failure
+
+#### Reason: API errors
+
+**Applies if the customer:** Reports an API/HTTP error specific to an Apple Pay or Google Pay payment attempt.
+
+**Example:** "Merchant has tried with Apple Pay but got 403 error and their card payment is working fine... please can you check why it failed?"
+
+**Likely keywords:** apple pay 403, google pay API error, wallet payment error
 
 ### Issue Type: Integration methods
 
-The merchant is inquiring about the specific interface, library, or platform used to process payments — **hosted pages, plugins, SDKs, payment links, or digital wallets**.
+The merchant is inquiring about the specific interface, library, or platform used to process payments — **hosted pages, plugins, SDKs, or payment links**.
 
 **Applies if the customer:**
 - Asks about Flow or Frames, or migration to Flow.
 - Asks about Payment Links or Hosted Payment Page issues.
 - Asks about an SDK issue.
 - Asks about a Plugin issue like **Shopify, WooCommerce**, and others.
-- Asks about Apple Pay or Google Pay setup, integration, certificates, domain verification, or method-specific errors.
 
-**Likely keywords:** Flow, Frames, Payment Links, hosted payment page, SDK, plugin, Shopify, WooCommerce, Apple Pay setup, Google Pay setup
+**Does not apply if the customer:** Asks specifically about Apple Pay/Google Pay domain onboarding, domain errors, or wallet-specific API errors — use Wallets instead.
+
+**Likely keywords:** Flow, Frames, Payment Links, hosted payment page, SDK, plugin, Shopify, WooCommerce
 
 #### Reason: Flow / frames
 
@@ -696,12 +905,6 @@ The merchant is inquiring about the specific interface, library, or platform use
 **Applies if the customer:** Is asking about a Plugin issue like Shopify, WooCommerce, and others.
 
 **Likely keywords:** Shopify plugin, WooCommerce plugin, e-commerce plugin
-
-#### Reason: Apple Pay / Google Pay
-
-**Applies if the customer:** Is asking about Apple Pay or Google Pay setup, integration, certificates, domain verification, or method-specific errors.
-
-**Likely keywords:** Apple Pay setup, Google Pay setup, wallet certificate, domain verification
 
 ### Issue Type: Webhooks
 
@@ -911,6 +1114,7 @@ Refers to card issuing related queries. Includes physical or virtual card issues
 - Reports acquiring-side MCC restrictions on processing channels (`pc_*` IDs) — these are not issued-card spend controls; select Technical issue instead.
 - Provides an ID matching the regex `^(pay)_(\w{26})$` — a `pay_` ID is an acquiring/acceptance-side transaction, not an issued-card transaction; do not treat it as evidence for this Case Type.
 - Asks about sending a payout via a card network (e.g. Visa Direct, Mastercard Send) to an end recipient — that's Payouts → Card payouts, not an issued-card lifecycle action, even though both mention "card."
+- Is a merchant asking about onboarding a website domain for Apple Pay/Google Pay acceptance, or a domain-registration error on the acceptance side — that's Technical issue → Wallets, not an issued-card wallet-provisioning issue.
 
 **Likely keywords:** issued card, virtual card, physical card, issuing balance, issuing SDK, trx_, activate card, revoke card, spend control, card delivery
 
@@ -962,6 +1166,8 @@ Queries about card deliveries.
 Queries about adding issued cards to Apple Pay or Google Pay.
 
 **Applies if the customer:** Cannot add their issued card to Apple Pay or Google Pay, or the card is not working correctly in their digital wallet (e.g. **provisioning failures, token errors**).
+
+**Does not apply if the customer:** Is a merchant asking about onboarding a website domain for Apple Pay/Google Pay acceptance, or a domain-registration error on the acceptance side — that's Technical issue → Wallets, not an issued-card wallet-provisioning issue.
 
 **Likely keywords:** issued card Apple Pay, issued card Google Pay, provisioning failure, token error
 
@@ -1225,6 +1431,7 @@ Refers to general inquiries which do not fit other case types.
 
 **Does not apply if the customer:**
 - Requests reference/configuration data tied to their own account — MID, CID, or entity-to-channel mappings (use Account management and access → Account changes → Account settings update instead).
+- Flags a specific data-accuracy dispute on a BIN/issuer value already returned for a transaction or card — that's Technical issue → Card Metadata → BIN/Issuer data, not a general reference-data request.
 
 **Likely keywords:** sales inquiry, spam, duplicate, follow up, no action needed, BIN range, issuer identification, scheme metadata, acquirer ID, BIN sponsor, tax reporting identifier
 
@@ -1263,6 +1470,7 @@ Queries about buying our services or Sales or anything else, or requests for ext
 
 **Does not apply if the customer:**
 - Requests reference/configuration data tied to their own account — MID, CID, or entity-to-channel mappings (use Account management and access → Account changes → Account settings update instead).
+- Flags a specific data-accuracy dispute on a BIN/issuer value already returned for a transaction or card (e.g. "this issuer name looks wrong") — that's Technical issue → Card Metadata → BIN/Issuer data, not a reference-data request.
 
 **Example:** "Can you confirm Checkout's acquirer ID and BIN sponsor? Our tax authority needs it for a filing." / "What's the issuer identification for this BIN range?"
 

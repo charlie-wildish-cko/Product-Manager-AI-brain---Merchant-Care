@@ -1,6 +1,6 @@
 # Checkout.com Product Definitions
 
-Source of truth: Airtable Product Catalogue (synced May 2026)
+Source of truth: Airtable Product Catalogue (synced 2026-08-13)
 Definitions enriched from: checkout.com/docs (scraped March 2026)
 
 **Planned use**: Map against support contact data to identify which products drive contact volumes.
@@ -26,6 +26,60 @@ Each `##` heading is a product category from the Airtable Product Catalogue. Eac
 
 Contact risk tags: `high` / `medium` / `low` / `unknown`
 Risk reasons: dispute-prone · mandate-management · setup-complexity · redirect-failure · auth-friction · account-management
+
+---
+
+## Agentic Commerce
+
+### Commerce Protocols
+**What it is:** Catalogue category for emerging agentic-commerce protocol support (standards enabling AI agents to transact on a merchant's behalf). No Airtable overview text available — this is an emerging/new area; verify with Product before relying on this definition for Fin classification, as the specific protocol(s) covered (e.g. agent checkout/payment protocols) are not yet documented.
+**Contact risk:** unknown — new/emerging capability, no contact history to calibrate against
+
+**Applies if the merchant:**
+- Asks about AI agents transacting or checking out on their behalf via a commerce protocol/standard integration with Checkout.com
+
+**Does not apply if the merchant:**
+- Describes a standard online checkout integration with no agentic/AI-driven purchasing component
+
+**Example:** "We're integrating an agentic commerce protocol so AI shopping agents can complete checkout through Checkout.com."
+
+**Likely keywords:** agentic commerce, commerce protocols, AI agent checkout, agent-initiated payments
+
+---
+
+### Movement Protocols
+**What it is:** Catalogue entry for a related agentic-commerce capability (movement protocols). No Airtable overview text available.
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap'; not yet live. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- Should not currently apply — not yet live
+
+**Does not apply if the merchant:**
+- Describes a standard checkout integration with no agentic-commerce component — see Commerce Protocols
+
+**Example:** N/A — not yet live.
+
+**Likely keywords:** movement protocols, agentic commerce
+
+---
+
+### Trust Protocols
+**What it is:** Catalogue entry for a related agentic-commerce capability (trust protocols, likely covering agent/merchant trust or verification standards). No Airtable overview text available.
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap'; not yet live. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- Should not currently apply — not yet live
+
+**Does not apply if the merchant:**
+- Describes a standard checkout integration with no agentic-commerce component — see Commerce Protocols
+
+**Example:** N/A — not yet live.
+
+**Likely keywords:** trust protocols, agentic commerce
 
 ---
 
@@ -74,7 +128,7 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 - Describes calling authentication as its own API request, separate from the payment authorization call, often because they route payment through a different gateway or handle authorization themselves.
 
 **Does not apply if the merchant:**
-- Is running authentication as part of the standard combined payment authorization flow (no separate call) — that is Authentication. If they are combining multiple auth methods (Passkeys, Google SPA) rather than decoupling the call, that is Bundled Authentication.
+- Is running authentication as part of the standard combined payment authorization flow (no separate call) — that is Authentication. If they are combining multiple auth methods (Passkeys, Google SPA) rather than adecoupling the call, that is Bundled Authentication.
 
 **Example:** "We call 3DS as a separate authentication request and then send the result to our own gateway for authorization — how do we link the two?"
 
@@ -121,6 +175,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Process by which Checkout.com transfers collected payment funds to the merchant's account.
 **Key capabilities:** Configurable settlement frequency; automatic crediting to sub-accounts.
 **Contact risk:** high — settlement timing and amount queries are a major support driver
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about when or how much money will be paid out from Checkout.com to their external bank account, settlement frequency, a settlement delay, or a mismatch between expected and received settlement amount.
@@ -138,6 +194,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Ability to move funds into sub-accounts on demand.
 **Key capabilities:** Flexible fund movement between accounts; supports payout funding.
 **Contact risk:** medium — transfer failure queries
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Reports an on-demand fund movement between their own Checkout.com sub-accounts failing, delaying, or behaving unexpectedly.
@@ -168,6 +226,24 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Interest
+**What it is:** Catalogue entry for interest on merchant balances held in a Checkout.com Business Account. No Airtable overview text available.
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap'; not yet live. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- Should not currently apply — not yet live
+
+**Does not apply if the merchant:**
+- Asks about their standard account balance rather than interest earned on it — see Balances
+
+**Example:** N/A — not yet live.
+
+**Likely keywords:** interest, balance interest, business account interest
+
+---
+
 ### Same and Cross-currency Transfers
 **What it is:** On-demand fund transfers between Checkout.com accounts in the same or different currencies.
 **Key capabilities:** Flexible on-platform fund movement; supports cross-currency conversion between sub-accounts.
@@ -187,6 +263,23 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ## Dashboard
 
+### Account Settings
+**What it is:** Dashboard area for managing a merchant's own business/account-level profile information (e.g. business details, notification preferences, contact information).
+**Contact risk:** medium — profile and preference update queries
+
+**Applies if the merchant:**
+- Asks how to view or update their business profile, account-level details, or notification preferences within the Dashboard
+
+**Does not apply if the merchant:**
+- Is asking about user roles, team member access, or API key/permissions management — see Settings & Access
+- Is reporting a login failure or general navigation confusion not tied to a specific settings page — see Dashboard
+
+**Example:** "How do I update our business contact details in the Dashboard?"
+
+**Likely keywords:** account settings, business profile, account details, notification preferences, Dashboard settings page
+
+---
+
 ### Dashboard
 **What it is:** Checkout.com's merchant-facing web portal for managing payments, settings, and reporting.
 **Contact risk:** high — access, permissions, and navigation queries are a major support category
@@ -196,10 +289,30 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 **Does not apply if the merchant:**
 - Is reporting an issue with the underlying data shown in the Dashboard (e.g. a wrong balance or settlement amount) — classify those under the specific product (Balances, Settlements) rather than Dashboard, unless the complaint is specifically about accessing or navigating the portal itself.
+- Is asking specifically about updating their business profile or notification preferences — see Account Settings
+- Is asking specifically about user roles, team member access, or API key management — see Settings & Access
 
 **Example:** "I can't log into the Dashboard and I'm getting a permissions error."
 
 **Likely keywords:** Dashboard login, Dashboard access, Dashboard error, permission issues, user management in Dashboard, merchant portal navigation
+
+---
+
+### Settings & Access
+**What it is:** Dashboard area for managing user roles, team member access, and API key/permissions configuration.
+**Contact risk:** medium — user management and access-control queries
+
+**Applies if the merchant:**
+- Asks how to add, remove, or manage team member access or roles within the Dashboard
+- Asks about generating, rotating, or restricting API keys or permission scopes
+
+**Does not apply if the merchant:**
+- Is asking about their own business profile or notification preferences — see Account Settings
+- Is reporting a login failure or general navigation confusion not tied to a specific settings page — see Dashboard
+
+**Example:** "Can you help me add a new team member and set their permission level in the Dashboard?"
+
+**Likely keywords:** user access, team management, roles and permissions, API key management, Settings & Access page
 
 ---
 
@@ -327,6 +440,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Pre-built payment UI for React Native apps.
 **Key capabilities:** Don't sell status.
 **Contact risk:** n/a
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Don't sell', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Flow React Native or a React Native payments SDK
@@ -398,7 +513,7 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 **Example:** "Our customer's session on the Hosted Payment Page expired before they finished paying, is that the 24-hour limit?"
 
-**Likely keywords:** HPP, Hosted Payment Page, redirect checkout, payment page redirect, session expiry, 24-hour session, PCI compliance, branding customisation, hosted checkout link
+**Likely keywords:** HPP, Hosted Payment Page, hosted checkout link
 
 ---
 
@@ -408,6 +523,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Verification of the authenticity and compliance of an address document, with data extraction via API.
 **Key capabilities:** Roadmap.
 **Contact risk:** unknown — Roadmap
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about verifying a proof of address document, address document data extraction, or why an address document was rejected during onboarding
@@ -444,6 +561,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** AML screening of businesses against sanctions and adverse media databases.
 **Key capabilities:** Roadmap.
 **Contact risk:** unknown
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about screening a business entity (not an individual) against sanctions or adverse media databases, or disputes a business-level screening hit
@@ -462,6 +581,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** KYB (Know Your Business) verification for businesses.
 **Key capabilities:** Roadmap.
 **Contact risk:** unknown
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about verifying business identity, registration details, or KYB checks for a business entity onboarding
@@ -532,6 +653,70 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+## In-person Payments
+
+### Traditional HardPOS
+**What it is:** Traditional, dedicated payment terminals (such as Pax or Ingenico).
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not being pursued as a merchant-facing product. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- Should not currently apply — not on roadmap
+
+**Does not apply if the merchant:**
+- Is asking about the phone-as-terminal SDK — see SoftPOS SDK
+
+**Example:** N/A — not on roadmap.
+
+**Likely keywords:** HardPOS, dedicated payment terminal, Pax, Ingenico
+
+---
+
+### SoftPOS SDK
+**What it is:** SDK that turns NFC-enabled devices (phone, tablet, kiosk) into secure payment terminals, embeddable in merchant apps.
+**Key capabilities:** Tap-to-pay on existing hardware; no additional card reader required; embeddable in branded apps (2027).
+**Contact risk:** medium — Roadmap; SDK integration queries expected
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+
+**Applies if the merchant:**
+- References SoftPOS, SoftPOS SDK, or turning a phone/tablet into a card terminal via NFC
+- Asks about embedding tap-to-pay directly into their own branded app
+- Asks whether they need extra card-reader hardware to accept in-person payments
+
+**Does not apply if the merchant:**
+- Is asking about combining in-person and online payments under a single API rather than the tap-to-pay SDK specifically — that's Unified Commerce
+- Is asking about dedicated card-reader hardware terminals rather than an app-embedded NFC solution — that falls outside SoftPOS SDK's scope
+
+**Example:** "We want to let our staff take payments by tapping a customer's card on their own phone using our app — is that SoftPOS?"
+
+**Likely keywords:** SoftPOS, SoftPOS SDK, tap-to-pay, NFC payment terminal, phone as card reader, embedded tap-to-pay, app-based POS
+
+---
+
+### Unified Commerce
+**What it is:** Ability to process in-person and digital payments through the Unified Payments API using merchant-owned devices, combining HardPOS and SoftPOS revenue streams.
+**Key capabilities:** Single API for in-person and digital payments; supports HardPOS and SoftPOS origination.
+**Contact risk:** medium — Roadmap; integration and reconciliation queries expected
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+
+**Applies if the merchant:**
+- Asks about reconciling in-person and online transactions through one unified API/reporting view
+- References combining HardPOS and SoftPOS revenue streams
+- Asks how in-person and digital payment channels are unified under Checkout.com's payments stack
+
+**Does not apply if the merchant:**
+- Is only asking about the phone-as-terminal SDK itself, without mentioning unifying it with online payments — that's SoftPOS SDK
+- Is asking specifically about the API surface for online payments (UPAPI or Payment Setup API) with no in-person component — those are separate products under Unified Payments API
+
+**Example:** "Can we see our in-store tap-to-pay transactions and our online transactions in the same reporting and API, rather than two separate systems?"
+
+**Likely keywords:** Unified Commerce, HardPOS and SoftPOS, combined in-person and online payments, omnichannel reconciliation, single API in-person and digital
+
+---
+
 ## Intelligent Acceptance
 
 ### Intelligent Acceptance
@@ -547,15 +732,35 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 **Example:** "We expected a bigger acceptance rate improvement from Intelligent Acceptance than what we're seeing on the dashboard."
 
-**Likely keywords:** Intelligent Acceptance, acceptance rate optimisation, smart routing, 3DS exemption, SCA exemption management, network tokens, expected vs actual uplift, conversion optimisation dashboard
+**Likely keywords:** Intelligent Acceptance, acceptance rate optimisation
 
 ---
 
 ## Internal Products
 
+### Airtable Product Catalogue
+**What it is:** The central nervous system for product information at Checkout.com. Always up-to-date and verified by Product, Marketing and Commercial.
+**Classification status:** NOT FOR CLASSIFICATION — internal/meta record describing the product catalogue itself, not a merchant-facing product.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not merchant-facing
+
+**Applies if the merchant:**
+- Should not apply — this is an internal Product Operations tool, not something merchants interact with
+
+**Does not apply if the merchant:**
+- N/A
+
+**Example:** N/A — internal tool, not merchant-facing.
+
+**Likely keywords:** Airtable Product Catalogue, product catalogue, internal product operations tool
+
+---
+
 ### Notifications
 **What it is:** Merchant notification system for payment events.
 **Contact risk:** medium — notification configuration queries
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'blank/unset', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about setting up or configuring webhooks, event notifications, or reports a missed payment event notification
@@ -566,6 +771,24 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Example:** "We're not receiving webhook notifications for our capture events. Can you check our configuration?"
 
 **Likely keywords:** webhooks, webhook configuration, notification setup, event notification, missed notification, webhook delivery failure, payment event alert
+
+---
+
+### Website Screening
+**What it is:** Verifies a business' website compliance and extracts relevant information from the website.
+**Classification status:** NOT FOR CLASSIFICATION — internal underwriting/compliance tool used during onboarding, not a merchant-facing product.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not merchant-facing
+
+**Applies if the merchant:**
+- Should not normally apply — this is an internal onboarding/compliance check, not something merchants directly interact with
+
+**Does not apply if the merchant:**
+- Asks about their own onboarding verification status generally — see Identity Verification or Business Verification
+
+**Example:** N/A — internal tool, not merchant-facing.
+
+**Likely keywords:** website screening, website compliance check, onboarding website verification
 
 ---
 
@@ -670,10 +893,63 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Configuration
+**What it is:** Setup and configuration of an issuing programme (card product setup, entity/BIN structure, cardholder configuration)
+**Contact risk:** medium — programme setup and configuration queries
+
+**Applies if the merchant:**
+- Asks a general question about setting up or configuring their issuing programme that doesn't clearly map to one specific sub-area
+
+**Does not apply if the merchant:**
+- Names a specific configuration area — BIN, card product, cardholder, entity structure, or issuing region — classify under that specific entry instead
+
+**Example:** "We're setting up our issuing programme and need help with the initial configuration."
+
+**Likely keywords:** issuing configuration, issuing setup, programme configuration
+
+---
+
+### Control spending
+**What it is:** Airtable Product Catalogue label for the same capability documented below as Spending Controls — configurable limits on how issued cards can be used.
+**Contact risk:** medium — limit queries, blocked transaction queries. See **Spending Controls** for the full definition.
+
+**Applies if the merchant:**
+- See **Spending Controls**
+
+**Does not apply if the merchant:**
+- See **Spending Controls**
+
+**Example:** See **Spending Controls**.
+
+**Likely keywords:** spending controls, control spending, budget limits, MCC restrictions
+
+---
+
+### Developer needs
+**What it is:** Airtable Product Catalogue label covering the Transactions API — granular (single transaction) and aggregated (filtered list) programmatic access to issuing transaction data across the full lifecycle (authorized, cleared, reversed, refunded, disputed), sandbox simulation of the full transaction flow, and webhook subscriptions for real-time transaction/dispute events.
+**Contact risk:** medium — API integration and webhook queries
+
+**Applies if the merchant:**
+- Asks about programmatic (API) access to issuing transaction data, sandbox simulation of transaction flows, or webhook subscriptions for issuing events
+- Reports an integration issue with the Transactions API or issuing webhooks
+
+**Does not apply if the merchant:**
+- Is asking about looking up one specific transaction via the Dashboard rather than the API — see **Transactions (Issuing)**
+- Is asking about test-environment simulation specifically — see **Simulation (Issuing)**
+- Is asking about aggregate reporting/reconciliation rather than API integration — see **Reporting (Issuing)**
+
+**Example:** "We're integrating the Transactions API for our issuing programme and the webhook for reversals isn't firing."
+
+**Likely keywords:** Transactions API, issuing API, issuing webhooks, sandbox simulation, developer integration, issuing API integration
+
+---
+
 ### Digital Wallets (Issuing)
 **What it is:** Integration of issued cards into Apple Pay, Google Pay, etc.
 **Key capabilities:** Wallet provisioning for virtual and physical cards.
 **Contact risk:** medium — provisioning failures.
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References adding an issued card (virtual or physical) to Apple Pay or Google Pay and hitting a provisioning error or delay
@@ -686,6 +962,26 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Example:** "Our cardholder can't add their virtual card to Apple Pay — the provisioning request keeps failing."
 
 **Likely keywords:** Apple Pay provisioning, Google Pay provisioning, digital wallet issued card, wallet provisioning failure, tokenisation issued card, add card to wallet
+
+---
+
+### Disputes (Issuing)
+**What it is:** Issuing Disputes API supporting the full chargeback lifecycle for issued card transactions — from initial dispute creation through representment, pre-arbitration, and arbitration, with the ability to attach evidence, partially dispute amounts, and cancel a dispute.
+**Key capabilities:** Full issuing chargeback lifecycle management; evidence attachment; partial dispute amounts; dispute cancellation.
+**Contact risk:** medium — dispute lifecycle and evidence submission queries on issued card transactions
+
+**Applies if the merchant:**
+- References a dispute or chargeback raised on a transaction made with an issued card (as opposed to a transaction they acquired)
+- Asks about dispute creation, representment, pre-arbitration, or arbitration for an issued card transaction
+- Asks about attaching evidence, partially disputing an amount, or cancelling a dispute on an issued card transaction
+
+**Does not apply if the merchant:**
+- References a chargeback on a transaction they acquired as a merchant rather than an issued card transaction — see the top-level Disputes or Pre-Disputes entries
+- Is asking about the issued card itself (activation, suspension, PIN) rather than a dispute on a transaction — see Cards or Physical Cards
+
+**Example:** "One of our issued cards had a disputed transaction — can we attach evidence and move it to representment?"
+
+**Likely keywords:** issuing dispute, issued card chargeback, dispute representment, pre-arbitration, arbitration, issuing dispute evidence, partial dispute issued card
 
 ---
 
@@ -713,6 +1009,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Fraud management for issued card transactions.
 **Key capabilities:** Fraud rule configuration for issuing.
 **Contact risk:** medium.
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References fraud rules, fraud alerts, or suspicious activity on transactions made with cards they issued
@@ -725,6 +1023,24 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Example:** "We got an alert flagging suspicious transactions on one of our issued cards — how do we adjust the fraud rules?"
 
 **Likely keywords:** issuing fraud rules, fraud alert issued card, suspicious transaction issued card, fraud rule configuration issuing, issuing fraud management
+
+---
+
+### Issuing for Platforms
+**What it is:** Catalogue entry for extending Issuing capabilities to Platform (ISV) merchants. No Airtable overview text available.
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap'; not yet live. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- Should not currently apply — not yet live
+
+**Does not apply if the merchant:**
+- Is a Direct merchant asking about standard Issuing capabilities — see the other Issuing entries
+
+**Example:** N/A — not yet live.
+
+**Likely keywords:** Issuing for Platforms, Platform issuing, ISV card issuing
 
 ---
 
@@ -752,6 +1068,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** PIN management for physical issued cards.
 **Key capabilities:** PIN set, change, unlock capabilities.
 **Contact risk:** medium — PIN-related queries.
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References setting, changing, or unlocking the PIN on a physical issued card
@@ -788,8 +1106,24 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Reporting
+**What it is:** Airtable Product Catalogue label for the same capability documented below as Reporting (Issuing) — a suite of data products delivering reconciled card issuing activity to clients and internal teams: transaction-level clearing details, aggregated daily clearing summaries, card portfolio inventory, and regulatory quarterly reporting (Mastercard QMR), refreshed daily as the source of truth for settlement and reconciliation.
+**Contact risk:** low. See **Reporting (Issuing)** for the full definition.
+
+**Applies if the merchant:**
+- See **Reporting (Issuing)**
+
+**Does not apply if the merchant:**
+- See **Reporting (Issuing)**
+
+**Example:** See **Reporting (Issuing)**.
+
+**Likely keywords:** issuing reports, issuing reconciliation, issuing data products, Mastercard QMR, clearing summary
+
+---
+
 ### Reporting (Issuing)
-**What it is:** Transaction and programme reporting for issuers.
+**What it is:** Transaction and programme reporting for issuing customers.
 **Key capabilities:** Reconciliation and analytics for issued card activity.
 **Contact risk:** low.
 
@@ -811,6 +1145,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** SCA exemption application for issued card transactions.
 **Key capabilities:** Reduces friction for low-risk issued card payments.
 **Contact risk:** low.
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References applying a specific SCA exemption (e.g. low-value, low-risk, trusted beneficiary) to a transaction on an issued card to skip the authentication challenge
@@ -830,6 +1166,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Handling of transactions excluded from SCA requirements.
 **Key capabilities:** Compliance scoping for issuing.
 **Contact risk:** low.
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References transactions on issued cards that are categorically excluded from SCA requirements (e.g. certain MOTO or anonymous prepaid use cases), not exemption logic
@@ -925,55 +1263,13 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
-## Payment Links
-
-### Payment Links
-**What it is:** Unique URL redirecting customers to a Hosted Payments Page to complete payment.
-**Key capabilities:** No-code option; 40+ methods; shareable via any channel; Dashboard or API management.
-**Contact risk:** low — simple product; main queries around expiry or method availability
-
-**Applies if the merchant:**
-- References a shareable payment URL, QR code, or "link-to-pay" they send customers directly
-- Asks about creating, expiring, or resending a Payment Link from the Dashboard or via API
-- Asks which payment methods are available on their Payment Link
-
-**Does not apply if the merchant:**
-- Is building a full checkout integration into their own website or app rather than sending a standalone link — that's a Hosted Payments Page integration or the Payments/Unified Payments API, not a Payment Link
-- Is asking about in-person, tap-to-pay collection rather than a remote link — that's SoftPOS SDK or Unified Commerce
-
-**Example:** "Can I set an expiry date on the payment link I send to customers by email?"
-
-**Likely keywords:** payment link, shareable payment URL, QR code payment, link-to-pay, hosted payments page link, no-code payment link, link expiry
-
----
-
-## Real-Time Account Updater
-
-### Real-Time Account Updater
-**What it is:** Service that automatically updates stored card details when they change.
-**Key capabilities:** Monitors stored credentials; auto-refreshes on issuer update; Mastercard and Visa supported; webhook notifications.
-**Contact risk:** low — queries mainly on unexpected updates or reconciliation
-
-**Applies if the merchant:**
-- Asks why a stored card's expiry date or number changed without customer action
-- References Account Updater, RTAU, or an auto-refreshed stored card
-- Asks about the webhook notification sent when a card on file is updated
-
-**Does not apply if the merchant:**
-- Is asking about the underlying credential storage itself rather than the auto-refresh mechanism — that's Vault (Integrated Vault or Standalone Vault)
-- Is asking about a scheme token replacing the PAN rather than the card number itself updating — that's Network Tokens
-
-**Example:** "We noticed a customer's stored card number changed automatically in our records — was that Checkout.com's Account Updater?"
-
-**Likely keywords:** Account Updater, RTAU, Real-Time Account Updater, unexpected card detail update, stored card auto-refresh, card update webhook, Mastercard/Visa account updater
-
----
-
 ## Partner Integrations and Plugins
 
 ### ACI
 **What it is:** Partner integration with ACI Worldwide, a global real-time payments and orchestration technology provider.
 **Contact risk:** unknown — Roadmap
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Explicitly names ACI or ACI Worldwide as the routing or orchestration layer in front of Checkout.com
@@ -1043,6 +1339,23 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Cell Point Digital
+**What it is:** Payment orchestration partner, based on public knowledge, not an Airtable overview — verify before relying on it for Fin classification. Provides dynamic payment routing across acquirers and PSPs, used heavily in the travel/airline sector.
+**Contact risk:** low — orchestration layer, not a merchant-facing payment method
+
+**Applies if the merchant:**
+- Explicitly names Cell Point Digital (or CellPoint Digital) as their orchestration or routing layer in front of Checkout.com
+- Describes dynamic/smart payment routing across multiple acquirers or PSPs, particularly in a travel or airline context
+
+**Does not apply if the merchant:**
+- Names a different orchestration vendor — BR-DGE, Gr4vy, Payrails, Spreedly, Primer.io, IXOPay, or YUNO — these perform the same multi-PSP routing function, so the vendor name is the only reliable signal
+
+**Example:** "Cell Point Digital is routing our transactions to Checkout.com and we're seeing a mismatch in the settlement report."
+
+**Likely keywords:** Cell Point Digital, CellPoint Digital, payment orchestration, dynamic routing, smart routing, travel payments
+
+---
+
 ### Chargebee
 **What it is:** Subscription billing platform integration.
 **Contact risk:** medium — recurring billing queries
@@ -1064,6 +1377,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 ### Chargify
 **What it is:** Subscription management platform integration.
 **Contact risk:** medium — recurring billing queries
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Don't sell', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Explicitly names Chargify as their subscription management platform
@@ -1101,6 +1416,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 ### GIG
 **What it is:** Partner integration.
 **Contact risk:** unknown
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Explicitly names "GIG" as their integration or platform partner
@@ -1135,6 +1452,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 ### IXOPay
 **What it is:** Partner integration with IXOPay, a white-label payment orchestration platform used to manage multiple payment providers.
 **Contact risk:** unknown — Roadmap
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Explicitly names IXOPay as their orchestration platform
@@ -1190,6 +1509,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 ### OpenCart
 **What it is:** Native Checkout.com plugin for OpenCart.
 **Contact risk:** low
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Deprecated', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Names OpenCart specifically as their storefront platform
@@ -1202,6 +1523,24 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Example:** "Our OpenCart extension for Checkout.com isn't showing on the payment method list."
 
 **Likely keywords:** OpenCart, OpenCart extension, OpenCart plugin, open-source storefront
+
+---
+
+### Orb (WithOrb)
+**What it is:** Catalogue entry for a partner integration with Orb (WithOrb), a billing/usage-based invoicing platform. No Airtable overview text available.
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not being pursued. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- Should not currently apply — not on roadmap
+
+**Does not apply if the merchant:**
+- Names a different billing/subscription platform — Chargebee, Chargify, Recurly, Zuora
+
+**Example:** N/A — not on roadmap.
+
+**Likely keywords:** Orb, WithOrb, billing platform integration
 
 ---
 
@@ -1226,6 +1565,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 ### Prestashop
 **What it is:** Native Checkout.com plugin for PrestaShop, an open-source ecommerce platform. Deprecated — no longer actively supported.
 **Contact risk:** n/a — deprecated
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Deprecated', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Names PrestaShop specifically as their storefront platform
@@ -1331,6 +1672,42 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Stripe Orchestration
+**What it is:** Catalogue entry for a partner integration with Stripe as an orchestration layer routing to Checkout.com. No Airtable overview text available.
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap'; not yet live. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- Should not currently apply — not yet live
+
+**Does not apply if the merchant:**
+- Names a different orchestration vendor already supported — BR-DGE, Gr4vy, Payrails, Spreedly, Primer.io, IXOPay, YUNO, Cell Point Digital
+
+**Example:** N/A — not yet live.
+
+**Likely keywords:** Stripe Orchestration, Stripe routing, Stripe as orchestration layer
+
+---
+
+### Travelsoft Pay
+**What it is:** Travelsoft Pay (TSPay) is a travel-native payment orchestration and issuing division of the Travelsoft Group. Designed for OTAs, tour operators, and bedbanks, it provides a single unified framework to simplify fragmented payment systems, reduce FX exposure, and handle complex travel booking cycles and multi-supplier settlements. Two core functions: Intelligent Payment Orchestration (Pay-ins) — a central connectivity layer integrating with roughly 30 PSPs including Checkout.com, using smart routing and automated fallback; and Virtual Card Issuing (Payouts) — just-in-time virtual credit cards (VCCs) on the Mastercard network to pay travel suppliers with granular spending controls.
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap'; not yet live. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- Should not currently apply — not yet live
+
+**Does not apply if the merchant:**
+- Names a different orchestration vendor already supported — BR-DGE, Gr4vy, Payrails, Spreedly, Primer.io, IXOPay, YUNO, Cell Point Digital
+
+**Example:** N/A — not yet live.
+
+**Likely keywords:** Travelsoft Pay, TSPay, travel payment orchestration, virtual card issuing travel
+
+---
+
 ### WooCommerce
 **What it is:** Native Checkout.com plugin for WooCommerce merchants.
 **Contact risk:** medium — plugin setup and update queries
@@ -1352,6 +1729,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 ### YUNO
 **What it is:** Partner integration with Yuno, a Latin America-focused payment orchestration platform.
 **Contact risk:** unknown — Roadmap
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Explicitly names Yuno or YUNO as their orchestration partner
@@ -1407,6 +1786,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Headless commerce platform integration using Checkout.com Flow for payment processing, supporting cards, wallets, BNPL, and local payment methods.
 **Key capabilities:** Checkout.com Flow embedded in CommerceTools Connect; full payment lifecycle (auth, capture, void, refund); webhook-driven status sync; multi-channel config.
 **Contact risk:** medium — enterprise plugin setup; Flow integration queries; multi-channel configuration
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Explicitly names CommerceTools or CommerceTools Connect as their headless commerce platform
@@ -1495,8 +1876,49 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+## Payment Links
+
+### Payment Links
+**What it is:** Unique URL redirecting customers to a Hosted Payments Page to complete payment.
+**Key capabilities:** No-code option; 40+ methods; shareable via any channel; Dashboard or API management.
+**Contact risk:** low — simple product; main queries around expiry or method availability
+
+**Applies if the merchant:**
+- References a shareable payment URL, QR code, or "link-to-pay" they send customers directly
+- Asks about creating, expiring, or resending a Payment Link from the Dashboard or via API
+- Asks which payment methods are available on their Payment Link
+
+**Does not apply if the merchant:**
+- Is building a full checkout integration into their own website or app rather than sending a standalone link — that's a Hosted Payments Page integration or the Payments/Unified Payments API, not a Payment Link
+- Is asking about in-person, tap-to-pay collection rather than a remote link — that's SoftPOS SDK or Unified Commerce
+
+**Example:** "Can I set an expiry date on the payment link I send to customers by email?"
+
+**Likely keywords:** payment link, shareable payment URL, QR code payment, link-to-pay, hosted payments page link, no-code payment link, link expiry
+
+---
+
 ## Payment Methods
 
+### Aani
+**What it is:** UAE's central instant‑payments system accessible via mobile app.
+**Geography:** UAE
+**Payment type:** Bank transfer / instant payments
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Aani by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Aani as a payment method?"
+
+**Likely keywords:** Aani, bank transfer / instant payments, uae
+
+---
 ### Accel
 **What it is:** US regional debit network, part of PINless debit processing.
 **Geography:** United States
@@ -1535,6 +1957,44 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Affirm
+**What it is:** US and Canada BNPL service offering interest‑free or low‑interest installments.
+**Geography:** US, Canada
+**Payment type:** Buy Now Pay Later
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Affirm by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Affirm as a payment method?"
+
+**Likely keywords:** Affirm, buy now pay later, us, canada
+
+---
+### Afterpay
+**What it is:** Global BNPL platform with four equal, interest‑free payments every two weeks.
+**Geography:** Global
+**Payment type:** Buy Now Pay Later
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Afterpay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Afterpay as a payment method?"
+
+**Likely keywords:** Afterpay, buy now pay later, global
+
+---
 ### AlipayCN
 **What it is:** Mobile payment service for Chinese consumers enabling one-time and recurring purchases.
 **Geography:** Customers: China. Merchants: HK, Singapore, EEA, UK
@@ -1592,6 +2052,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Amazon Pay
+**What it is:** Trusted digital wallet using customers' Amazon credentials for checkout.
+**Geography:** Global
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Amazon Pay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Amazon Pay as a payment method?"
+
+**Likely keywords:** Amazon Pay, digital wallet, global
+
+---
 ### American Express - Collecting
 **What it is:** Checkout.com acquires and settles Amex transactions directly.
 **Geography:** Global
@@ -1645,16 +2124,94 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 **Example:** "The Apple Pay button isn't showing on our checkout page even though we registered our domain."
 
-**Likely keywords:** Apple Pay, Touch ID, Face ID, Apple Pay domain registration, Apple Pay button missing, KNET Apple Pay, Mada Apple Pay
+**Likely keywords:** Apple Pay, Touch ID, Face ID, Apple Pay domain registration, Apple Pay button missing
 
 ---
 
+### Atome
+**What it is:** Interest‑free installment payment solution active across Southeast Asia.
+**Geography:** Southeast Asia
+**Payment type:** Buy Now Pay Later
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Atome by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Atome as a payment method?"
+
+**Likely keywords:** Atome, buy now pay later, southeast asia
+
+---
+### auPay
+**What it is:** Japanese QR‑based wallet and loyalty app by KDDI with 38 million users.
+**Geography:** Japan
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References auPay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support auPay as a payment method?"
+
+**Likely keywords:** auPay, digital wallet, japan
+
+---
+### Autogiro
+**What it is:** Swedish recurring bank direct debit scheme.
+**Geography:** Sweden
+**Payment type:** Direct debit
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Autogiro by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Autogiro as a payment method?"
+
+**Likely keywords:** Autogiro, direct debit, sweden
+
+---
+### Avtalegiro
+**What it is:** Norwegian recurring bank direct debit scheme.
+**Geography:** Norway
+**Payment type:** Direct debit
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Avtalegiro by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Avtalegiro as a payment method?"
+
+**Likely keywords:** Avtalegiro, direct debit, norway
+
+---
 ### Bacs
 **What it is:** UK bank debit scheme for recurring and one-off payments.
 **Geography:** United Kingdom
 **Payment type:** Bank transfer / direct debit
 **Integration notes:** Mandate required; 3-day processing cycle; account manager enablement.
 **Contact risk:** high — mandate management, payment timing queries, failures
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Bacs by name, a UK direct debit mandate, the 3-day processing cycle, or recurring UK bank account payments
@@ -1668,6 +2225,44 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Bancomat
+**What it is:** Italy's national debit card network, connecting all major banks.
+**Geography:** Italy
+**Payment type:** Debit card scheme
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Bancomat by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Bancomat as a payment method?"
+
+**Likely keywords:** Bancomat, debit card scheme, italy
+
+---
+### Bancomat Pay
+**What it is:** Mobile wallet from Italy's Bancomat network for fast, cashless payments.
+**Geography:** Italy
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Bancomat Pay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Bancomat Pay as a payment method?"
+
+**Likely keywords:** Bancomat Pay, digital wallet, italy
+
+---
 ### Bancontact
 **What it is:** Enables secure online card payments in Belgium.
 **Geography:** Belgium
@@ -1687,6 +2282,44 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### BankAxept
+**What it is:** Norway's national debit card scheme with broad coverage.
+**Geography:** Norway
+**Payment type:** Debit card scheme
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References BankAxept by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support BankAxept as a payment method?"
+
+**Likely keywords:** BankAxept, debit card scheme, norway
+
+---
+### BECS Direct Debit
+**What it is:** Australia's automated bank debit system for recurring payments.
+**Geography:** Australia
+**Payment type:** Direct debit
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References BECS Direct Debit by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support BECS Direct Debit as a payment method?"
+
+**Likely keywords:** BECS Direct Debit, direct debit, australia
+
+---
 ### Benefit Payment Gateway
 **What it is:** Enables secure online payments in Bahrain via the national payment gateway.
 **Geography:** Bahrain
@@ -1712,6 +2345,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Payment type:** Digital wallet
 **Integration notes:** Account manager enablement.
 **Contact risk:** low — niche geography, low volume expected
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Deprecated', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References the BenefitPay mobile app, Bahraini smartphone wallet payments, or fund transfers via the BenefitPay app
@@ -1725,6 +2360,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Betailingsservice
+**What it is:** Danish recurring bank direct debit scheme (Betalingsservice).
+**Geography:** Denmark
+**Payment type:** Direct debit
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Betailingsservice by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Betailingsservice as a payment method?"
+
+**Likely keywords:** Betailingsservice, direct debit, denmark
+
+---
 ### Bizum
 **What it is:** Instant bank transfer payment using a phone number, popular in Spain.
 **Geography:** Spain
@@ -1769,6 +2423,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Payment type:** Voucher
 **Integration notes:** Deprecated — no longer supported.
 **Contact risk:** n/a — deprecated
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Deprecated', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Boleto or Boleto Bancário by name, or asks why a Brazilian cash voucher payment option is no longer available
@@ -1782,6 +2438,63 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Boost
+**What it is:** Malaysia's all-in-one QR wallet with rewards and bill pay.
+**Geography:** Malaysia
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Boost by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Boost as a payment method?"
+
+**Likely keywords:** Boost, digital wallet, malaysia
+
+---
+### Bre-B
+**What it is:** Real-time payment system enabling instant bank transfers in Brazil.
+**Geography:** Brazil
+**Payment type:** Bank transfer / instant payments
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Bre-B by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Bre-B as a payment method?"
+
+**Likely keywords:** Bre-B, bank transfer / instant payments, brazil
+
+---
+### Capitecpay
+**What it is:** Bank-linked online payment solution for South African merchants.
+**Geography:** South Africa
+**Payment type:** Online banking payment
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Capitecpay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Capitecpay as a payment method?"
+
+**Likely keywords:** Capitecpay, online banking payment, south africa
+
+---
 ### Cartes Bancaires
 **What it is:** France's predominant card scheme, typically co-branded with Visa or Mastercard.
 **Geography:** France
@@ -1807,6 +2520,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Payment type:** Digital wallet
 **Integration notes:** Roadmap — not yet live.
 **Contact risk:** unknown — Roadmap
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Cash App by name or asks about US P2P wallet payment support that is not yet live
@@ -1820,6 +2535,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Clearpay
+**What it is:** Afterpay's UK BNPL service for interest-free installment payments.
+**Geography:** UK
+**Payment type:** Buy Now Pay Later
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Clearpay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Clearpay as a payment method?"
+
+**Likely keywords:** Clearpay, buy now pay later, uk
+
+---
 ### DANA
 **What it is:** Mobile payment service for Indonesian consumers enabling one-time and recurring purchases.
 **Geography:** Customers: Indonesia. Merchants: HK, Singapore, EEA, UK
@@ -1839,6 +2573,82 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Dankort
+**What it is:** Denmark's domestic debit network with Visa co-branding.
+**Geography:** Denmark
+**Payment type:** Debit card scheme
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Dankort by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Dankort as a payment method?"
+
+**Likely keywords:** Dankort, debit card scheme, denmark
+
+---
+### Daviplata
+**What it is:** Mobile wallet by Davivienda enabling instant local payments in Colombia.
+**Geography:** Colombia
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Daviplata by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Daviplata as a payment method?"
+
+**Likely keywords:** Daviplata, digital wallet, colombia
+
+---
+### dBarai
+**What it is:** NTT Docomo's mobile wallet for QR and barcode-based payments.
+**Geography:** Japan
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References dBarai by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support dBarai as a payment method?"
+
+**Likely keywords:** dBarai, digital wallet, japan
+
+---
+### DBS PayLah!
+**What it is:** Digital wallet by DBS enabling instant PayNow-linked transfers.
+**Geography:** Singapore
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References DBS PayLah! by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support DBS PayLah! as a payment method?"
+
+**Likely keywords:** DBS PayLah!, digital wallet, singapore
+
+---
 ### Diners Club International
 **What it is:** Global credit card scheme accepted alongside Mastercard.
 **Geography:** Global
@@ -1877,12 +2687,90 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### DragonPay
+**What it is:** Alternative payments network for bank, wallet, and cash transfers.
+**Geography:** Philippines
+**Payment type:** Payment gateway (multiple local methods)
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References DragonPay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support DragonPay as a payment method?"
+
+**Likely keywords:** DragonPay, payment gateway (multiple local methods), philippines
+
+---
+### DuitNow
+**What it is:** Malaysia's instant bank transfer system connecting all major banks.
+**Geography:** Malaysia
+**Payment type:** Bank transfer / instant payments
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References DuitNow by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support DuitNow as a payment method?"
+
+**Likely keywords:** DuitNow, bank transfer / instant payments, malaysia
+
+---
+### eFaktura
+**What it is:** Norwegian e-invoice payment method delivered via online banking.
+**Geography:** Norway
+**Payment type:** Online banking payment
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References eFaktura by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support eFaktura as a payment method?"
+
+**Likely keywords:** eFaktura, online banking payment, norway
+
+---
+### EFT Pre-Authorized Debit
+**What it is:** Recurring bank debit solution regulated by Payments Canada.
+**Geography:** Canada
+**Payment type:** Direct debit
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References EFT Pre-Authorized Debit by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support EFT Pre-Authorized Debit as a payment method?"
+
+**Likely keywords:** EFT Pre-Authorized Debit, direct debit, canada
+
+---
 ### EFTPOS
 **What it is:** Australian domestic debit card scheme.
 **Geography:** Australia (Roadmap)
 **Payment type:** Card scheme
 **Integration notes:** Roadmap — not yet live.
 **Contact risk:** unknown
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References EFTPOS by name or asks about Australian domestic debit card support that isn't yet live
@@ -1896,6 +2784,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Elo
+**What it is:** Brazil's major domestic card brand for all payment types.
+**Geography:** Brazil
+**Payment type:** Card scheme
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Elo by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Elo as a payment method?"
+
+**Likely keywords:** Elo, card scheme, brazil
+
+---
 ### eps
 **What it is:** Enables online purchases through secure bank transfers in Austria.
 **Geography:** Austria
@@ -1915,12 +2822,33 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### eps (Hong Kong)
+**What it is:** Hong Kong's domestic debit network for real-time payments.
+**Geography:** Hong Kong
+**Payment type:** Debit card scheme
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References eps (Hong Kong) by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support eps (Hong Kong) as a payment method?"
+
+**Likely keywords:** eps (Hong Kong), debit card scheme, hong kong
+
+---
 ### Fawry
 **What it is:** Egyptian cash payment and digital payments network.
 **Geography:** Egypt
 **Payment type:** Cash/voucher
 **Integration notes:** Don't sell status — not actively sold.
 **Contact risk:** n/a
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Don't sell', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Fawry by name or Egyptian cash payment network options
@@ -1934,6 +2862,44 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### FPS
+**What it is:** Hong Kong's regulated instant payments network for all banks and wallets.
+**Geography:** Hong Kong
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References FPS by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support FPS as a payment method?"
+
+**Likely keywords:** FPS, digital wallet, hong kong
+
+---
+### FPX
+**What it is:** Malaysia's national online bank transfer system by PayNet.
+**Geography:** Malaysia
+**Payment type:** Bank transfer / instant payments
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References FPX by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support FPX as a payment method?"
+
+**Likely keywords:** FPX, bank transfer / instant payments, malaysia
+
+---
 ### GCash
 **What it is:** Mobile payment service for Filipino consumers enabling one-time and recurring purchases.
 **Geography:** Customers: Philippines. Merchants: HK, Singapore, EEA, UK
@@ -1953,6 +2919,44 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Girocard
+**What it is:** Germany's local debit network enabling secure real-time payments.
+**Geography:** Germany
+**Payment type:** Debit card scheme
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Girocard by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Girocard as a payment method?"
+
+**Likely keywords:** Girocard, debit card scheme, germany
+
+---
+### GiroPay
+**What it is:** No longer exists as a brand.
+**Geography:** Germany
+**Payment type:** Online banking payment (discontinued brand)
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References GiroPay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support GiroPay as a payment method?"
+
+**Likely keywords:** GiroPay, online banking payment (discontinued brand), germany
+
+---
 ### Google Pay
 **What it is:** Enables one-touch payments on website or Android app using cards connected to a Google account.
 **Geography:** Global (UAE/SA require account manager approval)
@@ -1972,6 +2976,44 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### GoPay
+**What it is:** Gojek's digital wallet powering instant payments across Indonesia.
+**Geography:** Indonesia
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References GoPay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support GoPay as a payment method?"
+
+**Likely keywords:** GoPay, digital wallet, indonesia
+
+---
+### GrabPay
+**What it is:** Grab's regional wallet supporting digital commerce and daily payments.
+**Geography:** Southeast Asia
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References GrabPay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support GrabPay as a payment method?"
+
+**Likely keywords:** GrabPay, digital wallet, southeast asia
+
+---
 ### iDEAL
 **What it is:** Direct online bank transfer from customer's bank account to merchant's bank account.
 **Geography:** Netherlands
@@ -1991,12 +3033,52 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Illicado
+**What it is:** France's most popular gift card for flexible online spending.
+**Geography:** France
+**Payment type:** Prepaid / gift card
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Illicado by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Illicado as a payment method?"
+
+**Likely keywords:** Illicado, prepaid / gift card, france
+
+---
+### Interac
+**What it is:** Canada's local debit and e-transfer network for secure payments.
+**Geography:** Canada
+**Payment type:** Debit card scheme / bank transfer (e-Transfer)
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Interac by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Interac as a payment method?"
+
+**Likely keywords:** Interac, debit card scheme / bank transfer (e-transfer), canada
+
+---
 ### Jaywan
 **What it is:** Emerging GCC domestic debit card scheme.
 **Geography:** UAE/GCC (Roadmap)
 **Payment type:** Card scheme
 **Integration notes:** Roadmap — not yet live.
 **Contact risk:** unknown
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Jaywan by name or asks about GCC domestic debit card support that isn't yet live
@@ -2054,6 +3136,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Payment type:** BNPL
 **Integration notes:** Don't sell status.
 **Contact risk:** n/a
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Don't sell', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Klarna in a gateway/direct-settlement model rather than Checkout.com collecting on their behalf, and is asking about this specifically
@@ -2143,6 +3227,101 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Konbini Payments
+**What it is:** Cash payment option via convenience stores for Japanese consumers.
+**Geography:** Japan
+**Payment type:** Cash voucher
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Konbini Payments by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Konbini Payments as a payment method?"
+
+**Likely keywords:** Konbini Payments, cash voucher, japan
+
+---
+### LINE Pay
+**What it is:** LINE Pay is a payment method available in Japan that allows users to make purchases using the LINE Pay mobile app.
+**Geography:** Japan
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References LINE Pay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support LINE Pay as a payment method?"
+
+**Likely keywords:** LINE Pay, digital wallet, japan
+
+---
+### LiqPay
+**What it is:** Ukraine's top payment gateway for card, bank, and wallet transfers.
+**Geography:** Ukraine
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References LiqPay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support LiqPay as a payment method?"
+
+**Likely keywords:** LiqPay, digital wallet, ukraine
+
+---
+### LPay
+**What it is:** Lpay is an E-wallet service in South Korea that allows users to store and manage their money digitally.
+**Geography:** South Korea
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References LPay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support LPay as a payment method?"
+
+**Likely keywords:** LPay, digital wallet, south korea
+
+---
+### MACH
+**What it is:** Chile's fast-growing digital wallet for cardless transactions.
+**Geography:** Chile
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References MACH by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support MACH as a payment method?"
+
+**Likely keywords:** MACH, digital wallet, chile
+
+---
 ### Mada
 **What it is:** Saudi Arabia's domestic payment network, co-branded internationally with Visa/Mastercard.
 **Geography:** Saudi Arabia (also international co-branded)
@@ -2204,6 +3383,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### maximum
+**What it is:** Turkey's top card and wallet brand offering loyalty and flexibility.
+**Geography:** Turkey
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References maximum by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support maximum as a payment method?"
+
+**Likely keywords:** maximum, digital wallet, turkey
+
+---
 ### MB WAY
 **What it is:** Portugal's most popular digital wallet, enabling fast PIN-authenticated payments online.
 **Geography:** Portugal
@@ -2223,6 +3421,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Mercado Pago
+**What it is:** Digital wallet and payments platform used across Latin America.
+**Geography:** Latin America
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Mercado Pago by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Mercado Pago as a payment method?"
+
+**Likely keywords:** Mercado Pago, digital wallet, latin america
+
+---
 ### MobilePay
 **What it is:** Leading Nordic mobile wallet for instant payments via smartphone.
 **Geography:** Denmark, Finland
@@ -2242,6 +3459,44 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### MoMo
+**What it is:** MoMo is an e-wallet in Vietnam with 5 million users and with more than 70% of the market share.
+**Geography:** Vietnam
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References MoMo by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support MoMo as a payment method?"
+
+**Likely keywords:** MoMo, digital wallet, vietnam
+
+---
+### MonoPay
+**What it is:** Ukrainian digital wallet offering instant bank-linked payments.
+**Geography:** Ukraine
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References MonoPay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support MonoPay as a payment method?"
+
+**Likely keywords:** MonoPay, digital wallet, ukraine
+
+---
 ### Multibanco
 **What it is:** Enables cash or debit payments at ATMs or via banking app across Portugal.
 **Geography:** Portugal
@@ -2261,6 +3516,82 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### MyDebit
+**What it is:** Malaysia's domestic debit card network for secure payments.
+**Geography:** Malaysia
+**Payment type:** Debit card scheme
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References MyDebit by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support MyDebit as a payment method?"
+
+**Likely keywords:** MyDebit, debit card scheme, malaysia
+
+---
+### NaverPay
+**What it is:** South Korea's wallet for one-click payments within the Naver ecosystem.
+**Geography:** South Korea
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References NaverPay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support NaverPay as a payment method?"
+
+**Likely keywords:** NaverPay, digital wallet, south korea
+
+---
+### Nequi
+**What it is:** Digital wallet by Bancolombia supporting instant payments.
+**Geography:** Colombia
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Nequi by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Nequi as a payment method?"
+
+**Likely keywords:** Nequi, digital wallet, colombia
+
+---
+### Nordea
+**What it is:** Online banking payments through Nordea's secure platform.
+**Geography:** Nordics (Finland, Sweden)
+**Payment type:** Online banking payment
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Nordea by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Nordea as a payment method?"
+
+**Likely keywords:** Nordea, online banking payment, nordics (finland, sweden)
+
+---
 ### NYCE
 **What it is:** US regional debit network, part of PINless debit processing.
 **Geography:** United States
@@ -2318,6 +3649,158 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Oney
+**What it is:** European BNPL and consumer credit provider.
+**Geography:** France, Europe
+**Payment type:** Buy Now Pay Later
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Oney by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Oney as a payment method?"
+
+**Likely keywords:** Oney, buy now pay later, france, europe
+
+---
+### Open Banking
+**What it is:** A pay-by-bank method using open banking connectivity to let customers pay merchants directly from their bank account over local account-to-account rails (Faster Payments in the UK), with refunds returned over the same rails. Customers select their bank and authorise in their banking app via strong customer authentication (SCA) — no card or bank details to enter. Offers higher transaction limits than card, no chargebacks, no high scheme fees and instant success/decline.
+**Geography:** UK
+**Payment type:** Open banking / pay-by-bank
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Open Banking by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Open Banking as a payment method?"
+
+**Likely keywords:** Open Banking, open banking / pay-by-bank, uk
+
+---
+### papara
+**What it is:** Leading Turkish wallet enabling low-cost instant transactions.
+**Geography:** Turkey
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References papara by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support papara as a payment method?"
+
+**Likely keywords:** papara, digital wallet, turkey
+
+---
+### paycell
+**What it is:** Turkcell's wallet enabling fast and flexible payments in Turkey.
+**Geography:** Turkey
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References paycell by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support paycell as a payment method?"
+
+**Likely keywords:** paycell, digital wallet, turkey
+
+---
+### Payco
+**What it is:** Payco is a highly popular payment method in South Korea
+**Geography:** South Korea
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Payco by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Payco as a payment method?"
+
+**Likely keywords:** Payco, digital wallet, south korea
+
+---
+### Payconiq
+**What it is:** Mobile bank payment network for instant QR-based transactions.
+**Geography:** Belgium, Luxembourg
+**Payment type:** Bank transfer / QR
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Payconiq by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Payconiq as a payment method?"
+
+**Likely keywords:** Payconiq, bank transfer / qr, belgium, luxembourg
+
+---
+### PayID
+**What it is:** PayID lets Australians send and receive instant bank transfers using easy identifiers like email or phone—no BSB or account number needed.
+**Geography:** Australia
+**Payment type:** Bank transfer / instant payments
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References PayID by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support PayID as a payment method?"
+
+**Likely keywords:** PayID, bank transfer / instant payments, australia
+
+---
+### PayMe
+**What it is:** HSBC's social wallet for fast, secure payments in Hong Kong.
+**Geography:** Hong Kong
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References PayMe by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support PayMe as a payment method?"
+
+**Likely keywords:** PayMe, digital wallet, hong kong
+
+---
 ### PayNow
 **What it is:** Real-time payment service in Singapore enabling fund transfers via mobile number.
 **Geography:** Singapore
@@ -2364,6 +3847,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Payment type:** Digital wallet
 **Integration notes:** Roadmap — not yet live.
 **Contact risk:** unknown — Roadmap
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References PayPay, Japanese QR wallet, or asks about accepting PayPay before general availability
@@ -2377,12 +3862,109 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### PayPo
+**What it is:** Widely used across top Polish online stores.
+**Geography:** Poland
+**Payment type:** Buy Now Pay Later
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References PayPo by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support PayPo as a payment method?"
+
+**Likely keywords:** PayPo, buy now pay later, poland
+
+---
+### PaysafeCard
+**What it is:** Widely used in gaming, streaming, and online services.
+**Geography:** Europe
+**Payment type:** Prepaid / gift card voucher
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References PaysafeCard by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support PaysafeCard as a payment method?"
+
+**Likely keywords:** PaysafeCard, prepaid / gift card voucher, europe
+
+---
+### Paytm
+**What it is:** Part of India's largest fintech platform for banking and lending.
+**Geography:** India
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Paytm by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Paytm as a payment method?"
+
+**Likely keywords:** Paytm, digital wallet, india
+
+---
+### PayTO
+**What it is:** PayTo enables recurring direct-debit authorisations on the NPP, giving merchants flexible, real-time pull payments with customer consent.
+**Geography:** Australia
+**Payment type:** Direct debit
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References PayTO by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support PayTO as a payment method?"
+
+**Likely keywords:** PayTO, direct debit, australia
+
+---
+### Paze
+**What it is:** US bank-backed digital wallet consortium (Visa/Mastercard network banks) for online checkout.
+**Geography:** US
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Paze by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Paze as a payment method?"
+
+**Likely keywords:** Paze, digital wallet, us
+
+---
 ### Pix
 **What it is:** Brazil's instant payment system operated by the central bank.
 **Geography:** Brazil (Roadmap)
 **Payment type:** Bank transfer (instant)
 **Integration notes:** Roadmap — not yet live.
 **Contact risk:** unknown
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Pix, Brazilian instant payments, or Brazil central bank transfer scheme, including timeline questions before general availability
@@ -2396,6 +3978,101 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### PLIN
+**What it is:** Peru's instant bank transfer network using mobile identifiers.
+**Geography:** Peru
+**Payment type:** Bank transfer / instant payments
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References PLIN by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support PLIN as a payment method?"
+
+**Likely keywords:** PLIN, bank transfer / instant payments, peru
+
+---
+### POLi
+**What it is:** POLi enables instant, secure bank-to-bank payments in Australia and New Zealand via customers' online-banking portals—no cards required.
+**Geography:** Australia, New Zealand
+**Payment type:** Online banking payment
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References POLi by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support POLi as a payment method?"
+
+**Likely keywords:** POLi, online banking payment, australia, new zealand
+
+---
+### PostFinance
+**What it is:** PostFinance offers Swiss merchants an integrated payment gateway supporting cards, e-banking, invoices, and local methods under one platform.
+**Geography:** Switzerland
+**Payment type:** Payment gateway (multiple local methods)
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References PostFinance by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support PostFinance as a payment method?"
+
+**Likely keywords:** PostFinance, payment gateway (multiple local methods), switzerland
+
+---
+### Privat24
+**What it is:** Online banking platform enabling instant payments via PrivatBank.
+**Geography:** Ukraine
+**Payment type:** Online banking payment
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Privat24 by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Privat24 as a payment method?"
+
+**Likely keywords:** Privat24, online banking payment, ukraine
+
+---
+### PromptPay
+**What it is:** Thailand's national instant payments network using mobile IDs or QR.
+**Geography:** Thailand
+**Payment type:** Bank transfer / instant payments
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References PromptPay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support PromptPay as a payment method?"
+
+**Likely keywords:** PromptPay, bank transfer / instant payments, thailand
+
+---
 ### Przelewy24
 **What it is:** Enables secure online payments in Poland via redirect.
 **Geography:** Poland
@@ -2415,6 +4092,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### PSE
+**What it is:** Colombia's trusted online bank transfer network by ACH Colombia.
+**Geography:** Colombia
+**Payment type:** Bank transfer / instant payments
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References PSE by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support PSE as a payment method?"
+
+**Likely keywords:** PSE, bank transfer / instant payments, colombia
+
+---
 ### Pulse
 **What it is:** US regional debit network, part of PINless debit processing.
 **Geography:** United States
@@ -2453,12 +4149,109 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Rabbit LINE PAY
+**What it is:** LINE-integrated wallet offering QR and online payments in Thailand.
+**Geography:** Thailand
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Rabbit LINE PAY by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Rabbit LINE PAY as a payment method?"
+
+**Likely keywords:** Rabbit LINE PAY, digital wallet, thailand
+
+---
+### Rakuten Pay
+**What it is:** Rakuten's wallet for online, in-app, and in-store QR payments.
+**Geography:** Japan
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Rakuten Pay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Rakuten Pay as a payment method?"
+
+**Likely keywords:** Rakuten Pay, digital wallet, japan
+
+---
+### Ratepay
+**What it is:** BNPL solution for invoice and installments across DACH markets.
+**Geography:** Germany, Austria, Switzerland
+**Payment type:** Buy Now Pay Later
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Ratepay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Ratepay as a payment method?"
+
+**Likely keywords:** Ratepay, buy now pay later, germany, austria, switzerland
+
+---
+### Red Compra
+**What it is:** Chile's domestic debit card scheme for in-store and online payments.
+**Geography:** Chile
+**Payment type:** Debit card scheme
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Red Compra by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Red Compra as a payment method?"
+
+**Likely keywords:** Red Compra, debit card scheme, chile
+
+---
+### Riverty
+**What it is:** European BNPL provider driving sales with flexible pay-later options.
+**Geography:** Europe
+**Payment type:** Buy Now Pay Later
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Riverty by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Riverty as a payment method?"
+
+**Likely keywords:** Riverty, buy now pay later, europe
+
+---
 ### Samsung Pay
 **What it is:** Samsung's mobile payment wallet.
 **Geography:** Global (Roadmap)
 **Payment type:** Digital wallet
 **Integration notes:** Roadmap — not yet live.
 **Contact risk:** unknown
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Samsung Pay, Samsung wallet, or Samsung contactless payments, including questions about future availability
@@ -2472,6 +4265,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Satispay
+**What it is:** Italian mobile wallet for QR and bank-linked payments.
+**Geography:** Italy
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Satispay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Satispay as a payment method?"
+
+**Likely keywords:** Satispay, digital wallet, italy
+
+---
 ### SEPA Direct Debit B2B
 **What it is:** SEPA direct debit variant for business-to-business transactions.
 **Geography:** SEPA region (EU)
@@ -2529,12 +4341,33 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### ShopeePay
+**What it is:** ShopeePay is Shopee's official in-app e-wallet regulated by the Bangko Sentral ng Philipinas, which allows shoppers to conveniently top-up and pay for online and offline purchases.
+**Geography:** Philippines
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References ShopeePay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support ShopeePay as a payment method?"
+
+**Likely keywords:** ShopeePay, digital wallet, philippines
+
+---
 ### Sofort
 **What it is:** Sofort online banking payment (deprecated).
 **Geography:** Europe
 **Payment type:** Online banking
 **Integration notes:** Deprecated — no longer supported.
 **Contact risk:** n/a — deprecated
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Deprecated', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Sofort or Klarna Sofort and is asking why it no longer works or what to migrate to
@@ -2548,6 +4381,101 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### SPEI
+**What it is:** Mexico's central bank-operated real-time payment network.
+**Geography:** Mexico
+**Payment type:** Bank transfer / instant payments
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References SPEI by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support SPEI as a payment method?"
+
+**Likely keywords:** SPEI, bank transfer / instant payments, mexico
+
+---
+### Splitit
+**What it is:** Splitit lets customers use existing credit cards to split payments into interest-free installments, preserving credit lines and minimizing fraud.
+**Geography:** Global
+**Payment type:** Buy Now Pay Later (card-linked installments)
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Splitit by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Splitit as a payment method?"
+
+**Likely keywords:** Splitit, buy now pay later (card-linked installments), global
+
+---
+### SSGPAY
+**What it is:** SSGPAY is an online payment gateway service that allows merchants to accept a variety of electronic payment methods, including credit and debit cards, E-wallets and bank transfers, as well as SSG MONEY, the virtual currency of the platform.
+**Geography:** Philippines
+**Payment type:** Payment gateway (multiple local methods)
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References SSGPAY by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support SSGPAY as a payment method?"
+
+**Likely keywords:** SSGPAY, payment gateway (multiple local methods), philippines
+
+---
+### Stablecoin Acceptance (via Coinbase)
+**What it is:** **Stablecoin Acceptance (Powered by Coinbase) **enables consumers to complete online checkout utilizing USDC. The underlying flow automatically directs consumer stablecoins through a single-use deposit address into a Coinbase Prime custodial environment. Coinbase converts the tokens to fiat USD at a guaranteed 1:1 rate, and Checkout.com settles the final transaction directly into the merchant's Checkout Business Account as standard fiat currency.
+**Geography:** Global
+**Payment type:** Stablecoin
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Stablecoin Acceptance (via Coinbase) by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Stablecoin Acceptance (via Coinbase) as a payment method?"
+
+**Likely keywords:** Stablecoin Acceptance (via Coinbase), stablecoin, global
+
+---
+
+### Stablecoin Settlement
+**What it is:** Older catalogue product name for stablecoin-based settlement, since renamed/replaced by Stablecoin Acceptance (via Coinbase). Still a live Zendesk product field value.
+**Payment type:** Stablecoin
+**Classification status:** NOT FOR CLASSIFICATION — superseded by Stablecoin Acceptance (via Coinbase) in the current catalogue. Retained for completeness/context only.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS — classify under Stablecoin Acceptance (via Coinbase) instead
+**Contact risk:** n/a — superseded
+
+**Applies if the merchant:**
+- Should not currently apply — classify stablecoin-related contacts under Stablecoin Acceptance (via Coinbase)
+
+**Does not apply if the merchant:**
+- Any stablecoin query — see Stablecoin Acceptance (via Coinbase)
+
+**Example:** N/A — superseded entry.
+
+**Likely keywords:** Stablecoin Settlement, stablecoin
+
+---
 ### STAR
 **What it is:** US regional debit network, part of PINless debit processing.
 **Geography:** United States
@@ -2587,6 +4515,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Sunbit
+**What it is:** US point-of-sale financing / BNPL provider.
+**Geography:** US
+**Payment type:** Buy Now Pay Later
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Sunbit by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Sunbit as a payment method?"
+
+**Likely keywords:** Sunbit, buy now pay later, us
+
+---
 ### Swish
 **What it is:** Popular Swedish mobile payment app for instant online purchases via banking app.
 **Geography:** Sweden
@@ -2688,6 +4635,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Toss Pay
+**What it is:** South Korean digital wallet for fast online and QR payments.
+**Geography:** South Korea
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Toss Pay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Toss Pay as a payment method?"
+
+**Likely keywords:** Toss Pay, digital wallet, south korea
+
+---
 ### Touch 'n Go
 **What it is:** Mobile payment service for Malaysian consumers with recurring payment support.
 **Geography:** Customers: Malaysia. Merchants: HK, Singapore, EEA, UK
@@ -2707,6 +4673,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### troy
+**What it is:** Turkey's national card scheme offering debit, credit, and prepaid support.
+**Geography:** Turkey
+**Payment type:** Card scheme
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References troy by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support troy as a payment method?"
+
+**Likely keywords:** troy, card scheme, turkey
+
+---
 ### TrueMoney
 **What it is:** Mobile payment service for Thai consumers enabling one-time and recurring purchases.
 **Geography:** Customers: Thailand. Merchants: HK, Singapore, EEA, UK
@@ -2726,6 +4711,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Trustly
+**What it is:** Trustly uses open-banking to offer account-to-account payments across Europe, with instant payouts, no cards, and minimal fees.
+**Geography:** Europe
+**Payment type:** Open banking / pay-by-bank
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Trustly by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Trustly as a payment method?"
+
+**Likely keywords:** Trustly, open banking / pay-by-bank, europe
+
+---
 ### Twint
 **What it is:** Swiss mobile payment wallet (pass-through or prepaid card).
 **Geography:** Switzerland
@@ -2766,6 +4770,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### UPI
+**What it is:** India's instant bank transfer network powered by NPCI.
+**Geography:** India
+**Payment type:** Bank transfer / instant payments
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References UPI by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support UPI as a payment method?"
+
+**Likely keywords:** UPI, bank transfer / instant payments, india
+
+---
 ### Venmo
 **What it is:** Social payment service for US customers to pay businesses and friends.
 **Geography:** United States
@@ -2786,6 +4809,25 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### ViaBill
+**What it is:** BNPL platform offering interest-free monthly installments.
+**Geography:** Nordics (Denmark)
+**Payment type:** Buy Now Pay Later
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References ViaBill by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support ViaBill as a payment method?"
+
+**Likely keywords:** ViaBill, buy now pay later, nordics (denmark)
+
+---
 ### Vipps
 **What it is:** Leading Nordic mobile wallet for instant smartphone payments.
 **Geography:** Norway (customers: NO, SE)
@@ -2870,6 +4912,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Payment type:** Wallet
 **Integration notes:** Roadmap — not yet live.
 **Contact risk:** unknown
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Wero, the pan-European mobile wallet initiative, or asks about its launch timeline before general availability
@@ -2883,12 +4927,71 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
+### Yape
+**What it is:** Peru's leading mobile wallet for instant QR and P2P payments.
+**Geography:** Peru
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Yape by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Yape as a payment method?"
+
+**Likely keywords:** Yape, digital wallet, peru
+
+---
+### ZaloPay
+**What it is:** ZaloPay is a Vietnamese mobile wallet and payment platform associated with the Zalo messaging app.
+**Geography:** Vietnam
+**Payment type:** Digital wallet
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References ZaloPay by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support ZaloPay as a payment method?"
+
+**Likely keywords:** ZaloPay, digital wallet, vietnam
+
+---
+### Zelle
+**What it is:** US real-time bank transfer network integrated with major banks.
+**Geography:** US
+**Payment type:** Bank transfer / instant payments
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not yet available to merchants. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- References Zelle by name in connection with a payment method integration, transaction, or availability enquiry
+
+**Does not apply if the merchant:**
+- References a different named payment method — match the exact name against the catalogue before classifying here
+
+**Example:** "Do you support Zelle as a payment method?"
+
+**Likely keywords:** Zelle, bank transfer / instant payments, us
+
+---
 ### Zip
 **What it is:** Leading BNPL provider in ANZ and North America, offering flexible instalments for shoppers with full payout to the merchant.
 **Geography:** ANZ, North America (Roadmap)
 **Payment type:** BNPL
 **Integration notes:** Roadmap — not yet live.
 **Contact risk:** unknown — Roadmap
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Roadmap', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - References Zip, Zip Co, ANZ or North America BNPL, or asks about the launch timeline before general availability
@@ -2907,6 +5010,9 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 ### Bank Payouts
 **What it is:** Payouts to bank accounts via local clearing methods and international payment rails.
 **Key capabilities:** Reusable payout instruments; Europe/UK/US merchants; international routing; lower cost than card.
+**Catalogue mapping:** superseded by the catalogue's Third Party Payouts row (Payouts, Mixed availability) — classify bank-rail payout contacts under Third Party Payouts instead.
+**Classification status:** NOT FOR CLASSIFICATION — superseded by Third Party Payouts in the current catalogue. Retained for completeness/context only.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS — classify under Third Party Payouts instead
 **Contact risk:** medium — bank routing failures, account validation queries
 
 **Applies if the merchant:**
@@ -2917,7 +5023,6 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Does not apply if the merchant:**
 - References a payout to a card (see Card Payouts) rather than a bank account
 - References settling funds into their own account under a self-settlement configuration (see Pay to Self)
-- References disbursing funds to a third-party beneficiary rather than their own bank account (see Third Party Payouts)
 
 **Example:** "Our bank payout from yesterday hasn't landed in the merchant's account yet, can you check the routing?"
 
@@ -2928,6 +5033,9 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 ### Card Payouts
 **What it is:** Near-instant payouts directly to eligible payment cards.
 **Key capabilities:** Rapid disbursement; gig economy / instant settlement use cases; broader eligibility than bank payouts.
+**Catalogue mapping:** superseded by the catalogue's Third Party Payouts row (Payouts, Mixed availability) — classify card-rail payout contacts under Third Party Payouts instead.
+**Classification status:** NOT FOR CLASSIFICATION — superseded by Third Party Payouts in the current catalogue. Retained for completeness/context only.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS — classify under Third Party Payouts instead
 **Contact risk:** medium — failed payout queries, eligibility questions
 
 **Applies if the merchant:**
@@ -2938,7 +5046,6 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Does not apply if the merchant:**
 - References a payout to a bank account via local clearing or international rails (see Bank Payouts)
 - References settling funds into their own account (see Pay to Self)
-- References disbursing to a third-party beneficiary (see Third Party Payouts)
 
 **Example:** "Can we push an instant payout to the driver's debit card instead of waiting for a bank transfer?"
 
@@ -2963,27 +5070,50 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 **Example:** "Why is this batch settling to our own account instead of going out as a payout?"
 
-**Likely keywords:** pay to self, self-settlement, settle to own account, self-settlement configuration, acquired funds routing to merchant
+**Likely keywords:** pay to self, self-settlement, settle to own account, self-settlement configuration, acquired funds routing to merchant, settlement
 
 ---
 
 ### Third Party Payouts
-**What it is:** Settlement of funds to third-party beneficiaries rather than the primary merchant account.
-**Key capabilities:** Supports disbursements to third parties; mixed availability.
-**Contact risk:** medium — third-party routing, compliance, and eligibility queries
+**What it is:** Current catalogue product for payout of funds to third-party beneficiaries rather than the primary merchant account, covering both payout rails — bank and card. 
+**Key capabilities:** Reusable bank payout instruments (local clearing, international routing, lower cost than card); near-instant card payouts (gig economy / on-demand pay use cases, broader eligibility than bank); mixed availability.
+**Contact risk:** medium — bank/card routing failures, account/card eligibility, and compliance queries
 
 **Applies if the merchant:**
-- Asks about disbursing funds to a third-party beneficiary rather than their own account
+- Asks about disbursing funds to a third-party beneficiary rather than their own account, by either bank or card rail
+- Reports a bank payout landing in, or failing to land in, a beneficiary's bank account — references bank transfer, local clearing, international routing, or a bank payout instrument
+- Reports a card payout to a beneficiary failing, or asks whether a card is eligible to receive a payout — references instant/near-instant disbursement, gig economy, or on-demand pay
 - Raises compliance or eligibility questions about paying out to a party other than the merchant itself
 - References third-party payout routing or beneficiary setup
 
 **Does not apply if the merchant:**
-- References a payout to their own bank account (see Bank Payouts) or card (see Card Payouts)
-- References settling into their own account (see Pay to Self)
+- References settling into their own account rather than a third party — see Pay to Self
 
-**Example:** "We need to pay out a portion of these funds directly to our supplier, not to our own account."
+**Example:** "We need to pay out a portion of these funds directly to our supplier's bank account, not to our own account, and it hasn't landed yet."
 
-**Likely keywords:** third party payouts, third-party beneficiary, settle to third party, disbursement to third party, beneficiary payout eligibility, third-party routing compliance
+**Likely keywords:** third party payouts, third-party beneficiary, disbursement to third party, beneficiary payout eligibility, third-party routing compliance, bank payout, bank transfer payout, payout to bank account, failed bank disbursement, local clearing, international payout rail, card payout, instant payout to card, gig economy payout, card eligibility for payout
+
+---
+
+## Real-Time Account Updater
+
+### Real-Time Account Updater
+**What it is:** Service that automatically updates stored card details when they change.
+**Key capabilities:** Monitors stored credentials; auto-refreshes on issuer update; Mastercard and Visa supported; webhook notifications.
+**Contact risk:** low — queries mainly on unexpected updates or reconciliation
+
+**Applies if the merchant:**
+- Asks why a stored card's expiry date or number changed without customer action
+- References Account Updater, RTAU, or an auto-refreshed stored card
+- Asks about the webhook notification sent when a card on file is updated
+
+**Does not apply if the merchant:**
+- Is asking about the underlying credential storage itself rather than the auto-refresh mechanism — that's Vault (Integrated Vault or Standalone Vault)
+- Is asking about a scheme token replacing the PAN rather than the card number itself updating — that's Network Tokens
+
+**Example:** "We noticed a customer's stored card number changed automatically in our records — was that Checkout.com's Account Updater?"
+
+**Likely keywords:** Account Updater, RTAU, Real-Time Account Updater, unexpected card detail update, stored card auto-refresh, card update webhook, Mastercard/Visa account updater
 
 ---
 
@@ -2993,6 +5123,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** AI-powered analytics assistant that helps merchants explore payment data in natural language, visualise performance, and identify actions to improve results.
 **Key capabilities:** Natural language querying; performance visualisation; insight generation; actionable recommendations.
 **Contact risk:** unknown — Beta
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'blank/unset', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about querying payment data using natural language in the Dashboard
@@ -3014,6 +5146,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Automated notifications that alert merchants to important changes in their payment performance.
 **Key capabilities:** Configurable alerts; performance-change detection.
 **Contact risk:** low — informational; setup queries
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'blank/unset', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about setting up or configuring automated alerts on payment metrics
@@ -3035,6 +5169,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Web interface for generating and downloading financial and operational reports.
 **Key capabilities:** On-demand or scheduled (daily/weekly/monthly); CSV download; field customisation; role-based access.
 **Contact risk:** medium — report access, scheduling, and data discrepancy queries
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about generating, scheduling, or downloading a financial report from the Dashboard
@@ -3053,10 +5189,12 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
-### Dashboard Reports (non-financial)
+### Dashboard Reports (non-financial reports)
 **What it is:** Dashboard access to non-financial operational reports.
 **Key capabilities:** Same as Dashboard Reports; separate data set.
 **Contact risk:** low
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about a non-financial or operational report accessed via the Dashboard
@@ -3074,14 +5212,17 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 ---
 
 ### Financial Report
-**What it is:** Reporting suite providing a single source of truth for treasury and finance teams to reconcile balances, payouts, fees, and taxes across currencies.
-**Key capabilities:** Multi-currency reconciliation; fee and tax breakdown; payout-vs-balance matching.
+**What it is:** Reporting suite providing a single source of truth for treasury and finance teams to reconcile balances, payouts, fees, and taxes across currencies. Covers Checkout.com's own billing to merchants (fee/tax invoices), not a merchant-facing invoicing product.
+**Key capabilities:** Multi-currency reconciliation; fee and tax breakdown; payout-vs-balance matching; invoice/statement reconciliation.
 **Contact risk:** medium — reconciliation discrepancy queries
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'blank/unset', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about reconciling balances, payouts, fees, or taxes across currencies
 - Reports a discrepancy between a payout amount and their balance
 - References the Financial Report by name for treasury/finance reconciliation
+- Asks about a Checkout.com invoice or tax invoice for fees charged
 
 **Does not apply if the merchant:**
 - Wants non-financial operational data such as fraud trends or authentication rates (see Payment Operations Report)
@@ -3092,7 +5233,7 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 **Example:** "Our payout total doesn't match our balance for this period, can you help reconcile against the financial report?"
 
-**Likely keywords:** Financial Report, financial reconciliation, balance and payout matching, multi-currency reconciliation, fee and tax breakdown, treasury reporting
+**Likely keywords:** Financial Report, financial reconciliation, balance and payout matching, multi-currency reconciliation, fee and tax breakdown, treasury reporting, invoice, tax invoice
 
 ---
 
@@ -3100,6 +5241,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Reporting suite giving issuers end-to-end visibility into card programme activity, from authorization to settlement, including disputes.
 **Key capabilities:** Authorization-to-settlement transparency; cardholder behaviour monitoring; dispute and arbitration tracking.
 **Contact risk:** low — reporting/analytics queries
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'blank/unset', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Runs a card issuing programme and asks about visibility into authorization-to-settlement activity
@@ -3121,6 +5264,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Pre-built dashboard tracking end-to-end payment performance from request to acceptance, with payment-level visibility.
 **Key capabilities:** Funnel-style payment lifecycle view; payment-level drill-down.
 **Contact risk:** low — self-serve insights
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'blank/unset', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about a funnel view of payments from request through to acceptance
@@ -3143,6 +5288,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Non-financial reporting suite covering customer behaviour, fraud trends, and authentication success to support risk and support teams.
 **Key capabilities:** Fraud trend analysis; authentication success tracking; dispute risk management support.
 **Contact risk:** low — operational reporting queries
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'blank/unset', not Beta/Mixed availability/General availability. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about fraud trend reporting or authentication success rates
@@ -3184,6 +5331,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Programmatic interface for automated report retrieval at chosen intervals.
 **Key capabilities:** Retrieve report metadata and files; integrate with reconciliation workflows.
 **Contact risk:** low — developer-facing; queries mainly on field definitions
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about retrieving financial report data programmatically via API
@@ -3201,10 +5350,12 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
-### Reports API (non-financial)
+### Reports API (non-financial reports)
 **What it is:** Reports API for operational/non-financial data.
 **Key capabilities:** Same as Reports API; separate data set.
 **Contact risk:** low
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about retrieving non-financial or operational report data programmatically via API
@@ -3224,6 +5375,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** Scheduled CSV report delivery via SFTP.
 **Key capabilities:** Automated delivery; pre-filtering by field; RSA key auth.
 **Contact risk:** medium — SFTP connectivity, key management, scheduling queries
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about scheduled CSV file delivery of financial reports via SFTP
@@ -3245,6 +5398,8 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **What it is:** SFTP delivery for non-financial reports.
 **Key capabilities:** Same as SFTP Reports; separate data set.
 **Contact risk:** low
+**Classification status:** NOT FOR CLASSIFICATION — no matching product in current catalogue pull. Do not use for Fin classification until this changes.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
 
 **Applies if the merchant:**
 - Asks about scheduled SFTP delivery of non-financial or operational report data
@@ -3350,7 +5505,62 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
-### PTC - FX based on Scheme FX rates
+### Internal - Cash ladder reporting
+**What it is:** Internal treasury reporting tool tracking Checkout.com's own cash ladder/liquidity positions. Not a merchant-facing product. No Airtable overview text available.
+**Classification status:** NOT FOR CLASSIFICATION — internal treasury tool, not merchant-facing (catalogue state also blank/unset).
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — internal tool; not expected to generate merchant contacts
+
+**Applies if the merchant:**
+- Should not normally apply — this is an internal treasury tool, not something merchants interact with directly
+
+**Does not apply if the merchant:**
+- Asks about their own settlement, balance, or payout timing — see Settlements, Balances, or Fund Acceleration
+
+**Example:** N/A — internal tool, not merchant-facing.
+
+**Likely keywords:** cash ladder, internal treasury reporting, liquidity reporting
+
+---
+
+### Internal - FX Blotter reporting
+**What it is:** Internal treasury reporting tool tracking Checkout.com's own FX exposure and blotter positions across currencies. Not a merchant-facing product.
+**Classification status:** NOT FOR CLASSIFICATION — internal treasury tool, not merchant-facing.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — internal tool; not expected to generate merchant contacts
+
+**Applies if the merchant:**
+- Should not normally apply — this is an internal treasury tool, not something merchants interact with directly. Flag for review if a contact appears to reference it, since that would indicate an internal data leak or a misrouted internal query.
+
+**Does not apply if the merchant:**
+- Asks about their own FX rate, conversion, or payout — see the Acquiring FX rate products or PTC - FX based on Scheme FX rates (VISA/MC only)
+
+**Example:** N/A — internal tool, not merchant-facing.
+
+**Likely keywords:** FX blotter, internal FX reporting, treasury FX exposure
+
+---
+
+### PTB - FX based on Live Market Rates
+**What it is:** Catalogue entry for payment-time currency conversion at live market rates (payout-side equivalent of Acquiring - FX Live Market Rates). No Airtable overview text available.
+**Classification status:** NOT FOR CLASSIFICATION — catalogue state is 'Not on roadmap'; not being pursued. Retained for completeness against the catalogue.
+**Fin instruction:** DO NOT DETECT AND CLASSIFY THIS
+**Contact risk:** n/a — not live
+
+**Applies if the merchant:**
+- Should not currently apply — not on roadmap
+
+**Does not apply if the merchant:**
+- Asks about FX applied at capture/acquiring rather than payout — see Acquiring - FX Live Market Rates
+- Asks about scheme-rate FX at payout — see PTC - FX based on Scheme FX rates (VISA/MC only)
+
+**Example:** N/A — not on roadmap.
+
+**Likely keywords:** PTB, payout-time live market rate, FX live market rate payout
+
+---
+
+### PTC - FX based on Scheme FX rates (VISA/MC only)
 **What it is:** Payment-time currency conversion using scheme FX rates (Visa/MC only).
 **Key capabilities:** DCC-style conversion at scheme rates.
 **Contact risk:** medium — FX conversion queries
@@ -3371,47 +5581,49 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 
 ---
 
-## In-person Payments
+## Unified Payments API
 
-### SoftPOS SDK
-**What it is:** SDK that turns NFC-enabled devices (phone, tablet, kiosk) into secure payment terminals, embeddable in merchant apps.
-**Key capabilities:** Tap-to-pay on existing hardware; no additional card reader required; embeddable in branded apps (2027).
-**Contact risk:** medium — Roadmap; SDK integration queries expected
+### Unified Payments API (UPAPI)
+**What it is:** Modern RESTful API for enterprise merchants unifying payment backends, replacing legacy API bundles.
+**Key capabilities:** Single API surface for payments; enterprise-grade; general availability.
+**Contact risk:** medium — enterprise integration complexity; migration queries from legacy API
 
 **Applies if the merchant:**
-- References SoftPOS, SoftPOS SDK, or turning a phone/tablet into a card terminal via NFC
-- Asks about embedding tap-to-pay directly into their own branded app
-- Asks whether they need extra card-reader hardware to accept in-person payments
+- References Payments API by name
+- Is an enterprise merchant asking to consolidate multiple payment backends into one API surface
 
 **Does not apply if the merchant:**
-- Is asking about combining in-person and online payments under a single API rather than the tap-to-pay SDK specifically — that's Unified Commerce
-- Is asking about dedicated card-reader hardware terminals rather than an app-embedded NFC solution — that falls outside SoftPOS SDK's scope
+- Is specifically asking about a persistent session-based checkout flow with a Payment Setup ID — that's Payment Setup API
+- Is asking about unifying in-person and online payment channels rather than backend API consolidation — that's Unified Commerce
 
-**Example:** "We want to let our staff take payments by tapping a customer's card on their own phone using our app — is that SoftPOS?"
+**Example:** "We're on several older Checkout.com API integrations — can we move to one unified API instead?"
 
-**Likely keywords:** SoftPOS, SoftPOS SDK, tap-to-pay, NFC payment terminal, phone as card reader, embedded tap-to-pay, app-based POS
+**Likely keywords:** UPAPI, Unified Payments API, single payments API surface 
 
 ---
 
-### Unified Commerce
-**What it is:** Ability to process in-person and digital payments through the Unified Payments API using merchant-owned devices, combining HardPOS and SoftPOS revenue streams.
-**Key capabilities:** Single API for in-person and digital payments; supports HardPOS and SoftPOS origination.
-**Contact risk:** medium — Roadmap; integration and reconciliation queries expected
+### Payment Setup API
+**What it is:** Checkout.com's latest Payments API, maintaining a single payment session with a persistent Payment Setup ID across multiple payment attempts throughout checkout.
+**Key capabilities:** Session-based (not single-request) payment flow; persists across retries; unique Payment Setup ID.
+**Contact risk:** medium — Beta; session and retry-handling queries expected
 
 **Applies if the merchant:**
-- Asks about reconciling in-person and online transactions through one unified API/reporting view
-- References combining HardPOS and SoftPOS revenue streams
-- Asks how in-person and digital payment channels are unified under Checkout.com's payments stack
+- References a "Payment Setup ID" or a persistent session across multiple payment attempts
+- Asks how retries or failed attempts are handled within one continuous checkout session
+- Asks about Beta access to the Payment Setup API
 
 **Does not apply if the merchant:**
-- Is only asking about the phone-as-terminal SDK itself, without mentioning unifying it with online payments — that's SoftPOS SDK
-- Is asking specifically about the API surface for online payments (UPAPI or Payment Setup API) with no in-person component — those are separate products under Unified Payments API
+- Is asking about a general single-request payment API without a persistent session concept — that's UPAPI or the standard Payments API
+- Is asking about consolidating multiple legacy API bundles into one enterprise API surface, with no mention of session persistence — that's UPAPI
 
-**Example:** "Can we see our in-store tap-to-pay transactions and our online transactions in the same reporting and API, rather than two separate systems?"
+**Example:** "If a customer's card is declined and they retry with a different card, does Checkout.com keep it in the same payment session?"
 
-**Likely keywords:** Unified Commerce, HardPOS and SoftPOS, combined in-person and online payments, omnichannel reconciliation, single API in-person and digital
+**Likely keywords:** Payment Setup API, Payment Setup ID, session-based checkout, persistent payment session, retry handling, Beta payments API
 
 ---
+
+*Last updated: July 2026 (source of truth updated to Airtable Product Catalogue). Enriched definitions from checkout.com/docs March 2026 scrape. Restructured July 2026 from a table format to per-product Applies-if/Does-not-apply-if/Example/Likely-keywords blocks, mirroring the Fin Attribute definition format in `fin-attributes-definitions.md`, to support Fin product classification. New products added: Bundled Authentication, Fund Acceleration, Same and Cross-currency Transfers, CommerceTools, Primer.io, Recurly, SAP OPF, Visualsoft, Pay to Self, Third Party Payouts, Unified Payments API (UPAPI), Dwolla, Ocado Group, Standalone Authentication, Address Document Verification, AML Screening, ACI, IXOPay, Prestashop, YUNO, Zingfit, Cash App, PayPay, Zip, Analytics AI Assistant (renamed from Analytics Assistant), Custom Analytics, Financial Report, Issuing Report, Payment Lifecycle Analytics, Payment Operations Report, SoftPOS SDK, Unified Commerce, Payment Setup API. ACI/IXOPay/Prestashop/YUNO/Zingfit are based on public company knowledge, not an Airtable overview — verify before relying on them for Fin classification. To be validated against support contact data when available.*
+
 
 ## Vault
 
@@ -3475,49 +5687,4 @@ Risk reasons: dispute-prone · mandate-management · setup-complexity · redirec
 **Likely keywords:** Standalone Vault, vault without CKO processing, independent credential storage, Beta vault deployment, vault-only setup
 
 ---
-
-## Unified Payments API
-
-### Unified Payments API (UPAPI)
-**What it is:** Modern RESTful API for enterprise merchants unifying payment backends, replacing legacy API bundles.
-**Key capabilities:** Single API surface for payments; enterprise-grade; general availability.
-**Contact risk:** medium — enterprise integration complexity; migration queries from legacy API
-
-**Applies if the merchant:**
-- Asks about migrating from a legacy Checkout.com API bundle to a single unified API
-- References UPAPI or "Unified Payments API" by name
-- Is an enterprise merchant asking to consolidate multiple payment backends into one API surface
-
-**Does not apply if the merchant:**
-- Is specifically asking about a persistent session-based checkout flow with a Payment Setup ID — that's Payment Setup API
-- Is asking about unifying in-person and online payment channels rather than backend API consolidation — that's Unified Commerce
-
-**Example:** "We're on several older Checkout.com API integrations — can we move to one unified API instead?"
-
-**Likely keywords:** UPAPI, Unified Payments API, enterprise backend unification, legacy API migration, single payments API surface, API consolidation
-
----
-
-### Payment Setup API
-**What it is:** Checkout.com's latest Payments API, maintaining a single payment session with a persistent Payment Setup ID across multiple payment attempts throughout checkout.
-**Key capabilities:** Session-based (not single-request) payment flow; persists across retries; unique Payment Setup ID.
-**Contact risk:** medium — Beta; session and retry-handling queries expected
-
-**Applies if the merchant:**
-- References a "Payment Setup ID" or a persistent session across multiple payment attempts
-- Asks how retries or failed attempts are handled within one continuous checkout session
-- Asks about Beta access to the Payment Setup API
-
-**Does not apply if the merchant:**
-- Is asking about a general single-request payment API without a persistent session concept — that's UPAPI or the standard Payments API
-- Is asking about consolidating multiple legacy API bundles into one enterprise API surface, with no mention of session persistence — that's UPAPI
-
-**Example:** "If a customer's card is declined and they retry with a different card, does Checkout.com keep it in the same payment session?"
-
-**Likely keywords:** Payment Setup API, Payment Setup ID, session-based checkout, persistent payment session, retry handling, Beta payments API
-
----
-
-*Last updated: July 2026 (source of truth updated to Airtable Product Catalogue). Enriched definitions from checkout.com/docs March 2026 scrape. Restructured July 2026 from a table format to per-product Applies-if/Does-not-apply-if/Example/Likely-keywords blocks, mirroring the Fin Attribute definition format in `fin-attributes-definitions.md`, to support Fin product classification. New products added: Bundled Authentication, Fund Acceleration, Same and Cross-currency Transfers, CommerceTools, Primer.io, Recurly, SAP OPF, Visualsoft, Pay to Self, Third Party Payouts, Unified Payments API (UPAPI), Dwolla, Ocado Group, Standalone Authentication, Address Document Verification, AML Screening, ACI, IXOPay, Prestashop, YUNO, Zingfit, Cash App, PayPay, Zip, Analytics AI Assistant (renamed from Analytics Assistant), Custom Analytics, Financial Report, Issuing Report, Payment Lifecycle Analytics, Payment Operations Report, SoftPOS SDK, Unified Commerce, Payment Setup API. ACI/IXOPay/Prestashop/YUNO/Zingfit are based on public company knowledge, not an Airtable overview — verify before relying on them for Fin classification. To be validated against support contact data when available.*
-
 

@@ -1,0 +1,983 @@
+version: 2
+
+models:
+  - name: fct_bank_payout_event
+    description: |
+      Event-grain fact for Pay-To-Bank payouts. One row per bank-payout lifecycle event (creation, balance reservation, screening, dispatch, confirmation, rejection, return), exposed to Looker as the canonical bank-payout fact.
+
+      This is a view over `int_bank_payout_event`, which is partitioned by `ingestion_at`. Please filter by `ingestion_at` to ensure your query is efficient.
+    meta:
+      refresh_frequency: bihourly
+      severity: p1
+      tech_owner: Shreya.Alva@checkout.com
+      tech_owner_slack_channel: '#ask-analytics'
+      tech_owner_team: Payment Analytics
+      security_classification: confidential
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: event_id
+        description: "Unique identifier for the bank payout event (one row per event). Example: `payoutconfirmed_pay_ytj4lve4wnfvnegib3huo2dbr4`."
+        data_type: string
+        data_tests:
+          - unique:
+              config:
+                tags: ['expensive_tests']
+          - unique_filtered:
+              date_filter: "ingestion_at >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 1 DAY)"
+          - not_null
+
+      - name: payout_entity_id
+        description: "The entity_id carried at the top level of the upstream envelope (i.e. the entity that owns the payout). Format `ent_22h2taklnoqral4oerffhacb2i`."
+        data_type: string
+
+      - name: payment_id
+        description: "{{ doc('payment_id') }}"
+        data_type: string
+        data_tests:
+          - not_null
+
+      - name: action_id
+        description: "Identifier of the payout action (a single payout cycle on the rail), upper-cased."
+        data_type: string
+
+      - name: transaction_id
+        description: "Transaction identifier carried on the instruction, upper-cased."
+        data_type: string
+
+      - name: payout_type
+        description: "Product family of the payout. Source enum (`PayoutType`): `Unknown`, `InternalTransfer`, `PayToBank`, `PayToCard`, `AdHocSettlement` (PayToBank routed by sub-entity-id rather than currency-account-id), `PayToBlockchain`. Sample values: `PayToBank` only — by design, both the Flink and legacy NAS feeds carry bank-rail payouts."
+        data_type: string
+
+      - name: payout_event_type
+        description: |
+          Lifecycle stage of the bank payout this event represents. See the Event Catalog:
+          https://checkout.atlassian.net/wiki/spaces/BP/pages/6770393146/Event+Catalog.
+          Some sample values include:
+
+          Public events (intended for cross-team consumption):
+          - `PayoutCreated` — the payout has been initially created.
+          - `PayoutDispatched` — the payout has been handed off downstream (placeholder
+            event in the catalog; producer: PaymentControls).
+          - `PayoutConfirmed` — the payout has been successfully completed.
+          - `PayoutRejected` — the selected scheme or bank declined the payout (terminal).
+          - `PayoutReturned` — the recipient's bank declined / returned the payout
+            (terminal).
+        data_type: string
+
+      - name: payout_initiated_at
+        description: "Timestamp at which the bank payout was initiated by the merchant request that triggered this event sequence. Same value across every event for a given payout."
+        data_type: timestamp
+
+      - name: occurred_at
+        description: "Timestamp at which the specific lifecycle event (`payout_event_type`) occurred in the upstream service."
+        data_type: timestamp
+
+      - name: approval_action
+        description: "[LEGACY] Outcome of the approval step on the payout. Domain values (`ApprovalAction` enum): `Approved` (the payout has been approved for further processing), `Rejected` (the payout has been rejected by the approver). NULL on rows where source=`flink`. The approval outcome can also be reconstructed from `payout_event_type` (`MerchantApprovalAccepted` / `MerchantApprovalRejected` / `CheckoutApprovalAccepted` / `CheckoutApprovalRejected`)."
+        data_type: string
+
+      - name: approval_approver
+        description: "[LEGACY] Name of the approver who actioned the payout. Carried on the legacy NAS Snowflake feed; NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: approval_secondary_approver
+        description: "[LEGACY] Name of the secondary approver (for two-eyes-approval flows). Carried on the legacy NAS Snowflake feed; NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: approval_type
+        description: "[LEGACY] Whether the approval was raised by Checkout or by the merchant. Domain values (`ApprovalType` enum): `Merchant`, `Checkout`. NULL on rows where source=`flink`. The split can also be reconstructed from `payout_event_type` (`Merchant*` vs `Checkout*` event variants)."
+        data_type: string
+
+      - name: client_id
+        description: "{{ doc('client_id') }}"
+        data_type: string
+
+      - name: client_reference
+        description: "External reference for the client (free-text, set by the merchant or onboarding)."
+        data_type: string
+
+      - name: entity_id
+        description: "{{ doc('entity_id') }}"
+        data_type: string
+
+      - name: sub_entity_id
+        description: "Payfac sub-entity identifier when the payout originates under a payfac structure (alphanumeric, `ent_*`). NULL for non-payfac payouts."
+        data_type: string
+
+      - name: entity_dba
+        description: "Doing-Business-As name for the entity, when distinct from the legal name (`client.entity_dba`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: entity_reference
+        description: "External reference for the NAS entity (`client.entity_reference`)."
+        data_type: string
+
+      - name: entity_tax_number
+        description: "Tax identifier registered against the entity (`client.entity_tax_number`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: confirmation_data_item
+        description: "On the upstream domain, `PayoutConfirmed.ConfirmationData` is a free-form `IReadOnlyDictionary<string, string?>` of rail-supplied confirmation fields. Flink flattens the well-known keys to typed columns (`confirmation_data_dispatched_at`, `confirmation_data_confirmed_at`, `confirmation_data_third_party_transaction_id`, `confirmation_data_response_message`, `confirmation_data_cko_response_code`, `confirmation_data_cko_response_code_descr`), and does not surface the residual key/value pairs — `confirmation_data_item` is NULL on `flink` rows."
+        data_type: string
+
+      - name: confirmation_data_dispatched_at
+        description: "Timestamp at which the confirmation message was dispatched by the bank rail to Checkout (`confirmation_data.dispatched_at`)."
+        data_type: timestamp
+
+      - name: confirmation_data_confirmed_at
+        description: "Timestamp at which the bank rail confirmed the payout settlement (`confirmation_data.confirmed_at`)."
+        data_type: timestamp
+
+      - name: confirmation_data_third_party_transaction_id
+        description: "Transaction identifier returned by the third-party bank rail upon confirmation (`confirmation_data.third_party_transaction_id`)."
+        data_type: string
+
+      - name: confirmation_data_response_message
+        description: "Free-text response message returned by the third-party rail at confirmation (`confirmation_data.response_message`)."
+        data_type: string
+
+      - name: confirmation_data_cko_response_code
+        description: "Checkout-internal response code mapped from the third-party confirmation response (`confirmation_data.cko_response_code`)."
+        data_type: string
+
+      - name: confirmation_data_cko_response_code_descr
+        description: "Short description matching `confirmation_data_cko_response_code` (`confirmation_data.cko_response_code_descr`)."
+        data_type: string
+
+      - name: confirmation_data_network
+        description: "Payment network / rail over which the bank rail confirmed the payout settlement (`confirmation_data.network`)."
+        data_type: string
+
+      - name: dispatch_data_item
+        description: "JSON-encoded snapshot of the full `dispatch_data` STRUCT from Flink, captured upstream via `TO_JSON_STRING(dispatch_data)`. Use to access dispatch metadata fields (file name, batch id, etc.) that are not surfaced as individual columns."
+        data_type: string
+
+      - name: dispatch_data_keys
+        description: "Array-of-keys side of the legacy NAS Snowflake dispatch-data flattening. The upstream domain (`PayoutDispatched.DispatchData`) is an `IReadOnlyDictionary<string, string?>` of rail-supplied dispatch fields; on the Flink source the staging serialises the whole map to JSON via `dispatch_data_item` rather than to parallel keys/values arrays. NULL on `flink` rows."
+        data_type: string
+
+      - name: dispatch_data_values
+        description: "Array-of-values side of the legacy NAS Snowflake dispatch-data flattening. See `dispatch_data_keys` — NULL on `flink` rows; use `dispatch_data_item` for the JSON payload."
+        data_type: string
+
+      - name: errors
+        description: "Top-level error blob carried on the legacy NAS Snowflake feed (populated for ~55 old records per the reconciliation review; long deprecated). Not produced by the Flink source — NULL on `flink` rows. Error context for failed events on this source is exposed via the `rejection_data_*` and `cko_response_code*` fields instead."
+        data_type: string
+
+      - name: message
+        description: "Deprecated. Top-level event message body was carried on the legacy NAS Snowflake feed only and is \"not present and not needed in upstream\" per the bank-payouts team. NULL on `flink` rows. Do not rely on this column for any new consumer."
+        data_type: string
+
+      - name: processor_id
+        description: "Reserved column for the downstream processor identifier. Always NULL in this model — emitted as `CAST(NULL AS STRING)` so downstream `fct_bank_payout_event` can stay column-compatible with the card-payout fact, where `processor_id` is populated."
+        data_type: string
+
+      - name: entity_mcc_array
+        description: "Array of Merchant Category Codes (MCCs) registered against the entity (`client.entity_mcc`). Stored as `ARRAY<STRING>`."
+        data_type: array<string>
+
+      - name: foreign_exchange_instruction_destination_amount
+        description: "[LEGACY] Amount added to the destination currency account on the FX leg, in `foreign_exchange_instruction_destination_currency_iso3` (NUMERIC, major units). Domain field `ForeignExchangeInstruction.DestinationAmount`. NULL on rows where source=`flink`."
+        data_type: numeric
+
+      - name: foreign_exchange_instruction_destination_currency_iso3
+        description: "[LEGACY] ISO 4217 currency of the destination currency account on the FX leg of the payout (the right-hand side of the FX trade). Domain field `ForeignExchangeInstruction.DestinationCurrency`. NULL on rows where source=`flink`. For the post-FX destination currency actually delivered to the recipient, use `instruction_destination_currency_iso3`."
+        data_type: string
+
+      - name: foreign_exchange_instruction_destination_currency_name
+        description: "Long currency name (e.g. `Euro`, `US Dollar`) for `foreign_exchange_instruction_destination_currency_iso3`. NULL when the FX leg is not present (Flink rows) or the ISO3 code is unmapped in `ref_currency`."
+        data_type: string
+
+      - name: foreign_exchange_instruction_destination_amount_usd
+        description: "FX-destination-leg amount converted to USD using the daily FX rate keyed on `DATE(foreign_exchange_instruction_value_date)`. Rounded to 4 decimal places. NULL when the FX leg is not present or no rate is available for the value date."
+        data_type: numeric
+
+      - name: foreign_exchange_instruction_destination_currency_account
+        description: "[LEGACY] Identifier of the currency account that funds are transferred into on the FX destination leg (`ForeignExchangeInstruction.DestinationCurrencyAccount`). NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: foreign_exchange_instruction_fx_product
+        description: "[LEGACY] The FX product used for the trade (`ForeignExchangeInstruction.FXProduct`). NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: foreign_exchange_instruction_merchant_uplift
+        description: "[LEGACY] The decimal-place adjustment of the exchange rate that pertains to the merchant's uplift / margin (`ForeignExchangeInstruction.MerchantUplift`). NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: foreign_exchange_instruction_quote_id
+        description: "[LEGACY] Identifier of the FX quote that triggered the trade (`ForeignExchangeInstruction.QuoteId`). NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: foreign_exchange_instruction_rate
+        description: "[LEGACY] Exchange rate applied to the FX trade (`ForeignExchangeInstruction.Rate`). NULL on rows where source=`flink`."
+        data_type: numeric
+
+      - name: foreign_exchange_instruction_source_amount
+        description: "[LEGACY] Amount deducted from the source currency account on the FX leg, in `foreign_exchange_instruction_source_currency_iso3` (NUMERIC, major units). Domain field `ForeignExchangeInstruction.SourceAmount`. NULL on rows where source=`flink`."
+        data_type: numeric
+
+      - name: foreign_exchange_instruction_source_currency_iso3
+        description: "[LEGACY] ISO 4217 currency of the source currency account on the FX leg of the payout (the left-hand side of the FX trade). Domain field `ForeignExchangeInstruction.SourceCurrency`. NULL on rows where source=`flink`. For the merchant-funding source currency, use `instruction_source_currency_iso3`."
+        data_type: string
+
+      - name: foreign_exchange_instruction_source_currency_name
+        description: "Long currency name for `foreign_exchange_instruction_source_currency_iso3`. NULL when the FX leg is not present or the ISO3 code is unmapped in `ref_currency`."
+        data_type: string
+
+      - name: foreign_exchange_instruction_source_amount_usd
+        description: "FX-source-leg amount converted to USD using the daily FX rate keyed on `DATE(foreign_exchange_instruction_value_date)`. Rounded to 4 decimal places. NULL when the FX leg is not present or no rate is available for the value date."
+        data_type: numeric
+
+      - name: foreign_exchange_instruction_source_currency_account
+        description: "[LEGACY] Identifier of the currency account that funds are deducted from on the FX source leg (`ForeignExchangeInstruction.SourceCurrencyAccount`). NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: foreign_exchange_instruction_trade_id
+        description: "[LEGACY] Identifier of the FX trade executed for this payout (`ForeignExchangeInstruction.TradeId`). NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: foreign_exchange_instruction_value_date
+        description: "[LEGACY] Value date of the FX trade (`ForeignExchangeInstruction.ValueDate`). NULL on rows where source=`flink`. Used as the FX-rate join key for the FX-leg USD conversions."
+        data_type: timestamp
+
+      - name: instruction_bai
+        description: "[LEGACY] Business Application Identifier — how the schemes define types of business (e.g. `FXO`). Domain field `InstructionData.BAI`. NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: instruction_balance_as_of
+        description: "[LEGACY] End-of-day balance timestamp for a client-settlement payout. Pairs with `instruction.timezone` upstream. Domain field `InstructionData.BalanceAsOf`. NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: instruction_bin
+        description: "Bank Identification Number of the card issuer (when the payout instruction originates from a card flow). Domain field `InstructionData.BIN`. Not surfaced in Flink (bank-payout source — card flows route through the PtC source); NULL on `flink` rows."
+        data_type: string
+
+      - name: instruction_charge_bearer
+        description: "Indicates which party bears the rail/correspondent charges for this payout. Sample values: `OUR` (sender bears the charges), NULL (not provided by the rail). The full SWIFT enumeration would be `OUR | BEN | SHA`."
+        data_type: string
+
+      - name: instruction_country_iso2
+        description: "ISO 3166-1 alpha-2 country code of the destination jurisdiction for the payout instruction. Long tail of country codes observed (AT, HR, GI, IM, GG, KW, MU, MY, MC, SI, EG, SA, CN, TH, MD, BH, QA, OM, AD, IS, …)."
+        data_type: string
+
+      - name: instruction_desired_value_date
+        description: "Timestamp the merchant requested the funds to value-date with the beneficiary bank (`instruction.desired_value_date`). Subject to the rail's accepted settlement window. Note: Flink occasionally emits the sentinel `0001-01-01 00:00:00+00:00` when the upstream did not set a desired value date — treat this as \"not provided\" rather than a real timestamp."
+        data_type: timestamp
+
+      - name: instruction_destination_amount
+        description: "Amount delivered to the recipient on this payout (the credit side), denominated in `instruction_destination_currency_iso3`. Stored as NUMERIC in major units (e.g. EUR 1.23, not minor-unit cents). Note: Flink truncates to 2 decimal places — the legacy NAS Snowflake feed occasionally carried higher-precision floats, so a small residual mismatch on the historical join is expected."
+        data_type: numeric
+
+      - name: instruction_destination_currency_iso3
+        description: "ISO 4217 currency code of the payout destination amount. Observed top values (3-day upstream sample, inherited 2026-04-30): `EUR`, `USD`, `GBP`, `AED`, `AUD`, `SGD`, `CHF`, `CAD`, `HKD`, `PLN`, `SEK`, `DKK`, `NOK`, plus a long tail across major and minor currencies."
+        data_type: string
+
+      - name: instruction_destination_currency_name
+        description: "Long currency name for `instruction_destination_currency_iso3`. NULL when the ISO3 code is unmapped in `ref_currency`."
+        data_type: string
+
+      - name: instruction_destination_amount_usd
+        description: "Amount delivered to the recipient (the credit side), converted to USD using the daily FX rate keyed on `DATE(payout_initiated_at)`. Rounded to 4 decimal places. NULL when no rate is available for the payout-initiated date."
+        data_type: numeric
+
+      - name: instruction_destination_currency_is_a_holding_currency
+        description: "Indicates whether the destination currency is one Checkout holds a balance in (i.e. no FX leg required). Sample values: `true` (held currency), NULL (flag not set on this event type). `false` was not observed in the sample but is part of the upstream domain."
+        data_type: bool
+
+      - name: instruction_fx_product
+        description: "[LEGACY] The FX product that was selected for this payout from the customer's available list (`InstructionData.FXProduct`). Distinct from `foreign_exchange_instruction_fx_product` — this one is the *requested* product on the instruction; the FX one is the *executed* product on the trade. NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: instruction_payment_network
+        description: "Bank-rail network used to settle the payout. Sample values (3-day upstream sample, inherited 2026-04-30, mixed casing as emitted by upstream): `fedwire`, `Wire`, `Local`, `local`, `Ach`. Most rows are NULL on non-dispatch events. Casing is preserved from the source — the intermediate model treats this as authoritative."
+        data_type: string
+
+      - name: instruction_purpose
+        description: "Free-text purpose/reason for the payout, supplied by the merchant. Sample values are dominated by `HB Cash Out`, `0-0`, `Bank Payouts - Synthetic`, `Competition prize payout`, `Other`, plus long-tail merchant-specific strings (e.g. reimbursement order numbers, P2P payout IDs). Treat as low-cardinality only when merchants conform — otherwise an opaque string."
+        data_type: string
+
+      - name: instruction_release_date
+        description: "Timestamp at which the payout was released for settlement on the rail (`instruction.release_date`)."
+        data_type: timestamp
+
+      - name: instruction_repair
+        description: "Deprecated. Originally indicated whether the payout instruction had been automatically modified to allow the payment to succeed (per the bank-payouts team: \"an old feature that has been decommissioned\"). Sample values: `false`, NULL; `true` was not observed in the sample window. Treat as inert — do not use as a business signal."
+        data_type: bool
+
+      - name: instruction_sms_bin
+        description: "[LEGACY] BIN used for processing specific message types (`InstructionData.SmsBIN`). NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: instruction_source_amount
+        description: "Amount debited from the merchant's funding account to fund this payout (the debit side), denominated in `instruction_source_currency_iso3`. Stored as NUMERIC in major units (e.g. EUR 1.23, not minor-unit cents). Note: Flink truncates to 2 decimal places — the legacy NAS Snowflake feed occasionally carried higher-precision floats, so a small residual mismatch on the historical join is expected."
+        data_type: numeric
+
+      - name: instruction_source_currency_iso3
+        description: "ISO 4217 currency code of the funding-source amount."
+        data_type: string
+
+      - name: instruction_source_currency_name
+        description: "Long currency name for `instruction_source_currency_iso3`. NULL when the ISO3 code is unmapped in `ref_currency`."
+        data_type: string
+
+      - name: instruction_source_amount_usd
+        description: "Amount debited from the merchant's funding account (the debit side), converted to USD using the daily FX rate keyed on `DATE(payout_initiated_at)`. Rounded to 4 decimal places. NULL when no rate is available for the payout-initiated date."
+        data_type: numeric
+
+      - name: instruction_source_id
+        description: "Identifier of the funding source for the payout (`instruction.source_id`). Format depends on `instruction_source_type` — entity id for `entity`, currency-account id for `currency_account`."
+        data_type: string
+
+      - name: instruction_source_type
+        description: "Type of funding source for the payout. Sample values: `entity` (payout funded directly from an entity balance), `currency_account` (funded from a holding currency account), NULL (typically pre-balance-reservation events). Empty strings are normalised to NULL via `NULLIF` upstream."
+        data_type: string
+
+      - name: instruction_value_date
+        description: "Bank-rail value date for the instruction (`instruction.value_date`). Differs from `instruction_desired_value_date` once the rail accepts/repairs the instruction."
+        data_type: timestamp
+
+      - name: instruction_remittance_reference
+        description: "Free-text remittance reference attached to the instruction (visible to the beneficiary on most rails)."
+        data_type: string
+
+      - name: intermediary_bic
+        description: "SWIFT/BIC of the intermediary bank routed through for this payout (`recipient.intermediary_swift_bic`). Flink populates this more often than the legacy NAS Snowflake feed."
+        data_type: string
+
+      - name: intermediary_address_city
+        description: "City of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema (only `IntermediarySwiftBic` is) — NULL on `flink` rows. For the intermediary bank itself, see `intermediary_bic`."
+        data_type: string
+
+      - name: intermediary_address_country_iso2
+        description: "ISO2 country code of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema — NULL on `flink` rows. See `intermediary_bic`."
+        data_type: string
+
+      - name: intermediary_address_line1
+        description: "First line of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema — NULL on `flink` rows. See `intermediary_bic`."
+        data_type: string
+
+      - name: intermediary_address_line2
+        description: "Second line of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema — NULL on `flink` rows. See `intermediary_bic`."
+        data_type: string
+
+      - name: intermediary_address_postal_code
+        description: "Postal code of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema — NULL on `flink` rows. See `intermediary_bic`."
+        data_type: string
+
+      - name: intermediary_address_state
+        description: "State / region of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema — NULL on `flink` rows. See `intermediary_bic`."
+        data_type: string
+
+      - name: original_of_repaired_item
+        description: "Snapshot of the pre-repair instruction, carried by `PayoutRepaired` events on the upstream domain. Since neither feed flattens the separate `PayoutRepaired` event into this stream, this column is always NULL — the `instruction_repair` flag on the lifecycle is the only repair signal surfaced here, and that flag is itself deprecated."
+        data_type: string
+
+      - name: original_of_repaired_keys
+        description: "Array-of-keys side of the legacy NAS Snowflake \"original of repaired\" key/value flattening. Not produced by the Flink source — see `original_of_repaired_item` for context; NULL on `flink` rows."
+        data_type: string
+
+      - name: original_of_repaired_values
+        description: "Array-of-values side of the legacy NAS Snowflake \"original of repaired\" key/value flattening. Not produced by the Flink source — see `original_of_repaired_item` for context; NULL on `flink` rows."
+        data_type: string
+
+      - name: recipient_bank_account_bban
+        description: "Basic Bank Account Number (BBAN) of the beneficiary (`recipient.bank_account_bban`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_bank_account_bic
+        description: "Beneficiary bank BIC/SWIFT code (`recipient.bank_account_bic`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_bank_account_currency_iso3
+        description: "ISO 4217 currency the beneficiary account is denominated in (`recipient.bank_account_currency`). Sample values match the destination-currency enumeration; NULL on non-dispatch events. Mixed casing observed (e.g. `gbp`)."
+        data_type: string
+
+      - name: recipient_bank_account_currency_name
+        description: "Long currency name for `recipient_bank_account_currency_iso3`. NULL when the ISO3 code is unmapped in `ref_currency` (e.g. lower-cased values like `gbp`)."
+        data_type: string
+
+      - name: recipient_bank_account_iban
+        description: "International Bank Account Number (IBAN) of the beneficiary (`recipient.bank_account_iban`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_bank_account_type
+        description: "Type of the beneficiary bank account. Sample values: `current`, `savings`, NULL (not provided on most events). Lower-case values as emitted by the upstream service."
+        data_type: string
+
+      - name: recipient_bank_address_city
+        description: "City of the beneficiary bank's branch address (`recipient.bank_address_city`)."
+        data_type: string
+
+      - name: recipient_bank_address_country_iso2
+        description: "ISO2 country code of the beneficiary bank's branch address (`recipient.bank_address_country`)."
+        data_type: string
+
+      - name: recipient_bank_address_line1
+        description: "First line of the beneficiary bank's branch address (`recipient.bank_address_line1`)."
+        data_type: string
+
+      - name: recipient_bank_address_line2
+        description: "Second line of the beneficiary bank's branch address (`recipient.bank_address_line2`)."
+        data_type: string
+
+      - name: recipient_bank_address_postal_code
+        description: "Postal code of the beneficiary bank's branch address (`recipient.bank_address_postal_code`)."
+        data_type: string
+
+      - name: recipient_bank_address_state
+        description: "State / region of the beneficiary bank's branch address (`recipient.bank_address_state`)."
+        data_type: string
+
+      - name: recipient_bank_branch_code
+        description: "Local branch / sort / routing code of the beneficiary bank (`recipient.bank_branch_code`)."
+        data_type: string
+
+      - name: recipient_bank_branch_name
+        description: "Name of the beneficiary bank branch (`recipient.bank_branch_name`)."
+        data_type: string
+
+      - name: recipient_bank_code
+        description: "Bank-level code of the beneficiary bank (`recipient.bank_code`). Distinct from `recipient_bank_branch_code` — typically the institution-level code."
+        data_type: string
+
+      - name: recipient_bank_name
+        description: "Name of the beneficiary bank (`recipient.bank_name`)."
+        data_type: string
+
+      - name: recipient_bank_account_account_number
+        description: "Beneficiary bank-account number (domestic format)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_additional_data_line1
+        description: "[LEGACY] Free-text line for capturing any additional country-specific information about the recipient (`RecipientData.AdditionalDataLine1`). NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: recipient_additional_data_line2
+        description: "[LEGACY] Free-text line for capturing any additional country-specific information about the recipient (`RecipientData.AdditionalDataLine2`). NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: recipient_additional_data_line3
+        description: "[LEGACY] Free-text line for capturing any additional country-specific information about the recipient (`RecipientData.AdditionalDataLine3`). NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: recipient_reference
+        description: "Merchant-supplied reference for the recipient (`recipient.reference`)."
+        data_type: string
+
+      - name: sender_reference
+        description: "Merchant-supplied reference for the sender (`sender.entity_reference`)."
+        data_type: string
+
+      - name: recipient_billing_descriptor
+        description: "Free-text billing descriptor that will appear on the beneficiary's bank statement (`recipient.billing_descriptor`)."
+        data_type: string
+
+      - name: recipient_card_expiry_month
+        description: "Expiry month of the recipient card (`RecipientData.CardExpiryMonth`). Populated only when the payout is to a card (`PayoutType = PayToCard`); the bank-payouts feeds are bank-only, so this is always NULL here."
+        data_type: string
+
+      - name: recipient_card_expiry_year
+        description: "Expiry year of the recipient card (`RecipientData.CardExpiryYear`). Populated only when the payout is to a card (`PayoutType = PayToCard`); the bank-payouts feeds are bank-only, so this is always NULL here."
+        data_type: string
+
+      - name: recipient_card_number
+        description: "Primary Account Number (PAN) of the recipient card (`RecipientData.CardNumber`). Populated only when the payout is to a card (`PayoutType = PayToCard`); the bank-payouts feeds are bank-only, so this is always NULL here."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_currency_account_id
+        description: "[LEGACY] Identifier of the recipient's currency account (e.g. `CA_12315CBDE3546F`). Domain field `RecipientData.CurrencyAccountId`. Used when the payout settles to a CKO currency account rather than an external bank. NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: screening_result_action
+        description: "[LEGACY] Outcome of sanctions screening on the payout. Domain values (`ScreeningAction` enum): `Successful` (the payout passed all sanctions lists), `Failed` (the payout hit a sanctions entry on one of the defined lists). NULL on rows where source=`flink`. The same signal is exposed via the `payout_event_type` lifecycle (`SanctionsScreeningAccepted` / `SanctionsScreeningRejected`)."
+        data_type: string
+
+      - name: sender_currency_account_id
+        description: "[LEGACY] Identifier of the sender's currency account (e.g. `CA_12315CBDE3546F`). Domain field `SenderData.CurrencyAccountId`. Used when the payout is funded from a CKO currency account rather than an external account. NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: sender_address_city
+        description: "City of the sender's address (`sender.entity_address_city`). The \"sender\" is the merchant entity initiating the payout (Checkout's client)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: sender_address_country_iso2
+        description: "ISO2 country code of the sender's address (`sender.entity_address_country`)."
+        data_type: string
+
+      - name: sender_address_line1
+        description: "First line of the sender's address (`sender.entity_address_line1`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: sender_address_line2
+        description: "Second line of the sender's address (`sender.entity_address_line2`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: sender_address_postal_code
+        description: "Postal code of the sender's address (`sender.entity_address_postal_code`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: sender_address_state
+        description: "State / region of the sender's address (`sender.entity_address_state`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: sender_company_name
+        description: "Company name of the sender (`sender.entity_company_name`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: sender_first_name
+        description: "First name of the sender (`sender.entity_first_name`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: sender_id
+        description: "Identifier of the sender entity (`sender.entity_id`, with empty strings normalised to NULL via `NULLIF` upstream). This is typically the Checkout-side entity acting as the legal payer on the rail."
+        data_type: string
+
+      - name: sender_last_name
+        description: "Last name of the sender (`sender.entity_last_name`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: sender_source_of_funds
+        description: "Code specifying the source of funds for the sender (`SenderData.EntitySourceOfFunds`). Used for KYC / AML compliance reporting. Not surfaced in Flink (NULL on `flink` rows); confirmed always NULL in the upstream 3-day sample."
+        data_type: string
+
+      - name: sender_id_type
+        description: "Type of identity document held against the sender (`sender.entity_id_type`). Always NULL in the upstream 3-day sample (sender KYC fields are not currently populated through this source)."
+        data_type: string
+
+      - name: sender_id_number
+        description: "Identity-document number of the sender (`sender.entity_id_number`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: sender_id_issue_country_iso2
+        description: "ISO2 country that issued the sender's identity document (`sender.entity_id_issue_country`)."
+        data_type: string
+
+      - name: sender_birth_date
+        description: "Date of birth of the sender (`sender.entity_birth_date`)."
+        data_type: timestamp
+        meta:
+          contains_pii: true
+
+      - name: recipient_address_city
+        description: "City of the beneficiary's residential / company address (`recipient.entity_address_city`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_address_country_iso2
+        description: "ISO2 country code of the beneficiary's address (`recipient.entity_address_country`)."
+        data_type: string
+
+      - name: recipient_address_line1
+        description: "First line of the beneficiary's address (`recipient.entity_address_line1`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_address_line2
+        description: "Second line of the beneficiary's address (`recipient.entity_address_line2`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_address_postal_code
+        description: "Postal code of the beneficiary's address (`recipient.entity_address_postal_code`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_address_state
+        description: "State / region of the beneficiary's address (`recipient.entity_address_state`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_address_type
+        description: "[LEGACY] Whether the address belongs to a corporate or an individual (`RecipientData.EntityAddressType`). NULL on rows where source=`flink`. For the recipient-type split, use `recipient_type`."
+        data_type: string
+
+      - name: recipient_birth_country_iso2
+        description: "ISO2 country in which the beneficiary was born (`recipient.entity_birth_country`)."
+        data_type: string
+
+      - name: recipient_birth_date
+        description: "Date of birth of the beneficiary (`recipient.entity_birth_date`)."
+        data_type: timestamp
+        meta:
+          contains_pii: true
+
+      - name: recipient_company_name
+        description: "Company name of the beneficiary, when the recipient is a corporate entity (`recipient.entity_company_name`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_email_address
+        description: "Email address of the beneficiary (`recipient.entity_email_address`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_id
+        description: "[LEGACY] Standalone recipient identifier (separate from the recipient entity_id and from the payment-instrument id). NULL on rows where source=`flink`. For the payment-instrument id of the recipient see `recipient_payment_instrument_id`."
+        data_type: string
+
+      - name: recipient_id_issue_country_iso2
+        description: "ISO2 country that issued the beneficiary's identity document (`recipient.entity_id_issue_country`)."
+        data_type: string
+
+      - name: recipient_id_type
+        description: "Type of identity document of the beneficiary (`recipient.entity_id_type`). Always NULL in the upstream 3-day sample (KYC fields are not currently populated through this source)."
+        data_type: string
+
+      - name: recipient_id_number
+        description: "Identity-document number of the beneficiary (`recipient.entity_id_number`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_first_name
+        description: "First name of the beneficiary, when the recipient is an individual (`recipient.entity_first_name`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_last_name
+        description: "Last name of the beneficiary, when the recipient is an individual (`recipient.entity_last_name`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_phone_national_code
+        description: "International dialling code of the beneficiary's phone number (`recipient.entity_phone_national_code`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_phone_number
+        description: "National phone number of the beneficiary (`recipient.entity_phone_number`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_residential_status
+        description: "Residential status of the beneficiary (`recipient.entity_residential_status`). Always NULL in the upstream 3-day sample."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_tax_id
+        description: "Tax identifier of the beneficiary (`recipient.entity_tax_id`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: recipient_type
+        description: "Whether the beneficiary is an individual or a company. Sample values: `corporate`, `individual`, NULL (events that do not carry recipient resolution)."
+        data_type: string
+
+      - name: recipient_fingerprint
+        description: "Hash of the recipient's identifying details, used to deduplicate beneficiaries without exposing PII (`recipient.fingerprint`)."
+        data_type: string
+
+      - name: screening_result_score
+        description: "[LEGACY] Numeric score returned by the sanctions screening engine (`ScreeningResult.Score`). Stored as STRING. NULL on rows where source=`flink`."
+        data_type: string
+
+      - name: recipient_description
+        description: "Free-text description for the recipient set by the merchant (`recipient.description`)."
+        data_type: string
+
+      - name: recipient_payment_instrument_id
+        description: "Identifier for the recipient payment instrument (e.g. token / vaulted account) used by the payout (`recipient.payment_instrument_id`)."
+        data_type: string
+
+      - name: recipient_payment_instrument_last_successfully_validated_at
+        description: "[LEGACY] Timestamp at which the recipient's payment instrument was last validated successfully (`RecipientData.PaymentInstrumentLastSuccessfullyValidatedAt`). NULL on rows where source=`flink`. The legacy NAS Snowflake feed populated this for some records."
+        data_type: timestamp
+
+      - name: rejection_data_dispatched_at
+        description: "Timestamp at which the rejection was dispatched back to Checkout from the rail (`rejection_data.dispatched_at`)."
+        data_type: timestamp
+
+      - name: rejection_data_failure_code
+        description: "Categorised failure code attached to a rejection event. Sample values: `third_party_unsupported_recipient_error`, `insufficient_funds`, `sanctions_screening_rejected_error`, `third_party_instruction_error`, `third_party_invalid_recipient_account_error`, `third_party_compliance_error`, `third_party_validation_error`, `finance_rejected_error`, `third_party_processing_error`. NULL — only set on terminal rejection events."
+        data_type: string
+
+      - name: rejection_data_failure_reason
+        description: "Free-text reason attached to a rejection event (`rejection_data.failure_reason`). Empty strings are normalised to NULL via `NULLIF` upstream. Where the rail does not provide a free-text reason, the categorical `rejection_data_failure_code` is the primary signal."
+        data_type: string
+
+      - name: rejection_data_reason
+        description: "Top-level rejection reason. In the 3-day upstream sample (inherited 2026-04-30) this matches `rejection_data_failure_code` for most populated rows, with one additional observed value: `manually_rejected`. Treat as the canonical rejection categorisation. Empty strings normalised to NULL upstream."
+        data_type: string
+
+      - name: rejection_data_rejected_at
+        description: "Timestamp at which the rejection was finalised (`rejection_data.rejected_at`)."
+        data_type: timestamp
+
+      - name: rejection_data_third_party_error_code
+        description: "Error code returned by the third-party rail at rejection (`rejection_data.third_party_error_code`). Empty strings normalised to NULL upstream."
+        data_type: string
+
+      - name: rejection_data_third_party_error_description
+        description: "Free-text error description returned by the third-party rail at rejection (`rejection_data.third_party_error_description`). Empty strings normalised to NULL upstream."
+        data_type: string
+
+      - name: rejection_data_third_party_quotation_id
+        description: "Third-party quotation identifier referenced on the rejection (`rejection_data.third_party_quotation_id`). Empty strings normalised to NULL upstream."
+        data_type: string
+
+      - name: rejection_data_third_party_transaction_id
+        description: "Third-party transaction identifier returned at rejection (`rejection_data.third_party_transaction_id`). Empty strings normalised to NULL upstream."
+        data_type: string
+
+      - name: rejection_data_thunes_status
+        description: "Deprecated. Thunes-partner-specific rejection telemetry — Thunes is being deprecated as a payout partner, so this field is sparsely populated even on the legacy NAS feed (~4 of 90k rows in recent samples). Not produced by the current Flink source (NULL on `flink` rows). For business purposes use `rejection_data_third_party_*` instead."
+        data_type: string
+
+      - name: rejection_data_thunes_status_class
+        description: "Deprecated. See `rejection_data_thunes_status` — Thunes-specific, partner being deprecated. NULL on `flink` rows. Use `rejection_data_third_party_*` for current rejection telemetry."
+        data_type: string
+
+      - name: rejection_data_thunes_status_class_message
+        description: "Deprecated. See `rejection_data_thunes_status` — Thunes-specific, partner being deprecated. NULL on `flink` rows. Use `rejection_data_third_party_error_description` for current rejection narrative."
+        data_type: string
+
+      - name: rejection_data_thunes_status_message
+        description: "Deprecated. See `rejection_data_thunes_status` — Thunes-specific, partner being deprecated. NULL on `flink` rows. Use `rejection_data_third_party_error_description` for current rejection narrative."
+        data_type: string
+
+      - name: route_id
+        description: "Identifier of the routing decision applied to the payout (`route.id`)."
+        data_type: string
+
+      - name: routing_data_item
+        description: "JSON-encoded snapshot of the full `route.routing_data` STRUCT, captured upstream via `TO_JSON_STRING(route.routing_data)`. Use to inspect rail/scheme-specific routing parameters that aren't promoted to dedicated columns. Flink populates this more richly than the legacy NAS Snowflake feed (note: format is JSON here vs scalar fields on the legacy feed)."
+        data_type: string
+
+      - name: routing_data_keys
+        description: "Array-of-keys side of the legacy NAS Snowflake routing-data flattening. The upstream domain (`Route.RoutingData`) is an `IReadOnlyDictionary<string, string>` of route-specific parameters; on the Flink source this map is serialised as JSON via `routing_data_item`. NULL on `flink` rows."
+        data_type: string
+
+      - name: routing_data_values
+        description: "Array-of-values side of the legacy NAS Snowflake routing-data flattening. See `routing_data_keys` — NULL on `flink` rows; use `routing_data_item` for the JSON payload."
+        data_type: string
+
+      - name: routing_key
+        description: "Composite identifier of the chosen route in the form `<routing_name>:<scheme>`. Sample values: `Lhv:SEPAInstant`, `Autosettle:Kyriba`, `crb:Local`, `Lhv:Local`, `Jpm:SEPA`, `Lhv:SEPA`, `crb:fedwire`, `Internal:Manual`, `Thunes:Local`, `Pathward:Local`, `Thunes:SEPA`, `Thunes:SEPAInstant`, `Pathward:fedwire`, `Jpm:Ach`, `Jpm:fedwire`, `crb:AchNextDay`."
+        data_type: string
+
+      - name: routing_name
+        description: "Identifier of the rail / banking partner used to route the payout. Sample values: `Lhv`, `crb`, `Autosettle`, `Jpm`, `Thunes`, `Internal`, `Pathward`. NULL on events not carrying routing context."
+        data_type: string
+
+      - name: scheme_fee_type
+        description: "Fee classification of the chosen scheme, used by finance for cost allocation. Sample values (3-day upstream sample, inherited 2026-04-30, mixed casing as emitted upstream): `sepa`, `Local`, `International`, `SEPA`, `fedwire`. NULL on events not carrying scheme context."
+        data_type: string
+
+      - name: scheme_id
+        description: "[LEGACY] Unique identifier of the scheme (`Scheme.Id`). NULL on rows where source=`flink`. Schemes on the Flink feed are identified by name (`scheme_name`) rather than by surrogate id."
+        data_type: string
+
+      - name: scheme_name
+        description: "Name of the chosen settlement scheme. Sample values: `instant`, `Local`, `Kyriba`, `SEPA`, `fedwire`, `Manual`, `Wire`, `Ach`, `AchNextDay`, NULL."
+        data_type: string
+
+      - name: scheme_routing_data_item
+        description: "JSON-encoded snapshot of the full `route.scheme.routing_data` STRUCT, captured upstream via `TO_JSON_STRING(...)`. Use to inspect scheme-specific routing parameters that aren't promoted to dedicated columns."
+        data_type: string
+
+      - name: scheme_routing_data_keys
+        description: "Array-of-keys side of the legacy NAS Snowflake scheme-routing-data flattening. The upstream domain (`Scheme.RoutingData`) is an `IReadOnlyDictionary<string, string>` of scheme-specific parameters; on the Flink source this map is serialised as JSON via `scheme_routing_data_item`. NULL on `flink` rows."
+        data_type: string
+
+      - name: scheme_routing_data_values
+        description: "Array-of-values side of the legacy NAS Snowflake scheme-routing-data flattening. See `scheme_routing_data_keys` — NULL on `flink` rows; use `scheme_routing_data_item` for the JSON payload."
+        data_type: string
+
+      - name: scheme_routing_name
+        description: "Routing name within the scheme (sub-rail). Sample values: `SEPAInstant`, `Local`, `Kyriba`, `SEPA`, `fedwire`, `Manual`, `Ach`, `AchNextDay`, NULL."
+        data_type: string
+
+      - name: scheme_settlement_time
+        description: "[LEGACY] How long funds take to settle with this scheme (TimeSpan in the upstream domain; `Scheme.SettlementTime`). NULL on rows where source=`flink`. The settlement-time signal on this source is implicit in `scheme_routing_name` (e.g. `SEPAInstant` vs `SEPA`)."
+        data_type: string
+
+      - name: meta_client_identifiers
+        description: "Array of additional client identifier strings supplied on the event (`meta.client_identifiers`)."
+        data_type: array<string>
+
+      - name: meta_business_category
+        description: "Business segment of the payout, derived from sender and recipient entity types. Domain enum (`PayoutBusinessCategory`): `B2B` (sender corporate, recipient corporate), `B2C` (sender corporate, recipient individual), `C2C` (sender individual, recipient individual), `C2B` (sender individual, recipient corporate). Observed in 3-day upstream sample (inherited 2026-04-30): `B2B`, `B2C`, NULL; `C2C` and `C2B` are part of the domain but not seen in the sample."
+        data_type: string
+
+      - name: meta_source
+        description: "Originating product/service that emitted the payout event. Domain enum (`PayoutSource`): `Gateway` (UPAPI), `Hub`, `ClientSettlements`, `Lightning` (manual finance-team payouts), `IssuingFees`, `IssuingFunds`, `Marketplace`. Observed in 3-day upstream sample (inherited 2026-04-30): `Gateway`, `ClientSettlements`, NULL; the rest are part of the upstream domain but not seen in the sample."
+        data_type: string
+
+      - name: meta_source_ip
+        description: "Source IP address of the API client that requested the payout (`meta.source_ip`)."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: meta_overall_timeliness_milliseconds
+        description: "Time delta in milliseconds of UTC Now minus the Payout Created time (`Meta.OverallTimelinessMilliseconds`) — i.e. end-to-end processing time of the payout up to this event. Stored as NUMERIC (CAST from the upstream INT32)."
+        data_type: numeric
+
+      - name: meta_rail_timeliness_milliseconds
+        description: "Time delta in milliseconds of UTC Now minus the `CheckoutApprovalAccepted` time (when the payout was sent to the rail)."
+        data_type: numeric
+
+      - name: meta_sanctions_timeliness_milliseconds
+        description: "Time delta in milliseconds between the sanctions-screening request and response for this payout."
+        data_type: numeric
+
+      - name: meta_payout_hash
+        description: "Hash used to make each payout unique. Per the upstream `Meta.PayoutHash` doc the inputs are `Hash({ EntityId, (IBANs/AccountNo || Fingerprint) / Amount / Currency / WeekOfTheYear })`. Used by upstream services to dedupe duplicate submissions."
+        data_type: string
+        meta:
+          contains_pii: true
+
+      - name: return_amount
+        description: "Amount returned to Checkout when a previously-confirmed payout is reversed by the beneficiary bank. NUMERIC, major units, in `return_currency_iso3`. Known regression: this field is sparsely populated on the Flink source vs the legacy NAS feed — bank-payouts team has flagged \"data missing from Flink\"; account for the gap when reconciling against historical NAS data."
+        data_type: numeric
+
+      - name: return_currency_iso3
+        description: "ISO 4217 currency code of `return_amount`. Sample values: `USD`, `EUR`. Mostly NULL — only populated on `PayoutReturned` / `PayoutReturnReceived` events. Known regression: this field is sparsely populated on the Flink source vs the legacy NAS feed (see `return_amount`)."
+        data_type: string
+
+      - name: return_reason
+        description: "Categorised reason for a payout return. Sample values: `third_party_returned`, `third_party_returned_account_error`, `third_party_returned_account_not_found`, `third_party_returned_instruction_error`. NULL — only set on return events."
+        data_type: string
+
+      - name: return_code
+        description: "Code returned by the rail when a payout is reversed. Sample values: include NACHA-style codes (`R02`, `R03`, `R04`, `R16`), `third_party_returned_instruction_error`, plus rail-specific narrative strings prefixed with `NARR <hash> CD:<code>` carrying SEPA reason codes (`AC01`, `AC04`, `MS03`, `RR04`). High cardinality on the narrative variant."
+        data_type: string
+
+      - name: third_party_return_description
+        description: "Free-text description supplied by the third-party rail when returning a payout (`third_party_return_description`)."
+        data_type: string
+
+      - name: third_party_return_code
+        description: "Code supplied by the third-party rail when returning a payout (`third_party_return_code`)."
+        data_type: string
+
+      - name: context_category
+        description: "High-level category of the payout context. Sample values: `integrated_platform`, `client_settlement`, `payout`, NULL."
+        data_type: string
+
+      - name: context_type
+        description: "Sub-type of the payout context. Sample values (post-aggregation): `bank`, NULL (residual events with no context resolved across the payment)."
+        data_type: string
+
+      - name: context_trigger
+        description: "What triggered the payout. Sample values: `on_demand` (API / dashboard initiated), `scheduled` (automated settlement), NULL (residual after aggregation)."
+        data_type: string
+
+      - name: context_account
+        description: "Account-domain context for the payout. Sample values: `nas` (New Account Structure), NULL (residual)."
+        data_type: string
+
+      - name: validation_data_code
+        description: "Short code identifying the validation rule outcome. Sample values: `05ro`, `12bc`, `10an`, `10bc`, `06an`, `11bc`, `17bc`, `09ba`, `02ba`. NULL — only set on validation events."
+        data_type: string
+
+      - name: validation_data_status
+        description: "Outcome of the recipient-account validation step. Sample values: `PASS`, `CAUTION`, NULL. `FAIL` is part of the upstream domain but was not observed in the sample window."
+        data_type: string
+
+      - name: validation_data_comment
+        description: "Free-text comment attached to the validation outcome (`validation_data.comment`)."
+        data_type: string
+
+      - name: validation_data_recommended_bank_account_bic
+        description: "BIC the validator recommends instead of the supplied one (when validation fails on BIC)."
+        data_type: string
+
+      - name: validation_data_recommended_bank_account_bank_code
+        description: "Bank code the validator recommends instead of the supplied one."
+        data_type: string
+
+      - name: processing_channel_id
+        description: "{{ doc('processing_channel_id') }}"
+        data_type: string
+
+      - name: cko_response_code
+        description: "Checkout-internal numeric response code mapping the rail / pipeline outcome. Sample values: `50499`, `50025`, `50026`, `50100`. NULL — set on a small number of events that traverse the gateway response code mapping."
+        data_type: string
+
+      - name: cko_response_code_description
+        description: "Short description for `cko_response_code` (e.g. `Approved`, decline reasons). See `docs/payment_docs.md::gateway_response_summary` for the analogous payin field."
+        data_type: string
+
+      - name: is_nas
+        description: "Indicates whether the payout originates from the NAS (New Account Structure) platform. Always `TRUE` on this model — both upstream feeds carry only NAS bank payouts; emitted as a literal so downstream `fct_bank_payout_event` can filter / segment on the same flag exposed by sibling payment fact tables."
+        data_type: bool
+
+      - name: is_gwc
+        description: "Indicates whether the payout traversed Gateway Core. Always `TRUE` on this model — both upstream feeds describe Gateway-Core-routed bank payouts."
+        data_type: bool
+
+      - name: is_mssql
+        description: "Indicates whether the payout originates from the legacy ABC MSSQL platform. Always `FALSE` on this model — bank payouts are NAS-only; emitted as a literal for column compatibility with sibling payment fact tables."
+        data_type: bool
+
+      - name: sent_at
+        description: "Kafka publish timestamp from Flink (`metadata.kafka_timestamp`) — the time the upstream service published the event to Kafka. Roughly equivalent to the legacy `attributes:SentTimestamp` value on the Snowflake feed."
+        data_type: timestamp
+
+      - name: replication_date
+        description: "Replication-date proxy for the row. in Flink rows, this equals `ingestion_at` (the Flink schema does not expose a separate replication timestamp); on legacy NAS Snowflake rows it is the original Snowflake replication timestamp. Used as the dedup tiebreaker — the model keeps the row with the latest `replication_date` per `event_id` via a `QUALIFY ROW_NUMBER()` window."
+        data_type: timestamp
+
+      - name: ingestion_at
+        description: "Timestamp at which the upstream Flink job ingested the event into BigQuery (or the original NAS replication timestamp on `historical` rows). Used as the partition column for this model and as the lower-bound for the 4-hour incremental overlap window."
+        data_type: timestamp
+
+      - name: source_table
+        description: "Indicates which upstream feed produced this row. Sample values: `flink` (current Flink-ingested Bank Payouts envelope), `historical` (one-off backfill from the legacy NAS Snowflake `pay_to_bank_nas_events_historical` feed; only present after a full-refresh run)."
+        data_type: string
+
+      - name: loaded_at
+        description: "{{ doc('loaded_at') }}"
+        data_type: timestamp
+
+      - name: updated_at
+        description: "{{ doc('updated_at') }}"
+        data_type: timestamp

@@ -60,9 +60,11 @@ The platform is not a simple tool — it is the data layer that every Care produ
 
 ## Candidate Evaluation
 
-Candidates assessed: **Zendesk (Keep + Extend)**, **Intercom (Buy)**, **Plain / Pylon (Buy)**, **Build**.
+Candidates assessed: **Zendesk, **Intercom (Buy)**, **Plain / Pylon (Buy)**, **Build**.
 
 Scored against the assessment requirements defined in the Appendix. Pricing is assessed separately below.
+
+> **Plain matrix re-baseline needed after October 2026.** In the 2026-08-05 workshop Plain committed the following to ship by end of October: workflows, custom dashboards, multiple business hours, merged companies/tenants, in-product mass comms (Slack + email), improved importers, internal support tickets, external reporting integration. Custom thread statuses are scoped for Q4. SLAs move out of tiers and into workflows. Several Plain "limited" / "no" scores below are against current state and will change. Source: [2026-08-05 notes](../meeting-notes/2026-08/2026-08-05-checkout-plain-workshop.md).
 
 ---
 
@@ -260,17 +262,17 @@ Intercom has meaningful advantages on AI chat history, Fin integration cost, and
 
 ---
 
-### Option 3: Buy — Replace with Plain or Pylon
+### Option 3: Buy — Replace with Plain 
 
-Plain is API-first with a flexible data model and competitive pricing. Pylon is Slack-native and suited to B2B IM-first support. Neither has been assessed at 500-agent scale, and phone channel and Consumer Duty compliance tooling are not confirmed for either.
+Plain is API-first with a flexible data model and competitive pricing. Not been assessed at 500-agent scale, and phone channel and Consumer Duty compliance tooling are not confirmed for either.
 
-**Considerations**: Plain's routing configurability, custom object model, and API-first architecture warrant assessment. Pylon's native Slack/Teams channel support is relevant to the 2028–2029 IM requirement.
+**Considerations**: Plain's routing configurability, custom object model, and API-first architecture warrant assessment.
 
 ---
 
 ### Option 4: Build
 
-Team capacity is 4 engineers + 1 EM. Building and maintaining enterprise-grade ticketing infrastructure would consume the team's full delivery capacity.
+Team capacity is 5 engineers + 1 EM, + 2 Support Admins. Building and maintaining enterprise-grade ticketing infrastructure would consume the team's full delivery capacity.
 
 **Considerations**: Not viable as a primary path. Relevant only if no vendor meets requirements and a minimal custom layer is needed on top of an existing platform.
 
@@ -376,8 +378,11 @@ Team capacity is 4 engineers + 1 EM. Building and maintaining enterprise-grade t
 
 ## Related Documents
 
+**Note (2026-08-12)**: Scorecard category weights were revised to reflect transformation drivers (agentic compatibility, API-first, omnichannel, config-as-code velocity, unified Operations platform) rather than pure switching/renewal risk. Vendor reliability and Pricing dropped from High (14%) to gating/hygiene (3%) each; AI triage/classification and Environment/config deployment rose from Low (3%) to 12% and 10% respectively. See `support-platform-vendor-scorecard.md` for the current weights and rationale.
+
 - `04-active-work/research/support-platform-vendor-scorecard.md` — weighted, numeric scorecard for leadership; operationalises the Appendix below into scores per vendor
 - `04-active-work/research/vendor-poc-scope.md` — POC gate and differentiator test flows that feed the scorecard
+- `04-active-work/research/zendesk-current-config-flow-map.md` — conceptual map of current Zendesk config (routing, SLA, automations, triggers), sourced from the Salto IaC repo, for walking vendors through existing flows
 - `01-knowledge-base/products/zendesk.md` — Checkout.com Zendesk setup and capabilities
 - `04-active-work/Zendesk Viability_ AI, Pricing, Market.md` — External market research on Zendesk strategic position
 - `01-knowledge-base/strategy/care-capability-model.md` — Year-by-year capability requirements 2026–2030

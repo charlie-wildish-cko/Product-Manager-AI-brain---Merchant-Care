@@ -1,0 +1,1967 @@
+version: 2
+
+models:
+  - name: fct_payin
+    description: |
+       This model provides payment data for all payins. Each record is a separate payment.
+
+       This is a view over `int_payin`, which is partitioned by `requested_at`. Please filter by `requested_at` to ensure your query is efficient.
+    meta:
+      tech_owner: Federico.Arduini@checkout.com
+      tech_owner_team: Payment Analytics
+      tech_owner_slack_channel: '#ask-analytics'
+      security_classification: confidential
+      refresh_frequency: bihourly
+      severity: p1
+
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: payment_id
+        description: "{{ doc('payment_id') }}"
+        data_type: string
+      - name: client_id
+        description: "{{ doc('client_id') }}"
+        data_type: string
+      - name: entity_id
+        description: "{{ doc('entity_id') }}"
+        data_type: string
+      - name: processing_channel_id
+        description: "{{ doc('processing_channel_id') }}"
+        data_type: string
+      - name: merchant_account_id
+        description: "{{ doc('merchant_account_id') }}"
+        data_type: string
+      - name: business_id
+        description: "{{ doc('business_id') }}"
+        data_type: string
+      - name: channel_id
+        description: "{{ doc('channel_id') }}"
+        data_type: string
+      - name: request_sub_entities
+        description: "{{ doc('request_sub_entities') }}"
+        data_type: ARRAY<STRUCT<id STRING, name STRING, reference STRING, amount NUMERIC, commission_percentage FLOAT64, commission_amount NUMERIC>>
+        meta:
+          contains_pii: true
+      - name: card_acceptor_id
+        description: "{{ doc('card_acceptor_id') }}"
+        data_type: string
+      - name: scheme_merchant_id
+        description: "{{ doc('scheme_merchant_id') }}"
+        data_type: string
+      - name: request_correlation_id
+        description: "{{ doc('request_correlation_id') }}"
+        data_type: string
+      - name: charge_id
+        description: "{{ doc('charge_id') }} Payment-level identifier shared with Disputes data for the same charge."
+        data_type: string
+      - name: decoded_action_id
+        description: "{{ doc('decoded_action_id') }}"
+        data_type: string
+      - name: bc_charge_id
+        description: "{{ doc('bc_charge_id') }}"
+        data_type: string
+      - name: payment_outcome
+        description: "{{ doc('payment_outcome') }} Sample values: captured, soft_declined, authorised, voided, risk_declined, refunded."
+        data_type: string
+      - name: request_outcome
+        description: "{{ doc('request_outcome') }} Always 'requested', as a row exists for every payment request. Sample values: requested."
+        data_type: string
+      - name: risk_decline_outcome
+        description: "{{ doc('risk_decline_outcome') }} Sample values: risk_declined, not_risk_declined, not_available."
+        data_type: string
+      - name: authentication_outcome
+        description: "{{ doc('authentication_outcome') }} Sample values: authenticated, failed, expired, rejected, non_authentication, not_applicable."
+        data_type: string
+      - name: authorisation_outcome
+        description: "{{ doc('authorisation_outcome') }} Sample values: authorised, declined, non_authorisation."
+        data_type: string
+      - name: authorisation_increment_outcome
+        description: "{{ doc('authorisation_increment_outcome') }} Sample values: incremented, declined, non_authorisation_increment, not_applicable."
+        data_type: string
+      - name: acceptance_outcome
+        description: "{{ doc('acceptance_outcome') }} Sample values: accepted, hard_declined, soft_declined, risk_declined, expired, cancelled, void."
+        data_type: string
+      - name: void_outcome
+        description: "{{ doc('void_outcome') }} Sample values: voided, partially_voided, non_void."
+        data_type: string
+      - name: capture_outcome
+        description: "{{ doc('capture_outcome') }} Sample values: captured, partially_captured, non_capture."
+        data_type: string
+      - name: refund_outcome
+        description: "{{ doc('refund_outcome') }} Sample values: refunded, partially_refunded, non_refund."
+        data_type: string
+      - name: gateway_chargeback_outcome
+        description: "{{ doc('gateway_chargeback_outcome') }} Sample values: gateway_chargeback, non_gateway_chargeback."
+        data_type: string
+      - name: requested_at
+        description: "{{ doc('requested_at') }} ISO8601 timestamp (UTC) of when the payment was requested by the merchant, taken from the ChargeRequested event."
+        data_type: timestamp
+      - name: risk_decline_outcome_at
+        description: "{{ doc('risk_decline_outcome_at') }} Timestamp when the pre-authorisation risk decline outcome was determined."
+        data_type: timestamp
+      - name: pre_authentication_risk_assessment_outcome
+        description: "{{ doc('pre_authentication_risk_assessment_outcome') }} Conceptually distinct from `risk_decline_outcome` (Gateway's actual ground truth) — this is RA's opinion, which can disagree with what Gateway actually did."
+        data_type: string
+      - name: pre_authentication_risk_assessment_outcome_source
+        description: "{{ doc('pre_authentication_risk_assessment_outcome_source') }}"
+        data_type: string
+      - name: pre_authentication_risk_assessment_tenet_decline_not_used_payments
+        description: "{{ doc('pre_authentication_risk_assessment_tenet_decline_not_used_payments') }}"
+        data_type: int64
+      - name: pre_authentication_risk_assessment_outcome_at
+        description: "{{ doc('pre_authentication_risk_assessment_outcome_at') }}"
+        data_type: timestamp
+      - name: pre_authentication_risk_assessment_response_code
+        description: "{{ doc('pre_authentication_risk_assessment_response_code') }}"
+        data_type: string
+      - name: pre_authentication_risk_assessment_response_summary
+        description: "{{ doc('pre_authentication_risk_assessment_response_summary') }}"
+        data_type: string
+      - name: pre_authentication_risk_assessment_payments
+        description: "{{ doc('pre_authentication_risk_assessment_payments') }}"
+        data_type: int64
+      - name: pre_authentication_risk_assessment_score
+        description: "{{ doc('pre_authentication_risk_assessment_score') }} Distinct from `prism_score`, which is Fraud Detection's ML score alone (not combined with Tenet)."
+        data_type: float64
+      - name: pre_authentication_risk_assessment_resulting_assessment_level
+        description: "{{ doc('pre_authentication_risk_assessment_resulting_assessment_level') }}"
+        data_type: string
+      - name: pre_authentication_risk_assessment_parent_merchant_outcome
+        description: "{{ doc('pre_authentication_risk_assessment_parent_merchant_outcome') }}"
+        data_type: string
+      - name: pre_authentication_risk_assessment_sub_merchant_outcome
+        description: "{{ doc('pre_authentication_risk_assessment_sub_merchant_outcome') }}"
+        data_type: string
+      - name: pre_authentication_risk_assessment_cko_outcome
+        description: "{{ doc('pre_authentication_risk_assessment_cko_outcome') }}"
+        data_type: string
+      - name: pre_authentication_risk_assessment_route_details
+        description: "{{ doc('pre_authentication_risk_assessment_route_details') }}"
+        data_type: STRUCT<cko ARRAY<STRUCT<type STRING, name STRING, list_type STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL, sub_rules ARRAY<STRUCT<name STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL>>>>, parent_merchant ARRAY<STRUCT<type STRING, name STRING, list_type STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL, sub_rules ARRAY<STRUCT<name STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL>>>>, sub_merchant ARRAY<STRUCT<type STRING, name STRING, list_type STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL, sub_rules ARRAY<STRUCT<name STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL>>>>>
+      - name: is_pre_authentication_risk_assessment_ml_control_group
+        description: True when the payment was placed in the ML model's control group (no ML-driven action applied).
+        data_type: boolean
+      - name: pre_authentication_risk_assessment_ml_internal_score
+        description: "{{ doc('pre_authentication_risk_assessment_ml_internal_score') }}"
+        data_type: float64
+      - name: pre_authentication_risk_assessment_ml_model_id
+        description: "{{ doc('pre_authentication_risk_assessment_ml_model_id') }}"
+        data_type: string
+      - name: pre_authentication_risk_assessment_ml_model_version
+        description: "{{ doc('pre_authentication_risk_assessment_ml_model_version') }}"
+        data_type: string
+      - name: pre_authentication_risk_assessment_ml_merchant_group
+        description: "{{ doc('pre_authentication_risk_assessment_ml_merchant_group') }}"
+        data_type: string
+      - name: is_pre_authentication_tenet_risk_assessment_control_group
+        description: "{{ doc('is_pre_authentication_tenet_risk_assessment_control_group') }}"
+        data_type: boolean
+      - name: post_authentication_risk_assessment_outcome
+        description: "{{ doc('post_authentication_risk_assessment_outcome') }} `'not_available'` when there is no post-authentication record. Conceptually distinct from `void_outcome` (Gateway's independent ground truth) — this is RA's own opinion, which can disagree with what Gateway actually did."
+        data_type: string
+      - name: post_authentication_risk_assessment_outcome_at
+        description: "{{ doc('post_authentication_risk_assessment_outcome_at') }}"
+        data_type: timestamp
+      - name: post_authentication_risk_assessment_response_code
+        description: "{{ doc('post_authentication_risk_assessment_response_code') }}"
+        data_type: string
+      - name: post_authentication_risk_assessment_response_summary
+        description: "{{ doc('post_authentication_risk_assessment_response_summary') }}"
+        data_type: string
+      - name: post_authentication_risk_assessment_resulting_assessment_level
+        description: "{{ doc('post_authentication_risk_assessment_resulting_assessment_level') }}"
+        data_type: string
+      - name: post_authentication_risk_assessment_parent_merchant_outcome
+        description: "{{ doc('post_authentication_risk_assessment_parent_merchant_outcome') }}"
+        data_type: string
+      - name: post_authentication_risk_assessment_sub_merchant_outcome
+        description: "{{ doc('post_authentication_risk_assessment_sub_merchant_outcome') }}"
+        data_type: string
+      - name: post_authentication_risk_assessment_cko_outcome
+        description: "{{ doc('post_authentication_risk_assessment_cko_outcome') }}"
+        data_type: string
+      - name: post_authentication_risk_assessment_route_details
+        description: "{{ doc('post_authentication_risk_assessment_route_details') }}"
+        data_type: STRUCT<cko ARRAY<STRUCT<type STRING, name STRING, list_type STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL, sub_rules ARRAY<STRUCT<name STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL>>>>, parent_merchant ARRAY<STRUCT<type STRING, name STRING, list_type STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL, sub_rules ARRAY<STRUCT<name STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL>>>>, sub_merchant ARRAY<STRUCT<type STRING, name STRING, list_type STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL, sub_rules ARRAY<STRUCT<name STRING, score INT64, is_triggered BOOL, is_outcome_driver BOOL>>>>>
+      - name: post_authentication_risk_assessment_payments
+        description: "{{ doc('post_authentication_risk_assessment_payments') }}"
+        data_type: int64
+      - name: fraud_detection_merchant_tier
+        description: "{{ doc('fraud_detection_merchant_tier') }}"
+        data_type: string
+      - name: customer_ip_city
+        description: "{{ doc('customer_ip_city') }}"
+        data_type: string
+      - name: customer_ip_timezone
+        description: "{{ doc('customer_ip_timezone') }}"
+        data_type: string
+      - name: is_customer_ip_tor
+        description: "{{ doc('is_customer_ip_tor') }}"
+        data_type: boolean
+      - name: is_customer_ip_vpn
+        description: "{{ doc('is_customer_ip_vpn') }}"
+        data_type: boolean
+      - name: is_customer_ip_proxy
+        description: "{{ doc('is_customer_ip_proxy') }}"
+        data_type: boolean
+      - name: is_customer_ip_bogon_ip
+        description: "{{ doc('is_customer_ip_bogon_ip') }}"
+        data_type: boolean
+      - name: device_visitor_id
+        description: "{{ doc('device_visitor_id') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: device_ip
+        description: "{{ doc('device_ip') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: device_ip_country
+        description: "{{ doc('device_ip_country') }}"
+        data_type: string
+      - name: device_source
+        description: "{{ doc('device_source') }}"
+        data_type: string
+      - name: fingerprint_ip_timezone
+        description: "{{ doc('fingerprint_ip_timezone') }}"
+        data_type: string
+      - name: is_fingerprint_ip_tor
+        description: "{{ doc('is_fingerprint_ip_tor') }}"
+        data_type: boolean
+      - name: is_fingerprint_ip_vpn
+        description: "{{ doc('is_fingerprint_ip_vpn') }}"
+        data_type: boolean
+      - name: is_fingerprint_ip_proxy
+        description: "{{ doc('is_fingerprint_ip_proxy') }}"
+        data_type: boolean
+      - name: is_fingerprint_ip_bogon_ip
+        description: "{{ doc('is_fingerprint_ip_bogon_ip') }}"
+        data_type: boolean
+      - name: risk_assessment_updated_at
+        description: |
+          `updated_at` from `int_risk_assessment` at merge time. Drives the RA merge operation's own
+          incremental watermark — distinct from this model's own `updated_at`.
+        data_type: timestamp
+      - name: authorisation_outcome_at
+        description: "{{ doc('authorisation_outcome_at') }} The processing time of the latest successful authorisation if one succeeded, otherwise of the latest authorisation attempt (declined or declined-pending-retry)."
+        data_type: timestamp
+      - name: acceptance_outcome_at
+        description: "{{ doc('acceptance_outcome_at') }} Authorisation processing time for authorised/issuer-declined payments, authentication expiry/rejection/failure time for authentication-terminal payments, or the risk-decline time for risk-declined payments."
+        data_type: timestamp
+      - name: void_outcome_at
+        description: "{{ doc('void_outcome_at') }}"
+        data_type: timestamp
+      - name: latest_voided_at
+        description: "{{ doc('latest_voided_at') }}"
+        data_type: timestamp
+      - name: capture_outcome_at
+        description: "{{ doc('capture_outcome_at') }}"
+        data_type: timestamp
+      - name: latest_captured_at
+        description: "{{ doc('latest_captured_at') }}"
+        data_type: timestamp
+      - name: refund_outcome_at
+        description: "{{ doc('refund_outcome_at') }}"
+        data_type: timestamp
+      - name: latest_refunded_at
+        description: "{{ doc('latest_refunded_at') }}"
+        data_type: timestamp
+      - name: gateway_chargeback_outcome_at
+        description: "{{ doc('gateway_chargeback_outcome_at') }}"
+        data_type: timestamp
+      - name: api_version
+        description: "{{ doc('api_version') }} Defaults to '1' for legacy ABC traffic. Sample values: '1' (legacy ABC /v2/charges endpoint), '2' / '2.0' (NAS /payments endpoint, dominant in current traffic)."
+        data_type: string
+      - name: api_version_name
+        description: "The name of the CKO API version used. Sample values: ClassicAPI, UPAPI."
+        data_type: string
+      - name: payment_method_name
+        description: "{{ doc('payment_method_name') }}"
+        data_type: string
+      - name: payment_method_group
+        description: >
+          Payment method grouping to display APM group when relevant. All card payments are grouped under 'Card',
+          APM payments return the relevant APM group they are mapped to. If we do not have an APM group, 'No APM Group' is returned.
+        data_type: string
+      - name: request_token_authentication_verification_value
+        description: "Returns the Token Authentication Verification Value (TAVV) in the merchant request. 'Not applicable' for APM payments."
+        data_type: string
+      - name: token_authentication_verification_value
+        description: Returns the Token Authentication Verification Value (TAVV) provided by CKO during authorisation. 'Not applicable' for APM payments.
+        data_type: string
+      - name: source_type
+        description: "{{ doc('source_type') }}"
+        data_type: string
+      - name: mcc_used_payment_level
+        description: "{{ doc('mcc_used_payment_level') }}"
+        data_type: string
+      - name: mcc_desc
+        description: "{{ doc('mcc_desc') }}"
+        data_type: string
+      - name: mcc_group
+        description: "{{ doc('mcc_group') }}"
+        data_type: string
+      - name: industry_name
+        description: "{{ doc('industry_name') }}"
+        data_type: string
+      - name: transaction_event_data
+        description: "{{ doc('transaction_event_data') }}"
+        data_type: ARRAY<STRING>
+      - name: is_skip_risk_check_requested
+        description: "{{ doc('is_skip_risk_check_requested') }}"
+        data_type: boolean
+      - name: transaction_type
+        description: "{{ doc('transaction_type') }}"
+        data_type: string
+      - name: traffic_type
+        description: "{{ doc('traffic_type') }}"
+        data_type: string
+      - name: is_merchant_initiated
+        description: "{{ doc('is_merchant_initiated') }}"
+        data_type: boolean
+      - name: is_gateway_services_only
+        description: "{{ doc('is_gateway_services_only') }}"
+        data_type: boolean
+      - name: acquirer_name
+        description: "{{ doc('acquirer_name') }}"
+        data_type: string
+      - name: acquirer_country_iso2
+        description: "{{ doc('acquirer_country_iso2') }}"
+        data_type: string
+      - name: acquirer_country
+        description: "{{ doc('acquirer_country') }}"
+        data_type: string
+      - name: acquirer_region
+        description: "{{ doc('acquirer_region') }}"
+        data_type: string
+      - name: acquirer_bin
+        description: "{{ doc('acquirer_bin') }}"
+        data_type: string
+      - name: acquirer_id
+        description: "{{ doc('acquirer_id') }}"
+        data_type: string
+      - name: global_acquirer_id
+        description: "{{ doc('global_acquirer_id') }}"
+        data_type: string
+      - name: checkout_legal_entity_code
+        description: "{{ doc('checkout_legal_entity_code') }}"
+        data_type: string
+      - name: acquirer_legal_entity_code
+        description: "{{ doc('acquirer_legal_entity_code') }}"
+        data_type: string
+      - name: acquirer_code
+        description: "{{ doc('acquirer_code') }}"
+        data_type: string
+      - name: banking_partner_code
+        description: "{{ doc('banking_partner_code') }}"
+        data_type: string
+      - name: is_card_present
+        description: "{{ doc('is_card_present') }}"
+        data_type: boolean
+      - name: card_entry_mode
+        description: "{{ doc('card_entry_mode') }}"
+        data_type: string
+      - name: is_card_pin_present
+        description: "{{ doc('is_card_pin_present') }}"
+        data_type: boolean
+      - name: terminal_id
+        description: "{{ doc('terminal_id') }}"
+        data_type: string
+      - name: terminal_local_at
+        description: "{{ doc('terminal_local_at') }}"
+        data_type: timestamp
+      - name: capture_enhanced_scheme_data_submitted
+        description: "{{ doc('capture_enhanced_scheme_data_submitted') }}"
+        data_type: string
+      - name: is_three_ds_exemption_executed
+        description: "{{ doc('is_three_ds_exemption_executed') }}"
+        data_type: boolean
+      - name: scheme
+        description: "The name of the scheme used for acquiring. Sample values: visa, mastercard, cartes_bancaires, amex, discover, jcb."
+        data_type: string
+      - name: requested_amount
+        description: "{{ doc('requested_amount') }}"
+        data_type: numeric
+      - name: requested_amount_usd
+        description: "{{ doc('requested_amount_usd') }}"
+        data_type: numeric
+      - name: requested_amount_gbp
+        description: "{{ doc('requested_amount_gbp') }}"
+        data_type: numeric
+      - name: requested_amount_eur
+        description: "{{ doc('requested_amount_eur') }}"
+        data_type: numeric
+      - name: payment_currency_iso3
+        description: "{{ doc('payment_currency_iso3') }}"
+        data_type: string
+      - name: is_authorised
+        description: "{{ doc('is_authorised') }}"
+        data_type: boolean
+      - name: is_captured
+        description: "{{ doc('is_captured') }}"
+        data_type: boolean
+      - name: is_refunded
+        description: "{{ doc('is_refunded') }}"
+        data_type: boolean
+      - name: is_accepted
+        description: "{{ doc('is_accepted') }}"
+        data_type: boolean
+      - name: is_authentication
+        description: "{{ doc('is_authentication') }}"
+        data_type: boolean
+      - name: is_three_ds_upgrade
+        description: "{{ doc('is_three_ds_upgrade') }}"
+        data_type: boolean
+      - name: three_ds_upgrade_reason
+        description: "{{ doc('three_ds_upgrade_reason') }}"
+        data_type: string
+      - name: authentication_status_reason
+        description: "{{ doc('authentication_status_reason') }}"
+        data_type: string
+      - name: prism_score
+        description: "{{ doc('prism_score') }}"
+        data_type: int64
+      - name: is_force_captured
+        description: "{{ doc('is_force_captured') }}"
+        data_type: boolean
+      - name: is_attempt_n3ds_activated
+        description: "{{ doc('is_attempt_n3ds_activated') }}"
+        data_type: boolean
+      - name: udf_1
+        description: "{{ doc('udf_1') }}"
+        data_type: string
+      - name: udf_2
+        description: "{{ doc('udf_2') }}"
+        data_type: string
+      - name: udf_3
+        description: "{{ doc('udf_3') }}"
+        data_type: string
+      - name: platform_metadata
+        description: "{{ doc('platform_metadata') }}"
+        data_type: string
+      - name: is_authentication_not_possible
+        description: "{{ doc('is_authentication_not_possible') }}"
+        data_type: boolean
+      - name: is_dunning_retry_canceled
+        description: "{{ doc('is_dunning_retry_canceled') }}"
+        data_type: boolean
+      - name: is_enriched_request
+        description: "{{ doc('is_enriched_request') }}"
+        data_type: boolean
+      - name: authorised_amount
+        description: "{{ doc('authorised_amount') }}"
+        data_type: numeric
+      - name: authorised_amount_usd
+        description: "The authorised amount converted to US Dollars at the transaction-date FX rate."
+        data_type: numeric
+      - name: authorised_amount_gbp
+        description: "The authorised amount converted to Sterling at the transaction-date FX rate."
+        data_type: numeric
+      - name: authorised_amount_eur
+        description: "The authorised amount converted to Euros at the transaction-date FX rate."
+        data_type: numeric
+      - name: accepted_amount
+        description: "The total value of accepted pay-ins in the payment's original currency (major units). Populated only when the payment reached an accepted terminal state (authorised, captured)."
+        data_type: numeric
+      - name: accepted_amount_usd
+        description: "The total value of accepted pay-ins converted to US Dollars at the transaction-date FX rate."
+        data_type: numeric
+      - name: accepted_amount_gbp
+        description: "The total value of accepted pay-ins converted to Sterling at the transaction-date FX rate."
+        data_type: numeric
+      - name: accepted_amount_eur
+        description: "The total value of accepted pay-ins converted to Euros at the transaction-date FX rate."
+        data_type: numeric
+      - name: declined_amount
+        description: "{{ doc('declined_amount') }}"
+        data_type: numeric
+      - name: declined_amount_usd
+        description: "{{ doc('declined_amount_usd') }}"
+        data_type: numeric
+      - name: declined_amount_gbp
+        description: "{{ doc('declined_amount_gbp') }}"
+        data_type: numeric
+      - name: declined_amount_eur
+        description: "{{ doc('declined_amount_eur') }}"
+        data_type: numeric
+      - name: voided_amount
+        description: "{{ doc('voided_amount') }}"
+        data_type: numeric
+      - name: voided_amount_usd
+        description: "The total value of voids and partial voids converted to US Dollars at the transaction-date FX rate."
+        data_type: numeric
+      - name: voided_amount_gbp
+        description: "The total value of voids and partial voids converted to Sterling at the transaction-date FX rate."
+        data_type: numeric
+      - name: voided_amount_eur
+        description: "The total value of voids and partial voids converted to Euros at the transaction-date FX rate."
+        data_type: numeric
+      - name: captured_amount
+        description: "{{ doc('captured_amount') }}"
+        data_type: numeric
+      - name: captured_amount_usd
+        description: "{{ doc('captured_amount_usd') }}"
+        data_type: numeric
+      - name: captured_amount_gbp
+        description: "{{ doc('captured_amount_gbp') }}"
+        data_type: numeric
+      - name: captured_amount_eur
+        description: "{{ doc('captured_amount_eur') }}"
+        data_type: numeric
+      - name: refunded_amount
+        description: "{{ doc('refunded_amount') }}"
+        data_type: numeric
+      - name: refunded_amount_usd
+        description: "The total value of refunds and partial refunds converted to US Dollars at the transaction-date FX rate. Does not include unreferenced refunds."
+        data_type: numeric
+      - name: refunded_amount_gbp
+        description: "The total value of refunds and partial refunds converted to Sterling at the transaction-date FX rate. Does not include unreferenced refunds."
+        data_type: numeric
+      - name: refunded_amount_eur
+        description: "The total value of refunds and partial refunds converted to Euros at the transaction-date FX rate. Does not include unreferenced refunds."
+        data_type: numeric
+      - name: address_verification_service_check
+        description: "{{ doc('address_verification_service_check') }} Sample values: Y (full match), N (no match), S (not supported)."
+        data_type: string
+      - name: card_verification_value_check
+        description: "{{ doc('card_verification_value_check') }}"
+        data_type: string
+      - name: electronic_commerce_indicator
+        description: "{{ doc('electronic_commerce_indicator') }}"
+        data_type: string
+      - name: authorisation_recommendation_code
+        description: "{{ doc('authorisation_recommendation_code') }}"
+        data_type: string
+      - name: billing_descriptor_name
+        description: "{{ doc('billing_descriptor_name') }}"
+        data_type: string
+      - name: scheme_transaction_id
+        description: "{{ doc('scheme_transaction_id') }}"
+        data_type: string
+      - name: authentication_response
+        description: '{{ doc("authentication_response") }}'
+        data_type: string
+      - name: request_merchant_reference
+        description: "{{ doc('request_merchant_reference') }}"
+        data_type: string
+      - name: request_description
+        description: "{{ doc('request_description') }}"
+        data_type: string
+      - name: request_metadata
+        description: "{{ doc('request_metadata') }}"
+        data_type: string
+      - name: card_bin
+        description: "{{ doc('card_bin') }}"
+        data_type: string
+      - name: card_bin_max
+        description: "{{ doc('card_bin_max') }}"
+        data_type: string
+      - name: cardholder_name
+        description: "{{ doc('payin_card_holder_name') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: card_fingerprint
+        description: "{{ doc('card_fingerprint') }}"
+        data_type: string
+      - name: card_fingerprint_historic
+        description: "{{ doc('card_fingerprint_historic') }}"
+        data_type: string
+      - name: card_expiry_month
+        description: "{{ doc('card_expiry_month') }}"
+        data_type: int64
+      - name: card_expiry_year
+        description: "{{ doc('card_expiry_year') }}"
+        data_type: int64
+      - name: is_card_expired
+        description: "{{ doc('is_card_expired') }}"
+        data_type: boolean
+      - name: is_card_cko_network_token_available
+        description: "{{ doc('is_card_cko_network_token_available') }}"
+        data_type: boolean
+      - name: authorisation_pan_type
+        description: "{{ doc('authorisation_pan_type') }}"
+        data_type: string
+      - name: authentication_pan_type
+        description: "{{ doc('authentication_pan_type') }}"
+        data_type: string
+      - name: is_cko_network_token_used
+        description: "{{ doc('is_cko_network_token_used') }}"
+        data_type: boolean
+      - name: billing_address_country_iso2
+        description: "{{ doc('billing_address_country_iso2') }}"
+        data_type: string
+      - name: billing_address_region
+        description: "{{ doc('billing_address_region') }}"
+        data_type: string
+      - name: billing_address_state
+        description: "{{ doc('billing_address_state') }}"
+        data_type: string
+      - name: billing_address_town_city
+        description: "{{ doc('billing_address_town_city') }}"
+        data_type: string
+      - name: billing_address_line_1
+        description: "{{ doc('billing_address_line_1') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: billing_address_line_2
+        description: "{{ doc('billing_address_line_2') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: billing_address_postcode
+        description: "{{ doc('billing_address_postcode') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: billing_address_phone_number
+        description: "{{ doc('billing_address_phone_number') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: is_risk_declined_capture
+        description: A flag to indicate if the capture is declined due to a pre-capture risk check.
+        data_type: boolean
+      - name: is_account_funding_transaction_requested
+        description: "{{ doc('is_account_funding_transaction_requested') }}"
+        data_type: boolean
+      - name: is_account_funding_transaction_processed
+        description: "{{ doc('is_account_funding_transaction_processed') }}"
+        data_type: boolean
+      - name: authentication_payments
+        description: "{{ doc('authentication_payments') }}"
+        data_type: int64
+      - name: authenticated_payments
+        description: "{{ doc('authenticated_payments') }}"
+        data_type: int64
+      - name: non_authentication_payments
+        description: "{{ doc('non_authentication_payments') }}"
+        data_type: int64
+      - name: incremented_payments
+        description: "{{ doc('incremented_payments') }}"
+        data_type: int64
+      - name: incremented_amount
+        description: "{{ doc('incremented_amount') }}"
+        data_type: numeric
+      - name: incremented_amount_eur
+        description: "{{ doc('incremented_amount_eur') }}"
+        data_type: numeric
+      - name: incremented_amount_gbp
+        description: "{{ doc('incremented_amount_gbp') }}"
+        data_type: numeric
+      - name: incremented_amount_usd
+        description: "{{ doc('incremented_amount_usd') }}"
+        data_type: numeric
+      - name: instrument_source_id
+        description: "{{ doc('instrument_source_id') }}"
+        data_type: string
+      - name: is_partial_authorisation_requested
+        description: Indicates if partial authorisation is enabled for the payment.
+        data_type: boolean
+      - name: is_partial_authorisation
+        description: "{{ doc('is_partial_authorisation') }}"
+        data_type: boolean
+      - name: account_name_inquiry
+        description: "{{ doc('account_name_inquiry') }}"
+        data_type: string
+      - name: card_vault_id
+        description: "{{ doc('card_vault_id') }}"
+        data_type: string
+      - name: sender_address_line_1
+        description: "{{ doc('sender_address_line_1') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: sender_address_line_2
+        description: "{{ doc('sender_address_line_2') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: sender_address_town_city
+        description: "{{ doc('sender_address_town_city') }}"
+        data_type: string
+      - name: sender_address_postcode
+        description: "{{ doc('sender_address_postcode') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: sender_address_state
+        description: "{{ doc('sender_address_state') }}"
+        data_type: string
+      - name: sender_address_country_iso2
+        description: "{{ doc('sender_address_country_iso2') }}"
+        data_type: string
+      - name: sender_name
+        description: "{{ doc('sender_name') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: recipient_account_number
+        description: "{{ doc('recipient_account_number') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: recipient_name
+        description: "{{ doc('recipient_name') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: recipient_zip
+        description: "{{ doc('recipient_zip') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: previous_scheme_transaction_id
+        description: "{{ doc('previous_scheme_transaction_id') }}"
+        data_type: string
+      - name: is_3ri
+        description: "{{ doc('is_3ri') }}"
+        data_type: boolean
+      - name: account_name_inquiry_first_name
+        description: "{{ doc('account_name_inquiry_first_name') }}"
+        data_type: string
+      - name: account_name_inquiry_middle_name
+        description: "{{ doc('account_name_inquiry_middle_name') }}"
+        data_type: string
+      - name: account_name_inquiry_last_name
+        description: "{{ doc('account_name_inquiry_last_name') }}"
+        data_type: string
+      - name: has_account_name_inquiry_full_match
+        description: "{{ doc('has_account_name_inquiry_full_match') }}"
+        data_type: boolean
+      - name: card_charge_ingestion_at
+        description: "{{ doc('card_charge_ingestion_at') }}"
+        data_type: timestamp
+      - name: card_charge_updated_at
+        description: "{{ doc('card_charge_updated_at') }}"
+        data_type: timestamp
+      - name: refund_deferred_amount_gbp
+        description: "{{ doc('refund_deferred_amount_gbp') }}"
+        data_type: numeric
+      - name: refund_deferred_amount_eur
+        description: "{{ doc('refund_deferred_amount_eur') }}"
+        data_type: numeric
+      - name: refund_deferred_amount_usd
+        description: "{{ doc('refund_deferred_amount_usd') }}"
+        data_type: numeric
+      - name: refund_deferred_amount
+        description: "{{ doc('refund_deferred_amount') }}"
+        data_type: numeric
+      - name: capture_deferred_amount_gbp
+        description: "{{ doc('capture_deferred_amount_gbp') }}"
+        data_type: numeric
+      - name: capture_deferred_amount_eur
+        description: "{{ doc('capture_deferred_amount_eur') }}"
+        data_type: numeric
+      - name: capture_deferred_amount_usd
+        description: "{{ doc('capture_deferred_amount_usd') }}"
+        data_type: numeric
+      - name: capture_deferred_amount
+        description: "{{ doc('capture_deferred_amount') }}"
+        data_type: numeric
+      - name: defer_capture_outcome
+        description: "{{ doc('defer_capture_outcome') }}"
+        data_type: string
+      - name: defer_refund_outcome
+        description: "{{ doc('defer_refund_outcome') }}"
+        data_type: string
+      - name: return_outcome
+        description: "{{ doc('return_outcome') }}"
+        data_type: string
+      - name: return_outcome_at
+        description: "{{ doc('return_outcome_at') }}"
+        data_type: timestamp
+      - name: defer_refund_outcome_at
+        description: "{{ doc('defer_refund_outcome_at') }}"
+        data_type: timestamp
+      - name: defer_capture_outcome_at
+        description: "{{ doc('defer_capture_outcome_at') }}"
+        data_type: timestamp
+      - name: payment_method_id
+        description: "{{ doc('payment_method_id') }}"
+        data_type: NUMERIC
+      - name: is_apm
+        description: "{{ doc('is_apm') }}"
+        data_type: boolean
+      - name: is_alternative_chargeback
+        description: "Flag indicating whether an APM chargeback event exists for this payment (excluding ACH Direct Debit-US, which is treated as a return)."
+        data_type: boolean
+      - name: record_source
+        description: "The source system / event stream the payment record was read from. Live payments come from the Flink gateway card/APM payin streams; older payments were backfilled from the historical Snowflake-sourced model. Sample value: flink."
+        data_type: string
+      - name: original_record_source
+        description: "The record's source system as captured when the row was first inserted. Unlike record_source it is never overwritten by later incremental merges, so it preserves where the payment originally came from even after reprocessing or backfills. Sample value: flink."
+        data_type: string
+      - name: debug_transaction_event_data
+        description: "Debug array of transaction event data. Contains raw event identifiers used for troubleshooting data pipeline issues."
+        data_type: ARRAY<STRING>
+      - name: requested_date
+        description: "The calendar date (UTC) when the payment request was made. Used as the primary date dimension for daily aggregations and partitioning."
+        data_type: date
+      - name: acceptance_outcome_date
+        description: "The calendar date (UTC) of the acceptance outcome — the date the payment was first accepted (authorised), otherwise the date of the first decline."
+        data_type: date
+      - name: capture_outcome_date
+        description: "The calendar date (UTC) the payment was first captured, otherwise the date of the first capture decline."
+        data_type: date
+      - name: is_retrieval
+        description: Flag indicating if the payment has a RetrievalRequested event associated with it.
+        data_type: boolean
+      - name: is_predispute
+        description: 'Flag indicating that the payment has entered the predispute stage of the dispute lifecycle. {{ doc("is_predispute") }}'
+        data_type: boolean
+      - name: is_disputed
+        description: 'Flag indicating that the payment has entered the formal Receive Dispute stage of the dispute lifecycle. {{ doc("is_disputed") }}'
+        data_type: boolean
+      - name: is_predispute_or_disputed
+        description: Flag indicating if the payment has received a predispute or dispute.
+        data_type: boolean
+      - name: is_dispute_represented
+        description: 'Flag indicating that the payment has entered the Dispute Representment stage of the dispute lifecycle. {{ doc("is_dispute_represented") }}'
+        data_type: boolean
+      - name: is_dispute_adjusted
+        description: 'Flag indicating that the payment has entered the Dispute Adjustment stage of the dispute lifecycle. {{ doc("is_dispute_adjusted") }}'
+        data_type: boolean
+      - name: retrieval_outcome
+        description: "At payment level: alphabetically-first retrieval outcome across the payment's dispute events (in practice typically a single value per payment). {{ doc('retrieval_outcome') }}"
+        data_type: string
+      - name: receive_predispute_outcome
+        description: "At payment level: alphabetically-first predispute received outcome across the payment's dispute events (in practice typically a single value per payment). {{ doc('receive_predispute_outcome') }}"
+        data_type: string
+      - name: predispute_outcome
+        description: "At payment level: outcome from the latest predispute outcome event across the payment's dispute events. {{ doc('predispute_outcome') }}"
+        data_type: string
+      - name: receive_dispute_outcome
+        description: "At payment level: alphabetically-first dispute received outcome across the payment's dispute events (in practice typically a single value per payment). {{ doc('receive_dispute_outcome') }}"
+        data_type: string
+      - name: receive_predispute_dispute_outcome
+        description: "At payment level: predispute received outcome if present, otherwise dispute received outcome. {{ doc('receive_predispute_dispute_outcome') }}"
+        data_type: string
+      - name: dispute_representment_outcome
+        description: "At payment level: outcome from the latest representment outcome event across the payment's dispute events. {{ doc('dispute_representment_outcome') }}"
+        data_type: string
+      - name: dispute_outcome
+        description: "At payment level: outcome from the latest dispute outcome event across the payment's dispute events; set to `partially_won` when the payment has multiple disputes with differing outcomes. {{ doc('dispute_outcome') }}"
+        data_type: string
+      - name: dispute_arbitration_representment_outcome
+        description: "At payment level: outcome from the latest arbitration representment event across the payment's dispute events. {{ doc('dispute_arbitration_representment_outcome') }}"
+        data_type: string
+      - name: dispute_arbitration_outcome
+        description: "At payment level: outcome from the latest arbitration outcome event across the payment's dispute events; set to `partially_won` when the payment has multiple arbitration outcomes that differ. {{ doc('dispute_arbitration_outcome') }}"
+        data_type: string
+      - name: dispute_adjustment_outcome
+        description: "At payment level: outcome from the latest adjustment outcome event across the payment's dispute events. {{ doc('dispute_adjustment_outcome') }}"
+        data_type: string
+      - name: dispute_overall_outcome
+        description: "{{ doc('dispute_overall_outcome') }}"
+        data_type: string
+      - name: count_disputes
+        description: Number of unique dispute IDs associated with the payment.
+        data_type: int64
+      - name: predispute_received_payments
+        description: Number of payments that have received predispute(s).
+        data_type: int64
+      - name: predispute_accepted_payments
+        description: Number of payments that have accepted predispute(s).
+        data_type: int64
+      - name: disputed_payments
+        description: Number of payments that have received dispute(s).
+        data_type: int64
+      - name: disputed_payments_including_predisputes
+        description: "{{ doc('disputed_payments_including_predisputes') }}"
+        data_type: int64
+      - name: dispute_represented_payments
+        description: Number of payments that have represented dispute(s).
+        data_type: int64
+      - name: dispute_arbitration_represented_payments
+        description: Number of payments that have represented dispute arbitration(s).
+        data_type: int64
+      - name: dispute_won_payments
+        description: Number of payments that have won dispute(s).
+        data_type: int64
+      - name: dispute_partially_won_payments
+        description: Number of payments that have partially won dispute(s).
+        data_type: int64
+      - name: dispute_arbitration_won_payments
+        description: Number of payments that have won dispute arbitration(s).
+        data_type: int64
+      - name: dispute_arbitration_partially_won_payments
+        description: Number of payments that have partially won dispute arbitration(s).
+        data_type: int64
+      - name: dispute_overall_won_payments
+        description: Number of payments that have won dispute(s) overall (including won disputes and won arbitrations).
+        data_type: int64
+      - name: dispute_overall_partially_won_payments
+        description: Number of payments that have partially won dispute(s) overall (including partially won disputes and partially won arbitrations).
+        data_type: int64
+      - name: time_capture_outcome_to_disputed_seconds
+        description: Time it takes in seconds from when a payment was captured to when a dispute or a predispute is received for the payment.
+        data_type: int64
+      - name: dispute_updated_at
+        description: "Timestamp when this payment was last updated at in the int_dispute_payin table."
+        data_type: timestamp
+      - name: is_fraud_reported
+        description: "Flag indicating the payment has been reported as fraudulent by Visa, Mastercard, or Cartes Bancaires. true: a fraud report exists for this payment (including partial fraud where is_partial_fraud_reported = true); false/NULL: no fraud report. Sourced from int_reported_fraud_payin."
+        data_type: boolean
+      - name: fraud_outcome
+        description: "{{ doc('fraud_outcome') }}"
+        data_type: string
+      - name: fraud_reported_payments
+        description: "Count of payments that have been reported as fraudulent by Visa, Mastercard, or Cartes Bancaires (0 or 1 per payment). Always 1 when is_fraud_reported = true."
+        data_type: int64
+      - name: time_capture_outcome_to_fraud_issued_seconds
+        description: "The number of seconds between the capture_outcome_at timestamp and the fraud_issued_at timestamp (when the fraudulent payment was spotted by the issuer). Measures how long after capture the issuer detected fraud."
+        data_type: int64
+      - name: time_capture_outcome_to_fraud_reported_seconds
+        description: "The number of seconds between the capture_outcome_at timestamp and the fraud_reported_at timestamp (when the fraud record was created in the scheme source). Measures how long after capture the fraud was formally reported."
+        data_type: int64
+      - name: fraud_first_updated_at
+        description: "Timestamp (UTC) when the payment record was first updated with fraud data in fct_payin, based on the dbt run start time. Used to track when fraud information first landed on the payment."
+        data_type: timestamp
+      - name: fraud_updated_at
+        description: "Timestamp (UTC) when the payment record was last updated with fraud data in fct_payin, based on the dbt run start time. May differ from fraud_first_updated_at when fraud data was re-processed."
+        data_type: timestamp
+      - name: reported_fraud_updated_at
+        description: "Timestamp when this payment was last updated at in the int_reported_fraud_payin table."
+        data_type: timestamp
+      - name: has_sca_retry
+        description: "Boolean flag indicating if any attempt was an SCA (Strong Customer Authentication) retry for this payment. An SCA retry is triggered by an 'SCA required' decline (20154) on a previous authorisation attempt, prompting Routing to retry through authentication to satisfy the issuer's SCA requirement."
+        data_type: boolean
+      - name: has_processor_cascading
+        description: "Boolean flag indicating if any attempt was a retry by cascading to a different processor for this payment. Processor cascading is internal cascading (re-routing across Checkout's own processor connections), not cascading to Checkout from an upstream PSP."
+        data_type: boolean
+      - name: has_dunning_retry
+        description: "Boolean flag indicating if any attempt was a dunning retry for this payment. A dunning retry is one where Routing applied the 'schedule' modification to retry the payment at a later time on the same processing rails — typically under the Automatic Issuer/Acquirer Downtime default rule (MIT transactions declined with 20068, 20091, or 20096 are retried up to four times over a one-hour window)."
+        data_type: boolean
+      - name: has_aft_retry
+        description: "Boolean flag indicating if any attempt was an AFT (Account Funding Transaction) retry for this payment. An AFT retry is one where Routing applied the 'modify_aft' modification — overriding the AFT flag to process the payment as AFT or as a purchase. Fires under the AFT Override and Processor Eligibility default rule when a merchant override is set or the chosen processor does not support AFTs."
+        data_type: boolean
+      - name: has_skip_authentication_retry
+        description: "Boolean flag indicating if any attempt was a skip-authentication retry for this payment. A skip-authentication retry is one where Routing applied the 'skip_authentication' modification — passing a Direct-to-Authorisation (DTA) exemption (e.g. low_value, transaction_risk_assessment, trusted_listing, secure_corporate_payment, no_authentication) to bypass 3DS."
+        data_type: boolean
+      - name: has_new_authentication_retry
+        description: "Boolean flag indicating if any attempt was a new-authentication retry for this payment. A new-authentication retry is one where Routing applied the 'new_authentication' modification — instructing authentication to use a specific challenge indicator, 3DS exemption, or preferred authentication experience (e.g. challenged 3DS, frictionless flow with a TRA / low-value exemption). Drives the SCA Soft Decline Retry (20154) flow among others."
+        data_type: boolean
+      - name: has_authentication_strategy_retry
+        description: "Boolean flag indicating if any attempt was an authentication-strategy retry for this payment — i.e. a retry that amended the authentication strategy (either skip-authentication or new-authentication). true if has_skip_authentication_retry or has_new_authentication_retry is true for any attempt."
+        data_type: boolean
+      - name: has_avs_modification_retry
+        description: "Boolean flag indicating if any attempt was an AVS-modification retry for this payment. An AVS-modification retry is one where Routing applied the 'modify_avs' modification — modifying the AVS (Address Verification System) data sent to the processor (drop first line, drop postcode, drop all) when the previous AVS check failed. Drives the AVS Technical Decline Retry default rule."
+        data_type: boolean
+      - name: has_cvv_modification_retry
+        description: "Boolean flag indicating if any attempt was a CVV-modification retry for this payment. A CVV-modification retry is one where Routing applied the 'modify_cvv' modification — dropping the card CVV from the authorisation request — to retry a previously declined payment."
+        data_type: boolean
+      - name: has_expiry_modification_retry
+        description: "Boolean flag indicating if any attempt was an expiry-modification retry for this payment. An expiry-modification retry is one where Routing applied the 'modify_expiry' modification — amending the card expiry date sent to the processor (drop, add 3 months, add 5 months) to retry a previously declined authorisation."
+        data_type: boolean
+      - name: has_iso_modification_retry
+        description: "Boolean flag indicating if any attempt was an ISO-data modification retry for this payment — i.e. a retry that modified AVS, CVV, or expiry data on the authorisation message. true if any of has_avs_modification_retry, has_cvv_modification_retry, or has_expiry_modification_retry is true for any attempt."
+        data_type: boolean
+      - name: has_dpan_fpan_retry
+        description: "Boolean flag indicating if any attempt was a DPAN/FPAN-switch retry for this payment. A DPAN/FPAN retry is one where Routing applied the 'use_instrument_type' modification — instructing Gateway to process the payment as either DPAN (network token) or FPAN (full PAN). Typical use case: first attempt declined on a network token, retry on FPAN."
+        data_type: boolean
+      - name: has_au_retry
+        description: "Boolean flag indicating if any attempt was an Account Updater (AU) retry for this payment. An AU retry is one where Routing called Account Updater to refresh the card credentials (e.g. MasterCard's Real-Time Account Updater Pull API under the MasterCard RTAU Retries default rule for 20179/20192 + MAC01 declines) before retrying on the same processing rails."
+        data_type: boolean
+      - name: has_instrument_pan_retry
+        description: "Boolean flag indicating if any attempt was an instrument-PAN retry for this payment — i.e. a retry that updated the PAN, either by switching between DPAN and FPAN or by calling Account Updater. true if has_dpan_fpan_retry or has_au_retry is true for any attempt."
+        data_type: boolean
+      - name: has_static_retry
+        description: "Boolean flag indicating if any retry attempt for this payment went through a Static route. Static routes are per-merchant custom rules configured by the Merchant Configuration team at the processing-channel level."
+        data_type: boolean
+      - name: has_default_retry
+        description: "Boolean flag indicating if any retry attempt for this payment went through a Default route. Default routes are globally-defined fallback rules opted in/out per merchant."
+        data_type: boolean
+      - name: has_intelligent_retry
+        description: "Boolean flag indicating if any retry attempt for this payment went through an Intelligent route. Intelligent routes are Intelligent Acceptance / TENET rules selected by Routing's intelligent decisioning engine."
+        data_type: boolean
+      - name: routing_acceptance_attempts
+        description: "Count of authorisation attempts associated with this payment as instructed by Routing — the maximum attempt_number across all routing events for the payment_id. May differ from the actual authorisation attempts seen in Gateway. An authorisation attempt can include an authentication within it. Currently only card payments undergo retries. Capped at 6 (1 first + 5 retries)."
+        data_type: int64
+      - name: latest_routing_ingestion_at
+        description: "Timestamp of the most recent routing event ingestion for this payment — the ingestion timestamp (Flink pipeline landing time for live data; mapped from routing_ingestion_at for the Snowflake backfill) of the latest RouteResolved event Routing produced for this payment_id."
+        data_type: timestamp
+      - name: latest_retry_type_list
+        description: "Comma-separated string listing the retry types applied on the latest routing attempt for this payment (the attempt with the highest attempt_number). Sample tokens: Processor Cascading, Dunning, AFT, DPAN-FPAN fallback, Skip authentication, New authentication, SCA, AVS modification, CVV modification, Expiry modification, Account Updater. Always blank for payments with only a First attempt."
+        data_type: STRING
+      - name: routing_latest_event_at
+        description: "Source-system event time of the most recent routing event for this payment — the maximum event_timestamp across all RouteResolved events for this payment_id, i.e. the moment Routing returned its final decision to Gateway. Distinct from latest_routing_ingestion_at (platform ingestion time)."
+        data_type: timestamp
+      - name: routing_source_loaded_at
+        description: "The latest loaded_at timestamp from the source staging table for this payment's routing events."
+        data_type: timestamp
+      - name: routing_updated_at
+        description: "Timestamp when this payment was last updated at in the int_routing_payin table."
+        data_type: timestamp
+      - name: request_origin_updated_at
+        description: "Timestamp when this payment was last updated at in the int_request_origin_payin table."
+        data_type: timestamp
+      - name: last_payment_request_updated_at
+        description: "Timestamp when this payment was last updated at in the int_last_payment_request_payin table."
+        data_type: timestamp
+      # Additional acceptance fields
+      - name: acceptance_gateway_response_code
+        description: "{{ doc('acceptance_gateway_response_code') }} Sample values: 10000 (Approved), 20051 (Insufficient Funds), 20005 (Declined - Do Not Honour), 20154 (SCA required), not_available."
+        data_type: string
+      - name: acceptance_gateway_response_code_list
+        description: "{{ doc('acceptance_gateway_response_code_list') }}"
+        data_type: STRUCT<risk ARRAY<STRING>, authentication ARRAY<STRING>, authorisation ARRAY<STRING>, void ARRAY<STRING>, capture ARRAY<STRING>>
+      - name: third_party_acquirer_response_summary_list
+        description: "Array of third-party acquirer response summaries from authorisation events. Extracted from transaction additional_data JSON."
+        data_type: ARRAY<STRING>
+      - name: acceptance_gateway_response_summary
+        description: "{{ doc('acceptance_gateway_response_summary') }} Sample values: Approved, Insufficient Funds, Declined - Do Not Honour, Suspected Fraud, Policy, Cardholder failed 3D-Secure authentication, Lifecycle, Scheme compliance, Closed Account, Not available."
+        data_type: string
+      - name: accepted_payments
+        description: "{{ doc('accepted_payments') }}"
+        data_type: int64
+      
+      # Additional acquirer fields
+      - name: acquirer_bid
+        description: "{{ doc('acquirer_bid') }}"
+        data_type: string
+      - name: acquirer_credential_id
+        description: "The credential identifier used by the acquirer to process the payment."
+        data_type: string
+      - name: acquirer_processor_name
+        description: "{{ doc('acquirer_processor_name') }}"
+        data_type: string
+      
+      # Additional ingestion fields
+      - name: alternative_charge_ingestion_at
+        description: "{{ doc('alternative_charge_ingestion_at') }}"
+        data_type: timestamp
+      - name: alternative_charge_updated_at
+        description: "{{ doc('alternative_charge_updated_at') }}"
+        data_type: timestamp
+      
+      # Alternative chargeback fields
+      - name: alternative_chargeback_amount
+        description: "{{ doc('alternative_chargeback_amount') }}"
+        data_type: numeric
+      - name: alternative_chargeback_amount_eur
+        description: "{{ doc('alternative_chargeback_amount_eur') }}"
+        data_type: numeric
+      - name: alternative_chargeback_amount_gbp
+        description: "{{ doc('alternative_chargeback_amount_gbp') }}"
+        data_type: numeric
+      - name: alternative_chargeback_amount_usd
+        description: "{{ doc('alternative_chargeback_amount_usd') }}"
+        data_type: numeric
+      - name: alternative_chargeback_payments
+        description: "{{ doc('alternative_chargeback_payments') }}"
+        data_type: int64
+      
+      # Attempt data
+      - name: attempt_data_list
+        description: "Ordered array of structs (one per routing attempt, ordered by attempt_number then ingestion_timestamp) summarising each attempt: attempt_number, attempt_source (route type — Static/Intelligent/Default), attempt_type ('First' / 'Retry' / 'Cascade'), retry_type_list (comma-separated retry tokens; blank on First attempts), and outcome_gateway_response_code. The final element's outcome_gateway_response_code is back-filled from latest_routing_attempt_outcome_gateway_response_code (derived from downstream Gateway data), since Routing alone cannot observe the outcome of the last attempt."
+        data_type: ARRAY<STRUCT<attempt_number INT64, attempt_source STRING, attempt_type STRING, retry_type_list STRING, outcome_gateway_response_code STRING>>
+      
+      # Authentication fields
+      - name: authentication_exemption_applied
+        description: "{{ doc('authentication_exemption_applied') }}"
+        data_type: string
+      - name: authentication_exemption_attempted
+        description: '{{ doc("authentication_exemption_attempted") }}'
+        data_type: string
+      - name: exemption_applied
+        description: "{{ doc('exemption_applied') }}"
+        data_type: string
+      - name: authentication_flow_type
+        description: '{{ doc("authentication_flow_type") }}'
+        data_type: string
+      - name: authentication_gateway_response_code
+        description: "The gateway response code from the authentication stage. Codes starting with '1' indicate a successful authentication; other codes indicate a decline, failure, or system error. Set to 'non_authentication' when the payment went straight to authorisation without authentication."
+        data_type: string
+      - name: authentication_gateway_response_summary
+        description: "Human-readable description of the authentication gateway response code. Sample values: 'Approved', 'Cardholder failed 3D-Secure authentication', 'Expired', 'non_authentication'."
+        data_type: string
+      - name: authentication_id
+        description: "The payment authentication identifier assigned by Sessions."
+        data_type: string
+      - name: authentication_method
+        description: '{{ doc("authentication_method") }}'
+        data_type: string
+      - name: authentication_outcome_at
+        description: "{{ doc('authentication_outcome_at') }}"
+        data_type: timestamp
+      - name: authentication_source
+        description: "{{ doc('authentication_source') }}"
+        data_type: string
+      
+      # Authorisation fields
+      - name: authorisation_acquirer_credential_id
+        description: "{{ doc('authorisation_acquirer_credential_id') }}"
+        data_type: string
+      - name: authorisation_acquirer_response_code
+        description: "{{ doc('authorisation_acquirer_response_code') }}"
+        data_type: string
+      - name: authorisation_acquirer_response_code_list
+        description: "{{ doc('authorisation_acquirer_response_code_list') }}"
+        data_type: array<string>
+      - name: authorisation_acquirer_response_desc
+        description: "{{ doc('authorisation_acquirer_response_desc') }}"
+        data_type: string
+      - name: authorisation_amount
+        description: "{{ doc('authorisation_amount') }}"
+        data_type: numeric
+      - name: authorisation_amount_eur
+        description: "The total value of authorised and declined authorisations in Euros."
+        data_type: numeric
+      - name: authorisation_amount_gbp
+        description: "The total value of authorised and declined authorisations in Sterling."
+        data_type: numeric
+      - name: authorisation_amount_usd
+        description: "The total value of authorised and declined authorisations in US Dollars."
+        data_type: numeric
+      - name: authorisation_attempts
+        description: "{{ doc('authorisation_attempts') }}"
+        data_type: int64
+      - name: authorisation_first_attempt_authorised_amount
+        description: "The authorised amount in it's original currency for payments which were successfully authorised in their first authorisation attempt."
+        data_type: numeric
+      - name: authorisation_first_attempt_authorised_amount_eur
+        description: "The authorised amount in Euros for payments which were successfully authorised in their first authorisation attempt."
+        data_type: numeric
+      - name: authorisation_first_attempt_authorised_amount_gbp
+        description: "The authorised amount in Sterling for payments which were successfully authorised in their first authorisation attempt."
+        data_type: numeric
+      - name: authorisation_first_attempt_authorised_amount_usd
+        description: "The authorised amount in US Dollars for payments which were successfully authorised in their first authorisation attempt."
+        data_type: numeric
+      - name: authorisation_first_attempt_authorised_payments
+        description: "Count of payments which were successfully authorised in their first authorisation attempt."
+        data_type: int64
+      - name: authorisation_gateway_response_code
+        description: "{{ doc('authorisation_gateway_response_code') }}"
+        data_type: string
+      - name: authorisation_gateway_response_summary
+        description: "{{ doc('authorisation_gateway_response_summary') }}"
+        data_type: string
+      - name: authorisation_increment_gateway_response_code
+        description: "The gateway response code of the successful authorisation incremented event. Otherwise, the gateway response code of the first declined authorisation increment."
+        data_type: string
+      - name: authorisation_increment_gateway_response_summary
+        description: "The short description of the authorisation increment gateway response code."
+        data_type: string
+      - name: authorisation_increment_outcome_at
+        description: "{{ doc('authorisation_increment_outcome_at') }}"
+        data_type: timestamp
+      - name: authorisation_merchant_advice_code
+        description: "{{ doc('authorisation_merchant_advice_code') }}"
+        data_type: string
+      - name: authorisation_merchant_advice_summary
+        description: "{{ doc('authorisation_merchant_advice_summary') }}"
+        data_type: string
+      - name: authorisation_type
+        description: "{{ doc('authorisation_type') }}"
+        data_type: string
+      - name: authorisation_payments
+        description: "{{ doc('authorisation_payments') }}"
+        data_type: int64
+      - name: authorisation_reattempted_authorisation_amount
+        description: "The total authorisation amount in its original currency for payments that had authorisation reattempts."
+        data_type: numeric
+      - name: authorisation_reattempted_authorisation_amount_eur
+        description: "The total authorisation amount in Euros for payments that had authorisation reattempts."
+        data_type: numeric
+      - name: authorisation_reattempted_authorisation_amount_gbp
+        description: "The total authorisation amount in Sterling for payments that had authorisation reattempts."
+        data_type: numeric
+      - name: authorisation_reattempted_authorisation_amount_usd
+        description: "The total authorisation amount in US Dollars for payments that had authorisation reattempts."
+        data_type: numeric
+      - name: authorisation_reattempted_authorisation_payments
+        description: "Count of payments where an authorisation reattempt was made."
+        data_type: int64
+      - name: authorisation_reattempted_authorised_amount
+        description: "The total authorised amount in its original currency for payments that were successfully authorised after a reattempt."
+        data_type: numeric
+      - name: authorisation_reattempted_authorised_amount_eur
+        description: "The total authorised amount in Euros for payments that were successfully authorised after a reattempt."
+        data_type: numeric
+      - name: authorisation_reattempted_authorised_amount_gbp
+        description: "The total authorised amount in Sterling for payments that were successfully authorised after a reattempt."
+        data_type: numeric
+      - name: authorisation_reattempted_authorised_amount_usd
+        description: "The total authorised amount in US Dollars for payments that were successfully authorised after a reattempt."
+        data_type: numeric
+      - name: authorisation_reattempted_authorised_payments
+        description: "Count of payments that were successfully authorised after a reattempt."
+        data_type: int64
+      - name: authorised_payments
+        description: "{{ doc('authorised_payments') }}"
+        data_type: int64
+      
+      # Business fields
+      - name: business_model
+        description: "{{ doc('business_model') }}"
+        data_type: string
+      
+      # Capture fields
+      - name: capture_acquirer_response_code
+        description: "{{ doc('capture_acquirer_response_code') }}"
+        data_type: string
+      - name: capture_acquirer_response_desc
+        description: "{{ doc('capture_acquirer_response_desc') }}"
+        data_type: string
+      - name: capture_deferred_payments
+        description: "{{ doc('capture_deferred_payments') }}"
+        data_type: int64
+      - name: capture_gateway_response_code
+        description: "{{ doc('capture_gateway_response_code') }}"
+        data_type: string
+      - name: capture_gateway_response_summary
+        description: "{{ doc('capture_gateway_response_summary') }}"
+        data_type: string
+      - name: captured_events
+        description: "{{ doc('captured_events') }}"
+        data_type: int64
+      - name: captured_payments
+        description: "Count of payments where the payment was captured or partially captured."
+        data_type: int64
+      
+      # Card fields
+      - name: card_category
+        description: "{{ doc('card_category') }}"
+        data_type: string
+      - name: card_local_schemes
+        description: "{{ doc('card_local_schemes')}}"
+        data_type: array<string>
+      - name: card_masked_number
+        description: "{{ doc('card_masked_number') }}"
+        data_type: string
+      - name: card_network_token_type
+        description: "{{ doc('card_network_token_type') }}"
+        data_type: string
+      - name: card_product_code
+        description: "{{ doc('card_product_code') }}"
+        data_type: string
+      - name: card_product_id
+        description: "{{ doc('card_product_id') }}"
+        data_type: string
+      - name: card_scheme_local
+        description: "{{ doc('card_scheme_local') }}"
+        data_type: string
+      - name: card_token_format
+        description: "{{ doc('card_token_format') }}"
+        data_type: string
+      - name: card_type
+        description: "{{ doc('card_type') }}"
+        data_type: string
+      - name: card_wallet
+        description: "{{ doc('card_wallet') }}"
+        data_type: string
+      
+      # Challenge fields
+      - name: challenge_indicator_merchant_preference
+        description: "{{ doc('challenge_indicator_merchant_preference') }}"
+        data_type: string
+      - name: challenge_indicator_used
+        description: "{{ doc('challenge_indicator_used') }}"
+        data_type: string
+      
+      # Customer fields
+      - name: customer_card_id
+        description: "{{ doc('customer_card_id') }}"
+        data_type: string
+      - name: customer_email
+        description: "{{ doc('customer_email') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: customer_email_domain
+        description: "{{ doc('customer_email_domain') }}"
+        data_type: string
+      - name: customer_id
+        description: "{{ doc('customer_id') }}"
+        data_type: string
+      - name: customer_ip
+        description: "{{ doc('customer_ip') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: customer_ip_country_iso2
+        description: "{{ doc('customer_ip_country_iso2') }}"
+        data_type: string
+      - name: customer_name
+        description: "{{ doc('customer_name') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      # Declined fields
+      - name: declined_payments
+        description: "{{ doc('declined_payments') }}"
+        data_type: int64
+      
+      # Dispute fields
+      - name: dispute_adjustment_amount
+        description: "{{ doc('dispute_adjustment_amount') }}"
+        data_type: numeric
+      - name: dispute_adjustment_currency_iso3
+        description: "{{ doc('dispute_adjustment_currency_iso3') }}"
+        data_type: string
+      - name: dispute_adjustment_outcome_at
+        description: "At payment level: timestamp of the latest adjustment outcome event across the payment's dispute events. {{ doc('dispute_adjustment_outcome_at') }}"
+        data_type: timestamp
+      - name: dispute_arbitration_outcome_amount
+        description: "At payment level: sum of arbitration outcome amounts across the payment's dispute events. {{ doc('dispute_arbitration_outcome_amount') }}"
+        data_type: numeric
+      - name: dispute_arbitration_outcome_at
+        description: "At payment level: timestamp of the latest arbitration outcome event across the payment's dispute events. {{ doc('dispute_arbitration_outcome_at') }}"
+        data_type: timestamp
+      - name: dispute_arbitration_outcome_currency_iso3
+        description: "{{ doc('dispute_arbitration_outcome_currency_iso3') }}"
+        data_type: string
+      - name: dispute_arbitration_represented_at
+        description: "At payment level: timestamp of the latest arbitration representment (DisputeArbitrationSentToScheme) event across the payment's dispute events. {{ doc('dispute_arbitration_represented_at') }}"
+        data_type: timestamp
+      - name: dispute_category_list
+        description: "Comma-separated list of dispute categories associated with the payment's dispute events. Sample value: 'product_service_not_received, retrieval'."
+        data_type: string
+      - name: dispute_created_at_array
+        description: "Array of timestamps when each dispute associated with the payment was created."
+        data_type: array<timestamp>
+      - name: dispute_currency_iso3
+        description: "{{ doc('dispute_currency_iso3') }}"
+        data_type: string
+      - name: dispute_description_list
+        description: "Comma-separated list of dispute descriptions associated with the payment's dispute events. Sample values: 'Fraudulent Transaction – Card Absent Environment', 'No Cardholder Authorization', 'Canceled Recurring Transaction', 'Services Not Provided or Merchandise Not Received'."
+        data_type: string
+      - name: dispute_event_data
+        description: "Array of dispute event structs containing detailed data for each dispute event associated with the payment, including dispute IDs, event types, financial indicators, amounts, and timestamps."
+        data_type: "ARRAY<STRUCT<dispute_id STRING, event_id STRING, action_id STRING, bc_charge_id STRING, transaction_id STRING, acquirer_reference_number STRING, event_type STRING, financial_indicator STRING, acquirer_global_id STRING, scheme_transaction_id STRING, scheme_metadata STRING, evidence_required_by TIMESTAMP, relevant_evidence_required ARRAY<STRING>, evidence_submitted ARRAY<STRUCT<text STRING, type STRING>>, source STRING, is_3ds BOOLEAN, payment_reference STRING, chargeback_event_id STRING, bc_chargeback_id STRING, bc_retrieval_id STRING, scheme_case_number STRING, correlation_id STRING, dispute_reason_code STRING, dispute_type STRING, dispute_reference STRING, dispute_category STRING, dispute_description STRING, dispute_resolved_reason STRING, dispute_amount NUMERIC, dispute_amount_eur NUMERIC, dispute_amount_gbp NUMERIC, dispute_amount_usd NUMERIC, dispute_currency_iso3 STRING, payment_amount NUMERIC, payment_amount_eur NUMERIC, payment_amount_gbp NUMERIC, payment_amount_usd NUMERIC, payment_currency STRING, scheme_amount NUMERIC, scheme_amount_eur NUMERIC, scheme_amount_gbp NUMERIC, scheme_amount_usd NUMERIC, scheme_currency STRING, dispute_created_at TIMESTAMP, dispute_issued_at TIMESTAMP, dispute_event_loaded_at TIMESTAMP, ingestion_at TIMESTAMP, system_date TIMESTAMP, record_source STRING>>"
+      - name: dispute_indicator_codes_list
+        description: "Comma-separated list of dispute financial indicator codes associated with the payment's dispute events. Sample values: 'ADJM', 'ARWS', 'ADJM, RPDR', 'ADJM, RPDR, RPDL'."
+        data_type: string
+      - name: dispute_ingestion_at
+        description: "Timestamp when the payment's dispute data was last ingested. This is the ingestion timestamp of the most recent dispute event."
+        data_type: timestamp
+      - name: dispute_outcome_amount
+        description: "At payment level: sum of dispute outcome amounts across the payment's dispute events. {{ doc('dispute_outcome_amount') }}"
+        data_type: numeric
+      - name: dispute_outcome_at
+        description: "At payment level: timestamp of the latest dispute outcome event across the payment's dispute events. {{ doc('dispute_outcome_at') }}"
+        data_type: timestamp
+      - name: dispute_outcome_currency_iso3
+        description: "{{ doc('dispute_outcome_currency_iso3') }}"
+        data_type: string
+      - name: dispute_overall_outcome_at
+        description: "At payment level: derived following the overall outcome priority — arbitration outcome timestamp, then dispute or predispute outcome timestamp (whichever event came later), then predispute outcome timestamp. {{ doc('dispute_overall_outcome_at') }}"
+        data_type: timestamp
+      - name: dispute_reason_code_list
+        description: "Comma-separated list of scheme-specific dispute reason codes associated with the payment. Sample values: '4837', '4853, 4863'."
+        data_type: string
+      - name: dispute_reference_list
+        description: "Comma-separated list of dispute reference identifiers for all disputes associated with the payment. Sample value: '5eadlsm35ayurpvxwcmxohnaqi'."
+        data_type: string
+      - name: dispute_represented_at
+        description: "At payment level: timestamp of the latest representment (EvidenceAcknowledgedByTheScheme) event across the payment's dispute events. {{ doc('dispute_represented_at') }}"
+        data_type: timestamp
+      - name: dispute_representment_outcome_at
+        description: "At payment level: timestamp of the latest representment outcome event across the payment's dispute events. {{ doc('dispute_representment_outcome_at') }}"
+        data_type: timestamp
+      - name: dispute_resolved_reason_list
+        description: "Comma-separated list of dispute resolved reasons for all disputes associated with the payment. Sample value: 'RDR'."
+        data_type: string
+      - name: dispute_retrieval_payments
+        description: "Count of payments that have received a retrieval request."
+        data_type: int64
+      - name: dispute_time_to_representment_days
+        description: "Number of days from when the dispute was received to when it was represented."
+        data_type: float64
+      - name: dispute_time_to_representment_hours
+        description: "Number of hours from when the dispute was received to when it was represented."
+        data_type: float64
+      - name: dispute_time_to_resolve_days
+        description: "Number of days from when the dispute was received to when it was resolved."
+        data_type: float64
+      - name: dispute_time_to_resolve_hours
+        description: "Number of hours from when the dispute was received to when it was resolved."
+        data_type: float64
+      - name: dispute_type_group
+        description: "{{ doc('dispute_type_group') }}"
+        data_type: string
+      - name: dispute_type_list
+        description: "Comma-separated list of dispute types for all dispute events associated with the payment. Sample values: 'Fraudulent', 'Product/Service Not Received'."
+        data_type: string
+      - name: disputed_amount
+        description: "{{ doc('disputed_amount') }}"
+        data_type: numeric
+      - name: disputed_amount_eur
+        description: "{{ doc('disputed_amount_eur') }}"
+        data_type: numeric
+      - name: disputed_amount_gbp
+        description: "{{ doc('disputed_amount_gbp') }}"
+        data_type: numeric
+      - name: disputed_amount_usd
+        description: "{{ doc('disputed_amount_usd') }}"
+        data_type: numeric
+      - name: disputed_at
+        description: "At payment level: earliest DisputeReceived event timestamp across the payment's dispute events. {{ doc('disputed_at') }}"
+        data_type: timestamp
+      
+      # Fallback fields
+      - name: fallback_status_udf_1
+        description: "{{ doc('fallback_status_udf_1') }}"
+        data_type: string
+      
+      # First routing attempt
+      - name: first_routing_attempt_outcome_gateway_response_code
+        description: "The gateway response code (outcome) for the first routing attempt associated with a payment."
+        data_type: string
+      
+      # Fraud fields
+      - name: fraud_amount
+        description: "The total value of all partial captures and captures for the payment that were reported as being fraudulent, in the original payment currency (payment_currency_iso3). Falls back to the payment's captured amount when no matched-transaction fraud amount is available (e.g. Cartes Bancaires rows, refund/authorisation events)."
+        data_type: numeric
+      - name: fraud_amount_eur
+        description: "The total value of all partial captures and captures for the payment that were reported as being fraudulent, converted to Euros at the transaction-date FX rate. Falls back to the payment's captured amount in Euros when no matched-transaction fraud amount is available."
+        data_type: numeric
+      - name: fraud_amount_gbp
+        description: "The total value of all partial captures and captures for the payment that were reported as being fraudulent, converted to Sterling at the transaction-date FX rate. Falls back to the payment's captured amount in Sterling when no matched-transaction fraud amount is available."
+        data_type: numeric
+      - name: fraud_amount_reported_eur
+        description: "The total value of all partial captures and captures for the payment that were reported as being fraudulent by the scheme (Visa, Mastercard, Cartes Bancaires), converted to Euros at the transaction-date FX rate."
+        data_type: numeric
+      - name: fraud_amount_reported_gbp
+        description: "The total value of all partial captures and captures for the payment that were reported as being fraudulent by the scheme (Visa, Mastercard, Cartes Bancaires), converted to Sterling at the transaction-date FX rate."
+        data_type: numeric
+      - name: fraud_amount_reported_usd
+        description: "The total value of all partial captures and captures for the payment that were reported as being fraudulent by the scheme (Visa, Mastercard, Cartes Bancaires), converted to US Dollars at the transaction-date FX rate."
+        data_type: numeric
+      - name: fraud_amount_usd
+        description: "The total value of all partial captures and captures for the payment that were reported as being fraudulent, converted to US Dollars at the transaction-date FX rate. Falls back to the payment's captured amount in US Dollars when no matched-transaction fraud amount is available."
+        data_type: numeric
+      - name: fraud_event_data
+        description: "Array of fraud event structs containing detailed data for each reported fraud record associated with the payment, including fraud type, reason, amounts in multiple currencies, timestamps, and source information."
+        data_type: "ARRAY<STRUCT<reported_fraud_event_sk STRING, mssql_fraud_id INT64, transaction_identifier STRING, acquirer_reference_number STRING, authorisation_acquirer_transaction_id STRING, acquirer_authorisation_code STRING, fraud_type STRING, fraud_reason STRING, payment_currency_iso3 STRING, fraud_currency_symbol_reported STRING, fraud_currency_name_reported STRING, action_id STRING, transaction_at TIMESTAMP, transaction_merchant_reference STRING, event_type STRING, event_id STRING, transaction_event_unique_key STRING, decoded_action_id STRING, transaction_id STRING, fraud_amount NUMERIC, fraud_amount_usd NUMERIC, fraud_amount_gbp NUMERIC, fraud_amount_eur NUMERIC, fraud_amount_reported NUMERIC, fraud_amount_reported_usd NUMERIC, fraud_amount_reported_gbp NUMERIC, fraud_amount_reported_eur NUMERIC, fraud_date DATE, fraud_issued_at TIMESTAMP, fraud_reported_at TIMESTAMP, acquirer_bin STRING, acquirer_country_iso_2_code STRING, billing_descriptor_name STRING, source_table STRING, fraud_report_loaded_at TIMESTAMP>>"
+      - name: fraud_issued_at
+        description: "Timestamp for when the fraudulent payment was spotted by the issuer. When multiple fraud records are associated to a payment, the fraud_issued_at timestamp of the first reported fraud record will be taken."
+        data_type: timestamp
+      - name: fraud_reason
+        description: "{{ doc('fraud_reason') }}"
+        data_type: string
+      - name: fraud_reason_list
+        description: "Comma-separated, distinct, sorted list of human-readable fraud reasons associated with the payment. Sample values: 'Fraudulent Use Of Account Number', 'Card Not Present Fraud, Stolen'."
+        data_type: string
+      - name: fraud_report_eligible_captured_amount
+        description: "{{ doc('fraud_report_eligible_captured_amount') }}"
+        data_type: numeric
+      - name: fraud_report_eligible_captured_amount_eur
+        description: "{{ doc('fraud_report_eligible_captured_amount_eur') }}"
+        data_type: numeric
+      - name: fraud_report_eligible_captured_amount_gbp
+        description: "{{ doc('fraud_report_eligible_captured_amount_gbp') }}"
+        data_type: numeric
+      - name: fraud_report_eligible_captured_amount_usd
+        description: "{{ doc('fraud_report_eligible_captured_amount_usd') }}"
+        data_type: numeric
+      - name: fraud_report_eligible_captured_events
+        description: "{{ doc('fraud_report_eligible_captured_events') }}"
+        data_type: int64
+      - name: fraud_report_eligible_captured_payments
+        description: "{{ doc('fraud_report_eligible_captured_payments') }}"
+        data_type: int64
+      - name: fraud_report_ingestion_at
+        description: "Timestamp when the fraud report data was ingested into the upstream source table."
+        data_type: timestamp
+      - name: fraud_reported_at
+        description: "Time the fraud record was created in the originating scheme source (for Visa and Mastercard). For Cartes Bancaires, this is the date the fraud record was ingested into Qlik. When multiple fraud records are associated to a payment, the earliest value is kept."
+        data_type: timestamp
+      - name: fraud_type
+        description: "{{ doc('fraud_type') }}"
+        data_type: string
+      - name: fraud_type_list
+        description: "Comma-separated, distinct, sorted list of scheme-specific fraud type codes associated with the payment. Sample values: '0, A', '6', '06'."
+        data_type: string
+      
+      # Has fields (boolean flags)
+      - name: has_previous_payment_id
+        description: "{{ doc('has_previous_payment_id') }}"
+        data_type: boolean
+      - name: ingestion_at
+        description: "Timestamp when the payment record was first ingested into the data platform."
+        data_type: timestamp
+      
+      # Is fields (boolean flags)
+      - name: is_acceptance_retried
+        description: "{{ doc('is_acceptance_retried') }}"
+        data_type: boolean
+      - name: is_attempt_n3ds_an_option
+        description: "{{ doc('is_attempt_n3ds_an_option') }}"
+        data_type: boolean
+      - name: is_authorisation
+        description: "{{ doc('is_authorisation') }}"
+        data_type: boolean
+      - name: is_authorisation_first_attempt_authorised
+        description: "Flag indicating if the payment was successfully authorised on the first authorisation attempt."
+        data_type: boolean
+      - name: is_authorisation_reattempted
+        description: "{{ doc('is_authorisation_reattempted') }}"
+        data_type: boolean
+      - name: is_authorisation_reattempted_authorised
+        description: "Flag indicating if the payment was successfully authorised after an authorisation reattempt."
+        data_type: boolean
+      - name: is_card_on_file
+        description: "{{ doc('is_card_on_file') }}"
+        data_type: boolean
+      - name: is_card_store_for_future_use
+        description: "{{ doc('is_card_store_for_future_use') }}"
+        data_type: boolean
+      - name: is_card_verification
+        description: "{{ doc('is_card_verification') }}"
+        data_type: boolean
+      - name: is_card_verification_value_check_present
+        description: "{{ doc('is_card_verification_value_check_present') }}"
+        data_type: boolean
+      - name: is_dispute_arbitration_represented
+        description: 'Flag indicating that the payment has entered the Dispute Arbitration Representment stage — true when a `DisputeArbitrationSentToScheme` event is present with the ARBR (Arbitration Representment) indicator code. {{ doc("is_dispute_arbitration_represented") }}'
+        data_type: boolean
+      - name: is_flagged_authorisation
+        description: "{{ doc('is_flagged_authorisation') }}"
+        data_type: boolean
+      - name: is_fraud_report_eligible_capture
+        description: "Whether a captured payment can be reported to Checkout as fraud. TRUE only when the payment was acquired by Checkout — through Checkout's own Visa or Mastercard acquiring, or (from 2023-08-01 onwards) Checkout CB — and was not a gateway-services-only (processing-only) payment. Payments Checkout does not acquire cannot be reported to the schemes as fraud, so they are excluded."
+        data_type: boolean
+      - name: is_full_refresh
+        description: "{{ doc('is_full_refresh') }}"
+        data_type: boolean
+      - name: is_gwc
+        description: "{{ doc('is_gwc') }}"
+        data_type: boolean
+      - name: is_last_payment_request
+        description: "TRUE if this attempt is the latest (most recently requested) attempt in its payment-request sequence; FALSE if a later attempt exists in the same sequence. Sourced from int_last_payment_request_payin."
+        data_type: boolean
+      - name: is_local_payment
+        description: "Local Payment project is a set of applications that allow merchants to communicate to local payments and initiate transactions, receive notifications, trigger refunds and perform reconciliations. Can only be True for APMs."
+        data_type: boolean
+      - name: is_mada
+        description: "{{ doc('is_mada') }}"
+        data_type: boolean
+      - name: is_mpan
+        description: "{{ doc('is_mpan') }}"
+        data_type: boolean
+      - name: is_nas
+        description: "{{ doc('is_nas') }}"
+        data_type: boolean
+      - name: is_partial_fraud_reported
+        description: "Flag indicating that only part of the payment's captured amount was reported as fraudulent (fraud_amount < payment_capture_amount). FALSE when the full captured amount was reported as fraudulent; NULL when the comparison is not determinable."
+        data_type: boolean
+      - name: is_pending_dunning_retry
+        description: "Flag indicating if the payment has a pending dunning retry scheduled."
+        data_type: boolean
+      - name: is_predispute_resolution_cko_provided
+        description: "{{ doc('is_predispute_resolution_cko_provided') }}"
+        data_type: boolean
+      - name: is_remember_me
+        description: "{{ doc('is_remember_me') }}"
+        data_type: boolean
+      - name: is_request
+        description: "A flag to show a payment was requested."
+        data_type: boolean
+      - name: is_split_payment_an_option
+        description: "{{ doc('is_split_payment_an_option') }}"
+        data_type: boolean
+      - name: is_three_ds_allow_upgrade
+        description: "{{ doc('is_three_ds_allow_upgrade') }}"
+        data_type: boolean
+      - name: is_three_ds_protocol_version
+        description: "{{ doc('is_three_ds_protocol_version') }}"
+        data_type: boolean
+      - name: is_three_ds_requested
+        description: "{{ doc('is_three_ds_requested') }}"
+        data_type: boolean
+      
+      # Issuing fields
+      - name: issuing_bank
+        description: "{{ doc('issuing_bank') }}"
+        data_type: string
+      - name: issuing_country
+        description: "{{ doc('issuing_country') }}"
+        data_type: string
+      - name: issuing_country_iso2
+        description: "{{ doc('issuing_country_iso2') }}"
+        data_type: string
+      - name: issuing_country_risk_level
+        description: "{{ doc('issuing_country_risk_level') }}"
+        data_type: string
+      - name: issuing_region
+        description: "{{ doc('issuing_region') }}"
+        data_type: string
+      
+      # Last requested fields
+      - name: last_requested_amount
+        description: "The requested amount from the last payment request in its original currency (relevant when multiple requests exist for the same payment)."
+        data_type: numeric
+      - name: last_requested_amount_eur
+        description: "The requested amount from the last payment request in Euros."
+        data_type: numeric
+      - name: last_requested_amount_gbp
+        description: "The requested amount from the last payment request in Sterling."
+        data_type: numeric
+      - name: last_requested_amount_usd
+        description: "The requested amount from the last payment request in US Dollars."
+        data_type: numeric
+      - name: last_requested_payments
+        description: "Count of last payment requests (always 1 when the last payment request data has been merged)."
+        data_type: int64
+      
+      # Latest fields
+      - name: latest_route_type
+        description: "Route type Routing selected on the latest attempt for this payment. Once a route type is selected for a payment it is locked in for all subsequent attempts, so this is effectively the route type for the whole payment. Sample values: Static (per-merchant custom rules), Intelligent (Intelligent Acceptance / TENET), Default (globally-defined fallback rules)."
+        data_type: string
+      - name: latest_routing_attempt_outcome_gateway_response_code
+        description: "The gateway response code (outcome) for the latest routing attempt associated with a payment."
+        data_type: string
+      
+      # Legal fields
+      - name: legal_acquirer_name
+        description: "{{ doc('legal_acquirer_name') }}"
+        data_type: string
+      
+      # Merchant fields
+      - name: merchant_terminal_id
+        description: "{{ doc('merchant_terminal_id') }}"
+        data_type: string
+      
+      # Payfac fields
+      - name: payfac_sub_entity_id
+        description: "{{ doc('payfac_sub_entity_id') }}"
+        data_type: string
+      
+      # Payment fields
+      - name: payment_capture_amount
+        description: "The captured amount in the payment's original currency, used for fraud report eligibility calculations."
+        data_type: numeric
+      - name: payment_capture_amount_usd
+        description: "The captured amount in US Dollars, used for fraud report eligibility calculations."
+        data_type: numeric
+      - name: payment_code
+        description: "{{ doc('payment_code') }}"
+        data_type: string
+      - name: payment_method_name_list
+        description: "Comma-separated list of payment method names associated with the payment's dispute events. Sample values: 'visa', 'mastercard', 'visa, mastercard'."
+        data_type: string
+      - name: payment_type
+        description: "{{ doc('payment_type') }}"
+        data_type: string
+      - name: platform_name
+        description: "{{ doc('platform_name') }}"
+        data_type: string
+      - name: payment_account_reference
+        description: "{{ doc('payment_account_reference') }}"
+        data_type: string
+      
+      # Predispute fields
+      - name: predispute_amount
+        description: "{{ doc('predispute_amount') }}"
+        data_type: numeric
+      - name: predispute_amount_eur
+        description: "{{ doc('predispute_amount_eur') }}"
+        data_type: numeric
+      - name: predispute_amount_gbp
+        description: "{{ doc('predispute_amount_gbp') }}"
+        data_type: numeric
+      - name: predispute_amount_usd
+        description: "{{ doc('predispute_amount_usd') }}"
+        data_type: numeric
+      - name: predispute_at
+        description: "At payment level: earliest predispute event timestamp across the payment's dispute events. {{ doc('predispute_at') }}"
+        data_type: timestamp
+      - name: predispute_currency_iso3
+        description: "{{ doc('predispute_currency_iso3') }}"
+        data_type: string
+      - name: predispute_or_disputed_at
+        description: "Timestamp of the first predispute or dispute event received for the payment."
+        data_type: timestamp
+      - name: predispute_outcome_amount
+        description: "At payment level: sum of predispute outcome amounts across the payment's dispute events. {{ doc('predispute_outcome_amount') }}"
+        data_type: numeric
+      - name: predispute_outcome_at
+        description: "At payment level: timestamp of the latest predispute outcome event across the payment's dispute events. {{ doc('predispute_outcome_at') }}"
+        data_type: timestamp
+      - name: predispute_outcome_currency_iso3
+        description: "{{ doc('predispute_outcome_currency_iso3') }}"
+        data_type: string
+      
+      # Preferred scheme
+      - name: preferred_scheme
+        description: "{{ doc('preferred_scheme') }}"
+        data_type: string
+
+      - name: scheme_merchant_preference
+        description: "{{ doc('scheme_merchant_preference') }}"
+        data_type: string
+      
+      # Previous charge
+      - name: previous_charge_id
+        description: "The charge ID of the previous payment in a linked payment chain (e.g. recurring or retry chain)."
+        data_type: string
+      
+      # Processor fields
+      - name: processor_bin_cib
+        description: "{{ doc('processor_bin_cib') }}"
+        data_type: string
+      
+      # Refund fields
+      - name: refund_acquirer_response_code
+        description: "{{ doc('refund_acquirer_response_code') }}"
+        data_type: string
+      - name: refund_acquirer_response_desc
+        description: "{{ doc('refund_acquirer_response_desc') }}"
+        data_type: string
+      - name: refund_deferred_payments
+        description: "{{ doc('refund_deferred_payments') }}"
+        data_type: int64
+      - name: refund_gateway_response_code
+        description: "{{ doc('refund_gateway_response_code') }}"
+        data_type: string
+      - name: refund_gateway_response_summary
+        description: "{{ doc('refund_gateway_response_summary') }}"
+        data_type: string
+      - name: refunded_payments
+        description: "Count of payments where the payment was refunded or partially refunded."
+        data_type: int64
+      
+      # Request fields
+      - name: payment_request_origin
+        description: "{{ doc('payment_request_origin') }}"
+        data_type: string
+      - name: request_origin_integration_name
+        description: "{{ doc('request_origin_integration_name') }}"
+        data_type: string
+      - name: request_sub_entities_array_size
+        description: "The number of sub-entities in the payment request's request_sub_entities array."
+        data_type: int64
+      - name: request_xid
+        description: "{{ doc('request_xid') }}"
+        data_type: string
+      - name: requested_payments
+        description: "{{ doc('requested_payments') }}"
+        data_type: int64
+      
+      # Retrieval fields
+      - name: retrieval_at
+        description: "At payment level: earliest retrieval event timestamp across the payment's dispute events. {{ doc('retrieval_at') }}"
+        data_type: timestamp
+      
+      # Return fields
+      - name: return_gateway_response_code
+        description: "{{ doc('return_gateway_response_code') }}"
+        data_type: string
+      - name: return_gateway_response_summary
+        description: "{{ doc('return_gateway_response_summary') }}"
+        data_type: string
+      - name: returned_amount
+        description: "{{ doc('returned_amount') }}"
+        data_type: numeric
+      - name: returned_amount_eur
+        description: "{{ doc('returned_amount_eur') }}"
+        data_type: numeric
+      - name: returned_amount_gbp
+        description: "{{ doc('returned_amount_gbp') }}"
+        data_type: numeric
+      - name: returned_amount_usd
+        description: "{{ doc('returned_amount_usd') }}"
+        data_type: numeric
+      - name: returned_payments
+        description: "{{ doc('returned_payments') }}"
+        data_type: int64
+      
+      # Risk decline fields
+      - name: risk_decline_gateway_response_code
+        description: "{{ doc('risk_decline_gateway_response_code') }}"
+        data_type: string
+      - name: risk_decline_gateway_response_summary
+        description: "{{ doc('risk_decline_gateway_response_summary') }}"
+        data_type: string
+      - name: risk_declined_amount
+        description: "{{ doc('risk_declined_amount') }}"
+        data_type: numeric
+      - name: risk_declined_amount_eur
+        description: "The total value of risk declined payments in Euros."
+        data_type: numeric
+      - name: risk_declined_amount_gbp
+        description: "The total value of risk declined payments in Sterling."
+        data_type: numeric
+      - name: risk_declined_amount_usd
+        description: "The total value of risk declined payments in US Dollars."
+        data_type: numeric
+      - name: risk_declined_payments
+        description: "Count of payments where the payment was pre authorisation risk declined."
+        data_type: int64
+      
+      # Routing fields
+      - name: routing_source_updated_at
+        description: "The latest updated_at timestamp from the source staging table for this payment's routing events."
+        data_type: timestamp
+      
+      # Segment fields
+      - name: segment_brand
+        description: "{{ doc('segment_brand') }}"
+        data_type: string
+      - name: segment_business_category
+        description: "{{ doc('segment_business_category') }}"
+        data_type: string
+      - name: segment_dimension_hash
+        description: "{{ doc('segment_dimension_hash') }}"
+        data_type: string
+      - name: segment_market
+        description: "{{ doc('segment_market') }}"
+        data_type: string
+      
+      # Shipping address fields
+      - name: shipping_address_country_iso2
+        description: "{{ doc('payin_shipping_address_country_iso2') }}"
+        data_type: string
+      - name: shipping_address_line_1
+        description: "{{ doc('payin_shipping_address_line_1') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: shipping_address_line_2
+        description: "{{ doc('payin_shipping_address_line_2') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: shipping_address_phone_number
+        description: "{{ doc('payin_shipping_address_phone_number') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: shipping_address_postcode
+        description: "{{ doc('payin_shipping_address_postcode') }}"
+        data_type: string
+        meta:
+          contains_pii: true
+      - name: shipping_address_region
+        description: "{{ doc('payin_shipping_address_region') }}"
+        data_type: string
+      - name: shipping_address_state
+        description: "{{ doc('payin_shipping_address_state') }}"
+        data_type: string
+      - name: shipping_address_town_city
+        description: "{{ doc('payin_shipping_address_town_city') }}"
+        data_type: string
+      
+      # Source fields
+      - name: source_id
+        description: "{{ doc('source_id') }}"
+        data_type: string
+      - name: sub_entity_id
+        description: "{{ doc('sub_entity_id') }}"
+        data_type: string
+      
+      # Three DS fields
+      - name: three_ds_exemption_code
+        description: "{{ doc('three_ds_exemption_code') }}"
+        data_type: string
+      - name: three_ds_exemption_requested
+        description: '{{ doc("three_ds_exemption_requested") }}'
+        data_type: string
+      - name: three_ds_protocol_version
+        description: "{{ doc('three_ds_protocol_version') }}"
+        data_type: string
+      
+      # Transaction flow
+      - name: transaction_flow
+        description: "Flow of the transaction (Request -> Authentication -> Authorisation -> Decline). Consistently NULL in this model (superseded by acceptance_gateway_response_code_list); retained for schema union with int_card_payin."
+        data_type: string
+      
+      # Visa fields
+      - name: visa_ce_outcome
+        description: "At payment level: comma-separated list of distinct Visa CE outcomes across the payment's dispute events. {{ doc('visa_ce_outcome') }}"
+        data_type: string
+      
+      # Void fields
+      - name: void_gateway_response_code
+        description: "{{ doc('void_gateway_response_code') }}"
+        data_type: string
+      - name: void_gateway_response_summary
+        description: "{{ doc('void_gateway_response_summary') }}"
+        data_type: string
+      - name: voided_payments
+        description: "Count of payments where the authorisation was voided or partially voided."
+        data_type: int64
+      
+      - name: is_batch_payment
+        description: "{{ doc('is_batch_payment') }}"
+        data_type: boolean
+      - name: is_over_captured
+        description: "{{ doc('is_over_captured') }}"
+        data_type: boolean
+      - name: is_regular_dunning_requested
+        description: "{{ doc('is_regular_dunning_requested') }}"
+        data_type: boolean
+      - name: is_regulated
+        description: "{{ doc('is_regulated') }}"
+        data_type: boolean
+      - name: pinless_debit_type
+        description: "{{ doc('pinless_debit_type') }}"
+        data_type: string
+      - name: regular_dunning_end_after_days
+        description: "{{ doc('regular_dunning_end_after_days') }}"
+        data_type: int64
+      - name: regular_dunning_max_attempts
+        description: "{{ doc('regular_dunning_max_attempts') }}"
+        data_type: int64
+      - name: regular_dunning_retry_type
+        description: "{{ doc('regular_dunning_retry_type') }}"
+        data_type: string
+      - name: service_type
+        description: "{{ doc('service_type') }}"
+        data_type: string
+      - name: affiliate_id
+        description: "{{ doc('affiliate_id') }}"
+        data_type: string
+      - name: affiliate_url
+        description: "{{ doc('affiliate_url') }}"
+        data_type: string
+      - name: purchase_type
+        description: "{{ doc('purchase_type') }}"
+        data_type: string
+      - name: purchase_country
+        description: "{{ doc('purchase_country') }}"
+        data_type: string  
+      - name: provider_key
+        description: "{{ doc('provider_key') }}"
+        data_type: string  
+      
+      # # Loaded at and updated at
+      - name: loaded_at
+        description: "{{ doc('loaded_at') }}"
+        data_type: timestamp
+      - name: updated_at
+        description: "{{ doc('updated_at') }}"
+        data_type: timestamp
+
+      - name: max_payin_component_updated_at
+        description: "The maximum value of the all the updated_at timestamps for this payment from all the components of fct_payin."
+        data_type: timestamp
+
+      - name: payin_component_key
+        description: "A bitwise encoded value of which components of fct_payin have affected this payment."
+        data_type: int64
+
+      - name: cko_native
+        description: "The classification of whether the payment's previous charge reference resolves to a
+          Checkout-processed payment. Possible values:
+            - 'primary': a match was found in int_payin_linkage_keys (CKO-native).
+            - 'fallback': the referenced previous payment was not processed by Checkout, or the lookback window was exceeded.
+            - 'unpopulated fallback': neither previous_charge_id nor previous_scheme_transaction_id was populated on the payment.
+          NULL for APM payments (not sourced from int_card_payin)."
+        data_type: string
+
+      - name: previous_charge_updated_at
+        description: "The timestamp when the previous charge was last updated."
+        data_type: timestamp
+
+      - name: is_bemi_entity
+        description: "{{ doc('is_bemi_entity') }}"
+        data_type: boolean
+

@@ -57,7 +57,9 @@ Invoke with `/<skill-name> [args]`. Full definitions in `.claude/skills/`.
 | `/sync-product-catalogue` | Sync the Airtable product catalogue to local CSV + product definitions |
 | `/taxonomy-classification-qa [source]` | QA Fin's contact classifications against the support taxonomy (defaults to Looker Look 18808) |
 | `/workspace-review` | Audit `04-active-work/`, assign keep/update/archive/delete verdicts, fix deliverable-date drift |
+| `/consolidation-review` | Audit `01-knowledge-base/` and `04-active-work/` for content duplication across files, merge into a canonical file on confirmation |
 | `/write-fin-attribute` | Draft or update a single Fin Attribute value definition (Intercom format) |
+| `/sync-support-content [scope]` | Refresh local support content (external site, internal SOPs, Tech Docs, API reference) from their GitHub source repos |
 
 ## Key Reference Files
 
@@ -76,6 +78,7 @@ Invoke with `/<skill-name> [args]`. Full definitions in `.claude/skills/`.
 | Contact volume forecasts 2026-2030 | `01-knowledge-base/metrics/contact forecasting.md` |
 | Reflex product reference | `01-knowledge-base/products/reflex.md` |
 | Fin AI Agent reference | `01-knowledge-base/products/fin-ai-agent.md` |
+| Ray product reference (replaces paused Braavos) | `01-knowledge-base/products/ray.md` |
 | Zendesk reference | `01-knowledge-base/products/zendesk.md` |
 | PRD template + example | `03-templates/prd-template.md`, `03-templates/prd-template-example.md` |
 | Writing style guide (by audience) | `01-knowledge-base/processes/writing-style-guide.md` |

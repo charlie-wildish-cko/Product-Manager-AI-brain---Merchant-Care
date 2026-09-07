@@ -7,7 +7,7 @@
 > - `Product category and name definitions - Sheet1.csv` (April 2026, new source of truth) — entity classes 4–6
 > - `01-knowledge-base/products/customer-segments.md` — entity class 10
 >
-> **Scope**: B2B support only. The B2C taxonomy does not yet exist — B2C (Consumer/Braavos) is excluded from all phases until that taxonomy is defined (2027+). See note under Class 10.
+> **Scope**: B2B support only. The B2C taxonomy does not yet exist — B2C (Consumer/Ray) is excluded from all phases until that taxonomy is defined. See note under Class 10.
 >
 > **Resolution scope**: All resolution actors — Fin (autonomous AI), Agent Consultant (AI-assisted human), Human L1, Human L2, External. The graph does not model Fin in isolation. It models the knowledge and data required to resolve each Reason across the full actor stack. See Classes 11–13.
 >
@@ -284,7 +284,7 @@ Added in design review, April 2026. The original 9-class taxonomy had no concept
 | Payfac | Small merchants where Checkout is the primary PayFac. TBC — timing not confirmed. | `customer-segments.md` |
 | Issuing | Merchants using Checkout card issuance capabilities. Small segment; low contact volume currently. | `customer-segments.md` |
 
-**B2C is excluded.** The consumer support taxonomy does not yet exist. When defined (2027+, ahead of Braavos launch), B2C slots in as a fifth Segment entity — the graph structure is compatible. B2C will require new Domains, Problem Types, and Reasons (balance disputes, card freeze, complaint handling, FOS referral, vulnerable customer escalation) before any `RAISED_BY` edges can be created.
+**B2C is excluded.** The consumer support taxonomy does not yet exist. When defined (ahead of Ray's external beta, Q1 2027), B2C slots in as a fifth Segment entity — the graph structure is compatible. B2C will require new Domains, Problem Types, and Reasons (deposit/funding issues, KYC verification, card issuance, disputes, complaint handling) before any `RAISED_BY` edges can be created — note Ray has no FOS referral or vulnerable-customer Consumer Duty obligation, unlike the earlier (now ended) Braavos assumption.
 
 ---
 

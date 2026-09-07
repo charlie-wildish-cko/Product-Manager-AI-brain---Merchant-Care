@@ -30,6 +30,16 @@ The Platform is Checkout.com's direct customer. The merchants beneath the Platfo
 
 > **Future direction**: Checkout.com may choose to act as a PayFac itself in the future, directly contracting with and owning the merchant relationship rather than routing it through the Platform. No timeline is confirmed. If this materialises, it would significantly change the support model — Checkout.com would become L1 for merchants directly, rather than L2 via the Platform. This document should be updated when that direction is confirmed.
 
+### Regulatory Exposure If Checkout.com Becomes L1 for SMB Merchants
+If this future direction materialises, Checkout.com inherits direct regulatory exposure it currently avoids by sitting behind the Platform. Micro-enterprises and small merchants carry consumer-like protections in every major market — UK (FCA Consumer Duty & DISP), EU (PSD2 Art. 30 & 61), US (CFPB/FTC UDAAP), Australia (ASIC & AFCA). Regulators in all of these markets prohibit fully automated support for account freezes/terminations, formal complaint sign-off, and any flow that blocks escalation to a human during an active dispute ("doom loop" rules).
+
+This changes the support model requirements, not just the routing:
+- A visible, one-click human off-ramp becomes mandatory in any AI/Fin interface serving these merchants directly, not optional.
+- Account holds, reserve changes, and terminations need a substantive human review path (GDPR Art. 22), with an audit trail of who approved what.
+- Formal complaints need a compliance sign-off step and a 15-business-day resolution SLA (UK/EU) built into the workflow, not left to ad hoc handling.
+
+Full regional breakdown and the AI-vs-human support domain matrix: `01-knowledge-base/products/customer-segments.md` → SMB section → "Regional Regulatory Requirements for SMB Support."
+
 
 ## Key Design Considerations
 

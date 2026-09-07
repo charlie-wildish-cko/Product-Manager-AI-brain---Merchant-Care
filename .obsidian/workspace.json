@@ -1,0 +1,214 @@
+{
+  "main": {
+    "id": "26042df4f67b2bd9",
+    "type": "split",
+    "children": [
+      {
+        "id": "7b39f1cc1bf3810e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e8d96f949210e0b1",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9ac09c5d02d69bad",
+    "type": "split",
+    "children": [
+      {
+        "id": "503579198b88ea33",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e5c5f0e2dca06b83",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "6630619948939d4d",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "product-definitions",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "2dfd9b57f0f47ec8",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "right": {
+    "id": "165296af65a0dd78",
+    "type": "split",
+    "children": [
+      {
+        "id": "e41bd889e4f76aac",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f83cbed57c92b71f",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "a869fb235b735919",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "605c3ecd4612ef8b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "a9b8b407e114cf3e",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "f6006319a03ea3f6",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "e8d96f949210e0b1",
+  "lastOpenFiles": [
+    "Untitled 2.base",
+    "Untitled 1.base",
+    "Untitled.base",
+    "04-active-work/research/zendesk-platform-decision-rfc.md",
+    "04-active-work/fin-resolution-dependencies-leadership-update.md",
+    "04-active-work/meeting-notes/2026-08/2026-08-07-consumer-ops-readiness.md",
+    "04-active-work/meeting-notes/2026-08/2026-08-07-nexus-data-model-care-queries.md",
+    "04-active-work/strategy/care-strategy-2026-2030.md",
+    "01-knowledge-base/products/smb-research-findings.md",
+    "01-knowledge-base/products/product-definitions.md",
+    "04-active-work/working-files/fin-not-for-classification-lines.md",
+    "04-active-work/working-files/product-definitions-backfill-scope.md",
+    "04-active-work/working-files/product-catalogue-changes-2026-08-13.csv",
+    "01-knowledge-base/processes/fin-attributes-definitions.md",
+    "README.md",
+    "Untitled.canvas",
+    "CLAUDE.md",
+    "01-knowledge-base/metrics/kpi-definitions.md",
+    "01-knowledge-base/payment-domain/checkout-terminology.md",
+    "01-knowledge-base/teams.md",
+    "01-knowledge-base/fin-pilot-report-example.md",
+    "01-knowledge-base/strategy/B2C Fintech Support Competitive Analysis.md",
+    "01-knowledge-base/strategy/rumelt-strategy-kernel.md",
+    "01-knowledge-base/strategy/stripe-adyen-competition-analysis.md",
+    "01-knowledge-base/strategy/content-strategy-2026.md",
+    "01-knowledge-base/strategy/support-scale-principles.md",
+    "05-archive/2026/strategies/support-scale-principles.md",
+    "01-knowledge-base/strategy/care-product-model.md"
+  ]
+}

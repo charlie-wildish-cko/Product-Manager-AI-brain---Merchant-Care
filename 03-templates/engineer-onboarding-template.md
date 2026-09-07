@@ -31,7 +31,7 @@ Guardrail: **CSAT & SLO must not decline as we automate**.
 
 **Platforms (ISVs)** — vertical SaaS businesses that embed Checkout payments and act as a PayFac for their own merchants. Checkout is L2; the Platform is L1 for its Platform merchants. When a Platform contacts us, they may be asking about their own account or about a specific Platform merchant's issue — distinguishing these matters for routing and data access.
 
-**Consumers (B2C)** — individual users of the Braavos consumer wallet app. This is a new segment entirely separate from B2B merchant support — different channel (in-app), different taxonomy, different regulatory obligations. Consumer Duty (UK) applies from day one, which means complaint handling and vulnerable customer identification must be live at launch, not added later. B2C agent permissions will be walled from B2B data.
+**Consumers (B2C)** — individual users of Ray, Checkout.com's consumer stablecoin wallet + USD Visa card app. This is a new segment entirely separate from B2B merchant support — different channel (in-app), different taxonomy, different regulatory obligations. Ray is non-custodial and not launching in the UK, so Consumer Duty does not apply — its regulatory surface is global AML/Travel Rule and KYC instead, owned by Compliance. B2C agent permissions will be walled from B2B data.
 
 ---
 
@@ -63,7 +63,7 @@ We are in [YEAR]. The model has strong foundations in Agent Experience and Orche
 | Agent AI assistance | SOP-based suggestions live. Agent Consultant in foundation phase | Every ticket gets an AI-suggested action. 90%+ acceptance rate. Autonomous for permitted tasks; human approval for sensitive ones |
 | Insights and prevention | Reflex product in build. Support leaders present themes to Product manually and quarterly | Reflex runs weekly. Automated action plans sent to Product leads. Autonomous triage and fix PRs generated for engineering review by 2029 |
 | Content | ~60% taxonomy coverage. Reactive monthly reviews | 90%+ coverage. AI-proposed updates weekly; Content team approves |
-| Customer segments | B2B Direct Merchants + Platforms (ISV) | B2B Direct, Platforms, B2C consumer wallet (2027), B2B Banking (2028+) |
+| Customer segments | B2B Direct Merchants + Platforms (ISV) | B2B Direct, Platforms, B2C consumer wallet (2027), B2B Banking (2027+) |
 
 The work you join in [YEAR] is foundational — the decisions made this year on data architecture, AI tooling, and the support platform determine what's possible in 2027 and beyond.
 

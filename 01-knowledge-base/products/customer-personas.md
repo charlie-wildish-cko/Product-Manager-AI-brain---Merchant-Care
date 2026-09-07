@@ -17,14 +17,14 @@ Reference these personas when:
 
 Personas are grouped into two sets:
 
-- **External** (merchants and consumers who contact support): Maria, James, Priya, Tom, Alex (Remember Me), Jordan (Braavos)
+- **External** (merchants and consumers who contact support): Maria, James, Priya, Sam (SMB), Tom, Alex (Remember Me), Jordan (Ray)
 - **Internal** (Checkout.com staff whose work is shaped by Care product): Oliver, Niamh, Marcus
 
 ---
 
 ## Maria — Merchant Ops Team Lead
 
-**Segment**: Enterprise Standard
+**Segment**: Enterprise Growth
 **Role**: Operations team lead or support manager at a mid-size direct merchant. Responsible for fielding payment queries from their own customers and resolving them via Checkout.com.
 
 ### Goals
@@ -135,6 +135,50 @@ A property management company using Guesty as their platform changed banks three
 > *"I'm waiting for this email… I'm feeling that the next email they send might say: okay, we get rid of that, please let us go to Stripe."* (Golf Manager)
 
 > *"I'm stuck with this client. I cannot go on."* (Golf Manager — waiting on Checkout support response)
+
+---
+
+## Sam — SMB Owner-Operator (No Account Manager)
+
+**Segment**: Not White Glove (no-AM) / commercial name "SMB" / Essential Care Plan, Tier 5+
+**Role**: Owner or sole operations person at a small, often pre-revenue or early-revenue business. No dedicated finance or engineering headcount; handles payments as one operational job among many (also does hiring, marketing, day-to-day ops).
+
+> **Evidence status**: Built from `01-knowledge-base/products/smb-research-findings.md` — a 253-respondent SMB Discovery Survey (Feb 2022) plus 5 named In-Market Decision Maker interviews (2023: Offsetted, Myra, Subjektiv, StylishAccessoriesShop, Hafven). Goals, Frustrations, and Key Quotes below are real, attributed statements from that research. The gap versus Maria/James/Priya is narrower than it was but still real: these are Checkout's own commissioned interviews, but the raw transcripts sit in Checkout's Merchant Services research Drive rather than this repo, and none of the 5 participants is confirmed as a current no-AM/Tier 5 Checkout merchant specifically (the research is SMB-segment-general, not Checkout-account-specific). "A day in the life" below is a composite built around Myra's own described routine, not a single verbatim account.
+
+### Goals
+
+- Get paid and see funds land without needing a developer or a finance team to check (69% of SMBs have no development resource — Q79, n=253)
+- Run payments self-serve: setup, daily balance checks, sending an invoice, without contacting support unless something is actually broken
+- Avoid a monthly platform fee; pay only on transactions (3 of 5 qual participants; corroborated in survey free-text, Q52/Q68)
+- Trust that a payment outage or fund freeze will be resolved fast and explained by a person, not left to an automated decision (2 of 5 qual participants, Q52/Q80; also a regulatory requirement in most Sam's markets — see below)
+
+### Frustrations
+
+- Checkout.com has a near-zero brand awareness problem in this segment (5.23% recognition vs. Stripe 79%, PayPal ~100% — Q67); Sam likely hasn't heard of Checkout.com before onboarding, which makes every early support interaction also a trust-building interaction
+- The dashboard needs to answer "what did I sell today, what will settle, can I send an invoice" — anything more complex than that isn't used (live balance visibility rated extremely/very important by 79%, Q74; "send single invoices" is the #1 ranked dashboard capability at 45.2%, Q78)
+- Once set up, Sam will not proactively re-evaluate the PSP (72% never change settlement bank account, Q76) — so a bad support experience early is disproportionately damaging: it's one of the few moments Sam actively judges the relationship
+- Industry-wide (not yet Checkout-validated — see `customer-segments.md` "Industry-Wide SMB Support Pain Points"): automated, low-context fund freezes are the single most severe failure mode for this segment, since a micro-merchant has no cash reserve to absorb a 90–180 day hold
+- Sam is stuck in the same self-service queue as every other small merchant regardless of how commercially complex the issue actually is — there is no dedicated technical/compliance support tier below Enterprise volume thresholds
+
+### A day in the life *(composite, built around Myra's described routine)*
+
+Sam logs in first thing to check today's sales against yesterday's and see what's expected to settle, the same daily habit Myra (Head of Operations, cookery-class business) described relying on with her current provider. This week a batch of card payments settled two days late, and it matters because a supplier invoice is due. Sam has never spoken to Checkout.com support before and doesn't fully know what Checkout.com is versus the checkout page itself. The dashboard doesn't give a clear settlement explanation, and Sam looks for a way to ask a real person without an account manager to call. If the answer comes back automated, generic, and without a visible path to a human, Sam won't complain loudly. Sam will just quietly start looking at Stripe: as Offsetted's founder put it, *"if you offer me a better deal and my switching cost is zero, I would consider changing... I would change the next day, no problem."* Having never had a reason to re-evaluate a provider before, this is one of the few moments that reason exists.
+
+**Support expectation**: Consumer-like, despite being a business customer. Fast, self-serve by default; a visible, unburied route to a human specifically when something threatens cash flow (a hold, a freeze, a settlement delay). Regulatory frameworks in the UK (FCA Consumer Duty, micro-enterprises under £6.5M turnover / <50 staff), EU (PSD2 Art. 30/61, micro-enterprises under €2M turnover / <10 staff), and Australia (AFCA) explicitly extend consumer-style protections to this segment — Sam is not a standard B2B account from a regulatory standpoint.
+
+**Design implication**: Primary fit for the 2030 "Not White Glove" resolution model — AI resolution for the large majority of contacts, with a mandatory, always-visible human off-ramp reserved for account holds, freezes, and anything resembling a formal complaint (GDPR Art. 22 requires *substantive* human review of automated decisions with financial impact, not a rubber stamp). Zero-dev self-serve onboarding and a minimal-but-fast dashboard (balance, expected settlement, send an invoice) matter more than feature depth. No monthly-fee pricing and low/no support-tier upsell framing are commercial, not support, decisions, but Care's support experience is one of the few relationship touchpoints this segment has, so it carries outsized weight on retention. Maps to: Not White Glove / SMB support model (2027 acquisition motion; Essential Care Plan tier already active for Tier 5+ today).
+
+### Key quotes (SMB research, 2023)
+
+> *"If you're telling me, OK, Alex, you can press one button, you are pre-approved already... one second passes, we are integrated and our commission is lower. I would switch instantly."* (Offsetted, Founder)
+
+> *"They were charging a monthly fee. Stripe don't charge the monthly fee, which is very important to keep our cost down as a startup."* (Myra, Head of Operations)
+
+> *"What Natwest do a bit better is when you log in it first straightaway shows you your sales for today, if it's up or down from yesterday, and if you're expecting any settlements. That's quite good to see just on a front page."* (Myra, Head of Operations)
+
+> *"If there's a problem with the payment system, I would like to write immediately to you... some customer comes and wants to buy, if he or she cannot, it will be very different to bring them back again."* (StylishAccessoriesShop, Contact Us Lead)
+
+**Research gap**: these quotes are from Checkout's own SMB research, but no participant is confirmed as a current no-AM/Tier 5 Checkout merchant — the research is segment-general. Before this persona is used to justify a specific product or PRD decision, prioritise closing that gap with at least one interview of an actual no-AM/Tier 5 Checkout merchant. Full findings: `01-knowledge-base/products/smb-research-findings.md`.
 
 ---
 
@@ -307,14 +351,16 @@ Alex tries to use a remembered card at checkout and the payment fails. She can't
 
 **Support expectation**: Consumer-grade. Fast response, empathetic tone, clear resolution.
 
-**Design implication**: Remember Me is live but low-volume and informally supported. The contact model is simple: webform intake, email resolution. The priority is ensuring response times and resolution quality meet basic consumer expectations. No structural changes required before Braavos launch; maintain and monitor. Maps to: B2C support operations (ongoing).
+**Design implication**: Remember Me is live but low-volume and informally supported. The contact model is simple: webform intake, email resolution. The priority is ensuring response times and resolution quality meet basic consumer expectations. No structural changes required before Ray's launch; maintain and monitor. Maps to: B2C support operations (ongoing).
 
 ---
 
-## Jordan — Consumer (Braavos)
+## Jordan — Consumer (Ray)
 
 **Segment**: B2C Consumer
-**Role**: Braavos neobank account holder (2027 launch). Braavos is a mobile-first neobank competing with Monzo and Revolut. Jordan has actively chosen Braavos for its value proposition and expects a full-service consumer banking experience.
+**Role**: Ray wallet holder (internal launch end Dec 2026; external beta end Q1 2027). Ray is a non-custodial stablecoin wallet plus USD Visa card — Jordan funds it via on-chain stablecoin deposit (USDT/USDC) and uses the card day-to-day, rather than a traditional bank account. Ray is not a UK-launched product, so Jordan is not protected by UK Consumer Duty or FOS — a different trust proposition to reason about than a neobank.
+
+*Note: this persona was written for Braavos, Checkout.com's earlier (now ended) neobank proposition, and has been updated for Ray. The sub-segments and psychographic profile below are general consumer-finance research and are retained as directionally relevant; the goals, frustrations, and day-in-the-life below are rewritten for Ray's actual model (non-custodial wallet, no Consumer Duty/FOS) and have not yet been validated with real Ray users.*
 
 ### Behavioural Sub-segments
 
@@ -338,26 +384,25 @@ A 34-year-old marketing consultant. Uses resale platforms (e.g. Vinted) and buy-
 
 ### Goals
 
-- Resolve account or payment issues quickly with minimal friction
-- Understand what happened and why
-- Know their complaint will be heard and acted on
-- Maintain confidence that their money is safe and the product is regulated
+- Resolve wallet, card, or deposit issues quickly with minimal friction
+- Understand what happened and why, especially when something feels irreversible (an on-chain deposit, a declined card)
+- Be reassured her funds are safe even though there's no bank-style deposit insurance
+- Know that if she needs a human, she can reach one — not just a bot loop
 
 ### Frustrations
 
-- No phone channel for a regulated banking product
-- No visible complaint handling process
-- Slow response times relative to neobank competitors (Monzo, Revolut offer in-app live chat)
-- Potential vulnerability identification gaps
-- Lack of transparency erodes trust rapidly in a product where trust is the core value proposition
+- No chargeback-style safety net for deposits: a stablecoin deposit sent wrong is only recoverable in narrow, disclosed-fee edge cases, not guaranteed
+- Confusion between Ray's "Insurance Guarantee" (covers Ray's own operational/infrastructure risk) and deposit insurance (which does not exist for her funds)
+- Slow or unclear response when a KYC check fails and she doesn't know why she's stuck in review
+- Lack of transparency erodes trust rapidly in a product where trust is the core value proposition, especially for funds she legally owns outright but can't get Care to intervene on
 
 ### A day in the life
 
-Jordan's Braavos card is declined abroad. She opens the app expecting in-app chat but can't find one. She submits a webform query and waits. By the time she gets a response, she has used a competitor card instead. The payment issue was minor; the confidence loss was not. For a neobank user who chose Braavos over Monzo, a single unresolved support experience can end the relationship.
+Jordan's Ray card is declined abroad. She opens the app expecting in-app chat and Fin (the AI agent) gives her an answer in seconds: a routine overseas fraud check, easily lifted. Separately, an earlier stablecoin deposit she sent to the wrong network is stuck — she learns from Fin that recovery is possible but not guaranteed, and comes with a disclosed fee. The card issue resolves instantly; the deposit question requires patience she wasn't expecting for a product marketed as her money, her wallet.
 
-**Support expectation**: Consumer-grade, neobank-standard. In-app or live chat, fast response, empathetic tone, clear resolution, complaint rights visible and accessible from day one.
+**Support expectation**: AI-first, fast, and plain-language about what Ray can and can't do with her funds (irreversibility, no chargeback-equivalent, self-custody as her real safety net) — not neobank-style complaint/FOS rights, which don't apply here.
 
-**Design implication**: Braavos launch (2027) requires a full consumer support model live at launch — not added post-launch. Required from day one: phone channel, in-app or live chat, complaint handling (Consumer Duty, 8-week FRL, FOS referral rights), and vulnerable customer identification in Fin. The psychographic profile reinforces the design priority: Jordan values transparency, dislikes surprises, and will disengage quickly if the support experience undermines trust. Braavos competes on trust; every support gap is a churn risk. Maps to: B2C wallet launch preparation (2027 pre-work, 2026 backlog).
+**Design implication**: Ray's Care model (AI L1 across launch languages, escalating to a human L2 lane for KYC, deposit recovery, disputes, account ops, and complaints) needs to make irreversibility and the Insurance-Guarantee-vs-deposit-insurance distinction unmistakably clear at the point Jordan needs it, not buried in T&Cs. The psychographic profile reinforces the design priority: Jordan values transparency, dislikes surprises, and will disengage quickly if the support experience undermines trust. Every support gap is a churn risk. Maps to: Ray Care build (internal launch end Dec 2026, external beta end Q1 2027).
 
 ---
 
@@ -366,15 +411,16 @@ Jordan's Braavos card is declined abroad. She opens the app expecting in-app cha
 
 | Persona | Segment               | Primary Need                                                                              | Support Expectation   | 2026 Priority | Key Design Implication                                                                           |
 | --------- | ----------------------- | ------------------------------------------------------------------------------------------- | ----------------------- | --------------- | -------------------------------------------------------------------------------------------------- |
-| Maria   | Enterprise Standard   | Fast self-serve resolution for transaction queries                                        | Low white-glove       | High          | Fin deflection, Dashboard data, in-context error code documentation, support quality not just speed |
+| Maria   | Enterprise Growth   | Fast self-serve resolution for transaction queries                                        | Low white-glove       | High          | Fin deflection, Dashboard data, in-context error code documentation, support quality not just speed |
 | James   | Enterprise or Premium | Strategic handling for performance optimisation and reconciliation                        | High white-glove      | Maintain      | Fast L2 escalation, data tooling                                                                 |
 | Priya   | Platform (ISV)        | Platform identification, sub-merchant context at intake, and post-approval lifecycle management | Medium white-glove    | Primary focus | Identification, structured intake, lookup tooling, post-approval form access, payout rejection API, action required prioritisation, scale tooling |
+| Sam     | Not White Glove (SMB, no-AM) | Zero-dev self-serve resolution; fast, visible human off-ramp only for holds/freezes/complaints | Consumer-like, no AM  | 2027 (Essential tier active now) | AI resolution by default, mandatory human review for automated financial decisions (GDPR Art. 22), minimal fast dashboard. **Evidence gap: real quotes exist, but no confirmed no-AM/Tier 5 Checkout merchant — see persona notes.** |
 | Tom     | Card Issuing          | Specialist L2 routing for issuing queries                                                 | Technical, low volume | Monitor       | Specialist routing, Fin KB articles (future)                                                     |
 | Oliver  | Internal — L1 agent  | Fast merchant ID, in-Zendesk knowledge retrieval, fewer tool switches                     | Internal tooling      | High          | Agent Consultant (knowledge retrieval), Agent Toolkit, Dashboard user search by name             |
 | Marcus  | Internal — AM/TAM    | Visibility into ticket status, formalised escalation route                                | Internal stakeholder  | Medium        | Internal ticket submission form                                                                  |
 | Niamh   | Internal — L2 agent  | Complete context at handoff, cross-system data access, merchant self-serve reconciliation | Internal tooling      | High          | Agent Consultant (data + action modes), merchant reconciliation self-serve, role ownership model |
-| Alex    | B2C Consumer (Remember Me) | Fast resolution for payment failures; basic complaint access                         | Consumer-grade        | Maintain      | Webform intake, email resolution; monitor volume; no structural changes needed pre-Braavos       |
-| Jordan  | B2C Consumer (Braavos) | Neobank-standard support: fast, transparent, complaint rights from day one              | Consumer-grade, neobank-standard | 2027 pre-work | Full B2C support model at launch: phone, in-app chat, Consumer Duty compliance, vulnerable customer ID in Fin |
+| Alex    | B2C Consumer (Remember Me) | Fast resolution for payment failures; basic complaint access                         | Consumer-grade        | Maintain      | Webform intake, email resolution; monitor volume; no structural changes needed pre-Ray       |
+| Jordan  | B2C Consumer (Ray) | AI-first support: fast, transparent, clear on irreversibility and no deposit insurance              | Consumer-grade, AI-first | Build to Dec 2026 (internal) / Q1 2027 (external beta) | Full B2C support model at launch: AI L1 + human L2 lanes (KYC, deposit recovery, disputes, account ops, complaints); no Consumer Duty/FOS — not UK-launched |
 
 ---
 

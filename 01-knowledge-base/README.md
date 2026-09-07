@@ -7,14 +7,12 @@ This directory contains domain knowledge, process documentation, and reference m
 ### 🎯 `strategy/`
 High-level strategic frameworks and source documents
 - `care-product-model.md` - The Care Product flywheel (6-domain capability model)
-- `support-scale-principles.md` - Principles for scaling support to 2030
 - `competitive-support-audit-2026.md` - Competitor benchmark: Stripe, Adyen, Worldpay, Razorpay, Braintree
-- `care-success-plans-proposal.md` - Source proposal for the three-tier B2B support model
 
 ### 📦 `products/`
 Product reference documentation
 - `customer-segments.md` - All customer segments and their support model
-- `care-success-plans.md` - Tier model (Standard / Enterprise / Premium) + Stripe benchmark
+- `care-success-plans.md` - Tier model (Essential / Growth / Enterprise / Premium) + Stripe benchmark
 - `platform-segment.md` - Platform / ISV deep-dive (primary 2026 focus)
 - `reflex.md` - Reflex: AI-powered support contact insights product
 - `checkout-products.md` - Checkout.com product overview

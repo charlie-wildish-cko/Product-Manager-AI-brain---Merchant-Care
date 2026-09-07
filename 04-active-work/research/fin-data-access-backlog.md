@@ -104,6 +104,23 @@ This backlog tracks the data sources Fin should be able to access (via API or MC
 
 ---
 
+#### Financial Actions API ✦
+| Field | Value |
+|---|---|
+| **Data source** | Checkout Financial Actions Report ("Financial Actions - By Date Range Report") |
+| **Query types enabled** | Detailed fee/action breakdown for a payment (per Action Type — e.g. Capture, Refund, Chargeback — with Processing/Holding Currency Amount); which settlement a payment was included in (via Payout ID) |
+| **Contact types** | FUNDS AND FEES → Settlements; FUNDS AND FEES → Fees |
+| **Contact volume** | Subset of Settlements/Fees contacts — TBD, confirm from flat table |
+| **Integration method** | API — queryable data source confirmed available for Fin (Charlie, 2026-08-24); confirm exact API/endpoint name and reference doc |
+| **Access model** | Read-only |
+| **Data availability** | Confirmed live |
+| **Complexity** | Medium |
+| **Status** | Proposed |
+| **Key fields (from sample report)** | `Payment ID`; `Payout ID` (settlement/payout the action was included in — links payment to settlement); `Action Type` / `Action ID` (Capture, Refund, etc.); `Breakdown Type`; `Processing Currency Amount` / `Holding Currency Amount`; `FX Rate Applied` / `FX Trade ID`; `Available On` / `Available On UTC`; `Response Code` / `Response Description` |
+| **Notes** | Payment-level complement to the Settlements API — Settlements API answers settlement-level status/reconciliation, this answers per-payment fee and settlement-inclusion detail ("what settlement was this payment included in"). `Payout ID` = settlement ID — confirmed (Charlie, 2026-08-24). Sample report seen 2026-08-24 (`Sample_Financial_Actions-By_Date_Range_Report.csv`) had it blank because all sample rows were `Capture` actions not yet paid out. Confirm overlap/boundary with Settlements API before scoping as separate Procedures. |
+
+---
+
 #### Analytics MCP ✦
 | Field | Value |
 |---|---|
@@ -220,6 +237,7 @@ This backlog tracks the data sources Fin should be able to access (via API or MC
 | P1 | Payments API (Transaction Status, Refunds, Disputes, 3DS, Risk, APMs) | ~10,049 | Confirmed live | Medium | [Yes](payment-details-fields.csv) |
 | P2 | User Management API (Login & Access) | 2,228 | Not confirmed | Medium | [Yes](fin-user-management-responses.md) |
 | P2 | Settlements API | 858 | H2 2026 | Medium | No |
+| P2 | Financial Actions API (fees, settlement inclusion) | TBD | Confirmed live | Medium | No |
 | P2 | Analytics MCP (Reporting) | 763 | Not confirmed | Medium | No |
 | P2 | Balance API | 409 | Not confirmed | Low | No |
 | P2 | VisionNotify (Incident API) | Spike-dependent | Confirmed live | Low | [Yes](fin-outage-check-responses.md) |
@@ -235,3 +253,4 @@ This backlog tracks the data sources Fin should be able to access (via API or MC
 2. **Balance API** — confirm availability timeline and credential scope for Fin.
 3. **Analytics MCP** — confirm availability and query scope; validate MCP is the right integration route.
 4. **Clearing/TPA** — confirm Q4 2026 timeline and whether any interim data is accessible before the Payments API migration completes.
+5. **Financial Actions API** — API availability confirmed; still need exact API/endpoint name and reference doc, contact volume, and boundary with Settlements API before scoping.

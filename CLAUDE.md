@@ -57,7 +57,9 @@ Every document, analysis, or recommendation must connect to:
 | Merchant segments | `01-knowledge-base/products/customer-segments.md` |
 | Product catalogue (products, teams, pillars) | `01-knowledge-base/Checkout Products and teams.csv` |
 | Product definitions with contact risk tags | `01-knowledge-base/products/product-definitions.md` |
+| Product -> support taxonomy mapping (hypothesis, unvalidated — no ticket-level product tagging yet) | `01-knowledge-base/products/product-taxonomy-mapping.md` |
 | Payment domain terminology (200 terms: acquirer, authorization, chargeback, settlement, SCA, APM, etc.) | `01-knowledge-base/payment-domain/checkout-terminology.md` |
+| `fct_payin` / `fct_pay_to_card` schema field definitions (dbt docs blocks — authoritative for data field/column definitions; does NOT cover `fct_pay_to_bank`) | `01-knowledge-base/payment-domain/fct-payin-pay-to-card-schema-fields.md` |
 | Platform segment model | `01-knowledge-base/products/platform-segment.md` |
 | Platform Embedded AI vision | `01-knowledge-base/products/platform-embedded-ai-support-vision.md` |
 | Customer personas (merchant + internal) | `01-knowledge-base/products/customer-personas.md` |
@@ -67,6 +69,7 @@ Every document, analysis, or recommendation must connect to:
 | Reflex phased plan (components + build sequence, Q1–Q4 2026) | `04-active-work/prds/reflex/phased-plan.md` |
 | Agent Consultant capabilities (full list) and interaction model | `01-knowledge-base/products/agent-consultant.md` · vision: `04-active-work/prds/agent-consultant/vision.md` |
 | Fin AI Agent — how it works, Checkout.com deployment, Procedures/Tasks, analytics, terminology | `01-knowledge-base/products/fin-ai-agent.md` |
+| Ray — non-custodial consumer stablecoin wallet + USD Visa card, Care model, known gaps (replaces Braavos, ended 2026-08-18) | `01-knowledge-base/products/ray.md` · Care scoping: `04-active-work/prds/ray-care/scoping.md` · draft taxonomy: `04-active-work/prds/ray-care/taxonomy-draft.md` |
 | Zendesk — ticket lifecycle, business rules, routing, Guide/Knowledge, AI tooling, analytics, terminology | `01-knowledge-base/products/zendesk.md` |
 | Product reference doc template (why it matters + components + metrics) | `03-templates/product-reference-template.md` |
 | PRD template | `03-templates/prd-template.md` |
@@ -75,7 +78,8 @@ Every document, analysis, or recommendation must connect to:
 | Writing style by audience | `01-knowledge-base/processes/writing-style-guide.md` |
 | Zendesk platform decision RFC (Build/Buy/Keep, Q3–Q4 2026) | `04-active-work/research/zendesk-platform-decision-rfc.md` |
 | Zendesk viability research (AI, pricing, market, 2024–2026) | `05-archive/2026/investigations/Zendesk Viability_ AI, Pricing, Market.md` |
-| Support articles (879 markdown files, 14 topic folders — Payments, Disputes, Settlements, Platforms, etc.) | `01-knowledge-base/Support content/checkout-support-site-main/Support articles/` |
+| Support articles (908 markdown files, 14 topic folders — Payments, Disputes, Settlements, Platforms, etc.) | `01-knowledge-base/Support content/checkout-support-site-main/Support articles/` |
+| GitHub source repos for all support content (external/internal support articles, Tech Docs, API reference) + re-pull instructions | `01-knowledge-base/processes/support-content-sources.md` |
 | Technical documentation articles (~700 files) | `01-knowledge-base/Support content/Tech Docs/` |
 | API reference — full OpenAPI 3.0.1 spec (JSON, 3.4MB; all endpoints, schemas, tags) | `01-knowledge-base/Support content/API reference/api-reference.json` |
 
@@ -185,8 +189,12 @@ Generate AI-readable classification definitions (TSV, paste-ready for Google She
 - Saved to: `04-active-work/classifier-definitions-<scope>-<date>.tsv`
 
 ### Sync Product Catalogue
-Sync the Airtable Product Catalogue to local files: updates `Checkout Products and teams.csv`, adds new product definitions to `product-definitions.md`, and (given a Zendesk export) produces an implementation sheet for Zendesk admins.
+Sync the Airtable Product Catalogue to local files: updates `Checkout Products and teams.csv`, reconciles `product-definitions.md` against the latest pull (adds missing entries for every catalogue product, flags anything not eligible for Fin classification — Roadmap/Not on roadmap/Deprecated/Don't sell/internal — as "DO NOT DETECT AND CLASSIFY THIS", un-flags anything that's gone live, never deletes an entry), re-sorts the file A-Z by category, and (given a Zendesk export) produces an implementation sheet for Zendesk admins.
 - Skill: `/sync-product-catalogue`
+
+### Sync Support Content
+Refresh local copies of support content (external support site, internal Care Agent SOPs, Tech Docs, API reference) from their GitHub source repos in the `cko-web` org. Source mapping and re-pull mechanics: `01-knowledge-base/processes/support-content-sources.md`.
+- Skill: `/sync-support-content [all|external|internal|tech-docs|api-reference]` — defaults to `all`
 
 ### Taxonomy Classification QA
 QA Fin's contact classifications against the support taxonomy. Pulls the current batch from Looker (Look 18808) by default. Runs incrementally, appends to persistent log files, skips already-reviewed tickets.
@@ -195,6 +203,10 @@ QA Fin's contact classifications against the support taxonomy. Pulls the current
 ### Workspace Review
 Audit `04-active-work/`, assign keep/update/archive/delete verdicts per file, execute cleanup on confirmation. Also checks `04-active-work/` and `01-knowledge-base/` for deliverable dates/status that drift from `2026 deliverables.md`, and fixes them on confirmation.
 - Skill: `/workspace-review`
+
+### Consolidation Review
+Audit `01-knowledge-base/` and `04-active-work/` for content-level duplication across files (two docs covering the same topic, drifted duplicate facts). Distinct from Workspace Review: that skill judges files against the roadmap; this one judges files against each other. Proposes a canonical file per overlapping cluster, merges and archives superseded files on confirmation.
+- Skill: `/consolidation-review`
 
 ### Write Fin Attribute
 Draft or update a single Fin Attribute value definition (Case Type, Issue Type, Reason) in Intercom's Applies-if/Does-not-apply-if/Likely-keywords format. Writes to both `fin-attributes-definitions.md` (Intercom-ready) and `support-taxonomy.md` (QA skill's parseable source). Enforces Intercom's 2500-character limit.
@@ -267,6 +279,8 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 
 **Reflex MCP (TBC)**: Surfaces Reflex insights in engineering workflows. Timing is TBC — dependent on Phase 3 (Q3 2026) attribution model stability. Insights available via data product regardless; MCP improves shareability.
 
-**B2C wallet launch (2027)**: Consumer Duty obligations apply from day one. Complaint handling and vulnerable customer identification in Fin must be live at launch, not added post-launch.
+**Braavos ended (2026-08-18)**: The UK-regulated consumer wallet is not going ahead. Decision by Guillaume and the E-team: cost profile ahead of revenue profile in 2027 planning, soft 2026 revenue, and Braavos less adjacent to the core with a longer revenue horizon than Platforms and SMB. Cost of a robust regulated compliance and Care function was named at exec level as a reason. Company sequence unchanged: enterprise, platforms, SMB, consumer. Do not carry Braavos assumptions into Ray: the Braavos taxonomy is archived at `05-archive/2026/processes/braavos-consumer-app-care-taxonomy.md` and does not transfer.
 
-**Platform segment (2026)**: Distinct B2B customer segment alongside Direct Merchants. Checkout is L2; Platform is L1 for its Platform merchants. US ISV launch in active delivery 2026. Platform Embedded AI (Fin in ISV portals) is a 2027 capability. Checkout-as-PayFac (2028+, unconfirmed) would make Checkout L1 for Platform merchants directly.
+**B2C consumer launch is Ray (2026-2027)**: Internal launch end Dec 2026, external beta end Q1 2027. Ray is non-custodial and not UK-launched. Cards are issued via Checkout SAS, not the UK entity, deliberately avoiding UK Consumer Duty scrutiny, so Ray sits outside SCA and the vulnerable-customer and Consumer Duty workstreams are not required. Consumer Duty analysis is not dead: it retains value through open banking in 2027, where the FCA obliges Checkout to support end users it has no account relationship with (open banking payers, issuing cardholders).
+
+**Platform segment (2026)**: Distinct B2B customer segment alongside Direct Merchants. Checkout is L2; Platform is L1 for its Platform merchants. US ISV launch in active delivery 2026. Platform Embedded AI (Fin in ISV portals) is a 2027 capability. SMB model (2027+, unconfirmed) would make Checkout L1 for SMB merchants directly.

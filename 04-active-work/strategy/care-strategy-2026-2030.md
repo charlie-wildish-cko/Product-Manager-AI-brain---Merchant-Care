@@ -92,6 +92,25 @@ The transition from layer 3 to layer 4 is a named design constraint. A customer 
 - **AI failure caught** — Fin makes an error in SEPA interpretation. Anomaly detection flags a 4% accuracy drop across 47 contacts. Fix deployed in 1 hour before customer impact.
 - **Prevention cycle** — Reflex identifies webhook onboarding as the top contact driver (1,200/month). Procedure tuned (40% reduction). Product ships UI fix (60% reduction). 172 fewer contacts per week, sustained.
 
+### Segment Scenarios (2030)
+
+Four contacts, told from the customer's side. Personas: `01-knowledge-base/products/customer-personas.md`.
+
+**White Glove — James, Payments Strategist (Enterprise)**
+James notices an acceptance rate drop in his internal reporting. He uses the Dashboard to get the breakdown by market and currency back in minutes. The drop turns out to be concentrated in one issuing corridor. He asks Fin for advice, but it identifies a genuinely complex case, so Fin hands it to a specialist. His Account Manager is notified when this happens and already knows before James has to mention it himself, closing a gap that used to leave James managing two separate conversations. A support specialist arranges a video call back to him within the hour, already briefed on the data passed from Fin and the account. James never has to explain the problem twice.
+
+**Not White Glove — Sam, SMB Owner-Operator (no-AM)**
+*Sam is grounded in real, named SMB interview quotes and survey data (`customer-personas.md`), though no participant is a confirmed no-AM/Tier 5 Checkout merchant specifically — treat the narrative below as representative, not a single observed account.*
+Sam runs a small store with no dev resource and notices a batch of card payments settled two days late, which matters this week because a supplier invoice is due. Sam messages Fin from the dashboard and gets a plain-language answer in seconds: why it was delayed and exactly when the money lands. No ticket, no wait, no need to dig through account settings for an explanation. If the situation had instead been a frozen account or held funds, Fin wouldn't just send an automated message: it would give Sam a visible, easy-to-find way to reach a real person, and that person would review the decision properly rather than rubber-stamping Fin's output. Sam has no cash reserve to absorb a freeze with no explanation, and won't wait around to find out if one is coming: a slow, generic answer or an unexplained freeze is exactly what would quietly send Sam to a competitor.
+
+**Consumer — Open Banking payment issue**
+*No dedicated persona exists yet for open banking contacts; this scenario is modeled on Alex (Remember Me) — a consumer who saved a payment method embedded in a merchant checkout and may not know Checkout.com is the underlying provider.*
+A consumer's payment fails at checkout using her bank account instead of a card. She doesn't know who Checkout.com is; she just knows the payment didn't go through. She taps "get help" right there in the merchant's own checkout flow and lands in a chat with an AI agent, not a webform. Within a minute she has a plain-language reason (her bank didn't confirm the payment in time) and a clear next step: try again. No form to fill in, no two-day wait, no confusing jargon about how the payment actually worked under the hood. That fast, invisible fix is the whole point: she never has to think about who Checkout.com is at all.
+
+**Consumer — Jordan, Ray wallet holder (Smart Value Seeker)**
+*(Updated 2026-08-18: Braavos, the neobank this scenario was written for, is ended. Ray — a non-custodial stablecoin wallet + USD Visa card, not UK-launched — is going ahead in its place. The human follow-up beat below was a Consumer-Duty-style vulnerable-customer expectation; Ray carries no such obligation, so treat this as an aspirational Care-quality bar to validate with the Ray team, not a confirmed feature of its Care model. Re-confirm with Oliver before citing.)*
+Jordan's Ray card is declined abroad. She opens an in-app chat, live from day one, and Fin gives her an answer in seconds: it's a routine overseas fraud check, easily lifted. Separately, because something in how she described it read as financially stressed, a person from Ray's L2 team follows up with a light-touch, human check-in — a level of care Ray isn't regulatorily required to provide, but one worth offering anyway. She gets a fast fix from Fin and a genuine signal, from a person, that someone is looking out for her. For a wallet that competes on trust, that combination is the difference between a customer who stays and one who quietly leaves.
+
 ---
 
 ## 5. What This Means for How We Operate
@@ -121,7 +140,19 @@ When AI absorbs 80%+ of contact volume, agent capacity does not simply reduce �
 
 The Agentic Support Stack is the connected set of AI agents that automates across the full contact lifecycle. Each component is a discrete capability; together they form a self-improving system. Components map to the Care flywheel stages (Input → Orchestration → Fuel → Agent Experience → Insight and Prevention → Governance) and to the 2026–2030 delivery timeline.
 
-*[Map components to flywheel stages and delivery timeline — see care-product-strategy-2026-2030.md for 2026–2030 build sequence]*
+| # | Stack layer | What it does | Flywheel stage |
+|---|---|---|---|
+| 0 | Product onboarding | Registration step product teams complete before launch, declaring what Input, Orchestration, and Fuel need to already contain | Product onboarding |
+| 1 | Channel | How contacts arrive from customers | Input |
+| 2 | Customer AI Agent | AI that resolves customer contacts before a human sees them | Orchestration (deflection) |
+| 3 | Routing and Human Agent Experience | Where tickets are routed, where agents work, how they escalate; enforces account-configuration eligibility | Orchestration (routing) + Agent Experience (UI) |
+| 4 | Agent AI Assistant | Internal AI that assists human agents with suggested actions, data lookups, knowledge retrieval | Agent Experience |
+| 5 | Integration and Data | Joined-up customer, payments, and ops data surfaced to AI and agents; Customer Agent resolves context | Fuel (data); Customer Context |
+| 6 | Knowledge | Centrally hosted content, published to support site and to AI/agent tools | Fuel (content) + Input (publishing) |
+| 7 | Analytics and Insight | Support data product for reporting, root-cause analysis, prevention | Insight and Prevention |
+| 8 | Operations and Governance | SLA, QA, scheduling, complaint-handling tooling (cross-cutting) | Governance |
+
+Full detail per layer: [care-product-model.md](../../01-knowledge-base/strategy/care-product-model.md).
 
 ### People & Process: AI Operations
 
@@ -158,7 +189,7 @@ Fast and safe iteration requires three operational practices: *[Fin Blueprint: O
 ## 8. Open Decisions
 
 - **Cost target**: Total support cost threshold by 2030 — required to finalise the goals table.
-- **AI-first scope**: AI first for all segments is the stated approach — confirm this is agreed before committing.
+- **AI-first scope**: Agreed 2026-07-31 (Charlie / Joel). AI-first applies to all segments. What differs by segment is channel availability and human-support availability, not the AI-first stance. Customer model agreed as three primary segments: White Glove (Enterprise) / Not White Glove (SMB plus Tier 5) / Consumer B2C. Source: [2026-07-31 notes](../meeting-notes/2026-07/2026-07-31-care-strategy-2026-2030-outcomes.md).
 - **Fin ownership**: Who owns the Fin resolution rate? Must be named before AI resolution becomes load-bearing. The AI Ops Lead role (see Section 6) defines what this person does — the decision is who.
 - **Consumer Duty**: Design and build must start H2 2026. Sign-off process and delivery owner needed.
 

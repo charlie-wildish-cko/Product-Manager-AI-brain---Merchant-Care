@@ -1,0 +1,18 @@
+Change type,Product name,Field,Old value,New value
+ADDED,Cell Point Digital,,,
+ADDED,Interac,,,
+ADDED,Interest,,,
+ADDED,Open Banking,,,
+ADDED,Stablecoin Acceptance (via Coinbase),,,
+ADDED,Travelsoft Pay,,,
+REMOVED,Interac (E-Transfer),,,
+REMOVED,Stablecoin Settlement,,,
+CHANGED,Aani,Product State,Not on roadmap,Roadmap
+CHANGED,Klarna (Gateway),Product Pillar,Financial Experiences,Core Network
+CHANGED,Klarna (Gateway),Product Team,Pricing and Billing,APM - UK
+CHANGED,Pay to Self,Product category,Payouts,"Payouts, Business Account"
+CHANGED,Pay to Self,Product Pillar,Financial Infrastructure,Merchant Services
+CHANGED,Pay to Self,Product Team,Financial Infrastructure Leads,Card Payouts
+CHANGED,PaysafeCard,Product State,Not on roadmap,Roadmap
+CHANGED,Third Party Payouts,Product Pillar,Emerging Products,Merchant Services
+CHANGED,Third Party Payouts,Product Team,Bank Payouts,Card Payouts

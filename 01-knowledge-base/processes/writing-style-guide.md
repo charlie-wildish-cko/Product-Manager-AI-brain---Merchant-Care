@@ -1,5 +1,19 @@
 # Writing Style Guide
 
+## Orwell's rules (applies to all output, all audiences)
+Source: Orwell, "Politics and the English Language." These sit above the audience-specific sections below and the tropes list further down — they are the base layer everything else builds on.
+
+1. Never use a metaphor, simile, or figure of speech that is worn out through overuse in print.
+2. Never use a long word where a short one will do.
+3. If a word can be cut, cut it.
+4. Never use the passive where the active will do.
+5. Never use a foreign phrase, a scientific word, or jargon if an everyday English word gives the same meaning.
+6. Break any of these rules sooner than write something outright barbarous.
+
+Rule 6 governs the rest: clarity beats mechanical rule-following. When a rule and plain sense conflict, plain sense wins.
+
+Rule 5 does not override required domain precision: exact endpoint/field names (Engineering section) and defined payment terms from `checkout-terminology.md` (authorization, chargeback, SCA, MID, etc.) stay as is. These carry precise meaning a plain-English substitute would lose, so rule 6 takes precedence over rule 5 here.
+
 ## Leadership / C-suite
 - 2-minute read max
 - Recommendation first, then bullets with supporting evidence
@@ -46,6 +60,17 @@ Cross-functional docs: problem statements, initiative strategies, segmentation a
 **Action items**
 - Every recommendation must have: a named owner, a scope, and a timeframe or the named event that sets the timeframe.
 - "For discussion with [Name]" is not an action item. Either assign it or remove it.
+
+---
+
+## Cross-cutting rules (source: Alcinda Lee's personal writing guide)
+Apply these to strategy documents, PRDs, and any cross-functional writing — not just narrative pieces.
+
+- **Ground claims in something observable.** Do not open a section or argument with an inference the document doesn't support with data or evidence. If a claim can't be traced to a number, quote, or named source, cut it or gather the evidence first.
+- **Frame cross-functional work as shared ownership, not activation.** When describing Care working with engineering, design, or another team, treat metrics and evidence as tools for collective prioritisation, not as a mechanism for one team to motivate another. Check every cross-functional sentence: does it make any team sound passive or in need of a push? "Gives engineering a reason to act" reframes to "gives Care and engineering an evidence-led way to prioritise together."
+- **Avoid corporate vocabulary, especially in cross-functional passages.** Phrases like "evidence-led" or "shared basis for prioritisation" read as consultancy copy. Use plain words: "factual," "data-based," "what to prioritise together." Flag cross-functional sentences specifically — this is where jargon drift happens most.
+- **Don't wrap a quote or data point in an explanatory sentence.** If a stakeholder quote or metric already makes the point, cut the sentence that tells the reader how to interpret it before they read it.
+- **Parentheticals go mid-sentence, not tacked on the end.** Move the modifier inside the sentence (using em-dashes or commas) so the sentence closes cleanly, rather than appending it after the main clause.
 
 ---
 

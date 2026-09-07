@@ -10,11 +10,15 @@ Pulls new "Notes by Gemini" documents from the Google Drive meetings folder and 
 
 ---
 
-## Drive folder
+## Where the notes live
 
-**Folder ID:** `1Mnz7XMPGYaeZG0nHQ4_R9mYn06188zU8`
+Gemini files meeting notes into a per-meeting Drive folder, not one central folder. Search Drive-wide by title, not by `parentId`.
 
-This folder contains all Gemini-generated Google Meet notes for Charlie Wildish's meetings.
+The legacy folder `1Mnz7XMPGYaeZG0nHQ4_R9mYn06188zU8` held everything up to **2026-08-07** and then stopped receiving new notes. Use it only when the cutoff date is before 2026-08-07, and even then run the Drive-wide search as well so nothing outside it is missed.
+
+Two consequences of searching Drive-wide:
+- Results include docs **shared with** Charlie for meetings he was invited to but that are not his work (all-hands, enablement sessions, other teams' delivery meetings). The `owner` field in each result distinguishes these: `charlie.wildish@checkout.com` means his own recording; anything else means shared. Shared is not an automatic skip (Care-relevant sessions chaired by others are the most valuable notes), but it raises the bar.
+- Results include `application/vnd.google-apps.shortcut` entries that duplicate a real Google Doc. Dedupe on title plus meeting timestamp and keep the `application/vnd.google-apps.document` entry, since only that one can be read.
 
 ---
 
@@ -29,6 +33,8 @@ Skip any meeting where the title matches one of the following patterns. These ar
 | Title starts with "Meeting started" or title is blank | Auto-generated label, no content |
 | Title contains "Reflex Weekly" OR "Reflex sync" | Weekly team sync — covered by Reflex Q2/Q3 planning docs |
 | Title contains "Reflex Stand" | Standup — no strategic content |
+| Owner is not Charlie AND the meeting is a company-wide broadcast (all-hands, enablement session, manager training, another team's recurring delivery or checkpoint meeting) | Charlie was an attendee, not a participant; no Care decisions to preserve |
+| Title contains "Standup" | Standup — no strategic content |
 | Transcript duration < 60 seconds (inferred from "Transcription ended after 00:00:XX" where XX < 60) | Meeting did not happen or no usable content |
 | Gemini summary says "not enough conversation in a supported language" AND no transcript content | Nothing to capture |
 
@@ -71,19 +77,33 @@ Last notes file: [filename]
 
 ## Phase 2 — Search Drive for new meetings
 
-Search the Drive folder for Gemini Notes docs created after the cutoff date:
+Search Drive-wide for Gemini Notes docs created after the cutoff date:
 
 ```
 mcp__524a2989-6e89-4987-9cc4-c5ed852a61fb__search_files:
-  query: parentId = '1Mnz7XMPGYaeZG0nHQ4_R9mYn06188zU8' and createdTime > '[CUTOFF_DATE]T00:00:00Z' and title contains 'Notes by Gemini'
-  pageSize: 50
+  query: title contains 'Notes by Gemini' and createdTime > '[CUTOFF_DATE]T00:00:00Z'
+  pageSize: 25
+  excludeContentSnippets: true
 ```
 
-If the result has a `nextPageToken`, paginate until all results are retrieved.
+Use `pageSize: 25` with `excludeContentSnippets: true` — content snippets on a 50-result page blow the response size. Paginate on `nextPageToken` until the response is empty; expect 3-4 pages for a two-week gap.
 
-Build a list of candidate files: `{ id, title, createdTime }`.
+If the cutoff is before 2026-08-07, also run the legacy-folder query so pre-cutover notes are covered:
 
-Apply the exclusion rules from the section above to each title. For any uncertain cases, note them but don't skip them.
+```
+  query: parentId = '1Mnz7XMPGYaeZG0nHQ4_R9mYn06188zU8' and createdTime > '[CUTOFF_DATE]T00:00:00Z' and title contains 'Notes by Gemini'
+```
+
+Build a list of candidate files: `{ id, title, createdTime, owner, mimeType }`.
+
+Then, in this order:
+1. **Drop shortcuts.** Discard any `mimeType: application/vnd.google-apps.shortcut` whose title and timestamp match a `document` entry already in the list.
+2. **Apply the exclusion rules** from the section above to each title.
+3. **Check the notes file already exists.** Grep the existing notes for the Drive ID before processing, since a run near the cutoff boundary will re-surface docs already written up:
+   ```bash
+   grep -rh "Drive source" 04-active-work/meeting-notes/ | grep -o '[A-Za-z0-9_-]\{20,\}' | sort -u
+   ```
+4. For any uncertain cases, note them but don't skip them.
 
 Print a summary:
 ```
@@ -202,4 +222,7 @@ Do not commit. Leave changes staged for the user to review.
 - If a meeting is ambiguous (unclear whether it has strategic content), read the first few paragraphs of the content snippet from the search result before deciding.
 - Paginate the Drive search if there are more than 50 results — use `nextPageToken` from the search response.
 - If the cutoff auto-detection finds no existing notes files, default to `2026-01-01` and warn the user.
-- Monthly folders already exist for 2026-01 through 2026-06. Create new ones as needed.
+- Monthly folders already exist for 2026-01 through 2026-08. Create new ones as needed.
+- Gemini sometimes transcribes years wrongly in future-dated targets (e.g. "Q1 2025" in an August 2026 meeting). Trust the relative sequence, not the year, and say so in the notes file when it happens.
+- Gemini anonymises some speakers as a room device label (e.g. "someone in LON-04-18"). Infer the speaker from the invite list where it is unambiguous and mark it unconfirmed where it isn't; don't attribute a decision to a guess.
+- A doc can run for 40+ minutes and still have no captured transcript ("A summary wasn't produced... not enough conversation in a supported language" with an empty body). Report these explicitly as content lost rather than folding them into the filter-rule skip list.
