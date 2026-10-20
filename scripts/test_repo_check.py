@@ -14,6 +14,11 @@ FIXTURES = os.path.join(HERE, "fixtures")
 TODAY = datetime.date(2026, 10, 20)
 
 
+def clear_env():
+    for key in ("CI", "REPO_CHECK_SKIP_IGNORED"):
+        os.environ.pop(key, None)
+
+
 def run(name):
     return repo_check.check(os.path.join(FIXTURES, name), today=TODAY)
 
@@ -415,7 +420,7 @@ class DirectoryReferenceTests(unittest.TestCase):
         )
         self.addCleanup(repo.cleanup)
         with mock.patch.dict(os.environ):
-            os.environ.pop("CI", None)
+            clear_env()
             absent = repo.errors()
             os.environ["CI"] = "true"
             skipped = repo.errors()
@@ -436,7 +441,7 @@ class DirectoryReferenceTests(unittest.TestCase):
         )
         self.addCleanup(repo.cleanup)
         with mock.patch.dict(os.environ):
-            os.environ.pop("CI", None)
+            clear_env()
             absent = repo.errors()
             os.environ["CI"] = "true"
             skipped = repo.errors()
@@ -464,7 +469,7 @@ class IgnoredTargetTests(unittest.TestCase):
         if on_disk:
             self.repo.write({"local-only/data.md": "# Local\n"})
         with mock.patch.dict(os.environ):
-            os.environ.pop("CI", None)
+            clear_env()
             if ci:
                 os.environ["CI"] = "true"
             return self.repo.errors()
@@ -484,6 +489,104 @@ class IgnoredTargetTests(unittest.TestCase):
         errors = self.run_check(ci=True, on_disk=False)
         self.assertEqual(len(errors), 1)
         self.assertIn("04-active-work/missing.md", errors[0])
+
+
+HINT = "(ignored tree not present here: set REPO_CHECK_SKIP_IGNORED=1)"
+
+
+class SkipIgnoredTests(unittest.TestCase):
+    DOC = "01-knowledge-base/doc.md"
+
+    def setUp(self):
+        self.repo = ScratchRepo(
+            {
+                ".gitignore": "local-only/\n",
+                self.DOC: "`local-only/data.md`\n`04-active-work/missing.md`\n",
+            }
+        )
+        self.addCleanup(self.repo.cleanup)
+
+    def errors(self, staged=False, **env):
+        with mock.patch.dict(os.environ):
+            clear_env()
+            os.environ.update(env)
+            return self.repo.errors(staged=staged)
+
+    def test_staged_mode_skips_an_ignored_target_that_is_absent(self):
+        errors = self.errors(staged=True)
+        self.assertEqual(len(errors), 1)
+        self.assertIn('doc.md:2: broken path "04-active-work/missing.md"', errors[0])
+
+    def test_plain_mode_reports_an_ignored_target_that_is_absent(self):
+        errors = self.errors()
+        self.assertEqual(len(errors), 2)
+        self.assertIn('doc.md:1: broken path "local-only/data.md"', errors[0])
+
+    def test_env_override_skips_an_ignored_target_that_is_absent(self):
+        errors = self.errors(REPO_CHECK_SKIP_IGNORED="1")
+        self.assertEqual(len(errors), 1)
+        self.assertIn("04-active-work/missing.md", errors[0])
+
+    def test_env_override_must_be_exactly_one(self):
+        self.assertEqual(len(self.errors(REPO_CHECK_SKIP_IGNORED="0")), 2)
+        self.assertEqual(len(self.errors(REPO_CHECK_SKIP_IGNORED="")), 2)
+
+    def test_hint_is_added_when_the_ignored_tree_is_wholly_absent(self):
+        errors = self.errors()
+        self.assertTrue(errors[0].endswith(" " + HINT), errors[0])
+        self.assertNotIn("ignored tree not present", errors[1])
+
+    def test_hint_is_added_when_the_ignored_tree_exists_but_holds_no_file(self):
+        os.makedirs(os.path.join(self.repo.root, "local-only/empty"))
+        self.assertTrue(self.errors()[0].endswith(" " + HINT))
+
+    def test_hint_is_omitted_when_the_tree_holds_another_file(self):
+        self.repo.write({"local-only/other.md": "# Other\n"})
+        errors = self.errors()
+        self.assertEqual(len(errors), 2)
+        self.assertIn('doc.md:1: broken path "local-only/data.md"', errors[0])
+        self.assertNotIn("ignored tree not present", errors[0])
+
+    def test_hint_uses_the_top_of_the_untracked_part_of_the_path(self):
+        repo = ScratchRepo(
+            {
+                ".gitignore": "01-knowledge-base/sops/a.md\n",
+                "01-knowledge-base/tracked.md": "# T\n",
+                self.DOC: "`01-knowledge-base/sops/a.md`\n",
+            }
+        )
+        self.addCleanup(repo.cleanup)
+        with mock.patch.dict(os.environ):
+            clear_env()
+            self.assertTrue(repo.errors()[0].endswith(" " + HINT))
+            repo.write({"01-knowledge-base/sops/b.md": "# B\n"})
+            self.assertNotIn("ignored tree", repo.errors()[0])
+
+    def test_hint_is_omitted_for_a_file_that_is_ignored_but_not_inside_an_ignored_tree(self):
+        repo = ScratchRepo(
+            {
+                ".gitignore": "*-private.md\n",
+                "04-active-work/tracked.md": "# T\n",
+                self.DOC: "`04-active-work/notes-private.md`\n",
+            }
+        )
+        self.addCleanup(repo.cleanup)
+        with mock.patch.dict(os.environ):
+            clear_env()
+            errors = repo.errors()
+        self.assertEqual(len(errors), 1)
+        self.assertNotIn("ignored tree", errors[0])
+
+    def test_hint_names_the_override_on_the_command_line(self):
+        with mock.patch.dict(os.environ):
+            clear_env()
+            code, _, err = invoke(self.repo.root)
+        self.assertEqual(code, 1)
+        self.assertIn(HINT, err[0])
+        with mock.patch.dict(os.environ, {"REPO_CHECK_SKIP_IGNORED": "1"}):
+            code, _, err = invoke(self.repo.root, "--staged")
+        self.assertEqual(code, 1)
+        self.assertNotIn("ignored", err[0])
 
 
 class StagedModeTests(unittest.TestCase):
@@ -572,6 +675,29 @@ class HookTests(unittest.TestCase):
         )
         self.repo.stage("01-knowledge-base/clean.md")
         self.assertEqual(self.commit().returncode, 1)
+
+    def test_hook_allows_a_staged_ref_to_an_ignored_path_absent_from_this_clone(self):
+        self.repo.write(
+            {
+                ".gitignore": "local-only/\n",
+                "01-knowledge-base/clean.md": "`local-only/data.md`\n",
+            }
+        )
+        self.repo.stage(".gitignore", "01-knowledge-base/clean.md")
+        self.assertEqual(self.commit().returncode, 0)
+
+    def test_hook_still_blocks_a_staged_ref_to_a_tracked_path_that_does_not_exist(self):
+        self.repo.write(
+            {
+                ".gitignore": "local-only/\n",
+                "01-knowledge-base/clean.md": "`local-only/data.md` `04-active-work/gone.md`\n",
+            }
+        )
+        self.repo.stage(".gitignore", "01-knowledge-base/clean.md")
+        result = self.commit()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('broken path "04-active-work/gone.md"', result.stderr.decode())
+        self.assertNotIn("local-only", result.stderr.decode())
 
     def test_hook_exits_one_with_a_message_when_python3_is_missing(self):
         with tempfile.TemporaryDirectory() as empty:
