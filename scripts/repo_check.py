@@ -3,8 +3,9 @@
 
 A reference is a markdown link target or a backticked token that ends in a
 known file extension. Backticked tokens must also contain a slash. A reference
-resolves when the path exists from the repo root or from the doc's own
-directory. Placeholders, external URLs, anchors, absolute paths and targets
+resolves when a tracked file exists at that path from the repo root or from the
+doc's own directory, so an untracked file fails locally exactly as it fails in
+CI. Placeholders, external URLs, anchors, absolute paths and targets
 that .gitignore excludes are not checked.
 
 Error format, one per line:
@@ -77,7 +78,7 @@ def has_git(root):
 
 def list_files(root):
     if has_git(root):
-        listed = set(git_lines(root, "ls-files", "-z", "--cached", "--others", "--exclude-standard"))
+        listed = set(git_lines(root, "ls-files", "-z", "--cached"))
         return listed - set(git_lines(root, "ls-files", "-z", "--deleted"))
     found = set()
     for base, dirs, names in os.walk(root):
