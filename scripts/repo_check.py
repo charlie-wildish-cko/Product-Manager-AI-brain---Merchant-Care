@@ -9,16 +9,24 @@ directory, a two-digit prefix such as 04-, or .claude.
 A reference resolves when a tracked file exists at that path (for a directory,
 under that path) from the repo root or from the doc's own directory, so an
 untracked file fails locally exactly as it fails in CI. A target that
-.gitignore matches must exist on disk. It is skipped when the CI environment
-variable is set, because ignored trees do not exist in a checkout. A directory
-with no tracked files counts as an ignored tree when .gitignore lists a path
-beneath it. Placeholders (<x>, {x}, [x], *, YYYY), external URLs, anchors and
-absolute paths are not checked. Symlinked docs are skipped.
+.gitignore matches must exist on disk in a plain local run, which catches a
+renamed file in a content tree that only the maintainer's machine holds. The
+check skips that target when the CI environment variable is set, when
+REPO_CHECK_SKIP_IGNORED=1 is set, and always under --staged, so a fresh clone,
+an agent worktree and the pre-commit hook never fail on content they cannot
+have. A plain local run that finds no file at all under the ignored tree adds
+a hint that names the override. A directory with no tracked files counts as an
+ignored tree when .gitignore lists a path beneath it. Placeholders (<x>, {x},
+[x], *, YYYY), external URLs, anchors and absolute paths are not checked.
+Symlinked docs are skipped.
 
 Modes:
     python3 scripts/repo_check.py            reads the working tree (CI)
     python3 scripts/repo_check.py --staged   reads docs and resolves targets
-                                             from the index (pre-commit)
+                                             from the index (pre-commit),
+                                             skipping ignored targets
+    REPO_CHECK_SKIP_IGNORED=1 python3 scripts/repo_check.py
+                                             plain run that skips ignored targets
 
 Error format, one per line on stderr. The summary line goes to stdout:
     path:line: broken path "<target>". Fix: point it at <path> or remove the reference.
@@ -74,6 +82,8 @@ UNTIL_RE = re.compile(r"\buntil=(\S+)")
 ISO_DATE_RE = re.compile(r"([0-9]{4})-([0-9]{2})-([0-9]{2})", re.ASCII)
 MAX_EXCEPTION_DAYS = 180
 MIN_NAME_SIMILARITY = 0.8
+SKIP_IGNORED_ENV = "REPO_CHECK_SKIP_IGNORED"
+ABSENT_TREE_HINT = "(ignored tree not present here: set %s=1)" % SKIP_IGNORED_ENV
 
 
 class Exceptions(NamedTuple):
@@ -325,6 +335,19 @@ def parent_dirs(files):
     return found
 
 
+def tree_top(candidate, ref, dirs):
+    parts = candidate.split("/")
+    for depth in range(1, len(parts) + (1 if ref.is_dir else 0)):
+        top = "/".join(parts[:depth])
+        if top not in dirs:
+            return top
+    return None
+
+
+def holds_no_file(root, top):
+    return not any(names for _, _, names in os.walk(os.path.join(root, top)))
+
+
 def check(root, today=None, staged=False):
     today = today or datetime.date.today()
     tree = list_tree(root, staged)
@@ -353,7 +376,7 @@ def check(root, today=None, staged=False):
                 if not any(c in known for c in candidates(doc, ref.target)):
                     unresolved.append((doc, number, ref))
 
-    ci = bool(os.environ.get("CI"))
+    skip_ignored = staged or bool(os.environ.get("CI")) or os.environ.get(SKIP_IGNORED_ENV) == "1"
     probes = {probe_path(c, ref) for doc, _, ref in unresolved for c in candidates(doc, ref.target)}
     matched = gitignored(root, sorted(probes))
     trees = ignored_trees(root)
@@ -363,9 +386,12 @@ def check(root, today=None, staged=False):
             if probe_path(c, ref) in matched or (ref.is_dir and c in trees)
         ]
         if hits:
-            if ci or any(os.path.exists(os.path.join(root, c)) for c in hits):
+            if skip_ignored or any(os.path.exists(os.path.join(root, c)) for c in hits):
                 continue
             message = '%s:%d: broken path "%s" (ignored by .gitignore, not found on disk). Fix: restore it locally, update the path or remove the reference.' % (doc, number, ref.target)
+            tops = [tree_top(c, ref, dirs) for c in hits]
+            if all(top and holds_no_file(root, top) for top in tops):
+                message += " " + ABSENT_TREE_HINT
             errors.append((doc, number, message))
             continue
         best = None if ref.is_dir else suggest(index, doc, ref.target)
