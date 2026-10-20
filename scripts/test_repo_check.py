@@ -589,5 +589,19 @@ class HookTests(unittest.TestCase):
         self.assertEqual(len(message.splitlines()), 1)
 
 
+class WorkflowTests(unittest.TestCase):
+    def setUp(self):
+        with open(os.path.join(REPO_ROOT, ".github/workflows/repo-check.yml"), encoding="utf-8") as handle:
+            self.workflow = handle.read()
+
+    def test_checkout_is_pinned_to_a_full_commit_sha_with_a_tag_comment(self):
+        self.assertRegex(self.workflow, r"uses: actions/checkout@[0-9a-f]{40} # v4\.[0-9]+\.[0-9]+\n")
+
+    def test_token_is_read_only_credentials_are_not_persisted_and_the_job_has_a_timeout(self):
+        self.assertRegex(self.workflow, r"(?m)^permissions:\n  contents: read$")
+        self.assertRegex(self.workflow, r"(?m)^    timeout-minutes: 5$")
+        self.assertRegex(self.workflow, r"(?m)^          persist-credentials: false$")
+
+
 if __name__ == "__main__":
     unittest.main()
