@@ -366,7 +366,7 @@ Help me synthesize this into a problem statement for a PRD"
 
 ### Export & Integration
 - Export relevant views to CSV for analysis
-- Copy key insights to `01-knowledge-base/customer-research/`
+- Copy key insights to `04-active-work/research/`
 - Reference in PRDs and stakeholder updates
 
 
