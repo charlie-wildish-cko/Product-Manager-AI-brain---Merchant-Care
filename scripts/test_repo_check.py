@@ -277,6 +277,79 @@ class TrackedFilesTests(unittest.TestCase):
         self.assertEqual(len(self.repo.errors()), 1)
 
 
+class DirectoryReferenceTests(unittest.TestCase):
+    TREE = {"04-active-work/prds/alpha/prd.md": "# Alpha\n", ".claude/skills/demo/SKILL.md": "# Demo\n"}
+
+    def check_doc(self, text, **kwargs):
+        files = dict(self.TREE)
+        files["01-knowledge-base/doc.md"] = text
+        return check_files(files, **kwargs).errors
+
+    def test_directory_that_no_longer_exists_is_caught(self):
+        errors = self.check_doc("Drafts live in `04-active-work/roadmap-items/` today.\n")
+        self.assertEqual(
+            errors,
+            ['01-knowledge-base/doc.md:1: broken path "04-active-work/roadmap-items/". Fix: update the path or remove the reference.'],
+        )
+
+    def test_existing_directory_resolves_from_a_code_span_and_a_link(self):
+        text = "`04-active-work/prds/` and [prds](04-active-work/prds/alpha/) and `.claude/skills/`\n"
+        self.assertEqual(self.check_doc(text), [])
+
+    def test_only_repo_directories_are_checked(self):
+        text = "`somewhere/else/` `~/Downloads/` `https://example.com/a/` `/etc/` `src/`\n"
+        self.assertEqual(self.check_doc(text), [])
+
+    def test_numbered_top_level_name_is_checked_even_when_the_directory_is_gone(self):
+        self.assertEqual(len(self.check_doc("`06-renamed/sub/`\n")), 1)
+
+    def test_dot_claude_directory_is_checked(self):
+        self.assertEqual(len(self.check_doc("`.claude/agents/`\n")), 1)
+
+    def test_placeholder_directories_are_skipped(self):
+        self.assertEqual(self.check_doc("`04-active-work/prds/<initiative>/` `04-active-work/*/`\n"), [])
+
+    def test_ignored_directory_is_checked_on_disk_and_skipped_in_ci(self):
+        repo = ScratchRepo(
+            {".gitignore": "local-only/\n", "01-knowledge-base/doc.md": "`01-knowledge-base/local-only/`\n"}
+        )
+        self.addCleanup(repo.cleanup)
+        with mock.patch.dict(os.environ):
+            os.environ.pop("CI", None)
+            absent = repo.errors()
+            os.environ["CI"] = "true"
+            skipped = repo.errors()
+            os.environ.pop("CI")
+            os.makedirs(os.path.join(repo.root, "01-knowledge-base/local-only"))
+            present = repo.errors()
+        self.assertEqual(len(absent), 1)
+        self.assertIn("ignored by .gitignore, not found on disk", absent[0])
+        self.assertEqual((skipped, present), ([], []))
+
+
+    def test_directory_whose_files_are_ignored_one_by_one_counts_as_an_ignored_tree(self):
+        repo = ScratchRepo(
+            {
+                ".gitignore": "01-knowledge-base/sops/INDEX.md\n01-knowledge-base/sops/a/one.md\n",
+                "01-knowledge-base/doc.md": "`01-knowledge-base/sops/a/` `01-knowledge-base/sops/`\n",
+            }
+        )
+        self.addCleanup(repo.cleanup)
+        with mock.patch.dict(os.environ):
+            os.environ.pop("CI", None)
+            absent = repo.errors()
+            os.environ["CI"] = "true"
+            skipped = repo.errors()
+            os.environ.pop("CI")
+            os.makedirs(os.path.join(repo.root, "01-knowledge-base/sops/a"))
+            present = repo.errors()
+        self.assertEqual(len(absent), 2)
+        self.assertEqual((skipped, present), ([], []))
+
+    def test_date_pattern_directories_are_placeholders(self):
+        self.assertEqual(self.check_doc("`04-active-work/meeting-notes/YYYY-MM/` `04-active-work/YYYY-MM-DD-slug.md`\n"), [])
+
+
 class IgnoredTargetTests(unittest.TestCase):
     def setUp(self):
         self.repo = ScratchRepo(
