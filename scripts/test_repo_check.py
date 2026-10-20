@@ -276,5 +276,110 @@ class TrackedFilesTests(unittest.TestCase):
         self.assertEqual(len(self.repo.errors()), 1)
 
 
+class StagedModeTests(unittest.TestCase):
+    def setUp(self):
+        self.repo = ScratchRepo(BASE)
+        self.addCleanup(self.repo.cleanup)
+
+    def test_a_unstaged_broken_ref_in_another_doc_does_not_block(self):
+        self.repo.write({"01-knowledge-base/clean.md": "`04-active-work/target.md`\n"})
+        self.repo.stage("01-knowledge-base/clean.md")
+        self.repo.write({"01-knowledge-base/other.md": "`04-active-work/missing.md`\n"})
+        self.assertEqual(self.repo.errors(staged=True), [])
+        self.assertEqual(len(self.repo.errors()), 1)
+
+    def test_b_staged_broken_ref_blocks_even_if_the_working_tree_was_fixed(self):
+        self.repo.write({"01-knowledge-base/clean.md": "`04-active-work/missing.md`\n"})
+        self.repo.stage("01-knowledge-base/clean.md")
+        self.repo.write({"01-knowledge-base/clean.md": "# Clean\n"})
+        errors = self.repo.errors(staged=True)
+        self.assertEqual(len(errors), 1)
+        self.assertIn('clean.md:1: broken path "04-active-work/missing.md"', errors[0])
+        self.assertEqual(self.repo.errors(), [])
+
+    def test_c_doc_linking_a_new_untracked_file_blocks(self):
+        self.repo.write(
+            {"04-active-work/new.md": "# New\n", "01-knowledge-base/clean.md": "`04-active-work/new.md`\n"}
+        )
+        self.repo.stage("01-knowledge-base/clean.md")
+        self.assertEqual(len(self.repo.errors(staged=True)), 1)
+
+    def test_staging_the_new_target_with_the_doc_resolves_it(self):
+        self.repo.write(
+            {"04-active-work/new.md": "# New\n", "01-knowledge-base/clean.md": "`04-active-work/new.md`\n"}
+        )
+        self.repo.stage("01-knowledge-base/clean.md", "04-active-work/new.md")
+        self.assertEqual(self.repo.errors(staged=True), [])
+
+    def test_target_staged_for_deletion_is_broken(self):
+        self.repo.write({"01-knowledge-base/clean.md": "`04-active-work/target.md`\n"})
+        git(self.repo.root, "rm", "-q", "04-active-work/target.md").check_returncode()
+        self.repo.stage("01-knowledge-base/clean.md")
+        self.assertEqual(len(self.repo.errors(staged=True)), 1)
+
+    def test_staged_mode_needs_a_git_repository(self):
+        with tempfile.TemporaryDirectory() as root:
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err):
+                code = repo_check.main(["--root", root, "--staged"])
+        self.assertEqual(code, 2)
+        self.assertIn("--staged needs a git repository", err.getvalue())
+
+
+REPO_ROOT = os.path.dirname(HERE)
+
+
+class HookTests(unittest.TestCase):
+    def setUp(self):
+        files = dict(BASE)
+        for rel in ("scripts/repo_check.py", ".githooks/pre-commit"):
+            with open(os.path.join(REPO_ROOT, rel), encoding="utf-8") as handle:
+                files[rel] = handle.read()
+        self.repo = ScratchRepo(files)
+        self.addCleanup(self.repo.cleanup)
+        self.hook = os.path.join(self.repo.root, ".githooks/pre-commit")
+        os.chmod(self.hook, 0o755)
+        git(self.repo.root, "config", "core.hooksPath", ".githooks").check_returncode()
+
+    def commit(self):
+        return git(self.repo.root, "commit", "-q", "-m", "change")
+
+    def test_a_hook_allows_a_clean_commit_beside_an_unstaged_broken_ref(self):
+        self.repo.write({"01-knowledge-base/clean.md": "`04-active-work/target.md`\n"})
+        self.repo.stage("01-knowledge-base/clean.md")
+        self.repo.write({"01-knowledge-base/other.md": "`04-active-work/missing.md`\n"})
+        self.assertEqual(self.commit().returncode, 0)
+
+    def test_b_hook_blocks_a_staged_broken_ref_after_the_working_copy_was_fixed(self):
+        self.repo.write({"01-knowledge-base/clean.md": "`04-active-work/missing.md`\n"})
+        self.repo.stage("01-knowledge-base/clean.md")
+        self.repo.write({"01-knowledge-base/clean.md": "# Clean\n"})
+        result = self.commit()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('broken path "04-active-work/missing.md"', result.stderr.decode())
+
+    def test_c_hook_blocks_a_doc_that_links_a_new_untracked_file(self):
+        self.repo.write(
+            {"04-active-work/new.md": "# New\n", "01-knowledge-base/clean.md": "`04-active-work/new.md`\n"}
+        )
+        self.repo.stage("01-knowledge-base/clean.md")
+        self.assertEqual(self.commit().returncode, 1)
+
+    def test_hook_exits_one_with_a_message_when_python3_is_missing(self):
+        with tempfile.TemporaryDirectory() as empty:
+            result = subprocess.run(
+                ["/bin/sh", self.hook],
+                cwd=self.repo.root,
+                env={"PATH": empty},
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+        self.assertEqual(result.returncode, 1)
+        message = result.stderr.decode()
+        self.assertIn("python3", message)
+        self.assertIn("git commit --no-verify", message)
+        self.assertEqual(len(message.splitlines()), 1)
+
+
 if __name__ == "__main__":
     unittest.main()
