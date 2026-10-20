@@ -5,6 +5,7 @@ import os
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 
 import repo_check
 
@@ -274,6 +275,42 @@ class TrackedFilesTests(unittest.TestCase):
         self.repo.write({"01-knowledge-base/clean.md": "`04-active-work/target.md`\n"})
         os.remove(os.path.join(self.repo.root, "04-active-work/target.md"))
         self.assertEqual(len(self.repo.errors()), 1)
+
+
+class IgnoredTargetTests(unittest.TestCase):
+    def setUp(self):
+        self.repo = ScratchRepo(
+            {
+                ".gitignore": "local-only/\n",
+                "01-knowledge-base/doc.md": "`local-only/data.md`\n`04-active-work/missing.md`\n",
+            }
+        )
+        self.addCleanup(self.repo.cleanup)
+
+    def run_check(self, ci, on_disk):
+        if on_disk:
+            self.repo.write({"local-only/data.md": "# Local\n"})
+        with mock.patch.dict(os.environ):
+            os.environ.pop("CI", None)
+            if ci:
+                os.environ["CI"] = "true"
+            return self.repo.errors()
+
+    def test_ignored_target_present_on_disk_passes_locally_and_in_ci(self):
+        for ci in (False, True):
+            errors = self.run_check(ci, on_disk=True)
+            self.assertEqual(len(errors), 1, ci)
+            self.assertIn('doc.md:2: broken path "04-active-work/missing.md"', errors[0])
+
+    def test_ignored_target_absent_is_an_error_locally(self):
+        errors = self.run_check(ci=False, on_disk=False)
+        self.assertEqual(len(errors), 2)
+        self.assertIn('doc.md:1: broken path "local-only/data.md" (ignored by .gitignore, not found on disk)', errors[0])
+
+    def test_ignored_target_absent_is_skipped_when_ci_is_set(self):
+        errors = self.run_check(ci=True, on_disk=False)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("04-active-work/missing.md", errors[0])
 
 
 class StagedModeTests(unittest.TestCase):

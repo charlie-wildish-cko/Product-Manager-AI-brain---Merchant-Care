@@ -5,8 +5,10 @@ A reference is a markdown link target or a backticked token that ends in a
 known file extension. Backticked tokens must also contain a slash. A reference
 resolves when a tracked file exists at that path from the repo root or from the
 doc's own directory, so an untracked file fails locally exactly as it fails in
-CI. Placeholders, external URLs, anchors, absolute paths and targets
-that .gitignore excludes are not checked.
+CI. A target that .gitignore matches must exist on disk. It is skipped when the
+CI environment variable is set, because ignored trees do not exist in a
+checkout. Placeholders, external URLs, anchors and absolute paths are not
+checked.
 
 Error format, one per line:
     path:line: broken path "<target>". Fix: point it at <closest path> or remove the reference.
@@ -260,9 +262,15 @@ def check(root, today=None, staged=False):
                 if not any(c in files for c in candidates(doc, target)):
                     unresolved.append((doc, number, target))
 
+    ci = bool(os.environ.get("CI"))
     ignored = gitignored(root, sorted({c for d, _, t in unresolved for c in candidates(d, t)}))
     for doc, number, target in unresolved:
-        if any(c in ignored for c in candidates(doc, target)):
+        hits = [c for c in candidates(doc, target) if c in ignored]
+        if hits:
+            if ci or any(os.path.exists(os.path.join(root, c)) for c in hits):
+                continue
+            message = '%s:%d: broken path "%s" (ignored by .gitignore, not found on disk). Fix: restore it locally, update the path or remove the reference.' % (doc, number, target)
+            errors.append((doc, number, message))
             continue
         best = suggest(files_by_ext, doc, target)
         fix = "point it at %s or remove the reference." % best if best else "remove the reference."
