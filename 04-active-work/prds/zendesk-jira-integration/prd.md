@@ -359,7 +359,6 @@ Care agents today log into both Zendesk and Jira to escalate, track, and relay u
 
 **Technical and operational**
 
-- `04-active-work/roadmap-items/Copy of JIRA Merchant Care Requirement Document.md` — source discovery workshop requirements (March 2025)
 - `01-knowledge-base/processes/support-workflows.md` — escalation to Engineering workflow context
 - `01-knowledge-base/teams.md` — team naming reference
 

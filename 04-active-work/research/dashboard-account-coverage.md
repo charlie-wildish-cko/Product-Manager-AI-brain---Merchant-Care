@@ -6,7 +6,7 @@
 
 The result: half of all email contacts cannot receive AI-assisted, data-informed responses. They either wait for a human agent or receive generic answers.
 
-See also: [customer-comms-identity-problem-statement.md](customer-comms-identity-problem-statement.md) — broader identity and comms fragmentation context.
+See also: [customer-comms-identity-problem-statement.md](../../05-archive/2026/investigations/customer-comms-identity-problem-statement.md) — broader identity and comms fragmentation context.
 
 ---
 
@@ -76,7 +76,7 @@ Fin receives every inbound Zendesk email ticket. Before attempting to resolve th
 
 ### Open questions
 
-1. Does the User Management API support lookup by email? Check `04-active-work/user-management-api-endpoints.csv`.
+1. Does the User Management API support lookup by email? Check `04-active-work/working-files/user-management-api-endpoints.csv`.
 2. When no match is found, can we identify the merchant admin to notify in the same Procedure? Requires a company→admin mapping — overlaps with tactic 4.
 3. What's the right escalation threshold before routing to human (one re-send? two)?
 4. How do we handle contacts from external parties (agencies, accountants) who will never have dashboard accounts? May need a separate routing path.

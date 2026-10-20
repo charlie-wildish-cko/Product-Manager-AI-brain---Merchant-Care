@@ -299,6 +299,6 @@ Specific operational limitations observed:
 - [Agent Consultant](agent-consultant.md) — AI agent product; Auto Assist is the current Zendesk Copilot instantiation
 - [Support workflows](../processes/support-workflows.md) — Dispatch queue, email identification, triage
 - [KPI definitions](../metrics/kpi-definitions.md) — FRT, CSAT, resolution rate, AHT
-- `04-active-work/roadmap-items/zendesk-org-domain-mapping-prd.md`
-- `04-active-work/roadmap-items/zendesk-jira-integration-prd.md`
-- `04-active-work/roadmap-items/zendesk-salesforce-integration-prd.md`
+- `04-active-work/prds/zendesk-org-domain-mapping/prd.md`
+- `04-active-work/prds/zendesk-jira-integration/prd.md`
+- `04-active-work/prds/zendesk-salesforce-integration/prd.md`

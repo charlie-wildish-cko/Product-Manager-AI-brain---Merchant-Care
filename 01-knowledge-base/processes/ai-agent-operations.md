@@ -16,7 +16,7 @@ This document covers Fin only. Sonar is tracked in [`teams.md`](../teams.md) and
 
 The Intercom Fin AI Agent is our AI-first support channel, available in the merchant dashboard. It attempts to resolve merchant queries without human agent involvement, creating tickets in Zendesk only when escalation is necessary.
 
-> **Key constraint**: Fin is in the authenticated Dashboard. The majority of merchant contacts arrive via email, which is unauthenticated. An approach to close this gap for Premium and Enterprise email is now defined and in development. See [`known-challenges.md`](known-challenges.md) for context and [`fin-email-auth-data-policy-prd.md`](../../04-active-work/roadmap-items/fin-email-auth-data-policy-prd.md) for the full solution design.
+> **Key constraint**: Fin is in the authenticated Dashboard. The majority of merchant contacts arrive via email, which is unauthenticated. An approach to close this gap for Premium and Enterprise email is now defined and in development. See [`known-challenges.md`](known-challenges.md) for context and [`fin-email-auth-data-policy-prd.md`](../../04-active-work/prds/fin-email-auth-data-policy/prd.md) for the full solution design.
 
 ## How It Works
 
@@ -325,7 +325,7 @@ Fin lives in the authenticated Dashboard. Premium and Enterprise merchant ops te
 
 **Chosen approach (in development)**: Org identification (Salesforce/Dashboard match, or domain mapping as fallback) acts as the data gate — consistent with what agents already do today. OTP email verification is available as optional step-up. CC-based exclusion rules apply (no Fin involvement if @checkout.com is CC'd, or >2 people CC'd). Standard response = payment summary + Dashboard deep link. PANs and consumer PII are never returned over email.
 
-> Full detail: [`fin-email-auth-data-policy-prd.md`](../../04-active-work/roadmap-items/fin-email-auth-data-policy-prd.md)
+> Full detail: [`fin-email-auth-data-policy-prd.md`](../../04-active-work/prds/fin-email-auth-data-policy/prd.md)
 
 **Background**: A pilot on Tier 3 (Standard) email found that generic/FAQ answers could be automated, but payment-specific responses could not be returned safely. The majority of merchant queries are payment-specific. Standard email is being deprecated — email AI work is scoped to Premium and Enterprise only.
 
@@ -335,9 +335,9 @@ See [`known-challenges.md`](known-challenges.md) for context on how this challen
 ## Future Enhancements Roadmap
 
 **In progress**:
-- [ ] **Fin involvement rate programme — 80% by end 2026** — orchestrates all channel levers (email, Webform, chat adoption) to hit the 80% involvement rate target — see [`fin-involvement-rate-prd.md`](../../04-active-work/roadmap-items/fin-involvement-rate-prd.md)
-- [ ] Fin on email (Premium/Enterprise) — authentication gap solution, org identification + data policy — see [`fin-email-auth-data-policy-prd.md`](../../04-active-work/roadmap-items/fin-email-auth-data-policy-prd.md)
-- [ ] Zendesk org domain mapping — fallback identification for email — see [`zendesk-org-domain-mapping-prd.md`](../../04-active-work/roadmap-items/zendesk-org-domain-mapping-prd.md)
+- [ ] **Fin involvement rate programme — 80% by end 2026** — orchestrates all channel levers (email, Webform, chat adoption) to hit the 80% involvement rate target — see [`fin-involvement-rate-prd.md`](../../04-active-work/prds/fin-involvement-rate/prd.md)
+- [ ] Fin on email (Premium/Enterprise) — authentication gap solution, org identification + data policy — see [`fin-email-auth-data-policy-prd.md`](../../04-active-work/prds/fin-email-auth-data-policy/prd.md)
+- [ ] Zendesk org domain mapping — fallback identification for email — see [`zendesk-org-domain-mapping-prd.md`](../../04-active-work/prds/zendesk-org-domain-mapping/prd.md)
 
 **Near-term (Next 6 months)**:
 - [ ] **Sonar** (central AI team) — internal Slack AI agent available to all Checkout staff; answers queries and escalates to Zendesk where needed. Relevant to Care because it will interact with the support intake process and will affect internal contact volume (including AM/TAM submissions). Not a Fin dependency. See [`support-workflows.md`](support-workflows.md).

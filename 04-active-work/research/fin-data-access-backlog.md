@@ -234,7 +234,7 @@ This backlog tracks the data sources Fin should be able to access (via API or MC
 
 | Priority | Data source | Contacts / 6m | Data availability | Complexity | Procedure defined? |
 |---|---|---|---|---|---|
-| P1 | Payments API (Transaction Status, Refunds, Disputes, 3DS, Risk, APMs) | ~10,049 | Confirmed live | Medium | [Yes](payment-details-fields.csv) |
+| P1 | Payments API (Transaction Status, Refunds, Disputes, 3DS, Risk, APMs) | ~10,049 | Confirmed live | Medium | [Yes](../working-files/payment-details-fields.csv) |
 | P2 | User Management API (Login & Access) | 2,228 | Not confirmed | Medium | [Yes](fin-user-management-responses.md) |
 | P2 | Settlements API | 858 | H2 2026 | Medium | No |
 | P2 | Financial Actions API (fees, settlement inclusion) | TBD | Confirmed live | Medium | No |
