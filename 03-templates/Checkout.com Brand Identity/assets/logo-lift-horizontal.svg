@@ -1,0 +1,14 @@
+<svg width="190" height="48" viewBox="0 0 190 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LIFT">
+  <defs>
+    <linearGradient id="liftGradH" x1="4" y1="44" x2="44" y2="4" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#006CFF"></stop>
+      <stop offset="1" stop-color="#7B61FF"></stop>
+    </linearGradient>
+    
+  </defs>
+  <rect x="4" y="4" width="40" height="40" rx="11" fill="url(#liftGradH)"></rect>
+  <path d="M14 33 C 20.5 33, 23 18.5, 34 17" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" fill="none"></path>
+  <circle cx="14" cy="33" r="3.8" fill="#FFFFFF"></circle>
+  <circle cx="34" cy="17" r="3.8" fill="#FFFFFF"></circle>
+  <text x="58" y="33" font-family="Archivo, Inter, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5" fill="#08111F">LIFT</text>
+</svg>

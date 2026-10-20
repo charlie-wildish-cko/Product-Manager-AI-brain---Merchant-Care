@@ -2,7 +2,7 @@
 
 > Official definitions for Checkout.com product, operational, and payment terms. Source: https://www.checkout.com/docs/business-operations/terminology (last updated May 2026)
 
-> For `fct_payin` / `fct_pay_to_card` data field/column definitions (schema-level, not glossary terms), use [fct-payin-pay-to-card-schema-fields.md](fct-payin-pay-to-card-schema-fields.md) instead — it is the authoritative source for those field names. Note: it does not yet cover bank payouts (`fct_bank_payout_event`) — that schema exists in the source repo but hasn't been pulled in here yet.
+> For `fct_payin` / `fct_pay_to_card` / `fct_bank_payout_event` data field/column definitions (schema-level, not glossary terms), use [fct-payin-payout-schema-fields.md](fct-payin-payout-schema-fields.md) instead — it is the authoritative source for those field names.
 
 ## A
 

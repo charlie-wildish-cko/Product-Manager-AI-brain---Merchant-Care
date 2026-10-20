@@ -1,0 +1,53 @@
+<!-- @dsCard group="Slides" viewport="1280x720" name="Comparison slide" subtitle="Two-column content — before / after, them / us" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; }
+  .slide { position: relative; width: 1280px; height: 720px; background: var(--surface-page); color: var(--text-strong); overflow: hidden; font-family: var(--font-sans); padding: 96px 120px; box-sizing: border-box; }
+  .eyebrow { font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 16px; }
+  h2 { font-family: var(--font-display); font-weight: 700; font-size: 48px; letter-spacing: -0.02em; margin: 0 0 56px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .col { border-radius: var(--radius-lg); padding: 40px; }
+  .col--muted { background: var(--surface-subtle); border: 1px solid var(--border-subtle); }
+  .col--brand { background: var(--midnight); color: #fff; }
+  .col h3 { font-size: 15px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 24px; font-weight: 700; }
+  .col--muted h3 { color: var(--text-muted); }
+  .col--brand h3 { color: var(--blue-300); }
+  ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 20px; }
+  li { display: flex; gap: 14px; font-size: 20px; line-height: 1.3; align-items: flex-start; }
+  .mk { flex: none; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; margin-top: 2px; }
+  .col--muted .mk { background: var(--neutral-200); color: var(--steel); }
+  .col--brand .mk { background: var(--success); color: #fff; }
+  .col--muted li { color: var(--steel); }
+</style>
+</head>
+<body>
+  <div class="slide">
+    <div class="eyebrow">Why LIFT</div>
+    <h2>Legacy processing vs. intelligent payments</h2>
+    <div class="cols">
+      <div class="col col--muted">
+        <h3>Legacy processing</h3>
+        <ul>
+          <li><span class="mk">✕</span> Static routing, flat decline rates</li>
+          <li><span class="mk">✕</span> Settlement in days</li>
+          <li><span class="mk">✕</span> Opaque, after-the-fact reporting</li>
+          <li><span class="mk">✕</span> One-size-fits-all infrastructure</li>
+        </ul>
+      </div>
+      <div class="col col--brand">
+        <h3>LIFT</h3>
+        <ul>
+          <li><span class="mk">✓</span> Data-driven routing, optimized auth</li>
+          <li><span class="mk">✓</span> Settlement in seconds</li>
+          <li><span class="mk">✓</span> Real-time, intelligent insight</li>
+          <li><span class="mk">✓</span> Built for global scale</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

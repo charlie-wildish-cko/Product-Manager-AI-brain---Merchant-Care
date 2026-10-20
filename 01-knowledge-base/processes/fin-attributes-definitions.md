@@ -803,7 +803,7 @@ Queries about Forwarding API — enabling merchants, allow-listing destination U
 
 **Does not apply if the customer:** Reports a general API 4XX/5XX error with no Forwarding API context — use API integration instead.
 
-**Likely keywords:** forwarding API, enable forwarding, allow list URL, whitelist domain, forward traffic 401
+**Likely keywords:** forwarding API
 
 #### Reason: Enablement
 

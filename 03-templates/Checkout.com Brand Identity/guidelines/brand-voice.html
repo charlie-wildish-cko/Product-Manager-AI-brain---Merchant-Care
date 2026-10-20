@@ -1,0 +1,42 @@
+<!-- @dsCard group="Brand" viewport="700x240" name="Tone of voice" subtitle="Confident, expert, clear, performance-driven — Action + Outcome" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--surface-page); color: var(--text-strong); padding: var(--space-8); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); }
+  h4 { margin: 0 0 var(--space-3); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+  .yes h4 { color: var(--success); }
+  .no h4 { color: var(--error); }
+  ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+  li { font-size: 15px; }
+  .yes li { font-weight: 600; }
+  .no li { color: var(--text-muted); }
+  .mk { display: inline-block; width: 16px; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="yes">
+      <h4>We sound like</h4>
+      <ul>
+        <li><span class="mk" style="color:var(--success)">✓</span>Optimize every payment.</li>
+        <li><span class="mk" style="color:var(--success)">✓</span>Move faster.</li>
+        <li><span class="mk" style="color:var(--success)">✓</span>Built for scale.</li>
+        <li><span class="mk" style="color:var(--success)">✓</span>Turn payments into performance.</li>
+      </ul>
+    </div>
+    <div class="no">
+      <h4>We don't sound like</h4>
+      <ul>
+        <li><span class="mk">✕</span>Buzzword-heavy</li>
+        <li><span class="mk">✕</span>Overly casual</li>
+        <li><span class="mk">✕</span>Startup hype</li>
+        <li><span class="mk">✕</span>Banking jargon</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<svg width="190" height="48" viewBox="0 0 190 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LIFT white">
+  <defs>
+    
+  </defs>
+  <rect x="4" y="4" width="40" height="40" rx="11" fill="#FFFFFF"></rect>
+  <path d="M14 33 C 20.5 33, 23 18.5, 34 17" stroke="#006CFF" stroke-width="3.2" stroke-linecap="round" fill="none"></path>
+  <circle cx="14" cy="33" r="3.8" fill="#006CFF"></circle>
+  <circle cx="34" cy="17" r="3.8" fill="#006CFF"></circle>
+  <text x="58" y="33" font-family="Archivo, Inter, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5" fill="#FFFFFF">LIFT</text>
+</svg>

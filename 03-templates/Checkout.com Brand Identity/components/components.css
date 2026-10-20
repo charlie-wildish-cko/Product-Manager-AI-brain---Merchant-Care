@@ -1,0 +1,134 @@
+/* ============================================================
+   COMPONENT STYLES — LIFT Design System
+   Class-based styles for the React primitives. Hover/focus/press
+   states live here so the JSX stays declarative. All values pull
+   from design tokens.
+   ============================================================ */
+
+/* ---------- Button ---------- */
+.lift-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  font-family: var(--font-sans); font-weight: var(--weight-semibold); font-size: 15px;
+  height: var(--control-height); padding: 0 var(--space-6);
+  border-radius: var(--radius-md); border: 1px solid transparent;
+  cursor: pointer; white-space: nowrap; user-select: none;
+  transition: var(--transition-control);
+}
+.lift-btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.lift-btn:disabled { opacity: .45; cursor: not-allowed; }
+.lift-btn--sm { height: var(--control-height-sm); font-size: 14px; padding: 0 var(--space-4); border-radius: var(--radius-sm); }
+.lift-btn--lg { height: var(--control-height-lg); font-size: 16px; padding: 0 var(--space-8); }
+.lift-btn--block { width: 100%; }
+
+.lift-btn--primary { background: var(--action); color: var(--text-on-brand); }
+.lift-btn--primary:hover:not(:disabled) { background: var(--action-hover); }
+.lift-btn--primary:active:not(:disabled) { background: var(--action-press); transform: translateY(1px); }
+
+.lift-btn--secondary { background: transparent; color: var(--action); border-color: var(--action); }
+.lift-btn--secondary:hover:not(:disabled) { background: var(--action-subtle); }
+.lift-btn--secondary:active:not(:disabled) { transform: translateY(1px); }
+
+.lift-btn--ghost { background: transparent; color: var(--text-default); }
+.lift-btn--ghost:hover:not(:disabled) { background: var(--surface-muted); }
+.lift-btn--ghost:active:not(:disabled) { transform: translateY(1px); }
+
+.lift-btn--danger { background: var(--error); color: #fff; }
+.lift-btn--danger:hover:not(:disabled) { filter: brightness(.94); }
+.lift-btn--danger:active:not(:disabled) { transform: translateY(1px); }
+
+.lift-btn svg { width: 18px; height: 18px; }
+
+/* ---------- IconButton ---------- */
+.lift-iconbtn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--control-height); height: var(--control-height);
+  border-radius: var(--radius-md); border: 1px solid transparent;
+  background: transparent; color: var(--text-default); cursor: pointer;
+  transition: var(--transition-control);
+}
+.lift-iconbtn:hover:not(:disabled) { background: var(--surface-muted); }
+.lift-iconbtn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.lift-iconbtn:disabled { opacity: .45; cursor: not-allowed; }
+.lift-iconbtn--sm { width: var(--control-height-sm); height: var(--control-height-sm); border-radius: var(--radius-sm); }
+.lift-iconbtn svg { width: 20px; height: 20px; }
+
+/* ---------- Card ---------- */
+.lift-card {
+  background: var(--surface-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: var(--space-6);
+}
+.lift-card--elevated { box-shadow: var(--shadow-md); border-color: transparent; }
+.lift-card--interactive { cursor: pointer; transition: var(--transition-control); }
+.lift-card--interactive:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+
+/* ---------- Badge ---------- */
+.lift-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-sans); font-weight: var(--weight-semibold); font-size: 12px; line-height: 1;
+  padding: 5px 10px; border-radius: var(--radius-pill);
+}
+.lift-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.lift-badge--neutral { background: var(--surface-muted); color: var(--text-default); }
+.lift-badge--info    { background: var(--action-subtle); color: var(--action-press); }
+.lift-badge--success { background: var(--status-success-bg); color: #047a4b; }
+.lift-badge--warning { background: var(--status-warning-bg); color: #9a6200; }
+.lift-badge--error   { background: var(--status-error-bg); color: #b42318; }
+.lift-badge--insight { background: var(--status-insight-bg); color: #5039c9; }
+
+/* ---------- Tag (dismissible chip) ---------- */
+.lift-tag {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-sans); font-size: 13px; font-weight: var(--weight-medium);
+  padding: 5px 6px 5px 12px; border-radius: var(--radius-pill);
+  background: var(--surface-muted); color: var(--text-default);
+}
+.lift-tag button { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 0; border-radius: 50%; background: transparent; color: var(--text-muted); cursor: pointer; font-size: 14px; line-height: 1; }
+.lift-tag button:hover { background: var(--neutral-200); color: var(--text-default); }
+
+/* ---------- Input ---------- */
+.lift-field { display: flex; flex-direction: column; gap: var(--space-2); font-family: var(--font-sans); }
+.lift-label { font-size: 14px; font-weight: var(--weight-medium); color: var(--text-default); }
+.lift-input {
+  height: var(--control-height); padding: 0 var(--space-4);
+  font-family: var(--font-sans); font-size: 15px; color: var(--text-strong);
+  background: var(--surface-page); border: 1px solid var(--border-default);
+  border-radius: var(--radius-md); transition: var(--transition-control); width: 100%; box-sizing: border-box;
+}
+.lift-input::placeholder { color: var(--neutral-400); }
+.lift-input:hover { border-color: var(--border-strong); }
+.lift-input:focus { outline: none; border-color: var(--border-focus); box-shadow: var(--focus-ring); }
+.lift-input:disabled { background: var(--surface-muted); cursor: not-allowed; opacity: .7; }
+.lift-input--invalid { border-color: var(--error); }
+.lift-input--invalid:focus { box-shadow: 0 0 0 3px var(--status-error-bg); }
+.lift-hint { font-size: 13px; color: var(--text-muted); }
+.lift-hint--error { color: var(--error); }
+textarea.lift-input { height: auto; padding: var(--space-3) var(--space-4); resize: vertical; }
+
+/* ---------- Switch ---------- */
+.lift-switch { display: inline-flex; align-items: center; gap: var(--space-3); cursor: pointer; font-family: var(--font-sans); font-size: 15px; color: var(--text-default); user-select: none; }
+.lift-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.lift-switch .track { position: relative; width: 44px; height: 26px; border-radius: var(--radius-pill); background: var(--neutral-300); transition: var(--transition-control); flex: none; }
+.lift-switch .thumb { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: var(--shadow-sm); transition: transform var(--motion-fast) var(--ease-standard); }
+.lift-switch input:checked + .track { background: var(--action); }
+.lift-switch input:checked + .track .thumb { transform: translateX(18px); }
+.lift-switch input:focus-visible + .track { box-shadow: var(--focus-ring); }
+.lift-switch input:disabled + .track { opacity: .5; }
+
+/* ---------- Checkbox ---------- */
+.lift-check { display: inline-flex; align-items: center; gap: var(--space-3); cursor: pointer; font-family: var(--font-sans); font-size: 15px; color: var(--text-default); user-select: none; }
+.lift-check input { position: absolute; opacity: 0; width: 0; height: 0; }
+.lift-check .box { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--border-default); background: var(--surface-page); display: inline-flex; align-items: center; justify-content: center; transition: var(--transition-control); flex: none; }
+.lift-check .box svg { width: 14px; height: 14px; stroke: #fff; opacity: 0; }
+.lift-check input:checked + .box { background: var(--action); border-color: var(--action); }
+.lift-check input:checked + .box svg { opacity: 1; }
+.lift-check input:focus-visible + .box { box-shadow: var(--focus-ring); }
+
+/* ---------- Tabs ---------- */
+.lift-tabs { display: inline-flex; gap: var(--space-1); border-bottom: 1px solid var(--border-subtle); }
+.lift-tab { appearance: none; border: 0; background: transparent; font-family: var(--font-sans); font-size: 15px; font-weight: var(--weight-medium); color: var(--text-muted); padding: var(--space-3) var(--space-4); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: var(--transition-control); }
+.lift-tab:hover { color: var(--text-default); }
+.lift-tab--active { color: var(--action); border-bottom-color: var(--action); }
+
+/* ---------- Avatar ---------- */
+.lift-avatar { display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--gradient-primary); color: #fff; font-family: var(--font-sans); font-weight: var(--weight-semibold); overflow: hidden; }
+.lift-avatar img { width: 100%; height: 100%; object-fit: cover; }

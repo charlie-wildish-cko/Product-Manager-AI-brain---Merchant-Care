@@ -1,0 +1,25 @@
+/* ============================================================
+   MOTION — LIFT Design System
+   "Fast, intelligent, fluid, precise. No decorative animation."
+   ============================================================ */
+
+:root {
+  /* ---- Duration (250–350ms working range) ---- */
+  --motion-fast:   180ms;  /* @kind other */
+  --motion-base:   280ms;  /* @kind other */ /* default for UI transitions */
+  --motion-slow:   350ms;  /* @kind other */
+  --motion-flow:   600ms;  /* @kind other */ /* payment-flow / point A→B journeys */
+
+  /* ---- Easing ---- */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);     /* @kind other */ /* fluid, decisive */
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);  /* @kind other */ /* entrances */
+  --ease-in:       cubic-bezier(0.7, 0, 0.84, 0);  /* @kind other */ /* exits */
+  --ease-flow:     cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */ /* smooth-curve money movement */
+
+  /* ---- Composed transitions ---- */
+  --transition-control: background-color var(--motion-fast) var(--ease-standard),
+                        border-color var(--motion-fast) var(--ease-standard),
+                        color var(--motion-fast) var(--ease-standard),
+                        box-shadow var(--motion-fast) var(--ease-standard),
+                        transform var(--motion-fast) var(--ease-standard);
+}

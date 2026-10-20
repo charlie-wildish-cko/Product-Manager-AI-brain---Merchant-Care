@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Responsible AI at Checkout.com — LIFT</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  deck-stage:not(:defined) { visibility: hidden; }
+  html, body { margin: 0; background: #05080F; }
+
+  /* ---- Slide base ---- */
+  .slide { width: 100%; height: 100%; font-family: var(--font-sans); color: var(--text-strong); overflow: hidden; position: relative; box-sizing: border-box; }
+  .pad { padding: 124px 96px 84px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
+
+  .s-dark { background: var(--midnight); color: #fff; }
+  .s-grad { background: var(--gradient-primary); color: #fff; }
+  .s-light { background: var(--surface-page); }
+  .s-fog { background: var(--surface-subtle); }
+
+  .eyebrow { font-size: 14px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; color: var(--blue); margin: 0 0 22px; }
+  .s-dark .eyebrow, .s-grad .eyebrow { color: var(--blue-300); }
+  .s-grad .eyebrow { color: rgba(255,255,255,.8); }
+
+  h1.title { font-family: var(--font-display); font-weight: 800; font-size: 78px; line-height: 0.98; letter-spacing: -0.03em; margin: 0; }
+  h2.head { font-family: var(--font-display); font-weight: 700; font-size: 46px; line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 14px; }
+  .lede { font-size: 21px; line-height: 1.5; color: var(--text-muted); max-width: 760px; margin: 0; }
+  .s-dark .lede { color: var(--neutral-400); }
+
+  /* logo + chrome */
+  .brand { position: absolute; top: 56px; left: 96px; display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.5px; }
+  .s-light .brand, .s-fog .brand { color: var(--text-strong); }
+  .s-dark .brand, .s-grad .brand { color: #fff; }
+  .pageno { position: absolute; top: 64px; right: 96px; font-family: var(--font-mono); font-size: 14px; color: var(--neutral-500); }
+  .s-dark .pageno { color: var(--neutral-500); }
+  .s-grad .pageno { color: rgba(255,255,255,.65); }
+  .s-light .pageno, .s-fog .pageno { color: var(--neutral-400); }
+  .foot { position: absolute; bottom: 56px; left: 96px; font-size: 13px; color: var(--text-muted); }
+  .s-dark .foot, .s-grad .foot { color: rgba(255,255,255,.55); }
+
+  .flow-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+  /* cards */
+  .grid { display: grid; gap: 20px; }
+  .card { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px; }
+  .s-fog .card { background: #fff; }
+  .card .k { font-family: var(--font-mono); font-size: 13px; color: var(--blue); font-weight: 600; letter-spacing: .02em; }
+  .card h3 { font-size: 22px; font-weight: 700; margin: 14px 0 8px; letter-spacing: -0.01em; color: var(--text-strong); }
+  .card p { font-size: 15.5px; line-height: 1.5; color: var(--text-muted); margin: 0; }
+  .card .num { font-family: var(--font-mono); font-weight: 600; font-size: 34px; letter-spacing: -0.02em; color: var(--text-strong); }
+
+  /* principle row */
+  .pgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
+  .prin { border-radius: var(--radius-lg); padding: 26px 22px; background: var(--surface-subtle); border: 1px solid var(--border-subtle); }
+  .prin .idx { font-family: var(--font-mono); font-size: 13px; color: var(--blue); font-weight: 600; }
+  .prin h4 { font-size: 19px; font-weight: 700; margin: 16px 0 10px; letter-spacing: -0.01em; }
+  .prin p { font-size: 14px; line-height: 1.45; color: var(--text-muted); margin: 0; }
+
+  /* lifecycle */
+  .life { display: flex; align-items: stretch; gap: 0; margin-top: 12px; }
+  .step { flex: 1; position: relative; padding: 0 14px; }
+  .step .node { width: 44px; height: 44px; border-radius: 50%; background: var(--white); border: 2px solid var(--blue); color: var(--blue); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-weight: 600; font-size: 16px; position: relative; z-index: 2; }
+  .step .line { position: absolute; top: 21px; left: 50%; right: -50%; height: 2px; background: var(--border-default); z-index: 1; }
+  .step:last-child .line { display: none; }
+  .step h4 { font-size: 18px; font-weight: 700; margin: 22px 0 6px; letter-spacing: -0.01em; }
+  .step p { font-size: 14px; line-height: 1.45; color: var(--text-muted); margin: 0; }
+
+  /* checklist */
+  .checks { display: flex; flex-direction: column; gap: 18px; margin-top: 8px; }
+  .check { display: flex; gap: 18px; align-items: flex-start; }
+  .check .mk { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--status-success-bg); color: #047a4b; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .check .mk svg { width: 17px; height: 17px; }
+  .check h4 { font-size: 21px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .check p { font-size: 16px; line-height: 1.45; color: var(--text-muted); margin: 0; max-width: 820px; }
+
+  .spacer { flex: 1; }
+
+  /* metric */
+  .metric { font-family: var(--font-mono); font-weight: 600; font-size: 188px; line-height: 0.9; letter-spacing: -0.04em; }
+  .s-dark .metric { color: #fff; }
+  .metric .u { color: var(--blue-300); }
+
+  /* entrance */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-deck-active] .anim { animation: rise .55s var(--ease-out) both; }
+    [data-deck-active] .anim.d1 { animation-delay: .06s; }
+    [data-deck-active] .anim.d2 { animation-delay: .12s; }
+    [data-deck-active] .anim.d3 { animation-delay: .18s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+<deck-stage width="1280" height="720">
+
+  <!-- 1 · TITLE -->
+  <section data-label="Title">
+    <div class="slide s-dark">
+      <svg class="flow-bg" viewBox="0 0 1280 720" fill="none" preserveAspectRatio="xMidYMid slice">
+        <defs><linearGradient id="t1" x1="0" y1="720" x2="1280" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#006CFF"/><stop offset="1" stop-color="#7B61FF"/></linearGradient></defs>
+        <path d="M-40 280 C 300 280, 460 80, 820 80 S 1180 18, 1340 0" stroke="url(#t1)" stroke-width="2.5" opacity=".95"/>
+        <path d="M-40 340 C 340 340, 520 140, 900 140 S 1220 80, 1340 64" stroke="#1E3354" stroke-width="1.5"/>
+        <path d="M-40 220 C 260 220, 420 30, 760 30 S 1140 -40, 1340 -60" stroke="#1E3354" stroke-width="1.5"/>
+        <circle cx="300" cy="280" r="5" fill="#006CFF"/><circle cx="820" cy="80" r="6" fill="#7B61FF"/><circle cx="900" cy="140" r="4" fill="#00C875"/>
+      </svg>
+      <div class="brand"><img src="../../assets/icon-lift-white.svg" width="32" height="32" alt=""><span>LIFT</span></div>
+      <div class="pageno">01</div>
+      <div class="pad" style="justify-content:flex-end;">
+        <p class="eyebrow anim">Operations briefing · 2026</p>
+        <h1 class="title anim d1">Responsible AI at<br>Checkout.com</h1>
+        <p class="lede anim d2" style="margin-top:26px;">How we build, deploy, and operate intelligent payments — safely, fairly, and at scale.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · STATEMENT -->
+  <section data-label="AI in the flow">
+    <div class="slide s-grad">
+      <div class="brand"><img src="../../assets/icon-lift-white.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">02</div>
+      <div class="pad" style="justify-content:center;">
+        <div style="width:56px;height:4px;background:#fff;border-radius:2px;margin-bottom:36px;opacity:.9;" class="anim"></div>
+        <h1 class="title anim d1" style="font-size:68px;max-width:1000px;">AI now sits inside<br>the payment flow.</h1>
+        <p class="anim d2" style="font-size:20px;color:rgba(255,255,255,.88);margin:34px 0 0;max-width:720px;line-height:1.5;">Routing, fraud, disputes, and support are increasingly model-driven. Responsible AI is how we keep every one of those decisions trusted.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · WHERE AI OPERATES -->
+  <section data-label="Where AI operates">
+    <div class="slide s-fog">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">03</div>
+      <div class="pad">
+        <p class="eyebrow anim">The landscape</p>
+        <h2 class="head anim d1">AI is already in every payment we move</h2>
+        <p class="lede anim d1">Four places where models make or shape operational decisions today.</p>
+        <div class="spacer"></div>
+        <div class="grid anim d2" style="grid-template-columns:repeat(4,1fr);">
+          <div class="card"><div class="k">Authorization</div><h3>Smart routing</h3><p>Models pick the path most likely to authorize, lifting approval rates in real time.</p></div>
+          <div class="card"><div class="k">Risk</div><h3>Fraud screening</h3><p>Every transaction is scored for risk before it settles — millions of times a day.</p></div>
+          <div class="card"><div class="k">Disputes</div><h3>Chargeback triage</h3><p>Incoming disputes are classified and prioritised so teams act on what matters.</p></div>
+          <div class="card"><div class="k">Support</div><h3>Assisted resolution</h3><p>Agents are guided by models that summarise context and suggest next steps.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · SECTION: FRAMEWORK -->
+  <section data-label="Our framework">
+    <div class="slide s-dark">
+      <svg class="flow-bg" viewBox="0 0 1280 720" fill="none" preserveAspectRatio="xMidYMid slice">
+        <path d="M-40 540 C 320 540, 520 660, 820 600 S 1200 460, 1340 480" stroke="#1E3354" stroke-width="1.5"/>
+        <path d="M-40 600 C 360 600, 560 700, 900 640 S 1240 520, 1340 540" stroke="#006CFF" stroke-width="2" opacity=".55"/>
+        <circle cx="820" cy="600" r="5" fill="#7B61FF"/>
+      </svg>
+      <div class="brand"><img src="../../assets/icon-lift-white.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">04</div>
+      <div class="pad" style="justify-content:center;">
+        <p class="eyebrow anim">Our framework</p>
+        <h1 class="title anim d1" style="font-size:60px;">Five principles guide<br>every model we ship.</h1>
+        <p class="lede anim d2" style="margin-top:24px;">From a prototype in a notebook to a model scoring live payments — the same standards apply.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · FIVE PRINCIPLES -->
+  <section data-label="Principles">
+    <div class="slide s-light">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">05</div>
+      <div class="pad">
+        <p class="eyebrow anim">The principles</p>
+        <h2 class="head anim d1">What responsible looks like</h2>
+        <div class="spacer"></div>
+        <div class="pgrid anim d2">
+          <div class="prin"><div class="idx">01</div><h4>Fairness</h4><p>Decisions don't disadvantage customers by who they are or where they trade.</p></div>
+          <div class="prin"><div class="idx">02</div><h4>Transparency</h4><p>We can explain why a model made a call, in language a person understands.</p></div>
+          <div class="prin"><div class="idx">03</div><h4>Accountability</h4><p>Every production model has a named owner and a clear line of responsibility.</p></div>
+          <div class="prin"><div class="idx">04</div><h4>Privacy &amp; security</h4><p>Data is minimised, protected, and used only for what customers expect.</p></div>
+          <div class="prin"><div class="idx">05</div><h4>Human oversight</h4><p>People stay in the loop on high-impact decisions — models assist, not rule.</p></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · IN PRACTICE -->
+  <section data-label="In practice">
+    <div class="slide s-fog">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">06</div>
+      <div class="pad">
+        <p class="eyebrow anim">In practice</p>
+        <h2 class="head anim d1">Principles become controls</h2>
+        <div class="spacer"></div>
+        <div class="grid anim d2" style="grid-template-columns:repeat(3,1fr);">
+          <div class="card"><div class="num">24/7</div><h3>Continuous monitoring</h3><p>Live models are watched for drift, accuracy, and bias — alerts fire the moment behaviour shifts.</p></div>
+          <div class="card"><div class="num">100%</div><h3>Reviewed before launch</h3><p>No model reaches production without a documented risk and fairness review.</p></div>
+          <div class="card"><div class="num">&lt;350ms</div><h3>Explainable in the moment</h3><p>Risk decisions carry the reasons behind them, surfaced fast enough to act on.</p></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · GOVERNANCE LIFECYCLE -->
+  <section data-label="Governance">
+    <div class="slide s-light">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">07</div>
+      <div class="pad">
+        <p class="eyebrow anim">Governance</p>
+        <h2 class="head anim d1">Every model follows the same lifecycle</h2>
+        <div class="spacer"></div>
+        <div class="life anim d2">
+          <div class="step"><div class="node">1</div><span class="line"></span><h4>Propose</h4><p>Define the use case, data, and the decision the model will influence.</p></div>
+          <div class="step"><div class="node">2</div><span class="line"></span><h4>Review</h4><p>Risk, fairness, privacy, and security assessed by an independent panel.</p></div>
+          <div class="step"><div class="node">3</div><span class="line"></span><h4>Approve</h4><p>A named owner signs off and accepts ongoing accountability.</p></div>
+          <div class="step"><div class="node">4</div><span class="line"></span><h4>Monitor</h4><p>Performance and drift tracked continuously against agreed thresholds.</p></div>
+          <div class="step"><div class="node">5</div><h4>Retire</h4><p>Models are retrained or retired before they degrade — never left to drift.</p></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · METRIC -->
+  <section data-label="Metric">
+    <div class="slide s-dark">
+      <svg class="flow-bg" viewBox="0 0 1280 720" fill="none" preserveAspectRatio="xMidYMid slice">
+        <path d="M-40 200 C 320 200, 520 120, 860 120 S 1220 90, 1340 84" stroke="#1E3354" stroke-width="1.5"/>
+        <circle cx="860" cy="120" r="4" fill="#006CFF"/>
+      </svg>
+      <div class="brand"><img src="../../assets/icon-lift-white.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">08</div>
+      <div class="pad" style="justify-content:center;">
+        <p class="eyebrow anim">The bar we hold</p>
+        <div class="metric anim d1">100<span class="u">%</span></div>
+        <p class="anim d2" style="font-size:24px;color:var(--neutral-400);margin:28px 0 0;max-width:720px;line-height:1.4;">of production models are reviewed before launch and monitored every day after. No exceptions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · WHAT THIS MEANS FOR YOU -->
+  <section data-label="For operations">
+    <div class="slide s-light">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">09</div>
+      <div class="pad">
+        <p class="eyebrow anim">What this means for operations</p>
+        <h2 class="head anim d1" style="margin-bottom:30px;">Your role keeps the system honest</h2>
+        <div class="checks anim d2">
+          <div class="check"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>Flag what looks off</h4><p>You see the edge cases models miss. A surprising decline or odd pattern is worth raising — that signal is how we catch drift early.</p></div></div>
+          <div class="check"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>Keep the human in the loop</h4><p>On high-impact actions, the model recommends and you decide. Override when your judgement says so, and note why.</p></div></div>
+          <div class="check"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>Document the decision</h4><p>If you can't explain why an outcome happened, escalate to the model owner. Every decision should be traceable.</p></div></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · CLOSING -->
+  <section data-label="Close">
+    <div class="slide s-grad">
+      <div class="brand"><img src="../../assets/icon-lift-white.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">10</div>
+      <div class="pad" style="justify-content:center;">
+        <div style="width:56px;height:4px;background:#fff;border-radius:2px;margin-bottom:36px;opacity:.9;" class="anim"></div>
+        <h1 class="title anim d1" style="font-size:72px;">Intelligence<br>you can trust.</h1>
+        <p class="anim d2" style="font-size:20px;color:rgba(255,255,255,.88);margin:34px 0 0;max-width:680px;line-height:1.5;">Responsible AI isn't a brake on performance — it's what lets us move money smarter, at scale. Every payment should move business forward.</p>
+      </div>
+      <div class="foot">Questions → #responsible-ai · ai-governance@checkout.com</div>
+    </div>
+  </section>
+
+</deck-stage>
+<script src="deck-stage.js"></script>
+<script>
+(async () => {
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  @page { margin: 0.5cm; }\n  html, body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }\n  section, article, figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        !settleRoot.querySelector('.sc-placeholder');
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  try { await document.fonts.ready; } catch (e) {}
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+  } catch (e) {}
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+</body>
+</html>

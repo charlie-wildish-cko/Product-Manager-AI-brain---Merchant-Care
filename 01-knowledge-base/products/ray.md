@@ -79,6 +79,59 @@ Source: `04-active-work/meeting-notes/2026-08/2026-08-18-ray-blockchain-consumer
 - **Non-custodial is a deflection lever**: users can be pointed at on-chain data. The offset is near-zero troubleshooting visibility, with no SOPs, Looker queries or APIs for these flows yet.
 - **Account lockout will not use email as a fallback contact route** (no way to authenticate over email). Model is full account suspension plus an automated liveness check against the historic liveness capture on a new device, comparable to Monzo's web rescue form.
 
+## Care service model settled (2026-08-27 Steerco)
+
+Source: `04-active-work/meeting-notes/2026-08/2026-08-27-ray-readiness-steerco.md`, `2026-08-21-ray-x-ep-introduction.md`, `2026-08-24-ray-care-content.md`.
+
+- **No phone support.** The Braavos phone line existed for vulnerable customers under Consumer Duty; with that requirement gone, phone drops. Multi-country phone support was judged to balloon in complexity against text plus AI translation. Phone *is* still required for Brazil merchant of record, a separate project with its own back office.
+- **Minimal email.** Max Rothman: everything in app, chat via Fin, AI-first as far as possible. Email is deliberately placed behind several steps and support is intentionally harder to find than a default fallback.
+- **Sensitive account actions are biometrically guarded** (information requests and changes). That is the stated reason for avoiding email: an emailer cannot be validated.
+- Content scope: **~180 content items, of which only ~30 are genuinely sensitive** and need strict sign-off. Every taxonomy issue and sub-issue needs a matching content piece. Removing Consumer Duty verbiage constraints is what makes AI-drafted content viable for Ray where it was not for Braavos.
+- Proposed deflection pattern worth preserving: a **front-end layer before Fin** handling known terminal states (for example account terminated) so they never enter the support funnel or generate a Fin loop. Not yet agreed with engineering.
+- **~80% of the product is shared with Braavos** (IDV, Checkout-issued cards, spending controls, 3DS, transaction history). The ~20% net-new is blockchain wallet sanction screening, on-chain deposits, and stablecoin scheme settlement.
+- Dispute surface is narrower than Braavos: Ray users cannot dispute the crypto funding transaction on-chain, and funding is just-in-time. **Scheme card disputes still apply**, and issuing disputes are manual with no Visa disputes API: the clearest known scalability gap for post-Q1 volume.
+- Ops headcount planning assumes **200,000 users by end of year 1**. Hold against Care contact forecasts.
+- Sole traders may self-certify, which lets Ray issue commercial cards at higher interchange. Creates a B2C/B2B ambiguity affecting taxonomy and entitlement.
+- Two open dependencies owning Charlie's Ray work: the **customer and transaction data model** (Joe Foulds, never confirmed for Braavos either) and **taxonomy sign-off**. Joe Foulds is building an entire new Ray back office, which cuts against single-platform consolidation and should be resolved explicitly.
+- SOP completion targeted for Phase 2 (December), not the October internal launch. Sardine adopted for initial fraud case management.
+- **Date conflict, unreconciled**: the 2026-08-27 Steerco and the 2026-08-24 content session both give friends-and-family as December; the 2026-08-26 Product Extended Leadership meeting recorded F&F "in five weeks" (early October). Verify against `2026 deliverables.md` before using either.
+
+## Care architecture confirmed (2026-09-14)
+
+Source: `04-active-work/meeting-notes/2026-09/2026-09-14-ray-care-architecture.md`.
+
+- **Fin plus Plain, no Zendesk.** Fin handles inbound deflection and chat via an embedded SDK. Plain is the case management system where human Care agents work. Fin creates a ticket via API and the conversation ends there; Plain handles escalations, not Fin.
+- **Supersedes the "December alpha ships without Fin" position above.** Agreed to start integrating Fin now so Ray has self-service on day one. Assessed as low risk given low initial volumes, and engineering says Fin is easier to integrate than any alternative including a web form.
+- Plain stores the records. Minimum Ray-side build is an inbox reading from Care's data to show tickets awaiting a human; Care hosts the conversations and all customer communication.
+- **Open blocker on the Plain side: Care-built SDK against embedded Plain SDK.** Engineering prefers Care exposes its own SDK so Ray stays agnostic to the upstream ticketing system and a future swap costs Ray nothing. Fin integration is not blocked on this.
+- Reply channel unresolved. Async replies from the Plain ticket to the in-app inbox thread is preferred; reply-by-email is acceptable to Charlie because the thread is already authenticated, but risk opposes email outright as a consumer data-breach vector. Turning email off entirely has not been assessed.
+- **Interim routing: everything through Care for friends-and-family**, with Care sitting between other internal teams and consumers. Not feasible at external launch, when all volume would land on Care. Minimum bar is a traceability pass-through so consumers see outcomes in-app.
+- **Consumer disputes migrates to Plain in Q1** and is a fully delineated team from merchant disputes, so the migration does not drag merchant disputes along. Salesforce is out of scope.
+- **Compliance is the structural gap.** Puja's org merged acquiring and consumer into one team, the opposite of Care's split, so compliance gets a swivel-chair experience regardless of Plain. Sphinx stays separate. No clear route today for an AML termination decision to reach the consumer. Mitigation: license a minimum of dedicated TM/compliance seats in Plain.
+- **Plain cost for Ray: ~$120 per seat per month.** Headcount allocation 40-50 seats (Fabio's ~30 at launch plus ~10 Q1 compliance), so ~$72k/year at 50 seats.
+- Plain has automatic translation, so agents reply in languages they do not speak. Testable in-house with Portuguese, Arabic and Filipino native speakers.
+- Transaction monitoring runs on Sardine. Stefan in disputes already builds Sardine TM rules and was unaware of Ray: reuse rather than duplicate.
+
+## Readiness update (2026-09-24 Steerco)
+
+Source: `04-active-work/meeting-notes/2026-09/2026-09-24-ray-readiness-steerco.md`. Charlie absent. Max Rothman spoke for Care.
+
+- Phases restated: internal testing October, friends-and-family 1 December, external launch Q1 2027. Internal testing support runs through Slack with no care tooling. Care team members join internal testing to capture queries for SOPs and taxonomy (agreed in principle).
+- **Data blocker partly resolved**: "bare bones" product data, about 50% of the roughly 10 items Care needs, by end of year. Confirmation through an October review. Care must state what the care tool can ingest and act on.
+- Plain named as "pretty much decided" for the Zendesk replacement, exec sign-off targeted early October.
+- Issuing disputes stay manual through GA. Automation realistically mid-2027. No provisional credit. Won disputes pay out as standard refunds via issuing webhooks.
+- Fiat TM has no PM or engineers and blocks external launch. Ops capacity assumed manual processes end around Q1.
+- Terminations: no ops owner. Crypto accounts cannot be suspended like fiat. Levers are suspend card, block transfers out, stop funds in. Users can always export keys. Care scripting for terminated users is needed.
+
+## CRM and comms data (2026-10-09)
+
+Source: `04-active-work/meeting-notes/2026-10/2026-10-09-ray-crm-care-becca-smyth.md`.
+
+- **Braze is the CRM for Ray consumer data** (selected via RFP, build starting, owner Becca Smyth). It stores content and marketing comms data (campaign history, comms sent, consent changes, offer/rewards history) that Care can use.
+- Care's access path is BigQuery by identifier. Open: nobody owns exporting Braze campaign and consent-change data to BigQuery (Customer 360 work by Alice Beddis does not cover it).
+- Consumer preference center with granular consent toggles replaces a single unsubscribe. Consent granularity is defined by legal and Becca, then published to BigQuery.
+- Deletion audit log in BigQuery is agreed in principle, with no owner (engineering is building the account deletion process).
+
 ## Success Metrics
 
 Per the Ops manual — not yet reconciled with Care Product's own north star metrics (contact rate, cost per contact):

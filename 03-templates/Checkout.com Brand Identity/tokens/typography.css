@@ -1,0 +1,50 @@
+/* ============================================================
+   TYPOGRAPHY — LIFT Design System
+   Families, weights, and the full type scale (size / line-height).
+   ============================================================ */
+
+:root {
+  /* ---- Families ---- */
+  --font-sans:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Archivo', 'Inter', system-ui, sans-serif; /* Söhne substitute */
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ---- Weights ---- */
+  --weight-light:    300;
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* ---- Type scale: size / line-height pairs ---- */
+  --text-display-xl: 72px;  --leading-display-xl: 80px;
+  --text-display-l:  56px;  --leading-display-l:  64px;
+  --text-h1:         48px;  --leading-h1:         56px;
+  --text-h2:         36px;  --leading-h2:         44px;
+  --text-h3:         28px;  --leading-h3:         36px;
+  --text-h4:         22px;  --leading-h4:         30px;
+  --text-body-l:     18px;  --leading-body-l:     28px;
+  --text-body:       16px;  --leading-body:       24px;
+  --text-small:      14px;  --leading-small:      20px;
+  --text-caption:    12px;  --leading-caption:    16px;
+
+  /* ---- Tracking ---- */
+  --tracking-tight:  -0.02em;   /* display & large headings */
+  --tracking-snug:   -0.01em;   /* h3/h4 */
+  --tracking-normal: 0em;
+  --tracking-wide:   0.04em;    /* eyebrows / overlines */
+}
+
+/* ---- Convenience classes (optional, for specimens & prose) ---- */
+.lift-display-xl { font-family: var(--font-display); font-weight: var(--weight-bold);   font-size: var(--text-display-xl); line-height: var(--leading-display-xl); letter-spacing: var(--tracking-tight); }
+.lift-display-l  { font-family: var(--font-display); font-weight: var(--weight-bold);   font-size: var(--text-display-l);  line-height: var(--leading-display-l);  letter-spacing: var(--tracking-tight); }
+.lift-h1         { font-family: var(--font-display); font-weight: var(--weight-semibold);font-size: var(--text-h1);         line-height: var(--leading-h1);         letter-spacing: var(--tracking-tight); }
+.lift-h2         { font-family: var(--font-display); font-weight: var(--weight-semibold);font-size: var(--text-h2);         line-height: var(--leading-h2);         letter-spacing: var(--tracking-snug); }
+.lift-h3         { font-family: var(--font-sans);    font-weight: var(--weight-semibold);font-size: var(--text-h3);         line-height: var(--leading-h3);         letter-spacing: var(--tracking-snug); }
+.lift-h4         { font-family: var(--font-sans);    font-weight: var(--weight-semibold);font-size: var(--text-h4);         line-height: var(--leading-h4);         letter-spacing: var(--tracking-snug); }
+.lift-body-l     { font-family: var(--font-sans);    font-weight: var(--weight-regular); font-size: var(--text-body-l);     line-height: var(--leading-body-l); }
+.lift-body       { font-family: var(--font-sans);    font-weight: var(--weight-regular); font-size: var(--text-body);       line-height: var(--leading-body); }
+.lift-small      { font-family: var(--font-sans);    font-weight: var(--weight-regular); font-size: var(--text-small);      line-height: var(--leading-small); }
+.lift-caption    { font-family: var(--font-sans);    font-weight: var(--weight-medium);  font-size: var(--text-caption);    line-height: var(--leading-caption); }
+.lift-eyebrow    { font-family: var(--font-sans);    font-weight: var(--weight-semibold);font-size: var(--text-caption);    line-height: var(--leading-caption); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
+.lift-mono       { font-family: var(--font-mono);    font-weight: var(--weight-medium);  font-variant-numeric: tabular-nums; }

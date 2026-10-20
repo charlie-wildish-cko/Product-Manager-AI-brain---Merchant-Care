@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operations Platform Vision (concept)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  /* Tokens from 03-templates/Checkout.com Brand Identity (LIFT): tokens/colors.css, typography.css, spacing.css, motion.css */
+  :root {
+    --blue: #006CFF; --blue-50: #EBF3FF; --blue-200: #ADCFFF; --blue-300: #70AAFF; --blue-700: #0043A0;
+    --midnight: #08111F; --deep-navy: #12233E; --steel: #5E718D; --cloud: #EEF3FA; --fog: #F7F9FC;
+    --neutral-200: #DCE4F0; --neutral-300: #C2CEDE;
+    --warning: #FFB020; --insight: #7B61FF;
+    --status-warning-bg: #FFF4E1; --status-insight-bg: #EFEBFF;
+    --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: 'Archivo', 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    --radius-md: 12px; --radius-lg: 16px; --radius-pill: 999px;
+    --shadow-sm: 0 1px 2px rgba(8, 17, 31, 0.06);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --focus-ring: 0 0 0 3px rgba(0, 108, 255, 0.35);
+    --ease: cubic-bezier(.65, 0, .35, 1);
+    --dur: 280ms;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: var(--fog); color: var(--deep-navy); padding: 32px; line-height: 1.45; }
+  .page { background: #fff; border: 1px solid var(--neutral-200); border-radius: var(--radius-lg); max-width: 1440px; margin: 0 auto; padding: 40px 48px 32px; }
+  h1 { font-family: var(--font-display); font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: -0.02em; color: var(--midnight); }
+  .eyebrow { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--steel); margin-bottom: 8px; }
+  button { font: inherit; }
+  button:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+  /* Tabs */
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 32px; border-bottom: 1px solid var(--neutral-200); }
+  .tab { border: 0; background: transparent; padding: 12px 20px; font-size: 15px; font-weight: 600; color: var(--steel); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+  .tab:hover { color: var(--midnight); }
+  .tab.active { color: var(--midnight); border-bottom-color: var(--blue); }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* View 1: problem */
+  .problem { border: 1px solid var(--neutral-200); border-left: 4px solid var(--warning); background: var(--status-warning-bg); border-radius: var(--radius-lg); padding: 24px 28px; }
+  .problem .eyebrow { color: var(--deep-navy); }
+  .problem .stmt { font-size: 20px; line-height: 30px; max-width: 1040px; color: var(--midnight); }
+  .problem .stmt b { font-weight: 600; }
+  .pts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-top: 20px; }
+  .pt { border-top: 1px solid var(--warning); padding-top: 12px; }
+  .pt .who { font-size: 12px; font-weight: 600; color: var(--deep-navy); text-transform: uppercase; letter-spacing: 0.04em; }
+  .pt .what { font-size: 16px; line-height: 24px; margin-top: 4px; color: var(--midnight); }
+  .vision-box { margin-top: 32px; }
+  .headline { font-size: 20px; line-height: 30px; color: var(--deep-navy); max-width: 960px; }
+  .headline b { color: var(--midnight); font-weight: 600; }
+
+  /* Controls */
+  .controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 0 0 20px; }
+  .toggle { display: inline-flex; background: var(--cloud); border-radius: var(--radius-md); padding: 4px; }
+  .toggle button { border: 0; background: transparent; font-size: 14px; font-weight: 600; padding: 8px 24px; border-radius: 8px; cursor: pointer; color: var(--steel); transition: background var(--dur) var(--ease), color var(--dur) var(--ease); }
+  .toggle button:hover { color: var(--midnight); }
+  .toggle button.active { background: #fff; color: var(--midnight); box-shadow: var(--shadow-sm); }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; color: var(--deep-navy); }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .sw { width: 14px; height: 14px; border-radius: 4px; border: 1px solid; display: inline-block; }
+  .sw.g { background: var(--cloud); border-color: var(--neutral-300); }
+  .sw.b { background: var(--blue-50); border-color: var(--blue-200); }
+  .sw.p { background: var(--status-insight-bg); border-color: var(--insight); }
+  .sw.a { background: var(--status-warning-bg); border-color: var(--warning); }
+
+  /* Front stage line */
+  .front { border: 1px solid var(--neutral-200); background: var(--cloud); border-radius: var(--radius-lg); padding: 16px 20px; display: flex; align-items: baseline; gap: 16px; transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+  .front .k { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--steel); white-space: nowrap; }
+  .front .h { font-family: var(--font-display); font-size: 18px; line-height: 24px; font-weight: 600; color: var(--midnight); }
+  .front .d { font-size: 14px; color: var(--deep-navy); }
+  .divider { border-top: 1px dashed var(--neutral-300); margin: 20px 0 16px; position: relative; }
+  .divider span { position: absolute; top: -9px; left: 0; background: #fff; padding-right: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--steel); }
+
+  /* Resolution path */
+  .pathrow { display: grid; grid-template-columns: 1fr 84px 1.15fr 84px 2.3fr; align-items: stretch; }
+  .tier { border: 1px solid; border-radius: var(--radius-lg); padding: 16px; display: flex; flex-direction: column; gap: 8px; transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+  .tier .tstep { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .tier .h { font-family: var(--font-display); font-size: 18px; line-height: 24px; font-weight: 600; color: var(--midnight); }
+  .tier .d { font-size: 14px; line-height: 20px; }
+  .tier .exit { margin-top: auto; align-self: flex-start; font-size: 12px; line-height: 16px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-pill); background: #fff; border: 1px solid var(--neutral-300); color: var(--midnight); }
+  .humans { border: 1px dashed var(--blue-300); border-radius: var(--radius-lg); padding: 12px; display: flex; flex-direction: column; gap: 10px; background: #fff; transition: border-color var(--dur) var(--ease); }
+  .humans > .tstep { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--blue-700); }
+  .subrow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; }
+  .fall { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--deep-navy); padding: 0 6px; gap: 6px; }
+  .fall::after { content: ""; width: 100%; height: 8px; background: radial-gradient(circle at right center, var(--blue) 3.5px, transparent 4.5px), linear-gradient(var(--blue-300), var(--blue-300)) left center / 100% 2px no-repeat; }
+
+  .nocase { grid-column: 1 / 2; margin-top: 12px; border-radius: var(--radius-md); border: 1px dashed var(--neutral-300); color: var(--steel); font-size: 13px; line-height: 18px; padding: 12px 16px; }
+  .casebar { grid-column: 3 / -1; margin-top: 12px; border-radius: var(--radius-md); background: var(--midnight); color: #fff; font-size: 14px; line-height: 20px; padding: 12px 20px; transition: background var(--dur) var(--ease); }
+  .casebar b { font-weight: 600; }
+  .bar { margin-top: 12px; border-radius: var(--radius-md); border: 1px solid var(--blue-200); background: var(--blue-50); padding: 12px 16px; }
+  .bar .k { font-size: 14px; font-weight: 600; color: var(--blue-700); }
+  .bar .d { font-size: 13px; line-height: 18px; margin-top: 2px; color: var(--deep-navy); }
+  .bar.ifc { grid-column: 3 / 4; background: var(--status-insight-bg); border-color: var(--insight); }
+  .bar.ifc .k { color: var(--midnight); }
+  .bar.portal { grid-column: 5 / 6; }
+  .segwrap { grid-column: 3 / -1; margin-top: 16px; }
+  .segh { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--deep-navy); margin-bottom: 8px; }
+  .segs { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .seg { border: 1px solid var(--blue-200); background: #fff; border-radius: var(--radius-md); padding: 12px 16px; }
+  .seg .k { font-size: 14px; font-weight: 600; color: var(--midnight); }
+  .seg .d { font-size: 13px; line-height: 18px; margin-top: 4px; color: var(--deep-navy); }
+  .pathnote { grid-column: 1 / -1; margin-top: 12px; font-size: 12.5px; line-height: 18px; color: var(--steel); }
+
+  .vision .t1 { background: var(--cloud); border-color: var(--neutral-200); }
+  .vision .t1 .tstep { color: var(--steel); }
+  .vision .t2 { background: var(--status-insight-bg); border-color: var(--insight); }
+  .vision .t2 .tstep { color: var(--deep-navy); }
+  .vision .t3a { background: var(--status-insight-bg); border-color: var(--insight); border-left-width: 4px; }
+  .vision .t3b { background: var(--blue-50); border-color: var(--blue-200); }
+  .vision .t3a .tstep, .vision .t3b .tstep { color: var(--blue-700); }
+
+  .today .tier, .today .bar, .today .front, .today .seg { background: var(--status-warning-bg); border-color: var(--warning); }
+  .today .tier .tstep { color: var(--deep-navy); }
+  .today .humans { border-color: var(--warning); }
+  .today .humans > .tstep { color: var(--deep-navy); }
+  .today .bar .k { color: var(--midnight); }
+  .today .casebar { background: var(--status-warning-bg); color: var(--midnight); border: 1px solid var(--warning); }
+
+  /* Underneath chips + detail */
+  .under { margin-top: 28px; }
+  .unders { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .u { text-align: left; border: 1px solid var(--neutral-200); background: #fff; border-radius: var(--radius-lg); padding: 14px 16px; cursor: pointer; transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease); }
+  .u:hover { border-color: var(--blue); box-shadow: var(--shadow-md); }
+  .u.active { border-color: var(--blue); background: var(--blue-50); }
+  .u .k { font-size: 15px; font-weight: 600; color: var(--midnight); }
+  .u .s { font-size: 13px; line-height: 18px; margin-top: 2px; color: var(--steel); }
+  .detail { margin-top: 12px; border-radius: var(--radius-lg); background: var(--midnight); color: #fff; padding: 16px 20px; display: none; }
+  .detail.open { display: block; }
+  .detail .h { font-family: var(--font-display); font-size: 16px; font-weight: 600; }
+  .detail .d { font-size: 14px; line-height: 20px; margin-top: 4px; max-width: 1000px; }
+  .detail .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .detail .chip { font-size: 12px; line-height: 16px; font-weight: 500; padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid var(--steel); color: #fff; }
+  .hint { margin-top: 8px; font-size: 12px; color: var(--steel); }
+  .today .detail { background: var(--status-warning-bg); color: var(--midnight); border: 1px solid var(--warning); }
+  .today .detail .chip { border-color: var(--warning); color: var(--midnight); }
+  .today .u.active { background: var(--status-warning-bg); border-color: var(--warning); }
+
+  /* View 3: land it */
+  h3.sec { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--steel); margin-bottom: 12px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .tile { background: #fff; border: 1px solid var(--neutral-200); border-radius: var(--radius-lg); padding: 16px; transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+  .tile:hover { border-color: var(--blue); box-shadow: var(--shadow-md); }
+  .tile .k { font-size: 12px; font-weight: 600; color: var(--steel); text-transform: uppercase; letter-spacing: 0.04em; }
+  .tile .v { font-family: var(--font-display); font-size: 18px; line-height: 24px; font-weight: 600; margin-top: 4px; color: var(--midnight); }
+  .tile .m { font-size: 13px; color: var(--deep-navy); margin-top: 8px; line-height: 18px; }
+  .timeline { margin-top: 32px; border-top: 1px solid var(--neutral-200); padding-top: 24px; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+  .step { border-left: 2px solid var(--midnight); padding-left: 16px; }
+  .step .w { font-size: 14px; font-weight: 600; color: var(--midnight); }
+  .step .x { font-size: 13px; color: var(--deep-navy); margin-top: 4px; line-height: 18px; }
+  .step .ph { display: inline-block; font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 10px; border-radius: var(--radius-pill); background: var(--blue-50); color: var(--blue-700); margin-bottom: 8px; }
+  .step ul { list-style: none; margin-top: 8px; }
+  .step li { font-size: 13px; color: var(--deep-navy); line-height: 18px; padding: 4px 0 4px 16px; position: relative; }
+  .step li::before { content: ""; position: absolute; left: 0; top: 11px; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+  .gate { margin-top: 24px; border: 1px solid var(--midnight); background: var(--fog); border-radius: var(--radius-lg); padding: 16px 20px; font-size: 14px; line-height: 20px; color: var(--midnight); }
+  .gate b { font-weight: 600; }
+  .foot { margin-top: 32px; font-size: 12px; line-height: 18px; color: var(--steel); }
+  .foot code { font-family: var(--font-mono); font-size: 11.5px; }
+
+  /* Today: current state flow */
+  .tflow { display: none; }
+  .tgrid { display: grid; grid-template-columns: 100px repeat(5, 1fr); column-gap: 24px; row-gap: 16px; align-items: stretch; }
+  .tstage { font-size: 15px; font-weight: 600; color: var(--midnight); }
+  .tstage .n { display: inline-flex; width: 26px; height: 26px; border-radius: 50%; background: var(--midnight); color: #fff; font-family: var(--font-mono); font-size: 12px; font-weight: 600; align-items: center; justify-content: center; margin-right: 8px; vertical-align: middle; }
+  .tlane { align-self: center; font-size: 15px; font-weight: 600; color: var(--midnight); }
+  .tlane span { display: block; font-size: 12px; font-weight: 400; color: var(--steel); margin-top: 2px; line-height: 16px; }
+  .sc { border: 1px solid var(--warning); background: var(--status-warning-bg); border-radius: var(--radius-lg); padding: 16px; position: relative; min-height: 110px; }
+  .sc .h { font-size: 15px; line-height: 21px; font-weight: 600; color: var(--midnight); }
+  .sc .d { font-size: 14px; line-height: 20px; margin-top: 6px; color: var(--deep-navy); }
+  .back-c:not(.last)::after { content: ""; position: absolute; right: -25px; top: 50%; transform: translateY(-50%); width: 24px; height: 8px; background: radial-gradient(circle at right center, var(--blue) 3.5px, transparent 4.5px), linear-gradient(var(--blue-300), var(--blue-300)) left center / 100% 2px no-repeat; }
+  .tdiv { grid-column: 1 / -1; border-top: 1px dashed var(--neutral-300); margin: 2px 0; position: relative; }
+  .tdiv span { position: absolute; top: -9px; left: 0; background: #fff; padding-right: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--steel); }
+  .tnote { grid-column: 1 / -1; font-size: 12.5px; line-height: 18px; color: var(--steel); }
+
+  /* Messy example */
+  .example { margin-top: 32px; }
+  .example .sub { font-size: 14px; color: var(--deep-navy); margin-bottom: 12px; max-width: 900px; }
+  .exwrap { border: 1px solid var(--neutral-200); border-radius: var(--radius-lg); background: var(--fog); padding: 16px; }
+  .exwrap svg { width: 100%; height: auto; display: block; }
+  .exwrap svg text { font-family: var(--font-sans); fill: var(--midnight); }
+  .exsteps { display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, auto); grid-auto-flow: column; gap: 8px 32px; margin-top: 16px; }
+  .exstep { display: flex; gap: 12px; font-size: 14px; line-height: 20px; color: var(--deep-navy); }
+  .exstep .n { flex: 0 0 24px; height: 24px; border-radius: 50%; background: var(--midnight); color: #fff; font-family: var(--font-mono); font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+  .exstep .n.bad { background: var(--error, #F04438); }
+  .extake { margin-top: 16px; font-size: 14px; line-height: 20px; color: var(--midnight); border-left: 4px solid var(--warning); padding: 4px 0 4px 16px; max-width: 1000px; }
+
+  /* Responsive: embed-friendly (Google Sites) */
+  @media (max-width: 1100px) {
+    body { padding: 0; background: #fff; }
+    .page { border: 0; border-radius: 0; padding: 24px 20px; }
+    h1 { font-size: 30px; line-height: 38px; }
+    .problem { padding: 20px; }
+    .problem .stmt, .headline { font-size: 17px; line-height: 26px; }
+    .pathrow { grid-template-columns: 1fr; row-gap: 0; }
+    .fall { flex-direction: row; justify-content: flex-start; text-align: left; padding: 10px 4px; gap: 8px; }
+    .fall::before { content: "\2193"; font-size: 16px; color: var(--blue); }
+    .fall::after { display: none; }
+    .nocase, .casebar, .bar.ifc, .bar.portal, .segwrap, .pathnote { grid-column: 1 / -1; }
+    .tgrid { grid-template-columns: repeat(5, minmax(150px, 1fr)); overflow-x: auto; }
+    .tgrid > .tlane { grid-column: 1 / -1; }
+    .tgrid > div:first-child { display: none; }
+    .back-c:not(.last)::after { display: none; }
+    .exsteps { grid-template-columns: 1fr; grid-template-rows: none; grid-auto-flow: row; }
+    .cko { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ck::after { display: none; }
+    .sc.wide { grid-column: 1 / -1; }
+  }
+  @media (max-width: 760px) {
+    .subrow { grid-template-columns: 1fr; }
+    .tgrid { grid-template-columns: 1fr; }
+    .cko { grid-template-columns: 1fr; }
+    .tgrid > .tstage { display: none; }
+    .front { flex-direction: column; gap: 8px; }
+    .toggle { flex-wrap: wrap; }
+  }
+
+  /* Customer-initiated vs Checkout-initiated */
+  .laneh { grid-column: 1 / -1; font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--steel); margin-bottom: 8px; }
+  .laneh b { color: var(--midnight); font-weight: 600; }
+  .laneh.second { margin-top: 24px; }
+  .cko { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+  .ck { border: 1px solid var(--blue-200); background: var(--blue-50); border-radius: var(--radius-lg); padding: 14px 16px; position: relative; }
+  .ck .h { font-family: var(--font-display); font-size: 16px; line-height: 22px; font-weight: 600; color: var(--midnight); }
+  .ck .d { font-size: 13.5px; line-height: 19px; margin-top: 4px; }
+  .ck.c1 { background: var(--cloud); border-color: var(--neutral-200); }
+  .ck.c3 { background: var(--status-insight-bg); border-color: var(--insight); }
+  .ck:not(:last-child)::after { content: ""; position: absolute; right: -29px; top: 50%; transform: translateY(-50%); width: 28px; height: 8px; background: radial-gradient(circle at right center, var(--blue) 3.5px, transparent 4.5px), linear-gradient(var(--blue-300), var(--blue-300)) left center / 100% 2px no-repeat; }
+  .origin { display: inline-block; font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 10px; border-radius: var(--radius-pill); margin-bottom: 12px; background: var(--cloud); color: var(--deep-navy); }
+  .origin.out { background: var(--blue-50); color: var(--blue-700); }
+  .sc.wide { grid-column: 2 / -1; min-height: 0; }
+  #extoggle { flex-wrap: wrap; }
+
+  .poor { margin-top: 20px; }
+  .poor .eyebrow { color: var(--deep-navy); }
+  .poorgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .pc { background: #fff; border: 1px solid var(--warning); border-radius: var(--radius-md); padding: 12px 16px; }
+  .pc .h { font-size: 15px; line-height: 21px; font-weight: 600; color: var(--midnight); }
+  .pc .d { font-size: 13px; line-height: 18px; margin-top: 4px; color: var(--deep-navy); }
+
+  /* Vision cards (pre-solution) */
+  .vgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .vc { background: var(--blue-50); border: 1px solid var(--blue-200); border-radius: var(--radius-lg); padding: 20px; }
+  .vc .who { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--blue-700); }
+  .vc .line { font-family: var(--font-display); font-size: 20px; line-height: 26px; font-weight: 600; color: var(--midnight); margin-top: 6px; }
+  .vc ul { list-style: none; margin-top: 12px; }
+  .vc li { font-size: 14px; line-height: 20px; color: var(--deep-navy); padding: 4px 0 4px 18px; position: relative; }
+  .vc li::before { content: ""; position: absolute; left: 0; top: 11px; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+  .approach { margin-top: 28px; }
+</style>
+</head>
+<body>
+<div class="page" id="page">
+
+  <h1>One operations platform. One record of work.</h1>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" role="tab" data-view="why">Why change</button>
+    <button class="tab" role="tab" data-view="how">How it works</button>
+    <button class="tab" role="tab" data-view="land">How we land it</button>
+  </div>
+
+  <!-- View 1 -->
+  <section class="view active" id="view-why">
+    <div class="problem">
+      <div class="eyebrow">The problem</div>
+      <p class="stmt"><b>Our operations tooling is built around products, not customers.</b> Each product team ships its own tools, queues and processes, so people absorb the fragmentation. Customers repeat themselves, are bounced between teams, hear conflicting messages, cannot see where their request is, and wait on slow decisions. Account managers mask this for white-glove customers. At Platforms, Consumer and SMB scale it gets worse.</p>
+      <div class="poor">
+        <div class="eyebrow">What "poor" means</div>
+        <div class="toggle" id="poortoggle" style="margin-bottom:12px">
+          <button class="active" data-poor="cust">For customers</button>
+          <button data-poor="agent">For human agents</button>
+          <button data-poor="cko">For Checkout</button>
+        </div>
+        <div class="poorgrid poorpanel" id="poor-cust">
+          <div class="pc"><div class="h">They repeat themselves</div><div class="d">Periodic reviews ask for data the merchant has already provided, because it sits in another system.</div></div>
+          <div class="pc"><div class="h">They are bounced between teams</div><div class="d">CSAT drops 20% when work moves from Care to another Ops team.</div></div>
+          <div class="pc"><div class="h">They hear conflicting messages</div><div class="d">Care messaged a merchant about goodwill after commercial had already agreed a fee reduction.</div></div>
+          <div class="pc"><div class="h">They cannot see where it is</div><div class="d">Once work is with another team it is gone from Care's view. Tracking it means searching an email inbox.</div></div>
+          <div class="pc"><div class="h">They wait on slow decisions</div><div class="d">One reviewer approves every onboarding case, so every merchant waits on one person.</div></div>
+        </div>
+        <div class="poorgrid poorpanel" id="poor-agent" style="display:none">
+          <div class="pc"><div class="h">They switch between tools</div><div class="d">About 5 tools on one Care L1 ticket. A periodic review moves through CAT, Genesis, the RA Tool and Looker just to decide if it is needed.</div></div>
+          <div class="pc"><div class="h">They create and copy cases by hand</div><div class="d">Cases are created by hand or by email-to-case and assigned by hand. The configuration team copies Salesforce cases into CAT.</div></div>
+          <div class="pc"><div class="h">They redo checks</div><div class="d">A risk alert already reviewed by another team is checked again, because nothing links the earlier outcome.</div></div>
+          <div class="pc"><div class="h">They cannot find the answer</div><div class="d">Knowledge sits in 8 places across 21 sub-functions, and search does not put guidance in the workflow.</div></div>
+          <div class="pc"><div class="h">They cannot see what other teams did</div><div class="d">Teams do not share customer data or communications history, so account managers fill the gap.</div></div>
+        </div>
+        <div class="poorgrid poorpanel" id="poor-cko" style="display:none">
+          <div class="pc"><div class="h">Cost does not fall with scale</div><div class="d">Care contacts grow up to 36x by 2030, with about 5 tools and manual reassignment on each ticket. The yearly Ops headcount ask cannot be challenged, because work is not measured.</div></div>
+          <div class="pc"><div class="h">It cannot measure what to fix</div><div class="d">There is no link between a piece of work and the tool used to do it, so efficiency across Operations cannot be measured.</div></div>
+          <div class="pc"><div class="h">Regulatory reporting is manual</div><div class="d">Complaints reports take hours to collate end to end, and SLAs cannot be reported consistently across teams.</div></div>
+          <div class="pc"><div class="h">Risk is exposed by delay</div><div class="d">A review flagged in May 2024 was still pending while the merchant kept processing.</div></div>
+          <div class="pc"><div class="h">Quality is not checked</div><div class="d">Manual QA covers under 1% of Care volume.</div></div>
+        </div>
+      </div>
+      <div class="pts">
+        <div class="pt"><div class="who">For customers</div><div class="what">Churn risk. CSAT drops 20% when work leaves Care.</div></div>
+        <div class="pt"><div class="who">For Checkout</div><div class="what">Cost per contact does not fall as volume grows.</div></div>
+        <div class="pt"><div class="who">For regulators</div><div class="what">No transparent reporting, with fine and breach exposure.</div></div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="eyebrow">Today in practice (illustrative)</div>
+      <p class="sub">Six examples built from the Ops review (2026-10-07), the Mauritius site visit and Care's cross-team dependencies. In each, no step shares a record.</p>
+      <div class="toggle" id="extoggle" style="margin-bottom:12px">
+        <button class="active" data-ex="dispute">Dispute query</button>
+        <button data-ex="payout">Payout status</button>
+        <button data-ex="onb">Merchant onboarding</button>
+        <button data-ex="tm">Transaction monitoring alert</button>
+        <button data-ex="sens">Sensitive data request</button>
+        <button data-ex="complex">Fee complaint (complex)</button>
+      </div>
+
+      <div class="exwrap expanel" id="ex-dispute">
+        <span class="origin">Customer-initiated</span>
+        <svg viewBox="0 0 1100 360" role="img" aria-label="A merchant asks Care about a dispute, is told to email the Disputes team, then follows up with Care">
+          <defs>
+            <marker id="ahdispute" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5E718D"/></marker>
+            <marker id="ahrdispute" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#F04438"/></marker>
+            <marker id="ahadispute" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#FFB020"/></marker>
+          </defs>
+          <rect x="10" y="150" width="200" height="80" rx="16" fill="#fff" stroke="#C2CEDE"/>
+          <text x="26" y="180" font-size="16" font-weight="600">Merchant</text>
+          <text x="26" y="202" font-size="13" style="fill:#5E718D">Has a dispute query</text>
+          <rect x="400" y="40" width="220" height="80" rx="16" fill="#EEF3FA" stroke="#DCE4F0"/>
+          <text x="416" y="70" font-size="16" font-weight="600">Care agent</text>
+          <text x="416" y="92" font-size="13" style="fill:#5E718D">Zendesk ticket</text>
+          <rect x="400" y="260" width="220" height="80" rx="16" fill="#EEF3FA" stroke="#DCE4F0"/>
+          <text x="416" y="290" font-size="16" font-weight="600">Disputes team</text>
+          <text x="416" y="312" font-size="13" style="fill:#5E718D">Own email inbox</text>
+          <path d="M210 170 C 290 150, 330 95, 398 85" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahdsp)"/>
+          <path d="M400 108 C 340 135, 290 190, 212 200" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahdsp)"/>
+          <path d="M210 222 C 280 250, 330 290, 398 298" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahdsp)"/>
+          <path d="M120 148 C 130 20, 260 10, 398 52" stroke="#F04438" stroke-width="2" fill="none" marker-end="url(#ahrdsp)"/>
+          <path d="M480 122 L480 258" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahdsp)"/>
+          <path d="M560 258 L560 124" stroke="#5E718D" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#ahdsp)"/>
+          <rect x="700" y="135" width="390" height="110" rx="16" fill="#FFF4E1" stroke="#FFB020"/>
+          <text x="720" y="170" font-size="15" font-weight="600">The merchant sees one company, not two teams</text>
+          <text x="720" y="196" font-size="13" style="fill:#12233E">So they contacted Checkout twice and</text>
+          <text x="720" y="214" font-size="13" style="fill:#12233E">still cannot see where the dispute is.</text>
+          <g font-size="12" font-weight="600" font-family="JetBrains Mono, monospace"><circle cx="300" cy="125" r="12" fill="#08111F"/><text x="300" y="129.5" text-anchor="middle" style="fill:#fff">1</text><circle cx="300" cy="178" r="12" fill="#08111F"/><text x="300" y="182.5" text-anchor="middle" style="fill:#fff">2</text><circle cx="300" cy="268" r="12" fill="#08111F"/><text x="300" y="272.5" text-anchor="middle" style="fill:#fff">3</text><circle cx="260" cy="18" r="12" fill="#F04438"/><text x="260" y="22.5" text-anchor="middle" style="fill:#fff">4</text><circle cx="480" cy="190" r="12" fill="#08111F"/><text x="480" y="194.5" text-anchor="middle" style="fill:#fff">5</text></g>
+        </svg>
+        <div class="exsteps">
+          <div class="exstep"><span class="n">1</span><span>The merchant asks Care about a dispute.</span></div>
+          <div class="exstep"><span class="n">2</span><span>Care cannot see or action it, so tells the merchant to email the Disputes team. To the merchant, Care and Disputes are both just Checkout.</span></div>
+          <div class="exstep"><span class="n">3</span><span>The merchant emails the Disputes inbox. From here, Care cannot see the status.</span></div>
+          <div class="exstep"><span class="n bad">4</span><span>The merchant waits, then follows up with Care, not the Disputes team, because they do not know the difference.</span></div>
+          <div class="exstep"><span class="n">5</span><span>Care emails Disputes for status. Disputes replies by email, outside the Dashboard, so the merchant's Care request still looks unanswered.</span></div>
+        </div>
+        <p class="extake">Work with another team is "gone" from Care's view, and the merchant cannot tell which team to ask.</p>
+      </div>
+
+      <div class="exwrap expanel" id="ex-payout" style="display:none">
+        <span class="origin">Customer-initiated</span>
+        <svg viewBox="0 0 1100 360" role="img" aria-label="A merchant waits for a payout while Care depends on Treasury with no traceable status">
+          <defs>
+            <marker id="ahpayout" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5E718D"/></marker>
+            <marker id="ahrpayout" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#F04438"/></marker>
+            <marker id="ahapayout" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#FFB020"/></marker>
+          </defs>
+          <rect x="10" y="150" width="200" height="80" rx="16" fill="#fff" stroke="#C2CEDE"/>
+          <text x="26" y="180" font-size="16" font-weight="600">Merchant</text>
+          <text x="26" y="202" font-size="13" style="fill:#5E718D">Waiting for a payout</text>
+          <rect x="400" y="40" width="220" height="80" rx="16" fill="#EEF3FA" stroke="#DCE4F0"/>
+          <text x="416" y="70" font-size="16" font-weight="600">Care agent</text>
+          <text x="416" y="92" font-size="13" style="fill:#5E718D">Zendesk ticket</text>
+          <rect x="400" y="260" width="220" height="80" rx="16" fill="#EEF3FA" stroke="#DCE4F0"/>
+          <text x="416" y="290" font-size="16" font-weight="600">Treasury</text>
+          <text x="416" y="312" font-size="13" style="fill:#5E718D">Own queue and tools</text>
+          <path d="M210 170 C 290 150, 330 95, 398 85" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahpay)"/>
+          <path d="M120 148 C 130 20, 260 10, 398 52" stroke="#F04438" stroke-width="2" fill="none" marker-end="url(#ahrpay)"/>
+          <path d="M480 122 L480 258" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahpay)"/>
+          <path d="M560 258 L560 124" stroke="#5E718D" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#ahpay)"/>
+          <rect x="700" y="135" width="390" height="110" rx="16" fill="#FFF4E1" stroke="#FFB020"/>
+          <text x="720" y="170" font-size="15" font-weight="600">The merchant is left waiting</text>
+          <text x="720" y="196" font-size="13" style="fill:#12233E">Care cannot say when, because it cannot</text>
+          <text x="720" y="214" font-size="13" style="fill:#12233E">trace the request inside Treasury.</text>
+          <g font-size="12" font-weight="600" font-family="JetBrains Mono, monospace"><circle cx="300" cy="125" r="12" fill="#08111F"/><text x="300" y="129.5" text-anchor="middle" style="fill:#fff">1</text><circle cx="480" cy="190" r="12" fill="#08111F"/><text x="480" y="194.5" text-anchor="middle" style="fill:#fff">2</text><circle cx="640" cy="300" r="12" fill="#FFB020"/><text x="640" y="304.5" text-anchor="middle" style="fill:#08111F">3</text><circle cx="260" cy="18" r="12" fill="#F04438"/><text x="260" y="22.5" text-anchor="middle" style="fill:#fff">4</text><circle cx="560" cy="190" r="12" fill="#08111F"/><text x="560" y="194.5" text-anchor="middle" style="fill:#fff">5</text></g>
+        </svg>
+        <div class="exsteps">
+          <div class="exstep"><span class="n">1</span><span>The merchant asks Care where their payout is.</span></div>
+          <div class="exstep"><span class="n">2</span><span>Care cannot see the payout status, so raises a request to Treasury.</span></div>
+          <div class="exstep"><span class="n" style="background:var(--warning);color:var(--midnight)">3</span><span>Treasury works it in its own queue and tools. Care has no view of progress.</span></div>
+          <div class="exstep"><span class="n bad">4</span><span>The merchant chases Care for an update.</span></div>
+          <div class="exstep"><span class="n">5</span><span>Care chases Treasury. The answer comes back later and Care relays it.</span></div>
+        </div>
+        <p class="extake">Care depends on Treasury to confirm payouts, and neither Care nor the merchant can trace the status.</p>
+      </div>
+
+      <div class="exwrap expanel" id="ex-onb" style="display:none">
+        <span class="origin">Customer-initiated, via commercial</span>
+        <svg viewBox="0 0 1100 230" role="img" aria-label="Merchant onboarding moves from Salesforce to Drive, a spreadsheet tracker and Gmail approvals, with one reviewer approving every case">
+          <defs>
+            <marker id="ahonb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5E718D"/></marker>
+          </defs>
+          <rect x="10" y="80" width="184" height="96" rx="16" fill="#fff" stroke="#C2CEDE"/>
+          <text x="24" y="110" font-size="15" font-weight="600">Merchant</text>
+          <text x="24" y="132" font-size="12.5" style="fill:#5E718D">Applies to onboard</text>
+          <rect x="234" y="80" width="184" height="96" rx="16" fill="#EEF3FA" stroke="#DCE4F0"/>
+          <text x="248" y="110" font-size="15" font-weight="600">Salesforce</text>
+          <text x="248" y="132" font-size="12.5" style="fill:#5E718D">Commercial opens</text>
+          <text x="248" y="149" font-size="12.5" style="fill:#5E718D">the case</text>
+          <rect x="458" y="80" width="184" height="96" rx="16" fill="#FFF4E1" stroke="#FFB020"/>
+          <text x="472" y="110" font-size="15" font-weight="600">Drive</text>
+          <text x="472" y="132" font-size="12.5" style="fill:#12233E">Documents moved</text>
+          <text x="472" y="149" font-size="12.5" style="fill:#12233E">out of Salesforce</text>
+          <rect x="682" y="80" width="184" height="96" rx="16" fill="#FFF4E1" stroke="#FFB020"/>
+          <text x="696" y="110" font-size="15" font-weight="600">Spreadsheet</text>
+          <text x="696" y="132" font-size="12.5" style="fill:#12233E">Tracker and manual</text>
+          <text x="696" y="149" font-size="12.5" style="fill:#12233E">MCC checks</text>
+          <rect x="906" y="80" width="184" height="96" rx="16" fill="#FFF4E1" stroke="#FFB020"/>
+          <text x="920" y="110" font-size="15" font-weight="600">One reviewer</text>
+          <text x="920" y="132" font-size="12.5" style="fill:#12233E">Approves every case,</text>
+          <text x="920" y="149" font-size="12.5" style="fill:#12233E">by Gmail</text>
+          <path d="M194 128 L232 128" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahonb)"/>
+          <path d="M418 128 L456 128" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahonb)"/>
+          <path d="M642 128 L680 128" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahonb)"/>
+          <path d="M866 128 L904 128" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahonb)"/>
+          <g font-size="12" font-weight="600" font-family="JetBrains Mono, monospace"><circle cx="214" cy="100" r="12" fill="#08111F"/><text x="214" y="104.5" text-anchor="middle" style="fill:#fff">1</text><circle cx="438" cy="100" r="12" fill="#08111F"/><text x="438" y="104.5" text-anchor="middle" style="fill:#fff">2</text><circle cx="662" cy="100" r="12" fill="#08111F"/><text x="662" y="104.5" text-anchor="middle" style="fill:#fff">3</text><circle cx="886" cy="100" r="12" fill="#08111F"/><text x="886" y="104.5" text-anchor="middle" style="fill:#fff">4</text></g>
+        </svg>
+        <div class="exsteps">
+          <div class="exstep"><span class="n">1</span><span>The merchant applies, and commercial opens the case in Salesforce.</span></div>
+          <div class="exstep"><span class="n">2</span><span>Documents move from Salesforce to Drive.</span></div>
+          <div class="exstep"><span class="n" style="background:var(--warning);color:var(--midnight)">3</span><span>The team tracks progress on a spreadsheet and runs MCC checks by hand.</span></div>
+          <div class="exstep"><span class="n bad">4</span><span>Approvals are requested over Gmail, and one reviewer approves every case.</span></div>
+        </div>
+        <p class="extake">Four tools and no shared record, and every case waits on one person.</p>
+      </div>
+
+      <div class="exwrap expanel" id="ex-tm" style="display:none">
+        <span class="origin out">Checkout-initiated: we asked first</span>
+        <svg viewBox="0 0 1100 230" role="img" aria-label="A transaction monitoring alert opens a case in Salesforce, is worked in Retool, returns to a queue for manual reassignment and syncs back only at close">
+          <defs>
+            <marker id="ahtm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5E718D"/></marker>
+          </defs>
+          <rect x="10" y="80" width="146" height="96" rx="16" fill="#fff" stroke="#C2CEDE"/>
+          <text x="24" y="110" font-size="15" font-weight="600">Alert</text>
+          <text x="24" y="132" font-size="12.5" style="fill:#5E718D">Monitoring rule</text>
+          <text x="24" y="149" font-size="12.5" style="fill:#5E718D">fires</text>
+          <rect x="196" y="80" width="146" height="96" rx="16" fill="#EEF3FA" stroke="#DCE4F0"/>
+          <text x="210" y="110" font-size="15" font-weight="600">Salesforce</text>
+          <text x="210" y="132" font-size="12.5" style="fill:#5E718D">Case opens</text>
+          <rect x="382" y="80" width="146" height="96" rx="16" fill="#FFF4E1" stroke="#FFB020"/>
+          <text x="396" y="110" font-size="15" font-weight="600">Retool</text>
+          <text x="396" y="132" font-size="12.5" style="fill:#12233E">Analyst works it.</text>
+          <text x="396" y="149" font-size="12.5" style="fill:#12233E">Salesforce not updated</text>
+          <rect x="568" y="80" width="146" height="96" rx="16" fill="#fff" stroke="#C2CEDE"/>
+          <text x="582" y="110" font-size="15" font-weight="600">Merchant</text>
+          <text x="582" y="132" font-size="12.5" style="fill:#5E718D">Asked for</text>
+          <text x="582" y="149" font-size="12.5" style="fill:#5E718D">information</text>
+          <rect x="754" y="80" width="146" height="96" rx="16" fill="#FFF4E1" stroke="#FFB020"/>
+          <text x="768" y="110" font-size="15" font-weight="600">Queue</text>
+          <text x="768" y="132" font-size="12.5" style="fill:#12233E">Case returns to a</text>
+          <text x="768" y="149" font-size="12.5" style="fill:#12233E">queue, reassigned</text>
+          <text x="768" y="166" font-size="12.5" style="fill:#12233E">by hand</text>
+          <rect x="940" y="80" width="146" height="96" rx="16" fill="#FFF4E1" stroke="#FFB020"/>
+          <text x="954" y="110" font-size="15" font-weight="600">Close</text>
+          <text x="954" y="132" font-size="12.5" style="fill:#12233E">Syncs back to</text>
+          <text x="954" y="149" font-size="12.5" style="fill:#12233E">Salesforce</text>
+          <path d="M156 128 L194 128" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahtm)"/>
+          <path d="M342 128 L380 128" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahtm)"/>
+          <path d="M528 128 L566 128" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahtm)"/>
+          <path d="M714 128 L752 128" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahtm)"/>
+          <path d="M900 128 L938 128" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahtm)"/>
+          <g font-size="12" font-weight="600" font-family="JetBrains Mono, monospace"><circle cx="176" cy="100" r="12" fill="#08111F"/><text x="176" y="104.5" text-anchor="middle" style="fill:#fff">1</text><circle cx="362" cy="100" r="12" fill="#08111F"/><text x="362" y="104.5" text-anchor="middle" style="fill:#fff">2</text><circle cx="548" cy="100" r="12" fill="#08111F"/><text x="548" y="104.5" text-anchor="middle" style="fill:#fff">3</text><circle cx="734" cy="100" r="12" fill="#08111F"/><text x="734" y="104.5" text-anchor="middle" style="fill:#fff">4</text><circle cx="920" cy="100" r="12" fill="#08111F"/><text x="920" y="104.5" text-anchor="middle" style="fill:#fff">5</text></g>
+        </svg>
+        <div class="exsteps">
+          <div class="exstep"><span class="n">1</span><span>A transaction monitoring alert opens a case in Salesforce.</span></div>
+          <div class="exstep"><span class="n" style="background:var(--warning);color:var(--midnight)">2</span><span>The analyst works the case in Retool. Salesforce does not see the work until the case closes.</span></div>
+          <div class="exstep"><span class="n">3</span><span>The analyst asks the merchant for information.</span></div>
+          <div class="exstep"><span class="n bad">4</span><span>When the merchant replies, the case returns to a queue and is reassigned by hand.</span></div>
+          <div class="exstep"><span class="n">5</span><span>The case syncs back to Salesforce only when it closes.</span></div>
+        </div>
+        <p class="extake">Salesforce holds the case but not the work. The record is only complete at close.</p>
+      </div>
+
+      <div class="exwrap expanel" id="ex-sens" style="display:none">
+        <span class="origin out">Checkout-initiated: we asked first</span>
+        <svg viewBox="0 0 1100 360" role="img" aria-label="The periodic reviews team emails a merchant for sensitive information and the merchant asks their account manager if it is legitimate">
+          <defs>
+            <marker id="ahsens" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5E718D"/></marker>
+            <marker id="ahrsens" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#F04438"/></marker>
+            <marker id="ahasens" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#FFB020"/></marker>
+          </defs>
+          <rect x="10" y="150" width="200" height="80" rx="16" fill="#fff" stroke="#C2CEDE"/>
+          <text x="26" y="180" font-size="16" font-weight="600">Merchant</text>
+          <text x="26" y="202" font-size="13" style="fill:#5E718D">Gets an unexpected email</text>
+          <rect x="400" y="40" width="220" height="80" rx="16" fill="#EEF3FA" stroke="#DCE4F0"/>
+          <text x="416" y="70" font-size="16" font-weight="600">Periodic reviews team</text>
+          <text x="416" y="92" font-size="13" style="fill:#5E718D">Own mailbox</text>
+          <rect x="400" y="260" width="220" height="80" rx="16" fill="#EEF3FA" stroke="#DCE4F0"/>
+          <text x="416" y="290" font-size="16" font-weight="600">Account manager</text>
+          <text x="416" y="312" font-size="13" style="fill:#5E718D">Email, Slack</text>
+          <path d="M400 108 C 340 135, 290 190, 212 200" stroke="#F04438" stroke-width="2" fill="none" marker-end="url(#ahrsens)"/>
+          <path d="M210 222 C 280 250, 330 290, 398 298" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahsens)"/>
+          <path d="M480 258 L480 122" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahsens)"/>
+          <path d="M560 122 L560 258" stroke="#5E718D" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#ahsens)"/>
+          <path d="M120 148 C 130 20, 260 10, 398 52" stroke="#F04438" stroke-width="2" fill="none" marker-end="url(#ahrsens)"/>
+          <rect x="700" y="135" width="390" height="110" rx="16" fill="#FFF4E1" stroke="#FFB020"/>
+          <text x="720" y="170" font-size="15" font-weight="600">Sensitive data moved by email</text>
+          <text x="720" y="196" font-size="13" style="fill:#12233E">The merchant relied on their account</text>
+          <text x="720" y="214" font-size="13" style="fill:#12233E">manager to check it was real.</text>
+          <g font-size="12" font-weight="600" font-family="JetBrains Mono, monospace"><circle cx="300" cy="178" r="12" fill="#F04438"/><text x="300" y="182.5" text-anchor="middle" style="fill:#fff">1</text><circle cx="300" cy="268" r="12" fill="#08111F"/><text x="300" y="272.5" text-anchor="middle" style="fill:#fff">2</text><circle cx="480" cy="190" r="12" fill="#08111F"/><text x="480" y="194.5" text-anchor="middle" style="fill:#fff">3</text><circle cx="560" cy="190" r="12" fill="#08111F"/><text x="560" y="194.5" text-anchor="middle" style="fill:#fff">4</text><circle cx="260" cy="18" r="12" fill="#F04438"/><text x="260" y="22.5" text-anchor="middle" style="fill:#fff">5</text></g>
+        </svg>
+        <div class="exsteps">
+          <div class="exstep"><span class="n bad">1</span><span>The periodic reviews team emails the merchant, asking for sensitive information.</span></div>
+          <div class="exstep"><span class="n">2</span><span>The merchant cannot tell if it is legitimate, so asks their account manager.</span></div>
+          <div class="exstep"><span class="n">3</span><span>The account manager cannot see the request, so asks the reviews team.</span></div>
+          <div class="exstep"><span class="n">4</span><span>The reviews team confirms it, and the account manager tells the merchant it is genuine.</span></div>
+          <div class="exstep"><span class="n bad">5</span><span>The merchant sends the sensitive information by email.</span></div>
+        </div>
+        <p class="extake">Nothing in the merchant's Dashboard or Care shows the request, and there is no company-approved way to ask for sensitive information or scan what comes back.</p>
+      </div>
+
+      <div class="exwrap expanel" id="ex-complex" style="display:none">
+        <span class="origin">Customer-initiated</span>
+        <svg viewBox="0 0 1100 350" role="img" aria-label="A merchant fee complaint moving between Care, account manager and commercial, Configuration and a hand-built complaint record with no shared record">
+          <defs>
+            <marker id="ahcomplex" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5E718D"/></marker>
+            <marker id="ahrcomplex" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#F04438"/></marker>
+            <marker id="ahacomplex" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#FFB020"/></marker>
+          </defs>
+          <rect x="10" y="190" width="190" height="80" rx="16" fill="#fff" stroke="#C2CEDE"/>
+          <text x="26" y="220" font-size="16" font-weight="600">Merchant</text>
+          <text x="26" y="242" font-size="13" style="fill:#5E718D">Complains about a fee</text>
+          <rect x="320" y="190" width="220" height="80" rx="16" fill="#EEF3FA" stroke="#DCE4F0"/>
+          <text x="336" y="220" font-size="16" font-weight="600">Care agent</text>
+          <text x="336" y="242" font-size="13" style="fill:#5E718D">Zendesk ticket</text>
+          <rect x="310" y="10" width="270" height="80" rx="16" fill="#EEF3FA" stroke="#DCE4F0"/>
+          <text x="326" y="40" font-size="16" font-weight="600">Account manager + commercial</text>
+          <text x="326" y="62" font-size="13" style="fill:#5E718D">Slack, email, Salesforce</text>
+          <rect x="700" y="10" width="240" height="80" rx="16" fill="#FFF4E1" stroke="#FFB020"/>
+          <text x="716" y="40" font-size="16" font-weight="600">Configuration team</text>
+          <text x="716" y="62" font-size="13" style="fill:#12233E">Copies the Salesforce case</text>
+          <text x="716" y="79" font-size="13" style="fill:#12233E">into CAT by hand</text>
+          <rect x="880" y="190" width="210" height="80" rx="16" fill="#FFF4E1" stroke="#FFB020"/>
+          <text x="896" y="220" font-size="16" font-weight="600">Complaint record</text>
+          <text x="896" y="242" font-size="13" style="fill:#12233E">If it escalates, Care</text>
+          <text x="896" y="259" font-size="13" style="fill:#12233E">builds it by hand</text>
+          <path d="M200 215 L318 215" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahcx)"/>
+          <path d="M320 255 C 270 330, 200 330, 160 274" stroke="#F04438" stroke-width="2" fill="none" marker-end="url(#ahrcx)"/>
+          <path d="M308 50 C 180 50, 100 110, 100 188" stroke="#F04438" stroke-width="2" fill="none" marker-end="url(#ahrcx)"/>
+          <path d="M400 190 L400 92" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahcx)"/>
+          <path d="M580 45 L698 50" stroke="#5E718D" stroke-width="2" fill="none" marker-end="url(#ahcx)"/>
+          <path d="M540 230 L878 230" stroke="#FFB020" stroke-width="2" stroke-dasharray="3 5" fill="none" marker-end="url(#ahacx)"/>
+          <path d="M580 75 C 650 150, 800 150, 900 192" stroke="#FFB020" stroke-width="2" stroke-dasharray="3 5" fill="none" marker-end="url(#ahacx)"/>
+          <path d="M900 92 C 980 110, 1010 140, 1030 188" stroke="#FFB020" stroke-width="2" stroke-dasharray="3 5" fill="none" marker-end="url(#ahacx)"/>
+          <g font-size="12" font-weight="600" font-family="JetBrains Mono, monospace"><circle cx="260" cy="215" r="12" fill="#08111F"/><text x="260" y="219.5" text-anchor="middle" style="fill:#fff">1</text><circle cx="400" cy="140" r="12" fill="#08111F"/><text x="400" y="144.5" text-anchor="middle" style="fill:#fff">2</text><circle cx="130" cy="95" r="12" fill="#F04438"/><text x="130" y="99.5" text-anchor="middle" style="fill:#fff">3</text><circle cx="235" cy="320" r="12" fill="#F04438"/><text x="235" y="324.5" text-anchor="middle" style="fill:#fff">4</text><circle cx="640" cy="45" r="12" fill="#08111F"/><text x="640" y="49.5" text-anchor="middle" style="fill:#fff">5</text><circle cx="700" cy="230" r="12" fill="#FFB020"/><text x="700" y="234.5" text-anchor="middle" style="fill:#08111F">6</text></g>
+        </svg>
+        <div class="exsteps">
+          <div class="exstep"><span class="n">1</span><span>The merchant emails Care about a fee, and Care opens a Zendesk ticket.</span></div>
+          <div class="exstep"><span class="n">2</span><span>Care asks the account manager and commercial on Slack, outside any case, whether goodwill or a fee reduction applies.</span></div>
+          <div class="exstep"><span class="n bad">3</span><span>The account manager has already agreed a fee reduction with the merchant by email. Care cannot see it.</span></div>
+          <div class="exstep"><span class="n bad">4</span><span>Care messages the merchant again about remediation. The merchant asks why they are being messaged.</span></div>
+          <div class="exstep"><span class="n">5</span><span>The change starts as a Salesforce case. The Configuration team copies it into CAT by hand.</span></div>
+          <div class="exstep"><span class="n" style="background:var(--warning);color:var(--midnight)">6</span><span>If this became a formal complaint, Care would have to build the complaint record by hand from Zendesk, email, Slack and Salesforce. It takes hours.</span></div>
+        </div>
+        <p class="extake">Every handoff is a message, not a record. The merchant, the account manager and Care each absorb the gap.</p>
+      </div>
+
+    </div>
+
+    <div class="vision-box">
+      <div class="eyebrow">The vision: what good looks like</div>
+      <div class="vgrid">
+        <div class="vc"><div class="who">For customers</div><div class="line">Ask once, hear one voice, see where it is.</div>
+          <ul>
+            <li>They never repeat themselves, whoever they deal with.</li>
+            <li>They are never bounced between teams.</li>
+            <li>They hear one consistent message, and know a request from us is genuine.</li>
+            <li>They can see where their request is, and decisions do not wait on one person.</li>
+          </ul></div>
+        <div class="vc"><div class="who">For human agents</div><div class="line">Work in one place, with the context to decide.</div>
+          <ul>
+            <li>They see the customer's history and what other teams did.</li>
+            <li>They never create, copy or chase cases by hand.</li>
+            <li>They do not redo checks another team has done.</li>
+            <li>Guidance is in the workflow.</li>
+          </ul></div>
+        <div class="vc"><div class="who">For Checkout</div><div class="line">Operations that scale with volume, not headcount, and can prove what happened.</div>
+          <ul>
+            <li>Cost per contact falls as volume grows.</li>
+            <li>Every piece of work is measured, so we know what to fix.</li>
+            <li>Regulatory reports come from the record, not hours of stitching.</li>
+            <li>Risk decisions land on time, and quality is checked on all work.</li>
+          </ul></div>
+      </div>
+    </div>
+    <div class="vision-box approach">
+      <div class="eyebrow">The approach</div>
+      <p class="headline">Every piece of work, whether a customer comes to us or we go to them first, is resolved by the cheapest capable resolver: <b>self-serve, then the customer agent, then a human</b> for customer-initiated work, and an agent or a human by task type and risk for Checkout-initiated work. Support, Risk and Compliance work on one case system, and Care gives the customer one place to ask and see status.</p>
+    </div>
+  </section>
+
+  <!-- View 2 -->
+  <section class="view" id="view-how">
+    <div class="controls">
+      <div class="toggle" role="tablist">
+        <button id="btn-today" role="tab">Today</button>
+        <button id="btn-vision" role="tab" class="active">Vision</button>
+      </div>
+      <div class="legend">
+        <span><i class="sw g"></i>What the customer sees (Care)</span>
+        <span><i class="sw b"></i>Platform</span>
+        <span><i class="sw p"></i>AI and shared services</span>
+        <span id="lg-today" style="display:none"><i class="sw a"></i>Gap today</span>
+      </div>
+    </div>
+
+    <div class="vision" id="hero">
+      <div id="vision-flow">
+      <div class="front" id="front"><div class="k">Front stage</div><div><div class="h"></div><div class="d"></div></div></div>
+      <div class="divider"><span>The line of visibility: the owning function sets what the customer sees</span></div>
+
+      <div class="pathrow">
+        <div class="laneh"><b>Customer-initiated:</b> the customer comes to us</div>
+        <div class="tier t1" data-r="t1"><div class="tstep"></div><div class="h"></div><div class="d"></div><div class="exit"></div></div>
+        <div class="fall"></div>
+        <div class="tier t2" data-r="t2"><div class="tstep"></div><div class="h"></div><div class="d"></div><div class="exit"></div></div>
+        <div class="fall"></div>
+        <div class="humans">
+          <div class="tstep"></div>
+          <div class="subrow">
+            <div class="tier t3a" data-r="t3a"><div class="tstep"></div><div class="h"></div><div class="d"></div><div class="exit"></div></div>
+            <div class="tier t3b" data-r="t3b"><div class="tstep"></div><div class="h"></div><div class="d"></div><div class="exit"></div></div>
+          </div>
+        </div>
+
+        <div class="laneh second"><b>Checkout-initiated:</b> we go first, the customer responds</div>
+        <div class="cko">
+          <div class="ck c1"><div class="h">Trigger or schedule</div><div class="d">Alerts, periodic reviews, onboarding checks, product launches, proactive notices.</div></div>
+          <div class="ck"><div class="h">Case created automatically</div><div class="d">Structured intake, not email. Same case system and the same audit.</div></div>
+          <div class="ck c3"><div class="h">AI agents prepare, a human decides</div><div class="d">Routine checks run automatically. High-risk work goes to a person.</div></div>
+          <div class="ck c1"><div class="h">Customer responds through Care</div><div class="d">Requests go out automatically with scheduled chasers. The customer replies through a secure route, not email, and the reply returns to the same case.</div></div>
+        </div>
+
+        <div class="casebar" id="casebar"></div>
+
+        <div class="bar ifc" id="ifc"><div class="k"></div><div class="d"></div></div>
+        <div class="bar portal" id="portal"><div class="k"></div><div class="d"></div></div>
+
+        <div class="segwrap"><div class="segh" id="segh"></div><div class="segs"><div class="seg"><div class="k"></div><div class="d"></div></div><div class="seg"><div class="k"></div><div class="d"></div></div><div class="seg"><div class="k"></div><div class="d"></div></div></div></div>
+        <div class="pathnote" id="pathnote"></div>
+      </div>
+
+      </div>
+
+      <div class="tflow" id="today-flow">
+        <div class="tgrid">
+          <div></div>
+          <div class="tstage"><span class="n">1</span>Work comes in</div>
+          <div class="tstage"><span class="n">2</span>AI and self-serve</div>
+          <div class="tstage"><span class="n">3</span>Case systems</div>
+          <div class="tstage"><span class="n">4</span>Work gets done</div>
+          <div class="tstage"><span class="n">5</span>Reporting</div>
+
+          <div class="tlane">Front stage<span>What the customer experiences</span></div>
+          <div class="sc"><div class="h">Must know which team to ask</div><div class="d">Email, webform, chat and social. No single front door.</div></div>
+          <div class="sc"><div class="h">AI covers support only</div><div class="d">Fin handles Care support. Other work has no AI front line.</div></div>
+          <div class="sc"><div class="h">Repeat themselves</div><div class="d">Teams cannot see the same customer data or history.</div></div>
+          <div class="sc"><div class="h">Bounced between teams</div><div class="d">CSAT drops 20% when work moves from Care to another team.</div></div>
+          <div class="sc"><div class="h">Status hard to see</div><div class="d">Status sits in whichever system holds the work (inferred).</div></div>
+
+          <div class="tdiv"><span>The line of visibility</span></div>
+
+          <div class="tlane">Back stage<span>What Checkout does</span></div>
+          <div class="sc back-c"><div class="h">Unstructured intake</div><div class="d">Each team has its own inbox. Cases are created by hand in Salesforce, or by email-to-case. Slack conversations run on the side, not linked to any case.</div></div>
+          <div class="sc back-c"><div class="h">Fin for Care support only</div><div class="d">About 25% of Care volume, 16-18% resolved. Risk and Compliance work starts with a person.</div></div>
+          <div class="sc back-c"><div class="h">2 case systems plus email inboxes</div><div class="d">Salesforce (several teams), Zendesk (Care only). Cases are created by hand or by email-to-case, and copied between systems by hand. Some teams have no case system.</div></div>
+          <div class="sc back-c"><div class="h">30+ tools</div><div class="d">About 5 tools on one Care ticket, 20+ Retool apps in Care. Work in tools is not tied to the case.</div></div>
+          <div class="sc back-c last"><div class="h">Reports take hours</div><div class="d">Complaints reports compiled by hand. Manual QA under 1% of Care volume.</div></div>
+
+          <div class="tlane">Checkout-initiated<span>We go first</span></div>
+          <div class="sc wide"><div class="h">Starts in Salesforce, Retool and specialist tools, often hidden from Care</div><div class="d">Cases are created by hand in Salesforce or by email-to-case, and assigned by hand. Slack conversations run on the side, not linked to any case. Information is requested by email and returned as attachments. There is no secure upload and no approved way to ask for sensitive data, so customers cannot tell whether a request is real and ask their account manager.</div></div>
+
+          <div class="tnote">Enterprise has a white-glove route through the account manager before Care. SMB and Consumer go to Care directly. Escalation is not controlled by segment today (to confirm).</div>
+        </div>
+      </div>
+
+      <div class="under">
+        <div class="eyebrow">Underneath</div>
+        <div class="unders">
+          <button class="u" data-u="orch"><div class="k">Orchestration layer</div><div class="s"></div></button>
+          <button class="u" data-u="onb"><div class="k">Product onboarding</div><div class="s"></div></button>
+          <button class="u" data-u="reflex"><div class="k">Reflex</div><div class="s"></div></button>
+          <button class="u" data-u="shared"><div class="k">Shared services</div><div class="s"></div></button>
+        </div>
+        <div class="detail" id="detail"><div class="h"></div><div class="d"></div><div class="chips"></div></div>
+        <div class="hint" id="hint">Select a layer for detail.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- View 3 -->
+  <section class="view" id="view-land">
+    <h3 class="sec">What it moves</h3>
+    <div class="tiles">
+      <div class="tile"><div class="k">North star</div><div class="v">Contact rate</div><div class="m">Fewer repeat and "where is it" contacts: one front door, one view of the customer, status visible.</div></div>
+      <div class="tile"><div class="k">North star</div><div class="v">Cost per contact</div><div class="m">The customer agent resolves routine work. Humans handle judgement. Fewer tools per ticket.</div></div>
+      <div class="tile"><div class="k">Guardrail</div><div class="v">Merchant CSAT</div><div class="m">Must not decline as we automate. Reported by segment. No bouncing between teams.</div></div>
+      <div class="tile"><div class="k">Added for operations</div><div class="v">Cycle time, Risk and Compliance</div><div class="m">Faster decisions, regulator-ready reporting from one record.</div></div>
+      <div class="tile"><div class="k">Added for operations</div><div class="v">Work mix</div><div class="m">% of work automated, AI-assisted or human only, by work type and segment. Paired with QA score and override rate.</div></div>
+    </div>
+
+    <div class="timeline">
+      <h3 class="sec">Proposed sequence and how each phase is measured (timing TBC against the 2026 deliverables)</h3>
+      <div class="steps">
+        <div class="step"><span class="ph">Baseline</span><div class="w">Q4 2026: Design</div><div class="x">Work types from SOPs. Vision and system design agreed by Support, Risk and Compliance.</div>
+          <ul>
+            <li>Work types inventoried: % of SOP work types</li>
+            <li>Baselines captured: cost per case, handle time, cycle time, CSAT by team</li>
+            <li>Sponsor named, XFN group released</li>
+          </ul></div>
+        <div class="step"><span class="ph">Build</span><div class="w">Dec 2026: Ray friends and family</div><div class="x">Care handles consumer support on Plain. First proof point.</div>
+          <ul>
+            <li>Work types live vs plan</li>
+            <li>Cases created through structured intake, not email: %</li>
+            <li>Actions in tools linked to a case: % (audit completeness, handle time measurable)</li>
+            <li>Fin involvement rate and AI resolution rate</li>
+            <li>Work mix by work type: automated, AI-assisted, human only</li>
+          </ul></div>
+        <div class="step"><span class="ph">Migrate</span><div class="w">H1 2027: Acquiring support</div><div class="x">Care handles Acquiring support on Plain. Ray external launch date unconfirmed.</div>
+          <ul>
+            <li>Care volume on the platform vs legacy: %</li>
+            <li>Tools per ticket (about 5 today) and tool actions linked to a case: %</li>
+            <li>QA coverage (under 1% today, target 100%)</li>
+            <li>Agents working in the platform: % of active agents</li>
+            <li>Care work mix vs baseline (16-18% automated today)</li>
+          </ul></div>
+        <div class="step"><span class="ph">Migrate and retire</span><div class="w">From H2 2027: Other teams</div><div class="x">Risk and Compliance teams move in the agreed sequence. Shared tools and AI agents: TBC.</div>
+          <ul>
+            <li>Teams on the platform: n of total</li>
+            <li>Case systems and email inboxes: to one case system. Retool apps retired (20+ in Care alone)</li>
+            <li>CSAT drop on cross-team handoff (20% today)</li>
+            <li>Time to compile a complaints report (hours today)</li>
+          </ul></div>
+      </div>
+      <div class="gate"><b>Migration guardrails, checked at every cutover:</b> Merchant CSAT (reported by segment), SLA attainment, backlog age and handle time stay at or better than the team's Q4 baseline. The next team moves only when the previous team's guardrails hold. Targets for every measure above are set from the Q4 baselines.</div>
+    </div>
+  </section>
+
+  <p class="foot">Concept draft for the Operations Platform Design deliverable (Q4 2026). Today-state evidence: Steerco draft, Mauritius site visit, Knowledge Manager comments, Ops review 2026-10-07. Shared services are a candidate design and an open point. Phase measures: section 10 of the source doc. Source: <code>04-active-work/strategy/operations-platform-definition.md</code>.</p>
+</div>
+
+<script>
+const content = {
+  vision: {
+    front: ["Care: one place to ask, respond and see status", "Whether the customer comes to us or we go to them first, whichever team does the work, the customer is known, hears from us once, and sees every step."],
+    r: {
+      t1: ["Step 1: Self-serve (customer)", "Customer resolves it themselves", "Routine requests in the Dashboard or App where the product supports it.", "Resolved, no case"],
+      t2: ["Step 2: Customer agent", "Customer agent solves it", "Acts through the orchestration layer on the same data as humans. No human involved.", "Resolved, automated"],
+      t3a: ["Human workflow", "AI-assisted human", "Domain agents retrieve, analyse or draft. A person approves or decides within the case.", "Resolved, AI-assisted"],
+      t3b: ["Human workflow", "Human only", "Complex or high-risk work. Human in the loop, with full audit.", "Resolved, human only"],
+      hs: "Step 3: Human workflows (the customer agent could not solve it)",
+      fall1: "Not available", fall2: "Cannot solve: escalates, within segment controls",
+      nocase: "No case needed",
+      casebar: "<b>Case system of record.</b> Creates and distributes all work. Customer-initiated work has a case from step 2, Checkout-initiated work from the start. Everything is logged for audit, SLA and reporting.",
+      ifc: ["Interfaces for AI", "Customer and domain agents use the same data and actions. Owned by domain teams."],
+      portal: ["One portal for people", "Humans complete work with controlled permissions and no swivel chair. Outcomes write back to the case."],
+      segh: "Human escalation is controlled by customer segment",
+      seg: [["Enterprise", "Human support is viable. Escalation to a human is open."], ["SMB", "Human support does not scale. Escalation is limited by policy."], ["Consumer", "Human support does not scale at high volume. Escalation is limited by policy."]],
+      note: "Exceptions to the segment limits are to be defined. Work is assigned to a domain agent or a human by task type and risk."
+    },
+    u: {
+      orch: ["Every action in every tool links back to its case", "One standard pattern for every team: call, enrich and complete work items from the case. Specialist tool functionality is consolidated into the portal where possible. Domain teams contribute and own their parts of the stack to one standard, and their output is surfaced on the case. The case keeps the audit trail whole, measures handle time and feeds reporting.", ["Case ⇄ tool", "Portal for people", "Interfaces for AI", "Tools consolidated where possible", "Domain teams contribute"], "One pattern, every team"],
+      onb: ["Every launch configures the stack before its first case", "Work types and required fields, workflows and SLAs, orchestration rules, portal modules, permissions, knowledge and reporting tags are set at launch, not discovered from live work. Reflex root causes feed the next launch.", ["Gated by MCAP", "Readiness check", "Rejection rights"], "Stage 0, once per launch"],
+      reflex: ["Root causes across all work", "Reflex reads the one case record to find the biggest problems and work areas in Operations, some tied to a product and some not, and sends root causes to the owning team.", ["Product-related and not", "Fixes to owners", "Feeds the next launch"], "Insight and prevention"],
+      shared: ["Interfaces owned by domain teams", "Interfaces (APIs and MCPs) owned by domain teams, behind the portal and every AI agent: customer records, communications, transactions, funds, KYC/KYB, periodic reviews, action history. Candidate design.", ["Candidate design"], "One data layer"]
+    }
+  },
+  today: {
+    front: ["Customers must know which team to ask", "They repeat themselves, are bounced between teams, and cannot see status (inferred). CSAT drops 20% when work leaves Care."],
+    r: {
+      t1: ["Step 1: Self-serve (customer)", "Limited self-serve", "Some requests in the Dashboard. MCRs and configuration changes are not self-service.", "Resolved, no case"],
+      t2: ["Step 2: Fin", "Fin, Care support only", "About 25% of Care volume, 16-18% resolved. Other teams have no AI front line.", "Resolved, automated"],
+      t3a: ["Human workflow", "AI-assisted: not measured", "No baseline for the AI-assisted vs human-only split.", "Not measured"],
+      t3b: ["Human workflow", "Human only: the rest", "Email inboxes, Salesforce and Zendesk queues, 30+ tools.", "Resolved, human only"],
+      hs: "Step 3: Human workflows",
+      fall1: "Not available", fall2: "Cannot solve",
+      nocase: "No case needed",
+      casebar: "<b>A case exists only if work reaches Salesforce or Zendesk.</b> Work in team email inboxes has no case, so there is no audit trail or reporting.",
+      ifc: ["No shared interfaces", "Each team builds its own tools. Data sits in separate systems."],
+      portal: ["30+ tools", "About 5 tools on one Care ticket, 20+ Retool apps in Care alone. Permissions set per tool."],
+      segh: "Escalation is not controlled by segment today (to confirm)",
+      seg: [["Enterprise", "White-glove route through the account manager before Care."], ["SMB", "Goes to Care directly."], ["Consumer", "Goes to Care directly."]],
+      note: "Checkout-initiated work arrives by email and Salesforce. Cases are created by hand or by email-to-case, and Slack conversations are not linked to cases."
+    },
+    u: {
+      orch: ["Work in tools is not tied to the case", "Transaction Monitoring cases open in Salesforce, are worked in Retool and sync back only on close. Handle time and the audit trail cannot be reported end to end.", ["No case link", "Retool", "Salesforce", "Sardine", "RA Tool", "Fircosoft"], "No link between work and tools"],
+      onb: ["Ops finds out from live work", "Several launches (BlueEMI, Ray, eFX, Interest) shipped with no Care assessment, and 150+ initiatives were reviewed at 2027 planning. Workflows and tools are configured after the first contact arrives.", ["Reactive", "No registration step"], "Reactive"],
+      reflex: ["Insight covers Care data only", "Reflex reads Care data today. Risk, Compliance and other teams' work sits in separate systems and inboxes, so there is no cross-Operations view of the biggest problems.", ["Care data only"], "Care only"],
+      shared: ["Fragmented data", "Customer data in separate systems, access set per tool. Knowledge in 8 places across 21 sub-functions.", ["8 knowledge places"], "Separate systems"]
+    }
+  }
+};
+
+const hero = document.getElementById('hero');
+let mode = 'vision';
+let openU = null;
+
+function setT(key, v) {
+  const el = document.querySelector('[data-r="' + key + '"]');
+  el.querySelector('.tstep').textContent = v[0];
+  el.querySelector('.h').textContent = v[1];
+  el.querySelector('.d').textContent = v[2];
+  el.querySelector('.exit').textContent = v[3];
+}
+
+function renderDetail() {
+  const detail = document.getElementById('detail');
+  const hint = document.getElementById('hint');
+  document.querySelectorAll('.u').forEach(b => b.classList.toggle('active', b.dataset.u === openU));
+  if (!openU) { detail.classList.remove('open'); hint.style.display = 'block'; return; }
+  const d = content[mode].u[openU];
+  detail.querySelector('.h').textContent = d[0];
+  detail.querySelector('.d').textContent = d[1];
+  const chips = detail.querySelector('.chips');
+  chips.innerHTML = '';
+  d[2].forEach(t => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = t; chips.appendChild(s); });
+  detail.classList.add('open');
+  hint.style.display = 'none';
+}
+
+function render(m) {
+  mode = m;
+  const d = content[m], r = d.r;
+  hero.className = m;
+  document.getElementById('vision-flow').style.display = m === 'vision' ? 'block' : 'none';
+  document.getElementById('today-flow').style.display = m === 'today' ? 'block' : 'none';
+  document.getElementById('front').querySelector('.h').textContent = d.front[0];
+  document.getElementById('front').querySelector('.d').textContent = d.front[1];
+  setT('t1', r.t1); setT('t2', r.t2); setT('t3a', r.t3a); setT('t3b', r.t3b);
+  document.querySelector('.humans > .tstep').textContent = r.hs;
+  const falls = document.querySelectorAll('.fall'); falls[0].textContent = r.fall1; falls[1].textContent = r.fall2;
+  document.getElementById('casebar').innerHTML = r.casebar;
+  document.querySelector('#ifc .k').textContent = r.ifc[0]; document.querySelector('#ifc .d').textContent = r.ifc[1];
+  document.querySelector('#portal .k').textContent = r.portal[0]; document.querySelector('#portal .d').textContent = r.portal[1];
+  document.getElementById('segh').textContent = r.segh;
+  document.querySelectorAll('.seg').forEach((el, i) => { el.querySelector('.k').textContent = r.seg[i][0]; el.querySelector('.d').textContent = r.seg[i][1]; });
+  document.getElementById('pathnote').textContent = r.note;
+  document.querySelectorAll('.u').forEach(b => { b.querySelector('.s').textContent = d.u[b.dataset.u][3]; });
+  document.getElementById('btn-today').classList.toggle('active', m === 'today');
+  document.getElementById('btn-vision').classList.toggle('active', m === 'vision');
+  document.getElementById('lg-today').style.display = m === 'today' ? 'inline-flex' : 'none';
+  renderDetail();
+}
+
+document.getElementById('btn-today').onclick = () => render('today');
+document.getElementById('btn-vision').onclick = () => render('vision');
+document.querySelectorAll('.u').forEach(b => b.onclick = () => { openU = (openU === b.dataset.u) ? null : b.dataset.u; renderDetail(); });
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === t));
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + t.dataset.view));
+});
+document.querySelectorAll('#extoggle button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#extoggle button').forEach(x => x.classList.toggle('active', x === b));
+  document.querySelectorAll('.expanel').forEach(el => { el.style.display = el.id === 'ex-' + b.dataset.ex ? 'block' : 'none'; });
+});
+document.querySelectorAll('#poortoggle button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#poortoggle button').forEach(x => x.classList.toggle('active', x === b));
+  document.querySelectorAll('.poorpanel').forEach(el => { el.style.display = el.id === 'poor-' + b.dataset.poor ? 'grid' : 'none'; });
+});
+render('vision');
+</script>
+</body>
+</html>

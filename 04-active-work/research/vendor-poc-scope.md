@@ -97,4 +97,4 @@ Agreed scope for the Plain assessment. Overlaps with the gates/differentiators a
 
 **Owner**: Charlie Wildish
 **Created**: 2026-06-11
-**Related**: `04-active-work/research/zendesk-platform-decision-rfc.md` · `04-active-work/research/zendesk-current-config-flow-map.md` (conceptual map of current config against these flows)
+**Related**: `05-archive/2026/investigations/zendesk-platform-decision-rfc.md` (archived) · `04-active-work/research/zendesk-current-config-flow-map.md` (conceptual map of current config against these flows)

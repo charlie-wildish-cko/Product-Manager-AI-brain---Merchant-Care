@@ -1,0 +1,6 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LIFT icon white">
+  <rect width="64" height="64" rx="16" fill="#FFFFFF"></rect>
+  <path d="M16 44 C 26 44, 30 22, 48 20" stroke="#006CFF" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
+  <circle cx="16" cy="44" r="5.5" fill="#006CFF"></circle>
+  <circle cx="48" cy="20" r="5.5" fill="#006CFF"></circle>
+</svg>

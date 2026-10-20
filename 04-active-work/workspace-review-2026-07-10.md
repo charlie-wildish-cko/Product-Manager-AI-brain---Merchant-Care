@@ -67,7 +67,7 @@ Scope: `04-active-work/` root, `prds/`, `research/`, `strategy/`, `working-files
 | 04-active-work/research/support-platform-migration-sequencing.md | Keep | Recently modified doc supporting active Help Desk Platform Evaluation |
 | 04-active-work/research/support-platform-vendor-scorecard.md | Keep | Template for active Q3 POC (Help Desk Platform Evaluation) |
 | 04-active-work/research/vendor-poc-scope.md | Keep | Q3 POC scope for active Help Desk Platform Evaluation |
-| 04-active-work/research/zendesk-platform-decision-rfc.md | Keep | Core RFC for active Help Desk Platform Evaluation |
+| 04-active-work/research/zendesk-platform-decision-rfc.md | Keep | Core RFC for active Help Desk Platform Evaluation. **Archived 2026-09-22 once the decision was made: now at `05-archive/2026/investigations/zendesk-platform-decision-rfc.md`** |
 | 04-active-work/strategy/care-product-model-2030-mapping.md | Keep | Working draft, live strategic reference |
 | 04-active-work/strategy/care-product-strategy-2026-2030.md | Keep | Key strategy doc referenced in CLAUDE.md |
 | 04-active-work/strategy/care-strategy-2026-2030.md | Keep | Key strategy doc referenced in CLAUDE.md, TPV/contact forecasts |

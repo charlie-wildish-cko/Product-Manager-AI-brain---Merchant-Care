@@ -1,0 +1,30 @@
+<!-- @dsCard group="Slides" viewport="1280x720" name="Metric slide" subtitle="Light layout — one hero number in mono" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; }
+  .slide { position: relative; width: 1280px; height: 720px; background: var(--surface-page); color: var(--text-strong); overflow: hidden; font-family: var(--font-sans); display: flex; flex-direction: column; justify-content: center; padding: 0 120px; box-sizing: border-box; }
+  .eyebrow { font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 24px; }
+  .metric { font-family: var(--font-mono); font-weight: 600; font-size: 200px; line-height: 0.9; letter-spacing: -0.04em; color: var(--text-strong); }
+  .metric span { color: var(--blue); }
+  .desc { font-size: 24px; color: var(--text-muted); margin-top: 32px; max-width: 720px; line-height: 1.4; }
+  .row { position: absolute; bottom: 64px; left: 120px; right: 120px; display: flex; justify-content: space-between; align-items: center; }
+  .logo { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--text-strong); }
+  .foot { font-size: 14px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="slide">
+    <div class="eyebrow">Annual processed volume</div>
+    <div class="metric">$1.2<span>T</span></div>
+    <div class="desc">Moved across the network last year — at a 98.4% authorization rate, settling in seconds, not days.</div>
+    <div class="row">
+      <div class="logo"><img src="../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="foot">FY2025 · Global</div>
+    </div>
+  </div>
+</body>
+</html>

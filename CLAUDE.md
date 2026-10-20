@@ -59,7 +59,7 @@ Every document, analysis, or recommendation must connect to:
 | Product definitions with contact risk tags | `01-knowledge-base/products/product-definitions.md` |
 | Product -> support taxonomy mapping (hypothesis, unvalidated — no ticket-level product tagging yet) | `01-knowledge-base/products/product-taxonomy-mapping.md` |
 | Payment domain terminology (200 terms: acquirer, authorization, chargeback, settlement, SCA, APM, etc.) | `01-knowledge-base/payment-domain/checkout-terminology.md` |
-| `fct_payin` / `fct_pay_to_card` schema field definitions (dbt docs blocks — authoritative for data field/column definitions; does NOT cover `fct_pay_to_bank`) | `01-knowledge-base/payment-domain/fct-payin-pay-to-card-schema-fields.md` |
+| `fct_payin` / `fct_pay_to_card` / `fct_bank_payout_event` schema field definitions (dbt docs blocks — authoritative for data field/column definitions) | `01-knowledge-base/payment-domain/fct-payin-payout-schema-fields.md` |
 | Platform segment model | `01-knowledge-base/products/platform-segment.md` |
 | Platform Embedded AI vision | `01-knowledge-base/products/platform-embedded-ai-support-vision.md` |
 | Customer personas (merchant + internal) | `01-knowledge-base/products/customer-personas.md` |
@@ -72,11 +72,15 @@ Every document, analysis, or recommendation must connect to:
 | Ray — non-custodial consumer stablecoin wallet + USD Visa card, Care model, known gaps (replaces Braavos, ended 2026-08-18) | `01-knowledge-base/products/ray.md` · Care scoping: `04-active-work/prds/ray-care/scoping.md` · draft taxonomy: `04-active-work/prds/ray-care/taxonomy-draft.md` |
 | Zendesk — ticket lifecycle, business rules, routing, Guide/Knowledge, AI tooling, analytics, terminology | `01-knowledge-base/products/zendesk.md` |
 | Product reference doc template (why it matters + components + metrics) | `03-templates/product-reference-template.md` |
+| Checkout.com brand identity (LIFT design system: tokens, components, slide templates, logo assets). Read before building any HTML concept, diagram or visual, and link or inline `styles.css` tokens | `03-templates/Checkout.com Brand Identity/readme.md` · `SKILL.md` |
 | PRD template | `03-templates/prd-template.md` |
 | PRD example | `03-templates/prd-template-example.md` |
 | Product strategy template | `03-templates/product-strategy-template.md` |
 | Writing style by audience | `01-knowledge-base/processes/writing-style-guide.md` |
-| Zendesk platform decision RFC (Build/Buy/Keep, Q3–Q4 2026) | `04-active-work/research/zendesk-platform-decision-rfc.md` |
+| Support platform vendor scores (Plain 2.44 · Intercom 1.94 · Pylon 1.82 · Zendesk 1.52, 8 weighted criteria) | `04-active-work/research/support-platform-vendor-requirements.md` · `04-active-work/research/support-platform-vendor-scorecard.md` |
+| Plain recommendation deck content (CPO/COO, replace Zendesk with Plain) | `04-active-work/working-files/zendesk-decision-deck-content.md` |
+| Support platform reference calls (Vercel, Fyxer, Tines, Zilch, Intercom vendor call) with evidence tiers | `04-active-work/research/support-platform-assessment-customer-references.md` |
+| Zendesk platform decision RFC (Build/Buy/Keep, archived 2026-09-22, decision record and option-rejection reasoning) | `05-archive/2026/investigations/zendesk-platform-decision-rfc.md` |
 | Zendesk viability research (AI, pricing, market, 2024–2026) | `05-archive/2026/investigations/Zendesk Viability_ AI, Pricing, Market.md` |
 | Support articles (908 markdown files, 14 topic folders — Payments, Disputes, Settlements, Platforms, etc.) | `01-knowledge-base/Support content/checkout-support-site-main/Support articles/` |
 | GitHub source repos for all support content (external/internal support articles, Tech Docs, API reference) + re-pull instructions | `01-knowledge-base/processes/support-content-sources.md` |
@@ -92,6 +96,9 @@ Every document, analysis, or recommendation must connect to:
 - Structured with headers and bullets
 - Short paragraphs (2–3 sentences), active voice, specific numbers
 - Always end with a clear next step or recommendation
+
+### Visual design
+Every visual (HTML concept, diagram, mock, deck layout, chart) uses the Checkout.com Brand Identity toolkit in `03-templates/Checkout.com Brand Identity/`. Read its `readme.md` and `SKILL.md` first, and use its tokens (colours, type, spacing, radius, motion) and components. Inline the tokens so the file is self-contained. Checkout Blue is for actions and highlights only, no emoji, sentence case, numbers in JetBrains Mono. Do not introduce new colour palettes or fonts.
 
 ### Always avoid
 - Em dashes (`—`) as clause connectors (use a colon or full stop). Max 2-3 per document.
@@ -211,6 +218,19 @@ Audit `01-knowledge-base/` and `04-active-work/` for content-level duplication a
 ### Write Fin Attribute
 Draft or update a single Fin Attribute value definition (Case Type, Issue Type, Reason) in Intercom's Applies-if/Does-not-apply-if/Likely-keywords format. Writes to both `fin-attributes-definitions.md` (Intercom-ready) and `support-taxonomy.md` (QA skill's parseable source). Enforces Intercom's 2500-character limit.
 - Skill: `/write-fin-attribute` — then supply value name, taxonomy path, definition, example queries
+
+### Slide Content
+Turn notes, a document, or an outline into layout-enforced, density-constrained prompts for Gemini in Google Slides (layout keywords, fragment grammar, 8-word item cap, sourced numbers only). Given a `/presentation-outline` file, appends its prompts to that same file; otherwise saves to `04-active-work/working-files/`.
+- Skill: `/slide-content [topic, file path, or pasted notes]`
+
+### Five Whys
+Find the real question behind a vague problem, solution-shaped request, or half-formed idea, then size who is affected and how (groups and metrics are derived from the chain, not preset). Run before `/create-prd` or a deck when the problem statement is unclear. Saved to `04-active-work/research/`.
+- Skill: `/five-whys [problem, request, or idea]`
+
+### Presentation Outline
+Build a storyline and ghost deck (governing thought, SCQA, key line, action titles, evidence and status per slide). Saved to `04-active-work/working-files/presentation-<topic>-<date>.md`; `/slide-content` then appends Gemini prompts to the same file.
+- Skill: `/presentation-outline [topic, file path, or notes]`
+- Typical chain: `/five-whys` -> `/create-prd` -> `/presentation-outline` -> `/slide-content`
 
 ### Model Routing in Skills
 Skills use Opus for strategic/analytical phases and Sonnet for writing/output phases.

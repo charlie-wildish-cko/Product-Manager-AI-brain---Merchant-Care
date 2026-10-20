@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using AI Compliantly — LIFT</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  deck-stage:not(:defined) { visibility: hidden; }
+  html, body { margin: 0; background: #05080F; }
+
+  /* ---- Slide base ---- */
+  .slide { width: 100%; height: 100%; font-family: var(--font-sans); color: var(--text-strong); overflow: hidden; position: relative; box-sizing: border-box; }
+  .pad { padding: 124px 96px 84px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
+
+  .s-dark { background: var(--midnight); color: #fff; }
+  .s-grad { background: var(--gradient-primary); color: #fff; }
+  .s-light { background: var(--surface-page); }
+  .s-fog { background: var(--surface-subtle); }
+
+  .eyebrow { font-size: 14px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; color: var(--blue); margin: 0 0 22px; }
+  .s-dark .eyebrow, .s-grad .eyebrow { color: var(--blue-300); }
+  .s-grad .eyebrow { color: rgba(255,255,255,.8); }
+
+  h1.title { font-family: var(--font-display); font-weight: 800; font-size: 78px; line-height: 0.98; letter-spacing: -0.03em; margin: 0; }
+  h2.head { font-family: var(--font-display); font-weight: 700; font-size: 46px; line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 14px; }
+  .lede { font-size: 21px; line-height: 1.5; color: var(--text-muted); max-width: 820px; margin: 0; }
+  .s-dark .lede { color: var(--neutral-400); }
+
+  /* logo + chrome */
+  .brand { position: absolute; top: 56px; left: 96px; display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.5px; }
+  .s-light .brand, .s-fog .brand { color: var(--text-strong); }
+  .s-dark .brand, .s-grad .brand { color: #fff; }
+  .pageno { position: absolute; top: 64px; right: 96px; font-family: var(--font-mono); font-size: 14px; color: var(--neutral-500); }
+  .s-dark .pageno { color: var(--neutral-500); }
+  .s-grad .pageno { color: rgba(255,255,255,.65); }
+  .s-light .pageno, .s-fog .pageno { color: var(--neutral-400); }
+  .foot { position: absolute; bottom: 56px; left: 96px; font-size: 13px; color: var(--text-muted); }
+  .s-dark .foot, .s-grad .foot { color: rgba(255,255,255,.55); }
+
+  .flow-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+  /* cards */
+  .grid { display: grid; gap: 20px; }
+  .card { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px; }
+  .s-fog .card { background: #fff; }
+  .card .k { font-family: var(--font-mono); font-size: 13px; color: var(--blue); font-weight: 600; letter-spacing: .02em; }
+  .card h3 { font-size: 22px; font-weight: 700; margin: 14px 0 8px; letter-spacing: -0.01em; color: var(--text-strong); }
+  .card p { font-size: 15.5px; line-height: 1.5; color: var(--text-muted); margin: 0; }
+  .card .num { font-family: var(--font-mono); font-weight: 600; font-size: 34px; letter-spacing: -0.02em; color: var(--text-strong); }
+
+  /* checklist */
+  .checks { display: flex; flex-direction: column; gap: 24px; margin-top: 8px; }
+  .check { display: flex; gap: 18px; align-items: flex-start; }
+  .check > div { flex: 1; min-width: 0; }
+  .check .mk { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--status-success-bg); color: #047a4b; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .check .mk svg { width: 17px; height: 17px; }
+  .check h4 { font-size: 21px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .check p { font-size: 16px; line-height: 1.45; color: var(--text-muted); margin: 0; max-width: 860px; }
+  .check .num { font-family: var(--font-mono); font-weight: 600; font-size: 15px; color: var(--blue); background: var(--action-subtle); }
+
+  .spacer { flex: 1; }
+
+  /* metric inline */
+  .stat { font-family: var(--font-mono); font-weight: 600; font-size: 44px; letter-spacing: -0.02em; color: var(--blue); }
+
+  /* entrance */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-deck-active] .anim { animation: rise .55s var(--ease-out) both; }
+    [data-deck-active] .anim.d1 { animation-delay: .06s; }
+    [data-deck-active] .anim.d2 { animation-delay: .12s; }
+    [data-deck-active] .anim.d3 { animation-delay: .18s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  }
+
+  /* dark-slide card variant */
+  .s-dark .card { background: rgba(255,255,255,.045); border-color: rgba(255,255,255,.12); }
+  .s-dark .card h3 { color: #fff; }
+  .s-dark .card p { color: var(--neutral-400); }
+  .s-dark .card .k { color: var(--blue-300); }
+  .card--hi { border-color: var(--blue); box-shadow: var(--shadow-brand); }
+  .s-dark .card--hi { background: rgba(0,108,255,.16); border-color: var(--blue-400); box-shadow: none; }
+
+  /* pills */
+  .pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .pill-c { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 26px; }
+  .pill-c .k { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); font-weight: 600; }
+  .pill-c h3 { font-size: 22px; font-weight: 700; margin: 12px 0 8px; letter-spacing: -0.01em; }
+  .pill-c p { font-size: 15px; line-height: 1.5; color: var(--text-muted); margin: 0; }
+  .note { font-size: 14px; color: var(--text-muted); margin-top: 22px; }
+  .note b { color: var(--blue); font-weight: 600; }
+</style>
+</head>
+<body>
+<deck-stage width="1280" height="720">
+
+  <!-- 1 · TITLE -->
+  <section data-label="Title">
+    <div class="slide s-dark">
+      <svg class="flow-bg" viewBox="0 0 1280 720" fill="none" preserveAspectRatio="xMidYMid slice">
+        <defs><linearGradient id="t1" x1="0" y1="720" x2="1280" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#006CFF"/><stop offset="1" stop-color="#7B61FF"/></linearGradient></defs>
+        <path d="M-40 280 C 300 280, 460 80, 820 80 S 1180 18, 1340 0" stroke="url(#t1)" stroke-width="2.5" opacity=".95"/>
+        <path d="M-40 340 C 340 340, 520 140, 900 140 S 1220 80, 1340 64" stroke="#1E3354" stroke-width="1.5"/>
+        <path d="M-40 220 C 260 220, 420 30, 760 30 S 1140 -40, 1340 -60" stroke="#1E3354" stroke-width="1.5"/>
+        <circle cx="300" cy="280" r="5" fill="#006CFF"/><circle cx="820" cy="80" r="6" fill="#7B61FF"/><circle cx="900" cy="140" r="4" fill="#00C875"/>
+      </svg>
+      <div class="brand"><img src="../../assets/icon-lift-white.svg" width="32" height="32" alt=""><span>LIFT</span></div>
+      <div class="pageno">01</div>
+      <div class="pad" style="justify-content:flex-end;">
+        <p class="eyebrow anim">Learning, Insights &amp; Foundational Training · 2026</p>
+        <h1 class="title anim d1">Using AI<br>compliantly</h1>
+        <p class="lede anim d2" style="margin-top:26px;">How Compliance &amp; Risk Ops use AI to move faster — without compromising security, accuracy, or trust.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · STATEMENT -->
+  <section data-label="Co-pilot">
+    <div class="slide s-grad">
+      <div class="brand"><img src="../../assets/icon-lift-white.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">02</div>
+      <div class="pad" style="justify-content:center;">
+        <div style="width:56px;height:4px;background:#fff;border-radius:2px;margin-bottom:36px;opacity:.9;" class="anim"></div>
+        <h1 class="title anim d1" style="font-size:66px;max-width:1020px;">AI is a powerful co-pilot —<br>not the pilot.</h1>
+        <p class="anim d2" style="font-size:20px;color:rgba(255,255,255,.88);margin:34px 0 0;max-width:760px;line-height:1.5;">At Checkout, using AI is actively encouraged to enhance human potential. In a highly regulated financial ecosystem, the bar is using it responsibly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · EVERYDAY EXPECTATIONS -->
+  <section data-label="Expectations">
+    <div class="slide s-light">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">03</div>
+      <div class="pad">
+        <p class="eyebrow anim">Everyday expectations</p>
+        <h2 class="head anim d1">AI is encouraged — used well</h2>
+        <p class="lede anim d1">Nearly everyone here uses AI daily to accelerate workflows and compound learning. Treat it as an intelligent assistant that enhances your judgement, never one that replaces it.</p>
+        <div class="spacer"></div>
+        <div class="pills anim d2">
+          <div class="pill-c"><div class="k">Efficiency</div><h3>Accelerate</h3><p>Speed through routine workflows and reclaim time for the judgement calls that matter.</p></div>
+          <div class="pill-c"><div class="k">Scalability</div><h3>Handle volume</h3><p>Take on complexity and scale that would overwhelm manual review.</p></div>
+          <div class="pill-c"><div class="k">Ideation</div><h3>Think faster</h3><p>Break down complex problems and structure strong first drafts in minutes.</p></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · TOOLSET -->
+  <section data-label="Toolset">
+    <div class="slide s-fog">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">04</div>
+      <div class="pad">
+        <p class="eyebrow anim">The toolset</p>
+        <h2 class="head anim d1">The tools we're set up to use</h2>
+        <div class="spacer"></div>
+        <div class="grid anim d2" style="grid-template-columns:repeat(4,1fr);">
+          <div class="card"><div class="k">Gemini</div><h3>Reasoning &amp; analysis</h3><p>Compare cross-border regulatory frameworks, translate compliance documents, and structure investigative reports.</p></div>
+          <div class="card"><div class="k">Claude Code</div><h3>Scripting &amp; rules</h3><p>Automate code reviews, generate Python for bulk transaction analysis, and standardise rule logic before deployment.</p></div>
+          <div class="card"><div class="k">NotebookLM</div><h3>Secure knowledge</h3><p>Load 100+ page regulatory PDFs into a closed-loop base, then query jurisdictional rules and build front-line FAQs.</p></div>
+          <div class="card"><div class="k">Zapier</div><h3>No-code automation</h3><p>Route low-risk alerts to the right regional officer and open tracking tickets so nothing flagged slips through.</p></div>
+        </div>
+        <p class="note anim d3">Search <b>"AI"</b> in Nova, or start with the <b>AI Academy</b>. New ideas? Talk to the Operational Excellence team.</p>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · SECTION DIVIDER -->
+  <section data-label="Guardrails">
+    <div class="slide s-dark">
+      <svg class="flow-bg" viewBox="0 0 1280 720" fill="none" preserveAspectRatio="xMidYMid slice">
+        <path d="M-40 540 C 320 540, 520 660, 820 600 S 1200 460, 1340 480" stroke="#1E3354" stroke-width="1.5"/>
+        <path d="M-40 600 C 360 600, 560 700, 900 640 S 1240 520, 1340 540" stroke="#006CFF" stroke-width="2" opacity=".55"/>
+        <circle cx="820" cy="600" r="5" fill="#7B61FF"/>
+      </svg>
+      <div class="brand"><img src="../../assets/icon-lift-white.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">05</div>
+      <div class="pad" style="justify-content:center;">
+        <p class="eyebrow anim">The guardrails</p>
+        <h1 class="title anim d1" style="font-size:60px;">Four habits keep<br>our use of AI compliant.</h1>
+        <p class="lede anim d2" style="margin-top:24px;">Speed is only an advantage if it's safe. These apply every single time you open an AI tool.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · PII -->
+  <section data-label="Protect data">
+    <div class="slide s-light">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">06</div>
+      <div class="pad">
+        <p class="eyebrow anim">Guardrail 01</p>
+        <h2 class="head anim d1">Protect sensitive data and PII</h2>
+        <p class="lede anim d1">Never input confidential company data, proprietary source code, or PII into public AI models.</p>
+        <div class="spacer"></div>
+        <div class="grid anim d2" style="grid-template-columns:repeat(3,1fr);">
+          <div class="card"><div class="k">Regulated data</div><h3>Stays controlled</h3><p>Technical, verification, cardholder, and transaction data remains strictly controlled under GDPR and PCI-DSS.</p></div>
+          <div class="card"><div class="k">Corporate secrets</div><h3>Stay internal</h3><p>Keep unreleased strategy, internal financials, and security or infrastructure details out of external chatbots.</p></div>
+          <div class="card card--hi"><div class="k">PII</div><h3>Never in a prompt</h3><p>Anything that can identify, contact, or locate an individual — alone or combined. It never goes into a prompt.</p></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · HUMAN ACCOUNTABILITY -->
+  <section data-label="Accountability">
+    <div class="slide s-fog">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">07</div>
+      <div class="pad">
+        <p class="eyebrow anim">Guardrail 02</p>
+        <h2 class="head anim d1" style="margin-bottom:26px;">Maintain human accountability</h2>
+        <div class="checks anim d2">
+          <div class="check"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>Fact-check &amp; verify</h4><p>AI hallucinates. Verify technical answers, legal interpretations, and data analysis against official Checkout documentation.</p></div></div>
+          <div class="check"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>Run security reviews</h4><p>AI-assisted code must clear standard peer review and security testing.</p></div></div>
+          <div class="check"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>Own the decision</h4><p><span class="stat" style="font-size:18px;">100%</span> of automated risk flags, closures, and reports need a clear path to human validation. Humans own the final call.</p></div></div>
+          <div class="check"><span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>Apply judgement</h4><p>Empathy, nuance, and regulatory accountability can't be automated. You remain responsible for the final output.</p></div></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · BIAS -->
+  <section data-label="Bias">
+    <div class="slide s-light">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">08</div>
+      <div class="pad">
+        <p class="eyebrow anim">Guardrail 03</p>
+        <h2 class="head anim d1">Guard against bias</h2>
+        <p class="lede anim d1">Used well, AI removes unconscious bias. Used carelessly, it amplifies it — so human oversight stays on.</p>
+        <div class="spacer"></div>
+        <div class="grid anim d2" style="grid-template-columns:repeat(2,1fr);">
+          <div class="card"><div class="k">Eliminate bias</div><h3>Objective by design</h3><p>Checkout leverages AI to remove unconscious bias in areas like talent acquisition — keeping assessments focused on objective criteria.</p></div>
+          <div class="card"><div class="k">Review every output</div><h3>Proactively check</h3><p>When AI analyses data, drafts communications, or evaluates metrics, review the output to ensure no bias was introduced or amplified.</p></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · APPROVED TOOLS -->
+  <section data-label="Approved tools">
+    <div class="slide s-fog">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">09</div>
+      <div class="pad">
+        <p class="eyebrow anim">Guardrail 04</p>
+        <h2 class="head anim d1">Use approved tools only</h2>
+        <p class="lede anim d1">Use the specific AI applications and enterprise tiers formally vetted by IT and Security.</p>
+        <div class="spacer"></div>
+        <div class="grid anim d2" style="grid-template-columns:repeat(2,1fr);">
+          <div class="card"><div class="k">Enterprise tiers</div><h3>Stricter by default</h3><p>Enterprise versions carry tighter data-privacy agreements that stop your inputs from training public models.</p></div>
+          <div class="card card--hi"><div class="k">The official list</div><h3>Check before you start</h3><p>We continually trial new models. Confirm a tool is on the approved list — Confluence or the IT portal — before you use it.</p></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · REAL-LIFE LESSON -->
+  <section data-label="Klarna">
+    <div class="slide s-dark">
+      <svg class="flow-bg" viewBox="0 0 1280 720" fill="none" preserveAspectRatio="xMidYMid slice">
+        <path d="M-40 650 C 320 650, 520 600, 860 626 S 1220 690, 1340 678" stroke="#1E3354" stroke-width="1.5"/>
+        <path d="M-40 690 C 360 690, 560 640, 900 664 S 1240 720, 1340 706" stroke="#006CFF" stroke-width="2" opacity=".4"/>
+        <circle cx="860" cy="626" r="4" fill="#006CFF"/>
+      </svg>
+      <div class="brand"><img src="../../assets/icon-lift-white.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">10</div>
+      <div class="pad">
+        <p class="eyebrow anim">A real-life lesson</p>
+        <h2 class="head anim d1">When AI replaces judgement</h2>
+        <div class="spacer"></div>
+        <div class="grid anim d2" style="grid-template-columns:repeat(4,1fr);">
+          <div class="card"><div class="k">01 · The bold bet</div><h3>Cut to scale</h3><p>Klarna replaced 700 customer-service agents with AI to cut cost and absorb volume.</p></div>
+          <div class="card"><div class="k">02 · The friction</div><h3>Trust dropped</h3><p>Routine response times improved — but satisfaction collapsed on complex billing and fraud disputes.</p></div>
+          <div class="card"><div class="k">03 · The empathy gap</div><h3>Edge cases failed</h3><p>The AI lacked empathy and trapped distressed customers in frustrating resolution loops.</p></div>
+          <div class="card card--hi"><div class="k">04 · The reversal</div><h3>Hybrid wins</h3><p>Klarna pivoted: AI for efficiency, trained humans for empathy and complex problem-solving.</p></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 · KEY LESSONS -->
+  <section data-label="Key lessons">
+    <div class="slide s-light">
+      <div class="brand"><img src="../../assets/icon-lift.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">11</div>
+      <div class="pad">
+        <p class="eyebrow anim">Key lessons</p>
+        <h2 class="head anim d1">How we get the balance right</h2>
+        <div class="spacer"></div>
+        <div class="grid anim d2" style="grid-template-columns:repeat(2,1fr);">
+          <div class="card"><div class="k">Automate</div><h3>Automate the routine</h3><p>Let AI do the heavy lifting on initial data gathering, standard tracking, and routine risk triage.</p></div>
+          <div class="card"><div class="k">Escalate</div><h3>Escalate the complex</h3><p>Multi-step disputes, fraud investigations, and policy exceptions go to a human analyst — immediately.</p></div>
+          <div class="card"><div class="k">Empathy</div><h3>Empathy is key</h3><p>Distressed customers, significant financial loss, or sensitive regulatory calls need a human touch.</p></div>
+          <div class="card"><div class="k">Monitor</div><h3>Monitor the outputs</h3><p>Continuous oversight is your job. Validate summaries to catch bias, hallucinations, and drift from our risk appetite.</p></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 · CLOSE -->
+  <section data-label="Close">
+    <div class="slide s-grad">
+      <div class="brand"><img src="../../assets/icon-lift-white.svg" width="30" height="30" alt=""><span>LIFT</span></div>
+      <div class="pageno">12</div>
+      <div class="pad" style="justify-content:center;">
+        <div style="width:56px;height:4px;background:#fff;border-radius:2px;margin-bottom:36px;opacity:.9;" class="anim"></div>
+        <h1 class="title anim d1" style="font-size:68px;">Automate the routine.<br>Own the outcome.</h1>
+        <p class="anim d2" style="font-size:20px;color:rgba(255,255,255,.88);margin:34px 0 0;max-width:720px;line-height:1.5;">AI moves us faster. Your judgement keeps it compliant.</p>
+      </div>
+      <div class="foot">Learning, Insights &amp; Foundational Training · Compliance &amp; Risk Ops</div>
+    </div>
+  </section>
+
+</deck-stage>
+<script src="deck-stage.js"></script>
+</body>
+</html>

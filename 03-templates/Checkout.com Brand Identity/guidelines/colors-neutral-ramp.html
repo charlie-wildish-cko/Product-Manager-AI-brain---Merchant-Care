@@ -1,0 +1,29 @@
+<!-- @dsCard group="Colors" viewport="700x130" name="Neutral ramp" subtitle="Cool, navy-biased greys from White to Midnight" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--surface-page); padding: var(--space-6); }
+  .ramp { display: grid; grid-template-columns: repeat(11, 1fr); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-subtle); }
+  .step { height: 64px; display: flex; align-items: flex-end; padding: 5px; }
+  .lab { font-family: var(--font-mono); font-size: 10px; font-weight: 500; }
+</style>
+</head>
+<body>
+  <div class="ramp">
+    <div class="step" style="background:var(--neutral-0)"><span class="lab" style="color:var(--neutral-700)">0</span></div>
+    <div class="step" style="background:var(--neutral-50)"><span class="lab" style="color:var(--neutral-700)">50</span></div>
+    <div class="step" style="background:var(--neutral-100)"><span class="lab" style="color:var(--neutral-700)">100</span></div>
+    <div class="step" style="background:var(--neutral-200)"><span class="lab" style="color:var(--neutral-700)">200</span></div>
+    <div class="step" style="background:var(--neutral-300)"><span class="lab" style="color:var(--neutral-700)">300</span></div>
+    <div class="step" style="background:var(--neutral-400)"><span class="lab" style="color:var(--white)">400</span></div>
+    <div class="step" style="background:var(--neutral-500)"><span class="lab" style="color:var(--white)">500</span></div>
+    <div class="step" style="background:var(--neutral-600)"><span class="lab" style="color:var(--white)">600</span></div>
+    <div class="step" style="background:var(--neutral-700)"><span class="lab" style="color:var(--white)">700</span></div>
+    <div class="step" style="background:var(--neutral-800)"><span class="lab" style="color:var(--white)">800</span></div>
+    <div class="step" style="background:var(--neutral-900)"><span class="lab" style="color:var(--white)">900</span></div>
+  </div>
+</body>
+</html>

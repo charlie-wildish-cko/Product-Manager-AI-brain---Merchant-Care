@@ -178,9 +178,48 @@ Simulations are specific to Procedures. Batch Testing measures aggregate resolut
 - Fin webhook functionality can automate back-office tasks (TPA lookups, refund reversals, manual refunds). Estimated to remove **10-15% of current agent work volume** from manual Zendesk processing.
 - Refund reversal eligibility logic as articulated: check the 7-day window and eligible payment method, confirm to the customer, set a loop webhook, fetch the transaction, call the endpoint, process the reversal, notify, trigger the Treasury adjustment.
 
+### Current performance and the path to 40% (2026-09-08)
+Source: `04-active-work/meeting-notes/2026-09/2026-09-08-care-strategy-walkthrough.md`.
+- Fin handles **~25% of total volume** at a **70-80% individual resolution rate**, giving an **overall resolution rate of 16-18%**.
+- North star is **80% resolution** over the next few years, flattening human headcount growth.
+- Two named, concrete moves to get above 40%: allow **email replies to include payment data**, and **remove the dashboard contact form** so Fin becomes the default channel. This is a prioritisation argument, not an aspiration.
+- Unit economics as stated: **90 cents per AI resolution against $20-25 per human resolution**. Note this human figure is lower than the ~$40/contact benchmark in `CLAUDE.md`: reconcile before reusing either in a business case.
+- Even at 80% AI resolution, hundreds of thousands of contacts still reach humans, so agent workflow efficiency remains mandatory. Humans stay necessary for complex cases, vulnerability and complaints.
+- Complaints face strict regulatory mandates, especially North America and Europe. General support queries carry no legal restriction on AI deflection.
+- Fin data design principle agreed 2026-09-04: pass **controlled, deterministic data via attributes**, with user verification reflected as a field or flag, and Fin executing a data connector or Procedure when the attribute equals a given value. Platform-agnostic, so it carries over to Plain. Replying with a dashboard link instead of an answer was explicitly rejected: it loses the resolution and the merchant escalates anyway.
+- Fin is committed for at least another year (confirmed 2026-08-25). Ada was assessed as too entry-level. The replacement ticketing platform is not being considered as the deflection layer.
+
+### Content performance and GitHub sync (2026-09-16)
+Source: `04-active-work/meeting-notes/2026-09/2026-09-16-fin-recommendations-and-km.md`.
+- Fin's help-centre reporting gives resolution rate at **section** level, which does not map to the support taxonomy, and covers **external content only**. Zendesk solved tickets added as a second data point.
+- Observed spread: **"Understanding payment statuses" at 82.7% resolution across 525 citations, against "API response codes" at 43%.** The delta is page size and missing code definitions, not topic difficulty.
+- **Fin's context window is a production constraint**: it cannot read the codes at the bottom of the API response codes page. Page size is an AI-retrieval content requirement.
+- Standing rule agreed: **any content scoring below 50% resolution rate is reviewed as a priority.** Publishing now requires mandatory metadata values, so content without them cannot be published.
+- **GitHub sync** (new Intercom capability): Fin syncs content from the source repo instead of crawling the website, and accepting a Fin recommendation raises a pull request on the repo. Critical path is Checkout infrastructure sign-off to install an app into the GitHub org, then setup/parity testing, then a sandbox test. Target is this year. Joel Petrosino owns the technical front.
+- Agent source attribution is effectively unsolvable head-on: Zendesk pins gave no metrics, Glean will not expose search queries on privacy grounds, and both Glean and Fin synthesise across sources. Viable path is a QA **golden set** of highly scored replies.
+
+### Involvement ceiling and SLO treatment (2026-09-16)
+Source: `04-active-work/meeting-notes/2026-09/2026-09-16-path-to-95-slo-and-fin-impact.md`, `2026-09-16-analytics-proactive-trends.md`, `2026-09-16-ocs-roadmap-2027.md`.
+- **Involvement ceiling is ~70-80%.** The residual ~20% is AM-originated, WeChat and IM tickets (~10% each) Fin cannot touch. Future gains must come from resolution rate, which means solving more problem types, not covering more channels.
+- Agreed targets: **40% this year (holding), ~60% next year** (+20%, not +30%, on diminishing returns). The "60-70% by year end" figure quoted elsewhere is superseded by this.
+- Short-term optimisation indexes on **Accepting Payments and Payouts** case types, targeting consistently above 80% resolution.
+- **No per-merchant AI toggles.** Taxonomy-level exceptions are acceptable; merchant-level on/off breaks reporting consistency.
+- **The apparent August resolution drop was a data artefact**: Remitly direct escalations were counted as Fin failures. Remove them and the rate stabilises. Do not cite the dip. August baseline is ~5,000 tickets touched at ~48% resolution; use the Intercom metrics.
+- Zendesk-to-Fin automated resolutions are now **included in the reported SLO**, with human and automated lines reported separately. Fin-only resolutions are instant and sit at 100% SLO, so the decoupling is what keeps the headline interpretable.
+- **Fin has an unused API product** (2026-09-15). Checkout uses the Intercom widget only for ease of integration. The API lets Fin run hidden under Checkout's own UI, which is the mechanism for swapping the vendor with no customer impact.
+
 ### Known behaviour to design around (2026-08-19)
 - Fin stays assigned to a ticket even where human intervention is needed, and keeps responding until told to route to an agent. This generates repetitive tickets. Mitigation in use is filtering the queue view to Fin-escalated tickets only, not changing Fin behaviour.
 - Fin cannot re-enter a conversation mid-thread today: it is trigger-on-assign only. The planned orchestration layer uses a machine user invoking the Fin API into a thread so Fin can be re-invoked after a human action (for example pasting back a Treasury adjustment ID and closing).
+
+### Monthly review findings and email data path (2026-09-23)
+Source: `04-active-work/meeting-notes/2026-09/2026-09-23-care-ai-agent-monthly-review.md`, `2026-09-23-fin-payment-lookup-email-architecture.md`, `2026-09-22-yu-ai-high-risk-merchants-fin.md`.
+- **Dashboard web forms are being removed in most cases**, making Fin the mandatory default channel before escalation. This is the main lever for the 40% target.
+- **Incident detection on email is the largest known gap.** Fin misread the Mastercard payout incident as a standard payout query (Bet365 escalation). On email, suspected outages now skip Fin and go straight to a human. On chat, Fin calls the incident API and offers escalation.
+- Explicit escalation instructions in guidance caused side effects in chat replies and were removed. Silent handling works better.
+- The repeat-more-than-twice escalation rule creates loops when users repeat themselves, especially in non-English conversations.
+- **Payment data reaches Fin from outside Fin.** Lookups run in Checkout services (lookup service via the customer bot), and results are posted into the Fin conversation with the Intercom reply-to-conversation API. Fin never calls internal data or handles auth. Email has no client access token, so it needs a parallel flow. Cross-channel bot consistency is unresolved.
+- First commercial request for merchant-level AI-first carve-outs (Bet365, likely Polymarket). Pending Charlie's impact assessment, and in tension with the no per-merchant toggles position above.
 
 ---
 

@@ -271,6 +271,27 @@ Zendesk's reporting tool, now called Analytics (formerly Explore).
 
 ---
 
+## 9. Limitations driving the migration case (2026-09-15)
+
+Source: `04-active-work/meeting-notes/2026-09/2026-09-15-plain-vs-zendesk-migration-case.md`, `2026-09-15-plain-vision-architecture.md`, `2026-09-16-analytics-proactive-trends.md`. The decision is made: replace Zendesk with Plain. Vendor scores live in `04-active-work/research/support-platform-vendor-scorecard.md`, the recommendation and ask in `04-active-work/working-files/zendesk-decision-deck-content.md`, and the archived RFC that produced it in `05-archive/2026/investigations/zendesk-platform-decision-rfc.md`.
+
+Six criteria used to assess Zendesk:
+
+1. **AI.** Zendesk's April 2026 decision to cut off third-party AI integrations in favour of its own. Checkout decided to use no Zendesk AI: it duplicated existing capability, and Procedures had to be authored separately from the Help Centre rather than reading from it. Pricing cited at roughly 2-3 per resolution, high for the market.
+2. **Channels.** Must support WeChat, phone and custom channels.
+3. **Integration.** Accessible APIs, unopinionated data ingestion, integration marketplace, smooth work transfer between teams, freedom to plug in in-house or vendor AI agents.
+4. **Architecture.** Core services (customer enrichment, taxonomy, product catalogue sync, custom channels, content sources) owned in-house and pushed to the vendor. Today Zendesk houses things like taxonomy.
+5. **Deploy as code.** Zendesk work is UI-based via STO, which is fragile, plus a paid third-party tool for what Zendesk does not support.
+6. **Long-term partner.** A vendor that can grow with Checkout over several years.
+
+Specific operational limitations observed:
+
+- **No aggregate breach alerting.** Zendesk views show SLA budget per ticket but cannot be monitored in aggregate, so there is no way to alert an internal dependency team that N tickets will breach today. Plain demoed this capability.
+- **Enrichment race conditions.** Merchant Profile Builder and related services take up to 3 minutes to populate ticket data on creation, alert constantly and break. Tickets get routed before enrichment lands.
+- **Dual-sourced taxonomy.** Admins configure one source of truth, engineers configure another in separate services, and they drift.
+- **Static groups cannot express skill-based pod routing** with programmatic skill assignment and fallback, which the 2027 L1 specialisation model depends on.
+- Poor analytics and data modelling, plus an unresponsive account relationship: Checkout is not a large Zendesk customer.
+
 ## Related
 
 - [Agent toolkit (Zendesk)](../processes/agent-toolkit-zendesk.md) — internal tooling built on top of Zendesk (User Profile, Payment Tool)

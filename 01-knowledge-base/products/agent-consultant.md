@@ -35,6 +35,25 @@ The Agent Consultant is also a structural dependency for Reflex: ticket content 
 | **Audit log** | Records all Consultant actions — AI-generated and agent-approved — per ticket. Accessible to Ops managers and the Product team only (not surfaced to agents). Supports quality review, incident investigation, and governance. |
 | **Internal QA** | QA on closed tickets based on QA definitions and a golden dataset of what qualifies as good tickets. 2027 horizon. |
 
+## Measured baseline (2026-08-25)
+
+Source: `04-active-work/meeting-notes/2026-08/2026-08-25-merchant-care-sprint-demo.md`.
+
+First hard performance data for the consultant bot, to 24 August 2026:
+
+| Metric | Value |
+|---|---|
+| Records | 1,738 |
+| Ratings collected (1-5 scale) | ~1,800 |
+| Average rating | 3.05 |
+| Rated 4 or 5 | 37.4% (276 fives) |
+| Rated 1 or 2 | 680 |
+| Tickets with an identified gap | 84% |
+
+Gaps were identified by comparing agent closure comments against support consultant data. Root causes are partly data access rather than model quality: missing settlement data access is a named example. Chart dips are attributable to historical data backfill, not degradation.
+
+Architectural direction agreed in the same session: AI engages across the **entire ticket lifecycle**, not only at ticket creation. This widens the Consultant's trigger set beyond ticket-creation events.
+
 ## Relationship to existing assets
 
 - **Flywheel**: Agent Experience (reduces AHT; core driver of cost per contact for human-handled tickets).

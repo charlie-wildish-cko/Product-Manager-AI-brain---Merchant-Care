@@ -1,8 +1,8 @@
-# fct_payin / fct_pay_to_card Schema Field Definitions
+# fct_payin / fct_pay_to_card / fct_bank_payout_event Schema Field Definitions
 
-> dbt docs blocks (`{% docs %}`) defining every column on `fct_payin` (card and APM payins) and `fct_pay_to_card` (Pay to Card payouts). This file does not yet cover bank payouts (`fct_bank_payout_event`) — that schema exists in the source repo but hasn't been pulled in here yet. Use this as the authoritative field-level reference when defining or explaining a payin or Pay to Card field — do not paraphrase a field definition from memory if it exists here.
+> dbt docs blocks (`{% docs %}`) defining every column on `fct_payin` (card and APM payins), `fct_pay_to_card` (Pay to Card payouts), and `fct_bank_payout_event` (Pay to Bank payouts, event-grain). Use this as the authoritative field-level reference when defining or explaining a payin or payout field — do not paraphrase a field definition from memory if it exists here.
 >
-> Source of truth: [cko-bi/gcp-data-analytics-dbt](https://github.com/cko-bi/gcp-data-analytics-dbt/tree/main/models/payment/mart) `models/payment/mart/` — each dbt model has a `.sql` + `.yml` pair; the `.yml` holds the column definitions. When asked to update this doc and its schemas, pull from `models/payment/mart/`, not `docs/payment_docs.md` (the original source used to create this file, now superseded as the update source). Models present as of 2026-09-07: `fct_payin`, `fct_payin_event`, `fct_payin_daily`, `fct_card_payin_event`, `fct_apm_payin_event`, `fct_card_payout`, `fct_bank_payout_event`, `fct_dispute_event`, `fct_reported_fraud_event`, `fct_transaction_risk_analysis_payin`, `fct_unreferenced_refund`.
+> Source of truth: [cko-bi/gcp-data-analytics-dbt](https://github.com/cko-bi/gcp-data-analytics-dbt/tree/main/models/payment/mart) `models/payment/mart/` — each dbt model has a `.sql` + `.yml` pair; the `.yml` holds the column definitions. When asked to update this doc and its schemas, pull from `models/payment/mart/`, not `docs/payment_docs.md` (the original source used to create the payin/Pay-to-Card sections, now superseded as the update source). Models present as of 2026-09-07: `fct_payin`, `fct_payin_event`, `fct_payin_daily`, `fct_card_payin_event`, `fct_apm_payin_event`, `fct_card_payout`, `fct_bank_payout_event`, `fct_dispute_event`, `fct_reported_fraud_event`, `fct_transaction_risk_analysis_payin`, `fct_unreferenced_refund`.
 >
 > Access: `github` MCP connector `get_file_contents` (owner `cko-bi`, repo `gcp-data-analytics-dbt`), or `gh api repos/cko-bi/gcp-data-analytics-dbt/contents/<path>` after `unset GITHUB_TOKEN` (a stale env token overrides the working `gh` keyring auth).
 
@@ -2978,5 +2978,1287 @@ The recommendation summary associated with a given Merchant Advice Code (MAC). S
 {% docs is_bemi_entity %}
 
 TRUE when the entity belongs to bemi-uab-lt, False otherwise. This field can be either pre-computed (for example fct_payin_daily) or joined at read-time via entity_id (fct_payin).
+
+{% enddocs %}
+
+# Pay To Bank — Bank Payout Event (fct_bank_payout_event)
+
+> Event-grain fact for Pay-To-Bank payouts. One row per bank-payout lifecycle event (creation, balance reservation, screening, dispatch, confirmation, rejection, return), exposed to Looker as the canonical bank-payout fact. View over `int_bank_payout_event`, partitioned by `ingestion_at` — filter by it for query efficiency. Refresh: bihourly. Severity: P1. Tech owner: Shreya.Alva@checkout.com (`#ask-analytics`, Payment Analytics team). Security classification: confidential. `payment_id`, `client_id`, `entity_id`, `processing_channel_id` reuse the definitions already given in the Primary/Foreign Keys sections above — not repeated here. `loaded_at` / `updated_at` are shared audit-timestamp docs not yet defined in this file (see `docs/metadata_docs.md` in the source repo).
+
+{% docs event_id_bank_payout %}
+
+Unique identifier for the bank payout event (one row per event). Example: `payoutconfirmed_pay_ytj4lve4wnfvnegib3huo2dbr4`.
+
+{% enddocs %}
+
+{% docs payout_entity_id %}
+
+The entity_id carried at the top level of the upstream envelope (i.e. the entity that owns the payout). Format `ent_22h2taklnoqral4oerffhacb2i`.
+
+{% enddocs %}
+
+{% docs action_id_bank_payout %}
+
+Identifier of the payout action (a single payout cycle on the rail), upper-cased.
+
+{% enddocs %}
+
+{% docs transaction_id_bank_payout %}
+
+Transaction identifier carried on the instruction, upper-cased.
+
+{% enddocs %}
+
+{% docs payout_type %}
+
+Product family of the payout. Source enum (`PayoutType`): `Unknown`, `InternalTransfer`, `PayToBank`, `PayToCard`, `AdHocSettlement` (PayToBank routed by sub-entity-id rather than currency-account-id), `PayToBlockchain`. Sample values on this model: `PayToBank` only — by design, both the Flink and legacy NAS feeds carry bank-rail payouts only.
+
+{% enddocs %}
+
+{% docs payout_event_type %}
+
+Lifecycle stage of the bank payout this event represents. See the Event Catalog: https://checkout.atlassian.net/wiki/spaces/BP/pages/6770393146/Event+Catalog. Public events (intended for cross-team consumption): `PayoutCreated` (the payout has been initially created), `PayoutDispatched` (handed off downstream; placeholder event, producer: PaymentControls), `PayoutConfirmed` (successfully completed), `PayoutRejected` (the selected scheme or bank declined the payout, terminal), `PayoutReturned` (the recipient's bank declined/returned the payout, terminal).
+
+{% enddocs %}
+
+{% docs payout_initiated_at %}
+
+Timestamp at which the bank payout was initiated by the merchant request that triggered this event sequence. Same value across every event for a given payout.
+
+{% enddocs %}
+
+{% docs occurred_at %}
+
+Timestamp at which the specific lifecycle event (`payout_event_type`) occurred in the upstream service.
+
+{% enddocs %}
+
+{% docs approval_action %}
+
+[LEGACY] Outcome of the approval step on the payout. Domain values (`ApprovalAction` enum): `Approved` (approved for further processing), `Rejected` (rejected by the approver). NULL on rows where source=`flink`. Can also be reconstructed from `payout_event_type` (`MerchantApprovalAccepted` / `MerchantApprovalRejected` / `CheckoutApprovalAccepted` / `CheckoutApprovalRejected`).
+
+{% enddocs %}
+
+{% docs approval_approver %}
+
+[LEGACY] Name of the approver who actioned the payout. Carried on the legacy NAS Snowflake feed; NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs approval_secondary_approver %}
+
+[LEGACY] Name of the secondary approver (for two-eyes-approval flows). Carried on the legacy NAS Snowflake feed; NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs approval_type %}
+
+[LEGACY] Whether the approval was raised by Checkout or by the merchant. Domain values (`ApprovalType` enum): `Merchant`, `Checkout`. NULL on rows where source=`flink`. Can also be reconstructed from `payout_event_type` (`Merchant*` vs `Checkout*` event variants).
+
+{% enddocs %}
+
+{% docs client_reference_bank_payout %}
+
+External reference for the client (free-text, set by the merchant or onboarding).
+
+{% enddocs %}
+
+{% docs sub_entity_id_bank_payout %}
+
+Payfac sub-entity identifier when the payout originates under a payfac structure (alphanumeric, `ent_*`). NULL for non-payfac payouts.
+
+{% enddocs %}
+
+{% docs entity_dba %}
+
+Doing-Business-As name for the entity, when distinct from the legal name. PII.
+
+{% enddocs %}
+
+{% docs entity_reference %}
+
+External reference for the NAS entity.
+
+{% enddocs %}
+
+{% docs entity_tax_number %}
+
+Tax identifier registered against the entity. PII.
+
+{% enddocs %}
+
+{% docs confirmation_data_item %}
+
+On the upstream domain, `PayoutConfirmed.ConfirmationData` is a free-form dictionary of rail-supplied confirmation fields. Flink flattens the well-known keys to typed columns (`confirmation_data_dispatched_at`, `confirmation_data_confirmed_at`, `confirmation_data_third_party_transaction_id`, `confirmation_data_response_message`, `confirmation_data_cko_response_code`, `confirmation_data_cko_response_code_descr`) and does not surface the residual key/value pairs — always NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs confirmation_data_dispatched_at %}
+
+Timestamp at which the confirmation message was dispatched by the bank rail to Checkout.
+
+{% enddocs %}
+
+{% docs confirmation_data_confirmed_at %}
+
+Timestamp at which the bank rail confirmed the payout settlement.
+
+{% enddocs %}
+
+{% docs confirmation_data_third_party_transaction_id %}
+
+Transaction identifier returned by the third-party bank rail upon confirmation.
+
+{% enddocs %}
+
+{% docs confirmation_data_response_message %}
+
+Free-text response message returned by the third-party rail at confirmation.
+
+{% enddocs %}
+
+{% docs confirmation_data_cko_response_code %}
+
+Checkout-internal response code mapped from the third-party confirmation response.
+
+{% enddocs %}
+
+{% docs confirmation_data_cko_response_code_descr %}
+
+Short description matching `confirmation_data_cko_response_code`.
+
+{% enddocs %}
+
+{% docs confirmation_data_network %}
+
+Payment network / rail over which the bank rail confirmed the payout settlement.
+
+{% enddocs %}
+
+{% docs dispatch_data_item %}
+
+JSON-encoded snapshot of the full `dispatch_data` struct from Flink (`TO_JSON_STRING(dispatch_data)`). Use to access dispatch metadata fields (file name, batch id, etc.) not surfaced as individual columns.
+
+{% enddocs %}
+
+{% docs dispatch_data_keys %}
+
+Array-of-keys side of the legacy NAS Snowflake dispatch-data flattening. On Flink, the whole map is serialised to JSON via `dispatch_data_item` instead of parallel keys/values arrays — NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs dispatch_data_values %}
+
+Array-of-values side of the legacy NAS Snowflake dispatch-data flattening. NULL on `flink` rows; use `dispatch_data_item` for the JSON payload.
+
+{% enddocs %}
+
+{% docs errors_bank_payout %}
+
+Top-level error blob carried on the legacy NAS Snowflake feed (populated for ~55 old records per the reconciliation review; long deprecated). Not produced by the Flink source — NULL on `flink` rows. Error context for failed events on this source is exposed via `rejection_data_*` and `cko_response_code*` instead.
+
+{% enddocs %}
+
+{% docs message_bank_payout %}
+
+Deprecated. Top-level event message body was carried on the legacy NAS Snowflake feed only and is "not present and not needed in upstream" per the bank-payouts team. NULL on `flink` rows. Do not rely on this column for any new consumer.
+
+{% enddocs %}
+
+{% docs processor_id_bank_payout %}
+
+Reserved column for the downstream processor identifier. Always NULL in this model — emitted as `CAST(NULL AS STRING)` so `fct_bank_payout_event` can stay column-compatible with the card-payout fact, where `processor_id` is populated.
+
+{% enddocs %}
+
+{% docs entity_mcc_array %}
+
+Array of Merchant Category Codes (MCCs) registered against the entity. Stored as `ARRAY<STRING>`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_destination_amount %}
+
+[LEGACY] Amount added to the destination currency account on the FX leg, in `foreign_exchange_instruction_destination_currency_iso3` (NUMERIC, major units). NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_destination_currency_iso3 %}
+
+[LEGACY] ISO 4217 currency of the destination currency account on the FX leg of the payout (the right-hand side of the FX trade). NULL on rows where source=`flink`. For the post-FX destination currency actually delivered to the recipient, use `instruction_destination_currency_iso3`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_destination_currency_name %}
+
+Long currency name (e.g. Euro, US Dollar) for `foreign_exchange_instruction_destination_currency_iso3`. NULL when the FX leg is not present (Flink rows) or the ISO3 code is unmapped in `ref_currency`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_destination_amount_usd %}
+
+FX-destination-leg amount converted to USD using the daily FX rate keyed on the FX value date. Rounded to 4 decimal places. NULL when the FX leg is not present or no rate is available for the value date.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_destination_currency_account %}
+
+[LEGACY] Identifier of the currency account that funds are transferred into on the FX destination leg. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_fx_product %}
+
+[LEGACY] The FX product used for the trade. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_merchant_uplift %}
+
+[LEGACY] The decimal-place adjustment of the exchange rate that pertains to the merchant's uplift / margin. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_quote_id %}
+
+[LEGACY] Identifier of the FX quote that triggered the trade. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_rate %}
+
+[LEGACY] Exchange rate applied to the FX trade. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_source_amount %}
+
+[LEGACY] Amount deducted from the source currency account on the FX leg, in `foreign_exchange_instruction_source_currency_iso3` (NUMERIC, major units). NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_source_currency_iso3 %}
+
+[LEGACY] ISO 4217 currency of the source currency account on the FX leg of the payout (the left-hand side of the FX trade). NULL on rows where source=`flink`. For the merchant-funding source currency, use `instruction_source_currency_iso3`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_source_currency_name %}
+
+Long currency name for `foreign_exchange_instruction_source_currency_iso3`. NULL when the FX leg is not present or the ISO3 code is unmapped in `ref_currency`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_source_amount_usd %}
+
+FX-source-leg amount converted to USD using the daily FX rate keyed on the FX value date. Rounded to 4 decimal places. NULL when the FX leg is not present or no rate is available for the value date.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_source_currency_account %}
+
+[LEGACY] Identifier of the currency account that funds are deducted from on the FX source leg. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_trade_id %}
+
+[LEGACY] Identifier of the FX trade executed for this payout. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs foreign_exchange_instruction_value_date %}
+
+[LEGACY] Value date of the FX trade. NULL on rows where source=`flink`. Used as the FX-rate join key for the FX-leg USD conversions.
+
+{% enddocs %}
+
+{% docs instruction_bai %}
+
+[LEGACY] Business Application Identifier — how the schemes define types of business (e.g. `FXO`). NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs instruction_balance_as_of %}
+
+[LEGACY] End-of-day balance timestamp for a client-settlement payout. Pairs with the upstream `instruction.timezone` field. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs instruction_bin %}
+
+Bank Identification Number of the card issuer, when the payout instruction originates from a card flow. Not surfaced in Flink (bank-payout source — card flows route through the Pay-to-Card source); NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs instruction_charge_bearer %}
+
+Indicates which party bears the rail/correspondent charges for this payout. Sample values: `OUR` (sender bears the charges), NULL (not provided by the rail). Full SWIFT enumeration would be `OUR | BEN | SHA`.
+
+{% enddocs %}
+
+{% docs instruction_country_iso2 %}
+
+ISO 3166-1 alpha-2 country code of the destination jurisdiction for the payout instruction. Long tail of country codes observed (AT, HR, GI, IM, GG, KW, MU, MY, MC, SI, EG, SA, CN, TH, MD, BH, QA, OM, AD, IS, and others).
+
+{% enddocs %}
+
+{% docs instruction_desired_value_date %}
+
+Timestamp the merchant requested the funds to value-date with the beneficiary bank, subject to the rail's accepted settlement window. Flink occasionally emits the sentinel `0001-01-01 00:00:00+00:00` when the upstream did not set a desired value date — treat this as "not provided" rather than a real timestamp.
+
+{% enddocs %}
+
+{% docs instruction_destination_amount %}
+
+Amount delivered to the recipient on this payout (the credit side), denominated in `instruction_destination_currency_iso3`. NUMERIC, major units (e.g. EUR 1.23, not minor-unit cents). Flink truncates to 2 decimal places — the legacy NAS Snowflake feed occasionally carried higher-precision floats, so a small residual mismatch on the historical join is expected.
+
+{% enddocs %}
+
+{% docs instruction_destination_currency_iso3 %}
+
+ISO 4217 currency code of the payout destination amount. Observed top values: EUR, USD, GBP, AED, AUD, SGD, CHF, CAD, HKD, PLN, SEK, DKK, NOK, plus a long tail across major and minor currencies.
+
+{% enddocs %}
+
+{% docs instruction_destination_currency_name %}
+
+Long currency name for `instruction_destination_currency_iso3`. NULL when the ISO3 code is unmapped in `ref_currency`.
+
+{% enddocs %}
+
+{% docs instruction_destination_amount_usd %}
+
+Amount delivered to the recipient (the credit side), converted to USD using the daily FX rate keyed on `DATE(payout_initiated_at)`. Rounded to 4 decimal places. NULL when no rate is available for the payout-initiated date.
+
+{% enddocs %}
+
+{% docs instruction_destination_currency_is_a_holding_currency %}
+
+Indicates whether the destination currency is one Checkout holds a balance in (i.e. no FX leg required). Sample values: `true` (held currency), NULL (flag not set on this event type). `false` is part of the upstream domain but was not observed in the sample.
+
+{% enddocs %}
+
+{% docs instruction_fx_product %}
+
+[LEGACY] The FX product that was selected for this payout from the customer's available list. Distinct from `foreign_exchange_instruction_fx_product` — this one is the requested product on the instruction; the FX one is the executed product on the trade. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs instruction_payment_network %}
+
+Bank-rail network used to settle the payout. Sample values (mixed casing as emitted by upstream): `fedwire`, `Wire`, `Local`, `local`, `Ach`. Most rows are NULL on non-dispatch events. Casing is preserved from the source — the intermediate model treats this as authoritative.
+
+{% enddocs %}
+
+{% docs instruction_purpose %}
+
+Free-text purpose/reason for the payout, supplied by the merchant. Sample values dominated by `HB Cash Out`, `0-0`, `Bank Payouts - Synthetic`, `Competition prize payout`, `Other`, plus long-tail merchant-specific strings (e.g. reimbursement order numbers, P2P payout IDs). Treat as low-cardinality only when merchants conform — otherwise an opaque string.
+
+{% enddocs %}
+
+{% docs instruction_release_date %}
+
+Timestamp at which the payout was released for settlement on the rail.
+
+{% enddocs %}
+
+{% docs instruction_repair %}
+
+Deprecated. Originally indicated whether the payout instruction had been automatically modified to allow the payment to succeed (per the bank-payouts team: "an old feature that has been decommissioned"). Sample values: `false`, NULL; `true` was not observed in the sample window. Treat as inert — do not use as a business signal.
+
+{% enddocs %}
+
+{% docs instruction_sms_bin %}
+
+[LEGACY] BIN used for processing specific message types. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs instruction_source_amount %}
+
+Amount debited from the merchant's funding account to fund this payout (the debit side), denominated in `instruction_source_currency_iso3`. NUMERIC, major units. Flink truncates to 2 decimal places — the legacy NAS Snowflake feed occasionally carried higher-precision floats, so a small residual mismatch on the historical join is expected.
+
+{% enddocs %}
+
+{% docs instruction_source_currency_iso3 %}
+
+ISO 4217 currency code of the funding-source amount.
+
+{% enddocs %}
+
+{% docs instruction_source_currency_name %}
+
+Long currency name for `instruction_source_currency_iso3`. NULL when the ISO3 code is unmapped in `ref_currency`.
+
+{% enddocs %}
+
+{% docs instruction_source_amount_usd %}
+
+Amount debited from the merchant's funding account (the debit side), converted to USD using the daily FX rate keyed on `DATE(payout_initiated_at)`. Rounded to 4 decimal places. NULL when no rate is available for the payout-initiated date.
+
+{% enddocs %}
+
+{% docs instruction_source_id %}
+
+Identifier of the funding source for the payout. Format depends on `instruction_source_type` — entity id for `entity`, currency-account id for `currency_account`.
+
+{% enddocs %}
+
+{% docs instruction_source_type %}
+
+Type of funding source for the payout. Sample values: `entity` (payout funded directly from an entity balance), `currency_account` (funded from a holding currency account), NULL (typically pre-balance-reservation events). Empty strings are normalised to NULL upstream.
+
+{% enddocs %}
+
+{% docs instruction_value_date %}
+
+Bank-rail value date for the instruction. Differs from `instruction_desired_value_date` once the rail accepts/repairs the instruction.
+
+{% enddocs %}
+
+{% docs instruction_remittance_reference %}
+
+Free-text remittance reference attached to the instruction (visible to the beneficiary on most rails).
+
+{% enddocs %}
+
+{% docs intermediary_bic %}
+
+SWIFT/BIC of the intermediary bank routed through for this payout. Flink populates this more often than the legacy NAS Snowflake feed.
+
+{% enddocs %}
+
+{% docs intermediary_address_city %}
+
+City of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema (only `IntermediarySwiftBic` is) — NULL on `flink` rows. For the intermediary bank itself, see `intermediary_bic`.
+
+{% enddocs %}
+
+{% docs intermediary_address_country_iso2 %}
+
+ISO2 country code of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema — NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs intermediary_address_line1 %}
+
+First line of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema — NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs intermediary_address_line2 %}
+
+Second line of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema — NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs intermediary_address_postal_code %}
+
+Postal code of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema — NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs intermediary_address_state %}
+
+State / region of the intermediary bank's address. Not modelled on the FXP `RecipientData` schema — NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs original_of_repaired_item %}
+
+Snapshot of the pre-repair instruction, carried by `PayoutRepaired` events on the upstream domain. Neither feed flattens the separate `PayoutRepaired` event into this stream, so this column is always NULL — `instruction_repair` is the only repair signal surfaced here, and that flag is itself deprecated.
+
+{% enddocs %}
+
+{% docs original_of_repaired_keys %}
+
+Array-of-keys side of the legacy NAS Snowflake "original of repaired" key/value flattening. Not produced by the Flink source; NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs original_of_repaired_values %}
+
+Array-of-values side of the legacy NAS Snowflake "original of repaired" key/value flattening. Not produced by the Flink source; NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs recipient_bank_account_bban %}
+
+Basic Bank Account Number (BBAN) of the beneficiary. PII.
+
+{% enddocs %}
+
+{% docs recipient_bank_account_bic %}
+
+Beneficiary bank BIC/SWIFT code. PII.
+
+{% enddocs %}
+
+{% docs recipient_bank_account_currency_iso3 %}
+
+ISO 4217 currency the beneficiary account is denominated in. Sample values match the destination-currency enumeration; NULL on non-dispatch events. Mixed casing observed (e.g. `gbp`).
+
+{% enddocs %}
+
+{% docs recipient_bank_account_currency_name %}
+
+Long currency name for `recipient_bank_account_currency_iso3`. NULL when the ISO3 code is unmapped in `ref_currency` (e.g. lower-cased values like `gbp`).
+
+{% enddocs %}
+
+{% docs recipient_bank_account_iban %}
+
+International Bank Account Number (IBAN) of the beneficiary. PII.
+
+{% enddocs %}
+
+{% docs recipient_bank_account_type %}
+
+Type of the beneficiary bank account. Sample values: `current`, `savings`, NULL (not provided on most events). Lower-case values as emitted by the upstream service.
+
+{% enddocs %}
+
+{% docs recipient_bank_address_city %}
+
+City of the beneficiary bank's branch address.
+
+{% enddocs %}
+
+{% docs recipient_bank_address_country_iso2 %}
+
+ISO2 country code of the beneficiary bank's branch address.
+
+{% enddocs %}
+
+{% docs recipient_bank_address_line1 %}
+
+First line of the beneficiary bank's branch address.
+
+{% enddocs %}
+
+{% docs recipient_bank_address_line2 %}
+
+Second line of the beneficiary bank's branch address.
+
+{% enddocs %}
+
+{% docs recipient_bank_address_postal_code %}
+
+Postal code of the beneficiary bank's branch address.
+
+{% enddocs %}
+
+{% docs recipient_bank_address_state %}
+
+State / region of the beneficiary bank's branch address.
+
+{% enddocs %}
+
+{% docs recipient_bank_branch_code %}
+
+Local branch / sort / routing code of the beneficiary bank.
+
+{% enddocs %}
+
+{% docs recipient_bank_branch_name %}
+
+Name of the beneficiary bank branch.
+
+{% enddocs %}
+
+{% docs recipient_bank_code %}
+
+Bank-level code of the beneficiary bank. Distinct from `recipient_bank_branch_code` — typically the institution-level code.
+
+{% enddocs %}
+
+{% docs recipient_bank_name %}
+
+Name of the beneficiary bank.
+
+{% enddocs %}
+
+{% docs recipient_bank_account_account_number %}
+
+Beneficiary bank-account number (domestic format). PII.
+
+{% enddocs %}
+
+{% docs recipient_additional_data_line1 %}
+
+[LEGACY] Free-text line for capturing any additional country-specific information about the recipient. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs recipient_additional_data_line2 %}
+
+[LEGACY] Free-text line for capturing any additional country-specific information about the recipient. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs recipient_additional_data_line3 %}
+
+[LEGACY] Free-text line for capturing any additional country-specific information about the recipient. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs recipient_reference %}
+
+Merchant-supplied reference for the recipient.
+
+{% enddocs %}
+
+{% docs sender_reference %}
+
+Merchant-supplied reference for the sender.
+
+{% enddocs %}
+
+{% docs recipient_billing_descriptor %}
+
+Free-text billing descriptor that will appear on the beneficiary's bank statement.
+
+{% enddocs %}
+
+{% docs recipient_card_expiry_month %}
+
+Expiry month of the recipient card. Populated only when the payout is to a card (`PayoutType = PayToCard`); the bank-payouts feeds are bank-only, so this is always NULL here.
+
+{% enddocs %}
+
+{% docs recipient_card_expiry_year %}
+
+Expiry year of the recipient card. Populated only when the payout is to a card; always NULL on this bank-only model.
+
+{% enddocs %}
+
+{% docs recipient_card_number %}
+
+Primary Account Number (PAN) of the recipient card. Populated only when the payout is to a card; always NULL on this bank-only model. PII.
+
+{% enddocs %}
+
+{% docs recipient_currency_account_id %}
+
+[LEGACY] Identifier of the recipient's currency account (e.g. `CA_12315CBDE3546F`). Used when the payout settles to a CKO currency account rather than an external bank. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs screening_result_action %}
+
+[LEGACY] Outcome of sanctions screening on the payout. Domain values (`ScreeningAction` enum): `Successful` (passed all sanctions lists), `Failed` (hit a sanctions entry on one of the defined lists). NULL on rows where source=`flink`. Same signal exposed via `payout_event_type` (`SanctionsScreeningAccepted` / `SanctionsScreeningRejected`).
+
+{% enddocs %}
+
+{% docs sender_currency_account_id %}
+
+[LEGACY] Identifier of the sender's currency account (e.g. `CA_12315CBDE3546F`). Used when the payout is funded from a CKO currency account rather than an external account. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs sender_address_city %}
+
+City of the sender's address. The "sender" is the merchant entity initiating the payout (Checkout's client). PII.
+
+{% enddocs %}
+
+{% docs sender_address_country_iso2 %}
+
+ISO2 country code of the sender's address.
+
+{% enddocs %}
+
+{% docs sender_address_line1 %}
+
+First line of the sender's address. PII.
+
+{% enddocs %}
+
+{% docs sender_address_line2 %}
+
+Second line of the sender's address. PII.
+
+{% enddocs %}
+
+{% docs sender_address_postal_code %}
+
+Postal code of the sender's address. PII.
+
+{% enddocs %}
+
+{% docs sender_address_state %}
+
+State / region of the sender's address. PII.
+
+{% enddocs %}
+
+{% docs sender_company_name %}
+
+Company name of the sender. PII.
+
+{% enddocs %}
+
+{% docs sender_first_name %}
+
+First name of the sender. PII.
+
+{% enddocs %}
+
+{% docs sender_id %}
+
+Identifier of the sender entity (empty strings normalised to NULL upstream). Typically the Checkout-side entity acting as the legal payer on the rail.
+
+{% enddocs %}
+
+{% docs sender_last_name %}
+
+Last name of the sender. PII.
+
+{% enddocs %}
+
+{% docs sender_source_of_funds %}
+
+Code specifying the source of funds for the sender. Used for KYC / AML compliance reporting. Not surfaced in Flink (NULL on `flink` rows); confirmed always NULL in the upstream sample.
+
+{% enddocs %}
+
+{% docs sender_id_type %}
+
+Type of identity document held against the sender. Always NULL in the upstream sample (sender KYC fields are not currently populated through this source).
+
+{% enddocs %}
+
+{% docs sender_id_number %}
+
+Identity-document number of the sender. PII.
+
+{% enddocs %}
+
+{% docs sender_id_issue_country_iso2 %}
+
+ISO2 country that issued the sender's identity document.
+
+{% enddocs %}
+
+{% docs sender_birth_date %}
+
+Date of birth of the sender. PII.
+
+{% enddocs %}
+
+{% docs recipient_address_city %}
+
+City of the beneficiary's residential / company address. PII.
+
+{% enddocs %}
+
+{% docs recipient_address_country_iso2 %}
+
+ISO2 country code of the beneficiary's address.
+
+{% enddocs %}
+
+{% docs recipient_address_line1 %}
+
+First line of the beneficiary's address. PII.
+
+{% enddocs %}
+
+{% docs recipient_address_line2 %}
+
+Second line of the beneficiary's address. PII.
+
+{% enddocs %}
+
+{% docs recipient_address_postal_code %}
+
+Postal code of the beneficiary's address. PII.
+
+{% enddocs %}
+
+{% docs recipient_address_state %}
+
+State / region of the beneficiary's address. PII.
+
+{% enddocs %}
+
+{% docs recipient_address_type %}
+
+[LEGACY] Whether the address belongs to a corporate or an individual. NULL on rows where source=`flink`. For the recipient-type split, use `recipient_type`.
+
+{% enddocs %}
+
+{% docs recipient_birth_country_iso2 %}
+
+ISO2 country in which the beneficiary was born.
+
+{% enddocs %}
+
+{% docs recipient_birth_date %}
+
+Date of birth of the beneficiary. PII.
+
+{% enddocs %}
+
+{% docs recipient_company_name %}
+
+Company name of the beneficiary, when the recipient is a corporate entity. PII.
+
+{% enddocs %}
+
+{% docs recipient_email_address %}
+
+Email address of the beneficiary. PII.
+
+{% enddocs %}
+
+{% docs recipient_id %}
+
+[LEGACY] Standalone recipient identifier (separate from the recipient entity_id and from the payment-instrument id). NULL on rows where source=`flink`. For the payment-instrument id of the recipient see `recipient_payment_instrument_id`.
+
+{% enddocs %}
+
+{% docs recipient_id_issue_country_iso2 %}
+
+ISO2 country that issued the beneficiary's identity document.
+
+{% enddocs %}
+
+{% docs recipient_id_type %}
+
+Type of identity document of the beneficiary. Always NULL in the upstream sample (KYC fields are not currently populated through this source).
+
+{% enddocs %}
+
+{% docs recipient_id_number %}
+
+Identity-document number of the beneficiary. PII.
+
+{% enddocs %}
+
+{% docs recipient_first_name %}
+
+First name of the beneficiary, when the recipient is an individual. PII.
+
+{% enddocs %}
+
+{% docs recipient_last_name %}
+
+Last name of the beneficiary, when the recipient is an individual. PII.
+
+{% enddocs %}
+
+{% docs recipient_phone_national_code %}
+
+International dialling code of the beneficiary's phone number. PII.
+
+{% enddocs %}
+
+{% docs recipient_phone_number %}
+
+National phone number of the beneficiary. PII.
+
+{% enddocs %}
+
+{% docs recipient_residential_status %}
+
+Residential status of the beneficiary. Always NULL in the upstream sample. PII.
+
+{% enddocs %}
+
+{% docs recipient_tax_id %}
+
+Tax identifier of the beneficiary. PII.
+
+{% enddocs %}
+
+{% docs recipient_type %}
+
+Whether the beneficiary is an individual or a company. Sample values: `corporate`, `individual`, NULL (events that do not carry recipient resolution).
+
+{% enddocs %}
+
+{% docs recipient_fingerprint %}
+
+Hash of the recipient's identifying details, used to deduplicate beneficiaries without exposing PII.
+
+{% enddocs %}
+
+{% docs screening_result_score %}
+
+[LEGACY] Numeric score returned by the sanctions screening engine. Stored as STRING. NULL on rows where source=`flink`.
+
+{% enddocs %}
+
+{% docs recipient_description %}
+
+Free-text description for the recipient set by the merchant.
+
+{% enddocs %}
+
+{% docs recipient_payment_instrument_id %}
+
+Identifier for the recipient payment instrument (e.g. token / vaulted account) used by the payout.
+
+{% enddocs %}
+
+{% docs recipient_payment_instrument_last_successfully_validated_at %}
+
+[LEGACY] Timestamp at which the recipient's payment instrument was last validated successfully. NULL on rows where source=`flink`. The legacy NAS Snowflake feed populated this for some records.
+
+{% enddocs %}
+
+{% docs rejection_data_dispatched_at %}
+
+Timestamp at which the rejection was dispatched back to Checkout from the rail.
+
+{% enddocs %}
+
+{% docs rejection_data_failure_code %}
+
+Categorised failure code attached to a rejection event. Sample values: `third_party_unsupported_recipient_error`, `insufficient_funds`, `sanctions_screening_rejected_error`, `third_party_instruction_error`, `third_party_invalid_recipient_account_error`, `third_party_compliance_error`, `third_party_validation_error`, `finance_rejected_error`, `third_party_processing_error`. NULL except on terminal rejection events.
+
+{% enddocs %}
+
+{% docs rejection_data_failure_reason %}
+
+Free-text reason attached to a rejection event. Empty strings are normalised to NULL upstream. Where the rail does not provide a free-text reason, `rejection_data_failure_code` is the primary signal.
+
+{% enddocs %}
+
+{% docs rejection_data_reason %}
+
+Top-level rejection reason. Matches `rejection_data_failure_code` for most populated rows, with one additional observed value: `manually_rejected`. Treat as the canonical rejection categorisation. Empty strings normalised to NULL upstream.
+
+{% enddocs %}
+
+{% docs rejection_data_rejected_at %}
+
+Timestamp at which the rejection was finalised.
+
+{% enddocs %}
+
+{% docs rejection_data_third_party_error_code %}
+
+Error code returned by the third-party rail at rejection. Empty strings normalised to NULL upstream.
+
+{% enddocs %}
+
+{% docs rejection_data_third_party_error_description %}
+
+Free-text error description returned by the third-party rail at rejection. Empty strings normalised to NULL upstream.
+
+{% enddocs %}
+
+{% docs rejection_data_third_party_quotation_id %}
+
+Third-party quotation identifier referenced on the rejection. Empty strings normalised to NULL upstream.
+
+{% enddocs %}
+
+{% docs rejection_data_third_party_transaction_id %}
+
+Third-party transaction identifier returned at rejection. Empty strings normalised to NULL upstream.
+
+{% enddocs %}
+
+{% docs rejection_data_thunes_status %}
+
+Deprecated. Thunes-partner-specific rejection telemetry — Thunes is being deprecated as a payout partner, so this field is sparsely populated even on the legacy NAS feed (~4 of 90k rows in recent samples). Not produced by the current Flink source (NULL on `flink` rows). Use `rejection_data_third_party_*` instead.
+
+{% enddocs %}
+
+{% docs rejection_data_thunes_status_class %}
+
+Deprecated. See `rejection_data_thunes_status` — Thunes-specific, partner being deprecated. NULL on `flink` rows. Use `rejection_data_third_party_*` for current rejection telemetry.
+
+{% enddocs %}
+
+{% docs rejection_data_thunes_status_class_message %}
+
+Deprecated. See `rejection_data_thunes_status` — Thunes-specific, partner being deprecated. NULL on `flink` rows. Use `rejection_data_third_party_error_description` for current rejection narrative.
+
+{% enddocs %}
+
+{% docs rejection_data_thunes_status_message %}
+
+Deprecated. See `rejection_data_thunes_status` — Thunes-specific, partner being deprecated. NULL on `flink` rows. Use `rejection_data_third_party_error_description` for current rejection narrative.
+
+{% enddocs %}
+
+{% docs route_id %}
+
+Identifier of the routing decision applied to the payout.
+
+{% enddocs %}
+
+{% docs routing_data_item %}
+
+JSON-encoded snapshot of the full `route.routing_data` struct (`TO_JSON_STRING(route.routing_data)`). Use to inspect rail/scheme-specific routing parameters not promoted to dedicated columns. Flink populates this more richly than the legacy NAS Snowflake feed (format is JSON here vs scalar fields on the legacy feed).
+
+{% enddocs %}
+
+{% docs routing_data_keys %}
+
+Array-of-keys side of the legacy NAS Snowflake routing-data flattening. On Flink this map is serialised as JSON via `routing_data_item`. NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs routing_data_values %}
+
+Array-of-values side of the legacy NAS Snowflake routing-data flattening. NULL on `flink` rows; use `routing_data_item` for the JSON payload.
+
+{% enddocs %}
+
+{% docs routing_key %}
+
+Composite identifier of the chosen route in the form `<routing_name>:<scheme>`. Sample values: `Lhv:SEPAInstant`, `Autosettle:Kyriba`, `crb:Local`, `Lhv:Local`, `Jpm:SEPA`, `Lhv:SEPA`, `crb:fedwire`, `Internal:Manual`, `Thunes:Local`, `Pathward:Local`, `Thunes:SEPA`, `Thunes:SEPAInstant`, `Pathward:fedwire`, `Jpm:Ach`, `Jpm:fedwire`, `crb:AchNextDay`.
+
+{% enddocs %}
+
+{% docs routing_name %}
+
+Identifier of the rail / banking partner used to route the payout. Sample values: `Lhv`, `crb`, `Autosettle`, `Jpm`, `Thunes`, `Internal`, `Pathward`. NULL on events not carrying routing context.
+
+{% enddocs %}
+
+{% docs scheme_fee_type %}
+
+Fee classification of the chosen scheme, used by finance for cost allocation. Sample values (mixed casing as emitted upstream): `sepa`, `Local`, `International`, `SEPA`, `fedwire`. NULL on events not carrying scheme context.
+
+{% enddocs %}
+
+{% docs scheme_id %}
+
+[LEGACY] Unique identifier of the scheme. NULL on rows where source=`flink` — schemes on the Flink feed are identified by name (`scheme_name`) rather than by surrogate id.
+
+{% enddocs %}
+
+{% docs scheme_name %}
+
+Name of the chosen settlement scheme. Sample values: `instant`, `Local`, `Kyriba`, `SEPA`, `fedwire`, `Manual`, `Wire`, `Ach`, `AchNextDay`, NULL.
+
+{% enddocs %}
+
+{% docs scheme_routing_data_item %}
+
+JSON-encoded snapshot of the full `route.scheme.routing_data` struct. Use to inspect scheme-specific routing parameters not promoted to dedicated columns.
+
+{% enddocs %}
+
+{% docs scheme_routing_data_keys %}
+
+Array-of-keys side of the legacy NAS Snowflake scheme-routing-data flattening. On Flink this map is serialised as JSON via `scheme_routing_data_item`. NULL on `flink` rows.
+
+{% enddocs %}
+
+{% docs scheme_routing_data_values %}
+
+Array-of-values side of the legacy NAS Snowflake scheme-routing-data flattening. NULL on `flink` rows; use `scheme_routing_data_item` for the JSON payload.
+
+{% enddocs %}
+
+{% docs scheme_routing_name %}
+
+Routing name within the scheme (sub-rail). Sample values: `SEPAInstant`, `Local`, `Kyriba`, `SEPA`, `fedwire`, `Manual`, `Ach`, `AchNextDay`, NULL.
+
+{% enddocs %}
+
+{% docs scheme_settlement_time %}
+
+[LEGACY] How long funds take to settle with this scheme (TimeSpan in the upstream domain). NULL on rows where source=`flink`. The settlement-time signal on this source is implicit in `scheme_routing_name` (e.g. `SEPAInstant` vs `SEPA`).
+
+{% enddocs %}
+
+{% docs meta_client_identifiers %}
+
+Array of additional client identifier strings supplied on the event.
+
+{% enddocs %}
+
+{% docs meta_business_category %}
+
+Business segment of the payout, derived from sender and recipient entity types. Domain enum (`PayoutBusinessCategory`): `B2B` (sender corporate, recipient corporate), `B2C` (sender corporate, recipient individual), `C2C` (sender individual, recipient individual), `C2B` (sender individual, recipient corporate). Observed in sample: `B2B`, `B2C`, NULL; `C2C` and `C2B` are part of the domain but not seen in the sample.
+
+{% enddocs %}
+
+{% docs meta_source %}
+
+Originating product/service that emitted the payout event. Domain enum (`PayoutSource`): `Gateway` (UPAPI), `Hub`, `ClientSettlements`, `Lightning` (manual finance-team payouts), `IssuingFees`, `IssuingFunds`, `Marketplace`. Observed in sample: `Gateway`, `ClientSettlements`, NULL; the rest are part of the upstream domain but not seen in the sample.
+
+{% enddocs %}
+
+{% docs meta_source_ip %}
+
+Source IP address of the API client that requested the payout. PII.
+
+{% enddocs %}
+
+{% docs meta_overall_timeliness_milliseconds %}
+
+Time delta in milliseconds of UTC now minus the payout-created time — end-to-end processing time of the payout up to this event. Stored as NUMERIC (cast from the upstream INT32).
+
+{% enddocs %}
+
+{% docs meta_rail_timeliness_milliseconds %}
+
+Time delta in milliseconds of UTC now minus the `CheckoutApprovalAccepted` time (when the payout was sent to the rail).
+
+{% enddocs %}
+
+{% docs meta_sanctions_timeliness_milliseconds %}
+
+Time delta in milliseconds between the sanctions-screening request and response for this payout.
+
+{% enddocs %}
+
+{% docs meta_payout_hash %}
+
+Hash used to make each payout unique. Inputs: `Hash({ EntityId, (IBANs/AccountNo || Fingerprint) / Amount / Currency / WeekOfTheYear })`. Used by upstream services to dedupe duplicate submissions. PII.
+
+{% enddocs %}
+
+{% docs return_amount %}
+
+Amount returned to Checkout when a previously-confirmed payout is reversed by the beneficiary bank. NUMERIC, major units, in `return_currency_iso3`. Known regression: sparsely populated on the Flink source vs the legacy NAS feed (bank-payouts team has flagged "data missing from Flink") — account for the gap when reconciling against historical NAS data.
+
+{% enddocs %}
+
+{% docs return_currency_iso3 %}
+
+ISO 4217 currency code of `return_amount`. Sample values: `USD`, `EUR`. Mostly NULL — only populated on `PayoutReturned` / `PayoutReturnReceived` events. Same Flink-vs-NAS regression as `return_amount`.
+
+{% enddocs %}
+
+{% docs return_reason %}
+
+Categorised reason for a payout return. Sample values: `third_party_returned`, `third_party_returned_account_error`, `third_party_returned_account_not_found`, `third_party_returned_instruction_error`. NULL except on return events.
+
+{% enddocs %}
+
+{% docs return_code %}
+
+Code returned by the rail when a payout is reversed. Sample values include NACHA-style codes (`R02`, `R03`, `R04`, `R16`), `third_party_returned_instruction_error`, plus rail-specific narrative strings prefixed with `NARR <hash> CD:<code>` carrying SEPA reason codes (`AC01`, `AC04`, `MS03`, `RR04`). High cardinality on the narrative variant.
+
+{% enddocs %}
+
+{% docs third_party_return_description %}
+
+Free-text description supplied by the third-party rail when returning a payout.
+
+{% enddocs %}
+
+{% docs third_party_return_code %}
+
+Code supplied by the third-party rail when returning a payout.
+
+{% enddocs %}
+
+{% docs context_category %}
+
+High-level category of the payout context. Sample values: `integrated_platform`, `client_settlement`, `payout`, NULL.
+
+{% enddocs %}
+
+{% docs context_type %}
+
+Sub-type of the payout context. Sample values (post-aggregation): `bank`, NULL (residual events with no context resolved across the payment).
+
+{% enddocs %}
+
+{% docs context_trigger %}
+
+What triggered the payout. Sample values: `on_demand` (API / dashboard initiated), `scheduled` (automated settlement), NULL (residual after aggregation).
+
+{% enddocs %}
+
+{% docs context_account %}
+
+Account-domain context for the payout. Sample values: `nas` (New Account Structure), NULL (residual).
+
+{% enddocs %}
+
+{% docs validation_data_code %}
+
+Short code identifying the validation rule outcome. Sample values: `05ro`, `12bc`, `10an`, `10bc`, `06an`, `11bc`, `17bc`, `09ba`, `02ba`. NULL except on validation events.
+
+{% enddocs %}
+
+{% docs validation_data_status %}
+
+Outcome of the recipient-account validation step. Sample values: `PASS`, `CAUTION`, NULL. `FAIL` is part of the upstream domain but was not observed in the sample window.
+
+{% enddocs %}
+
+{% docs validation_data_comment %}
+
+Free-text comment attached to the validation outcome.
+
+{% enddocs %}
+
+{% docs validation_data_recommended_bank_account_bic %}
+
+BIC the validator recommends instead of the supplied one (when validation fails on BIC).
+
+{% enddocs %}
+
+{% docs validation_data_recommended_bank_account_bank_code %}
+
+Bank code the validator recommends instead of the supplied one.
+
+{% enddocs %}
+
+{% docs cko_response_code_bank_payout %}
+
+Checkout-internal numeric response code mapping the rail / pipeline outcome. Sample values: `50499`, `50025`, `50026`, `50100`. NULL — set on a small number of events that traverse the gateway response code mapping.
+
+{% enddocs %}
+
+{% docs cko_response_code_description_bank_payout %}
+
+Short description for `cko_response_code` (e.g. `Approved`, decline reasons). Analogous to `gateway_response_summary` on the payin model.
+
+{% enddocs %}
+
+{% docs is_nas_bank_payout %}
+
+Indicates whether the payout originates from the NAS (New Account Structure) platform. Always TRUE on this model — both upstream feeds carry only NAS bank payouts; emitted as a literal so `fct_bank_payout_event` can filter/segment on the same flag exposed by sibling payment fact tables.
+
+{% enddocs %}
+
+{% docs is_gwc_bank_payout %}
+
+Indicates whether the payout traversed Gateway Core. Always TRUE on this model — both upstream feeds describe Gateway-Core-routed bank payouts.
+
+{% enddocs %}
+
+{% docs is_mssql %}
+
+Indicates whether the payout originates from the legacy ABC MSSQL platform. Always FALSE on this model — bank payouts are NAS-only; emitted as a literal for column compatibility with sibling payment fact tables.
+
+{% enddocs %}
+
+{% docs sent_at %}
+
+Kafka publish timestamp from Flink — the time the upstream service published the event to Kafka. Roughly equivalent to the legacy `attributes:SentTimestamp` value on the Snowflake feed.
+
+{% enddocs %}
+
+{% docs replication_date %}
+
+Replication-date proxy for the row. On Flink rows this equals `ingestion_at` (the Flink schema does not expose a separate replication timestamp); on legacy NAS Snowflake rows it is the original Snowflake replication timestamp. Used as the dedup tiebreaker — the model keeps the row with the latest `replication_date` per `event_id` via a `QUALIFY ROW_NUMBER()` window.
+
+{% enddocs %}
+
+{% docs ingestion_at_bank_payout %}
+
+Timestamp at which the upstream Flink job ingested the event into BigQuery (or the original NAS replication timestamp on `historical` rows). Used as the partition column for this model and as the lower-bound for the 4-hour incremental overlap window.
+
+{% enddocs %}
+
+{% docs source_table %}
+
+Indicates which upstream feed produced this row. Sample values: `flink` (current Flink-ingested Bank Payouts envelope), `historical` (one-off backfill from the legacy NAS Snowflake `pay_to_bank_nas_events_historical` feed; only present after a full-refresh run).
 
 {% enddocs %}

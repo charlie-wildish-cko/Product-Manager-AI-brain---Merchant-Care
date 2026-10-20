@@ -1,0 +1,96 @@
+/* ============================================================
+   COLORS — LIFT Design System
+   Base palette + semantic aliases.
+   Every value traceable to the brand spec.
+   ============================================================ */
+
+:root {
+  /* ---- Primary ---- */
+  --blue: #006CFF;          /* Checkout Blue — actions, highlights, key moments */
+  --midnight: #08111F;      /* primary dark surface */
+  --white: #FFFFFF;         /* primary background */
+
+  /* ---- Secondary ---- */
+  --deep-navy: #12233E;
+  --steel: #5E718D;
+  --cloud: #EEF3FA;
+  --fog: #F7F9FC;
+
+  /* ---- Performance accents ---- */
+  --success: #00C875;
+  --warning: #FFB020;
+  --error:   #F04438;
+  --insight: #7B61FF;
+
+  /* ---- Blue tint ramp (derived, for hover/press/fills) ---- */
+  --blue-50:  #EBF3FF;
+  --blue-100: #D6E7FF;
+  --blue-200: #ADCFFF;
+  --blue-300: #70AAFF;
+  --blue-400: #3389FF;
+  --blue-500: #006CFF;      /* = --blue */
+  --blue-600: #0057CC;
+  --blue-700: #0043A0;
+
+  /* ---- Neutral ramp (cool, navy-biased) ---- */
+  --neutral-0:   #FFFFFF;
+  --neutral-50:  #F7F9FC;   /* = --fog */
+  --neutral-100: #EEF3FA;   /* = --cloud */
+  --neutral-200: #DCE4F0;
+  --neutral-300: #C2CEDE;
+  --neutral-400: #9AA9BF;
+  --neutral-500: #5E718D;   /* = --steel */
+  --neutral-600: #3F516E;
+  --neutral-700: #12233E;   /* = --deep-navy */
+  --neutral-800: #0C1A2D;
+  --neutral-900: #08111F;   /* = --midnight */
+
+  /* ---- Brand gradients ---- */
+  --gradient-primary: linear-gradient(120deg, #006CFF 0%, #7B61FF 100%);   /* @kind color */
+  --gradient-secondary: linear-gradient(120deg, #006CFF 0%, #00C875 100%); /* @kind color */
+
+  /* ============================================================
+     SEMANTIC ALIASES — reference these in product & components
+     ============================================================ */
+
+  /* Surfaces */
+  --surface-page:    var(--white);
+  --surface-subtle:  var(--fog);
+  --surface-muted:   var(--cloud);
+  --surface-card:    var(--white);
+  --surface-inverse: var(--midnight);
+  --surface-inverse-2: var(--deep-navy);
+
+  /* Text */
+  --text-strong:   var(--midnight);
+  --text-default:  var(--deep-navy);
+  --text-muted:    var(--steel);
+  --text-inverse:  var(--white);
+  --text-link:     var(--blue);
+  --text-on-brand: var(--white);
+
+  /* Borders */
+  --border-subtle:  var(--neutral-200);
+  --border-default: var(--neutral-300);
+  --border-strong:  var(--steel);
+  --border-focus:   var(--blue);
+
+  /* Interactive / brand */
+  --action:        var(--blue);
+  --action-hover:  var(--blue-600);
+  --action-press:  var(--blue-700);
+  --action-subtle: var(--blue-50);
+
+  /* Status — foreground + soft surface for each */
+  --status-success:    var(--success);
+  --status-success-bg: #E3F8EF;
+  --status-warning:    var(--warning);
+  --status-warning-bg: #FFF4E1;
+  --status-error:      var(--error);
+  --status-error-bg:   #FDEAE8;
+  --status-insight:    var(--insight);
+  --status-insight-bg: #EFEBFF;
+
+  /* Focus ring */
+  --focus-ring: 0 0 0 3px rgba(0, 108, 255, 0.35);
+}

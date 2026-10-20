@@ -28,7 +28,7 @@ Charlie PM brain/
 │   └── Checkout Products and teams.csv
 │
 ├── 02-workflows/                   # Step-by-step process guides (ticket analysis, PRD writing, reviews)
-├── 03-templates/                   # Reusable document templates (PRD, memo, RFC, postmortem, etc.)
+├── 03-templates/                   # Reusable document templates (PRD, memo, RFC, postmortem, etc.) and the Checkout.com Brand Identity (LIFT) design system
 ├── 04-active-work/                 # Active work — prds/, strategy/, research/, working-files/, meeting-notes/
 ├── 05-archive/                     # Completed work, by year/quarter
 │
@@ -60,6 +60,9 @@ Invoke with `/<skill-name> [args]`. Full definitions in `.claude/skills/`.
 | `/consolidation-review` | Audit `01-knowledge-base/` and `04-active-work/` for content duplication across files, merge into a canonical file on confirmation |
 | `/write-fin-attribute` | Draft or update a single Fin Attribute value definition (Intercom format) |
 | `/sync-support-content [scope]` | Refresh local support content (external site, internal SOPs, Tech Docs, API reference) from their GitHub source repos |
+| `/slide-content [topic or file]` | Turn notes or a presentation outline into layout-enforced, word-limited slide prompts for Gemini in Google Slides. Appends to the outline file when given one |
+| `/five-whys [problem or ask]` | Find the real question behind a vague problem or solution-shaped request, then size who it affects. Saves to `04-active-work/research/` |
+| `/presentation-outline [topic or file]` | Build a Pyramid Principle / SCQA outline and ghost deck with action titles. Saves to `04-active-work/working-files/`; `/slide-content` extends the same file |
 
 ## Key Reference Files
 
@@ -80,6 +83,7 @@ Invoke with `/<skill-name> [args]`. Full definitions in `.claude/skills/`.
 | Fin AI Agent reference | `01-knowledge-base/products/fin-ai-agent.md` |
 | Ray product reference (replaces paused Braavos) | `01-knowledge-base/products/ray.md` |
 | Zendesk reference | `01-knowledge-base/products/zendesk.md` |
+| Checkout.com brand identity (LIFT design system) for visuals, diagrams and HTML concepts | `03-templates/Checkout.com Brand Identity/readme.md` |
 | PRD template + example | `03-templates/prd-template.md`, `03-templates/prd-template-example.md` |
 | Writing style guide (by audience) | `01-knowledge-base/processes/writing-style-guide.md` |
 

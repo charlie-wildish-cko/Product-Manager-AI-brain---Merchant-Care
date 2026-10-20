@@ -79,6 +79,18 @@ Source: `04-active-work/meeting-notes/2026-08/2026-08-20-reflex-insight-consolid
 - Integration blocker is schema, not intent. It needs a data contract joining on merchant identifier plus the Airtable product catalogue entry. The commercial intake app is already fully mapped to the Airtable catalogue, so that join is simple. **The Airtable product catalogue plus merchant ID is emerging as the company-wide join key for insight tooling.**
 - Capacity caveat: Reflex engineering was scoped for deployment and maintenance, not for onboarding new sources. Each new source is a reason to reinvest in clustering methodology and evals, and that has to be funded separately.
 
+## CPP intake and triage conventions (2026-09-09)
+
+Source: `04-active-work/meeting-notes/2026-09/2026-09-09-bug-enhancement-reporting-standardisation.md`, `2026-09-08-care-strategy-walkthrough.md`.
+
+- **Triage thresholds Charlie uses**: a single problem above 2% of volume is chunky; above 5% is a major concern.
+- Rollout: beta with a group of PMs, launching to the rest of product by end of September 2026. Company-wide access available. Data is also pushed so teams can consume it in Looker, including via the Looker MCP, rather than being forced into the app.
+- Tagging happens at the **body level**, not on taxonomy ticket types, because taxonomy gives a category but not the actual problem.
+- CPP (Commercial Product Partnership) wants Reflex as the aggregation layer for commercial bug and enhancement intake, incidents and NPS. Commercial intake data quality is low by design: merchant, revenue at stake, free-text description only. No reproduction steps, MCC, entity or processing channel.
+- **Revenue / GPV at risk** is the metadata CPP cares about and Care ticket data does not carry. Adding it would make Reflex themes prioritisable commercially, not just by volume.
+- SEV3 and SEV4 incidents are an unowned, uninstrumented signal source. Proposal: AI summarisation of postmortems or Slack resolution threads, estimated to capture ~90% of those signals.
+- Missing dimension identified 2026-09-10: **cross-team involvement per ticket** (L1, L2, engineering) is the real cost signal for ranking pain points, and is not currently a Reflex dimension.
+
 ## Success Metrics
 
 **North Star**: % volume of support contact reductions post-fix (contact volume reduction attributable to product fixes surfaced by Reflex)

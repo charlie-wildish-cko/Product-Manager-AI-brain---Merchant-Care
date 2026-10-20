@@ -67,6 +67,17 @@ Real-time alerts for critical payment events so merchants are informed before th
 
 **Flywheel**: Insight & Prevention (proactive alerts prevent contacts before they happen)
 
+### Social Media Complaints Process
+
+**2027 — TBC**: scope not yet defined. Marketing owns a draft social response/escalation one-pager (`docs.google.com/document/d/1d_3YuVlfS6cufLfliDUgAN7sh6FFhDj-qv3yJCY7uSI`, status: Draft v0.1) covering public response guardrails and DM-to-internal-escalation handoff. Product-side considerations raised 2026-09-09, not yet scoped or committed:
+
+- Internal mechanism for staff to submit a "social media complaint" case type, with a template — build on the email submission path first
+- Support landing pages with the relevant channels surfaced for merchants and consumers
+
+**Dependency**: internal escalation intake channel/queue and ownership still TBD between Marketing (Ashvin, Oliver, John Vallis, CKO Marketing) and Support.
+
+**Flywheel**: Input (routing a channel not currently captured in ticket intake)
+
 ### Merchant Ticket Submission and Visibility
 
 A centralised place in Dashboard for merchants to submit and track all their support requests.
@@ -426,7 +437,28 @@ Evaluate whether Zendesk remains the right long-term platform for Care, ahead of
 
 **Flywheel**: Governance (underpins all flywheel stages — ticketing, routing, SLA, QA, data pipeline)
 
-Reference: `04-active-work/research/zendesk-platform-decision-rfc.md`
+Reference: `04-active-work/working-files/zendesk-decision-deck-content.md` (recommendation and ask) · `04-active-work/research/support-platform-vendor-scorecard.md` (vendor scores) · `05-archive/2026/investigations/zendesk-platform-decision-rfc.md` (archived RFC, decision record)
+
+---
+
+### Operations Platform Design
+
+Define the vision and system design for a shared operations platform across Support, Risk and Compliance, built around one view of the customer and a shared record of work visible to internal teams and customers. Delivered by an XFN group (product and operations from each function).
+
+**Q4** · Product discovery / strategy
+
+- **Discovery**: inventory work types from SOPs (tools, roles, data, actions, SLA, access rules, regulatory obligations); identify what is shared versus distinct across functions
+- **Vision**: agree the platform definition, design principles and the role of Care as the customer-facing layer across Support, Risk and Compliance
+- **System design**: capability map, customer and data model, architecture options, controls (permissions, audit, visibility), vendor-neutral build/buy assessment
+- **Validation**: stress-test against Ray L2, ISV onboarding and a fraud alert that spawns a Care contact; sequenced MVP and roadmap
+
+**Trigger**: Plain recommendation reframed the platform decision as a company-wide operations bet (2026-09-15); Ray build depends on the platform direction. Timing of outputs versus the Plain approval and Ray Q1 2027 build is TBC.
+
+**Overlaps**: Help Desk Platform Evaluation (platform decision), Merchant Ticket Submission and Visibility and Support-Based Proactive Notifications (candidates to fold into Care as the customer-facing layer), Consumer Support: Ray (first deployment).
+
+**Flywheel**: Governance (underpins Orchestration and Agent Experience)
+
+Reference: `04-active-work/strategy/operations-platform-definition.md`
 
 ---
 
@@ -451,7 +483,7 @@ Reference: `01-knowledge-base/metrics/contact forecasting.md`
 | **Fuel**                 | Merchant context for Fin & Agents, AI first resolution (data/procedures)                                           |
 | **Agent Experience**     | AI Consultant, Agent productivity tools, Reduce agent effort on dispatch                                           |
 | **Insight & Prevention** | Reflex (all phases), Education Hub, Knowledge and Data Graph                                                       |
-| **Governance**           | Agent productivity tools (SLAs, routing), Support model (SLA framework)                                            |
+| **Governance**           | Agent productivity tools (SLAs, routing), Support model (SLA framework), Operations platform design               |
 
 **Last Updated**: 2026-07-26
 **Owner**: Charlie Wildish

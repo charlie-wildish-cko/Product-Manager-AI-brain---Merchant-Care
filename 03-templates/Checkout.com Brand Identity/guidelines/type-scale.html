@@ -1,0 +1,27 @@
+<!-- @dsCard group="Type" viewport="700x420" name="Type scale" subtitle="Display XL → Caption, size / line-height" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--surface-page); color: var(--text-strong); padding: var(--space-8); }
+  .row { display: flex; align-items: baseline; gap: var(--space-6); padding: var(--space-2) 0; border-bottom: 1px solid var(--border-subtle); }
+  .row:last-child { border-bottom: 0; }
+  .spec { flex: 0 0 120px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+  .sample { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+</style>
+</head>
+<body>
+  <div class="row"><div class="spec">Display XL · 72/80</div><div class="sample" style="font-family:var(--font-display);font-weight:700;font-size:48px;letter-spacing:-.02em">Move money smarter</div></div>
+  <div class="row"><div class="spec">Display L · 56/64</div><div class="sample" style="font-family:var(--font-display);font-weight:700;font-size:40px;letter-spacing:-.02em">Move money smarter</div></div>
+  <div class="row"><div class="spec">H1 · 48/56</div><div class="sample" style="font-family:var(--font-display);font-weight:600;font-size:34px;letter-spacing:-.02em">Optimize every payment</div></div>
+  <div class="row"><div class="spec">H2 · 36/44</div><div class="sample" style="font-family:var(--font-display);font-weight:600;font-size:28px;letter-spacing:-.01em">Optimize every payment</div></div>
+  <div class="row"><div class="spec">H3 · 28/36</div><div class="sample" style="font-weight:600;font-size:24px">Built for scale</div></div>
+  <div class="row"><div class="spec">H4 · 22/30</div><div class="sample" style="font-weight:600;font-size:20px">Built for scale</div></div>
+  <div class="row"><div class="spec">Body L · 18/28</div><div class="sample" style="font-size:18px">Every payment should move business forward.</div></div>
+  <div class="row"><div class="spec">Body · 16/24</div><div class="sample" style="font-size:16px">Every payment should move business forward.</div></div>
+  <div class="row"><div class="spec">Small · 14/20</div><div class="sample" style="font-size:14px;color:var(--text-muted)">Every payment should move business forward.</div></div>
+  <div class="row"><div class="spec">Caption · 12/16</div><div class="sample" style="font-size:12px;color:var(--text-muted)">Every payment should move business forward.</div></div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!-- @dsCard group="Colors" viewport="700x160" name="Gradients" subtitle="Primary Blue→Insight and Secondary Blue→Success" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--surface-page); padding: var(--space-6); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .g { border-radius: var(--radius-lg); height: 96px; display: flex; align-items: flex-end; padding: var(--space-4); }
+  .lab { color: #fff; font-size: 13px; font-weight: 600; }
+  .sub { color: rgba(255,255,255,.8); font-family: var(--font-mono); font-size: 11px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="g" style="background:var(--gradient-primary)"><div><div class="lab">Primary</div><div class="sub">#006CFF → #7B61FF</div></div></div>
+    <div class="g" style="background:var(--gradient-secondary)"><div><div class="lab">Secondary</div><div class="sub">#006CFF → #00C875</div></div></div>
+  </div>
+</body>
+</html>

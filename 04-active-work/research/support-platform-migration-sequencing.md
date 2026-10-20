@@ -3,8 +3,8 @@
 **Status**: Draft
 **Created**: 2026-07-06
 **Author**: Charlie Wildish
-**Decision needed by**: Aligned to Zendesk RFC decision timeline (end Q4 2026)
-**Depends on**: `zendesk-platform-decision-rfc.md` — this doc assumes that RFC concludes in favour of replacing Zendesk with a new platform. "New platform" is a placeholder pending that vendor decision.
+**Decision needed by**: Aligned to the platform decision timeline. Procurement gate target is 30 September 2026, formal decision gate end Q4 2026 per `2026 deliverables.md`
+**Depends on**: resolved 2026-09-22. The RFC concluded in favour of replacing Zendesk, and the vendor is Plain. Wherever this doc says "new platform", read Plain. Recommendation and ask: `04-active-work/working-files/zendesk-decision-deck-content.md`. Archived RFC: `05-archive/2026/investigations/zendesk-platform-decision-rfc.md`.
 **Blocked on**: Migration effort for each option is unknown until POCs complete (expected August 2026). Effort is a direct input to this decision, not a detail to fill in after — see Open Question below.
 
 ---
@@ -96,6 +96,6 @@ Until this lands, treat the options above as the shortlist of viable sequences, 
 
 ## Related Documents
 
-- `04-active-work/research/zendesk-platform-decision-rfc.md` — Build/Buy/Keep decision this sequencing depends on
+- `05-archive/2026/investigations/zendesk-platform-decision-rfc.md` — archived Build/Buy/Keep RFC that produced this decision
 - `01-knowledge-base/products/platform-embedded-ai-support-vision.md` — B2C wallet launch Consumer Duty obligations
 - `2026 deliverables.md` — current roadmap dependencies on Zendesk

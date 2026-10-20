@@ -11,7 +11,7 @@
 This doc holds two lenses on Care. They are not alternatives. Each answers a different question, and both are used at leadership level.
 
 - **Care flywheel**: the lifecycle of a support contact through six stages, plus Stage 0 (Product onboarding) — a once-per-launch stage that configures the other six for a new product before its first contact arrives. Best for roadmap narrative, how each stage compounds to move contact rate and cost per contact, and ops alignment.
-- **Capability stack**: the architectural layers we own, build, or buy. Best for vendor and build/buy/keep decisions (e.g. the [Zendesk platform RFC](../../04-active-work/research/zendesk-platform-decision-rfc.md)), eng investment framing, and "where does system X fit" questions.
+- **Capability stack**: the architectural layers we own, build, or buy. Best for vendor and build/buy/keep decisions (e.g. the [Zendesk platform RFC](../../05-archive/2026/investigations/zendesk-platform-decision-rfc.md)), eng investment framing, and "where does system X fit" questions.
 
 Every product and deliverable can be placed on both. The stack-to-flywheel mapping is immediately after the stack section.
 

@@ -36,9 +36,11 @@ Before writing anything:
    - `01-knowledge-base/products/customer-personas.md` — merchant and internal personas
    - `01-knowledge-base/products/customer-segments.md` — merchant segments
 
-4. **Clarify if needed.** If the deliverable, strategic goal, or core problem is unclear, ask one question to fill the most important gap. Do not ask multiple questions.
+4. **Sharpen the problem if needed.** If the problem statement is vague or is really a solution in disguise, run `/five-whys` first and use its real question as the PRD problem statement.
 
-5. **Spawn an Opus agent** with the following prompt structure:
+5. **Clarify if needed.** If the deliverable, strategic goal, or core problem is unclear, ask one question to fill the most important gap. Do not ask multiple questions.
+
+6. **Spawn an Opus agent** with the following prompt structure:
    > "You are doing strategic analysis for a PRD on [topic]. The 2026 deliverable is [deliverable text verbatim]. Read the following context: [paste content from care-product-model.md, customer-personas.md, customer-segments.md]. Produce: (1) the correct flywheel domain and a 2-sentence explanation of fit, (2) the primary strategic goal (reduce contact rate / reduce cost of support), (3) the top 3 open strategic questions the PRD must answer, (4) any risks that could cause this initiative to float (not connect to strategy)."
 
    Wait for the Opus agent output before proceeding to Phase 2.

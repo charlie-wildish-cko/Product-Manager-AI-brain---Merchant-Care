@@ -4,17 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "7b39f1cc1bf3810e",
+        "id": "37e47c0437ba7656",
         "type": "tabs",
         "children": [
           {
-            "id": "e8d96f949210e0b1",
+            "id": "d5f8a53f8bd3ec8f",
             "type": "leaf",
             "state": {
-              "type": "graph",
+              "type": "empty",
               "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           }
         ]
@@ -94,6 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "04-active-work/working-files/zendesk-decision-deck-content.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -180,35 +181,54 @@
       "bases:Create new base": false
     }
   },
-  "active": "e8d96f949210e0b1",
+  "active": "d5f8a53f8bd3ec8f",
   "lastOpenFiles": [
-    "Untitled 2.base",
-    "Untitled 1.base",
-    "Untitled.base",
-    "04-active-work/research/zendesk-platform-decision-rfc.md",
-    "04-active-work/fin-resolution-dependencies-leadership-update.md",
-    "04-active-work/meeting-notes/2026-08/2026-08-07-consumer-ops-readiness.md",
-    "04-active-work/meeting-notes/2026-08/2026-08-07-nexus-data-model-care-queries.md",
-    "04-active-work/strategy/care-strategy-2026-2030.md",
-    "01-knowledge-base/products/smb-research-findings.md",
-    "01-knowledge-base/products/product-definitions.md",
-    "04-active-work/working-files/fin-not-for-classification-lines.md",
-    "04-active-work/working-files/product-definitions-backfill-scope.md",
-    "04-active-work/working-files/product-catalogue-changes-2026-08-13.csv",
+    "04-active-work/strategy/2027-goals.md",
     "01-knowledge-base/processes/fin-attributes-definitions.md",
-    "README.md",
-    "Untitled.canvas",
-    "CLAUDE.md",
-    "01-knowledge-base/metrics/kpi-definitions.md",
-    "01-knowledge-base/payment-domain/checkout-terminology.md",
-    "01-knowledge-base/teams.md",
-    "01-knowledge-base/fin-pilot-report-example.md",
-    "01-knowledge-base/strategy/B2C Fintech Support Competitive Analysis.md",
-    "01-knowledge-base/strategy/rumelt-strategy-kernel.md",
-    "01-knowledge-base/strategy/stripe-adyen-competition-analysis.md",
-    "01-knowledge-base/strategy/content-strategy-2026.md",
-    "01-knowledge-base/strategy/support-scale-principles.md",
-    "05-archive/2026/strategies/support-scale-principles.md",
-    "01-knowledge-base/strategy/care-product-model.md"
+    "04-active-work/meeting-notes/2026-10/2026-10-13-fin-github-sync.md",
+    "04-active-work/meeting-notes/2026-10/2026-10-13-luca-ops-case-management-and-periodic-review.md",
+    "04-active-work/meeting-notes/2026-10/2026-10-13-ai-assistance-on-dashboard.md",
+    "04-active-work/meeting-notes/2026-10/2026-10-14-research-readout-support-tickets-fin-analytics.md",
+    "04-active-work/meeting-notes/2026-10/2026-10-15-mcp-x-agents-alignment.md",
+    "04-active-work/meeting-notes/2026-10/2026-10-15-merchant-care-work-items.md",
+    "04-active-work/meeting-notes/2026-10/2026-10-15-care-ai-agent-monthly-review.md",
+    "04-active-work/meeting-notes/2026-10/2026-10-15-landmark-manual-refunds-and-ai-support.md",
+    "04-active-work/working-files/ops-data-request/ops-data-request.xlsx",
+    "04-active-work/working-files/ops-data-request/02-tool-inventory.csv",
+    "04-active-work/working-files/ops-data-request/01-team-data-card.csv",
+    "04-active-work/working-files/ops-data-request/00-field-guide.csv",
+    "04-active-work/working-files/ops-data-request",
+    "04-active-work/strategy/operations-platform-definition.md",
+    "04-active-work/meeting-notes/2026-10/2026-10-13-risk-operations-vision-review.md",
+    "04-active-work/research/fin-renewal-2026-2028-vp-review.md",
+    "04-active-work/meeting-notes/2026-10/2026-10-09-ray-crm-care-becca-smyth.md",
+    "04-active-work/meeting-notes/2026-10/2026-10-08-ray-readiness-steerco-ops-product.md",
+    "03-templates/Checkout.com Brand Identity/tokens/typography.css",
+    "03-templates/Checkout.com Brand Identity/tokens/spacing.css",
+    "03-templates/Checkout.com Brand Identity/tokens/motion.css",
+    "03-templates/Checkout.com Brand Identity/tokens/fonts.css",
+    "03-templates/Checkout.com Brand Identity/tokens/colors.css",
+    "03-templates/Checkout.com Brand Identity/assets/logo-lift-white.svg",
+    "03-templates/Checkout.com Brand Identity/assets/logo-lift-horizontal.svg",
+    "03-templates/Checkout.com Brand Identity/assets/icon-lift.svg",
+    "03-templates/Checkout.com Brand Identity/assets/icon-lift-white.svg",
+    "03-templates/Checkout.com Brand Identity/assets/icon-lift-midnight.svg",
+    "03-templates/Checkout.com Brand Identity/SKILL.md",
+    "03-templates/Checkout.com Brand Identity/components/forms/Switch.prompt.md",
+    "03-templates/Checkout.com Brand Identity/components/forms/Input.prompt.md",
+    "03-templates/Checkout.com Brand Identity/components/forms/Checkbox.prompt.md",
+    "03-templates/Checkout.com Brand Identity/components/navigation/Tabs.prompt.md",
+    "03-templates/Checkout.com Brand Identity/components/core/Tag.prompt.md",
+    "03-templates/Checkout.com Brand Identity/components/core/IconButton.prompt.md",
+    "03-templates/Checkout.com Brand Identity/components/core/Card.prompt.md",
+    "03-templates/Checkout.com Brand Identity/components/core/Button.prompt.md",
+    "03-templates/Checkout.com Brand Identity/components/core/Badge.prompt.md",
+    "03-templates/Checkout.com Brand Identity/components/core/Avatar.prompt.md",
+    "03-templates/Checkout.com Brand Identity/screenshots/deck-07c.png",
+    "03-templates/Checkout.com Brand Identity/screenshots/deck-07b.png",
+    "03-templates/Checkout.com Brand Identity/screenshots/deck-07.png",
+    "03-templates/Checkout.com Brand Identity/screenshots/deck-01.png",
+    "03-templates/Checkout.com Brand Identity/screenshots/dashboard-overview.png",
+    "Untitled.canvas"
   ]
 }

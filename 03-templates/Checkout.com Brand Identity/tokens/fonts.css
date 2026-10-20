@@ -1,0 +1,17 @@
+/* ============================================================
+   FONTS — LIFT Design System
+   Primary typeface:  Inter  (product, web, docs)
+   Display typeface:  Söhne  — COMMERCIAL, not webfont-available.
+                      Substituted with "Archivo" (Google Fonts), the
+                      closest free neo-grotesque. Replace with licensed
+                      Söhne web files when available.
+   ============================================================ */
+
+/* Inter — full product weight range (300–700) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Archivo — display substitute for Söhne (600;700;800) */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&display=swap');
+
+/* JetBrains Mono — numeric / code / data readouts (payments are numbers) */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');

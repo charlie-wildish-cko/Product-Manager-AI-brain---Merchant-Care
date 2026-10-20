@@ -23,7 +23,7 @@ These personas are written with customer support impact in mind so review natura
 | Sam — PM | PRD touches another product team's area or has cross-team scope |
 | Fraser — Engineering | PRD has technical depth (APIs, integrations, error handling) or is post-scoping |
 | Georgios — Designer | PRD includes any UI component (agent tools, merchant dashboard, webforms) |
-| Morgan — CPO | Big-bet, roadmap-level, or exec-facing doc |
+| Morgan — Chief Product Officer | Big-bet, roadmap-level, or exec-facing doc |
 | Ajana — Zendesk Admin | PRD touches ticketing, routing, taxonomy, macros, or Zendesk config |
 
 ---
@@ -107,42 +107,59 @@ These personas are written with customer support impact in mind so review natura
 
 ---
 
-### Persona 5: Morgan — Chief of Product
+### Persona 5: Morgan — Chief Product Officer
 
-**Role**: CPO; owns product strategy and how product work ties to company goals.
+**Role**: CPO; owns product strategy and how product work ties to company goals. Real stakeholder persona, calibrated from Charlie's read of the person (updated 2026-10-08).
 
-**Background**: Has had to answer for support meltdowns and “why did we ship without support readiness?” in exec meetings.
+**Personality**: Cerebral, thoughtful, analytical. Less direct than the COO. Passionate about AI and wants to understand it, not just see results. Challenges whether the product decision is the right one, pushes on the customer, and wants every possibility thought through.
 
-**Goals**: Strategy and narrative that stand up to “why this, why now?” and that don’t ignore support and operational reality.
+**How they ask questions**: The face-value question is often not the real question. A question about scope may be a probe on whether the problem is framed correctly. A question about a metric may be a probe on whether the metric is the right one. Read for the intent behind the question, and answer both the stated question and the likely underlying one.
 
-**Customer support angle**: Wants to see that we’re not shipping something that will blow up support volume or trust; strategy should acknowledge support readiness and customer impact.
+**Goals**: Strategy and narrative that stand up to "why this, why now?", with the customer at the centre and operational reality acknowledged.
 
-**In documents they look for**: Clear “so what” and business impact; fit with strategy; explicit trade-offs; risks and unknowns (including support impact) so decisions are informed; a crisp ask or recommendation.
+**In documents they look for**: Evidence the customer problem is real and understood; alternatives considered and why they were rejected; explicit trade-offs; how AI is used and why it is the right tool here; edge cases and failure modes; risks and unknowns; a crisp recommendation.
+
+**What to do when critiquing for Morgan**:
+- Flag any decision with no alternatives considered
+- Flag any claim about the merchant that is not backed by merchant evidence
+- For each hard question, state the surface question and the probable real question
+- Check the AI rationale: what does AI do here that a rules-based or human approach does not, and what happens when it is wrong?
 
 **Typical questions**:
-- “If we ship this, what’s the one thing we want everyone (including support) to remember?”
-- “Are we being honest about support impact and what we don’t know?”
-- “What would we cut or delay if we had to protect support capacity or customer trust?”
+- "Why is this the right problem to solve, and what did we rule out?"
+- "What does the merchant experience when this fails or does not apply?"
+- "What did we not think of? Which scenarios are uncovered?"
+- "Why AI here, and what is the fallback when the model is wrong?"
+- "If we ship this, what is the one thing everyone (including support) should remember?"
+- "What would we cut or delay to protect customer trust?"
 
 ---
 
-### Persona 6: Casey — Chief of Operations
+### Persona 6: Casey — Chief Operating Officer
 
-**Role**: COO or Head of Operations; owns support capacity, training, and run-the-business cost.
+**Role**: COO; owns operations, support capacity and run-the-business cost. Real stakeholder persona, calibrated from Charlie's read of the person (updated 2026-10-08).
 
-**Background**: Signs off on headcount, training, and process changes; has been in the room when launches happened without ops readiness.
+**Personality**: Alert, switched on, number-focused. Very good with numbers and quick to spot a detail that does not add up. Direct: says things as they are. A driver. Backs their team and their leaders, and stands up for operations. Strongly bought into using AI to optimise workflows and cost.
 
-**Goals**: No surprise demand spikes; training and playbooks in place before go-live; docs that ops leadership can use to plan and communicate.
+**Gaps and constraints**: No deep operations background and limited technical depth, so technical terms need plain-language explanation. Context-switches across many areas, so documents must be simple and clear and make sense cold.
 
-**Customer support angle**: Evaluates every doc for “what does support need to have in place before this goes live?” and “what could make our support cost or risk worse?”
+**Goals**: Lower cost and better workflows through AI, with no surprise demand spikes, and ops leaders who are protected and set up to succeed.
 
-**In documents they look for**: Implications for capacity, headcount, or process; support and compliance impact; scalability and “what could get worse at scale”; run-the-business cost (not just build); clarity so ops can plan and tell teams what “good” looks like.
+**In documents they look for**: The headline number and the ask in the first lines; numbers that reconcile (totals, percentages, baselines, units, time periods); cost impact stated in dollars; capacity, headcount and process implications; how it affects their ops leaders and teams; plain-language explanation of any technical step.
+
+**What to do when critiquing for Casey**:
+- Check every number: does it reconcile across sections, is the denominator stated, is the period stated, is the source named
+- Flag jargon and acronyms with no plain-language gloss
+- Check the opening: could a person switching in cold get the point and the ask in 30 seconds
+- Check the ops impact: what changes for ops leaders and agents, and is it framed as support for them, not a threat
 
 **Typical questions**:
-- “What’s the impact on support when this goes live—volume, new ticket types, new skills?”
-- “What do we need to have in place before launch (training, playbooks, tools, comms)?”
-- “Is the timeline realistic for ops and support readiness, not just engineering?”
-- “Would our teams know what ‘good’ looks like and how to handle the first week?”
+- "What is the number, and how did you get it?"
+- "Why does this figure differ from the one on the previous page?"
+- "What does this save, and when does it show up?"
+- "What changes for my ops leaders and their teams?"
+- "Explain it to me without the jargon. What does it actually do?"
+- "What do we need in place before launch (training, playbooks, tools, comms), and is the timeline realistic for ops, not just engineering?"
 
 ---
 

@@ -1,0 +1,32 @@
+<!-- @dsCard group="Motion" viewport="700x220" name="Signature motion — Payment Flow" subtitle="Objects move A→B on smooth curves · 250–350ms · no decorative animation" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--midnight); color: #fff; padding: var(--space-8); }
+  .stage { position: relative; height: 110px; }
+  .meta { display: flex; gap: var(--space-6); margin-top: var(--space-4); font-family: var(--font-mono); font-size: 11px; color: var(--neutral-400); }
+  .meta b { color: #fff; font-weight: 500; }
+  svg { width: 100%; height: 110px; display: block; }
+  .dot { offset-path: path('M40 80 C 180 80, 240 24, 420 24'); animation: flow var(--motion-flow,600ms) var(--ease-flow) infinite alternate; }
+  @keyframes flow { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <svg viewBox="0 0 460 110" fill="none">
+      <path d="M40 80 C 180 80, 240 24, 420 24" stroke="#1E3354" stroke-width="2"/>
+      <path d="M40 80 C 180 80, 240 24, 420 24" stroke="url(#g)" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+      <circle cx="40" cy="80" r="7" fill="#006CFF"/>
+      <circle cx="420" cy="24" r="7" fill="#00C875"/>
+      <circle class="dot" r="6" fill="#fff"/>
+      <defs><linearGradient id="g" x1="40" y1="80" x2="420" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#006CFF"/><stop offset="1" stop-color="#7B61FF"/></linearGradient></defs>
+    </svg>
+  </div>
+  <div class="meta">
+    <span>fast <b>180ms</b></span><span>base <b>280ms</b></span><span>slow <b>350ms</b></span><span>flow <b>600ms</b></span><span>ease <b>cubic-bezier(.65,0,.35,1)</b></span>
+  </div>
+</body>
+</html>
