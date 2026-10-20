@@ -218,22 +218,83 @@ class ExceptionScopeTests(unittest.TestCase):
         self.assertEqual(check_files({"doc.md": doc})[0], [])
 
 
-class CommandLineTests(unittest.TestCase):
-    def invoke(self, name):
-        out = io.StringIO()
-        with contextlib.redirect_stdout(out):
-            code = repo_check.main(["--root", os.path.join(FIXTURES, name)])
-        return code, out.getvalue().splitlines()
+def invoke(root, *args):
+    out, err = io.StringIO(), io.StringIO()
+    with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+        code = repo_check.main(["--root", root] + list(args))
+    return code, out.getvalue().splitlines(), err.getvalue().splitlines()
 
-    def test_exit_code_is_one_with_errors(self):
-        code, lines = self.invoke("closest_path")
+
+class CommandLineTests(unittest.TestCase):
+    def test_errors_go_to_stderr_and_the_summary_to_stdout(self):
+        code, out, err = invoke(os.path.join(FIXTURES, "closest_path"))
         self.assertEqual(code, 1)
-        self.assertEqual(lines[-1], "repo-check: 2 error(s), 2 docs scanned, 2 references checked.")
+        self.assertEqual(out, ["repo-check: 2 error(s), 2 docs scanned, 2 references checked."])
+        self.assertEqual(len(err), 2)
+        self.assertTrue(all("broken path" in line for line in err))
 
     def test_exit_code_is_zero_when_clean(self):
-        code, lines = self.invoke("placeholders")
-        self.assertEqual(code, 0)
-        self.assertEqual(lines, ["repo-check: ok, 1 docs scanned, 0 references checked."])
+        code, out, err = invoke(os.path.join(FIXTURES, "placeholders"))
+        self.assertEqual((code, err), (0, []))
+        self.assertEqual(out, ["repo-check: ok, 1 docs scanned, 0 references checked."])
+
+
+class RobustnessTests(unittest.TestCase):
+    def test_symlinked_doc_is_skipped_outside_git(self):
+        with tempfile.TemporaryDirectory() as root:
+            write_tree(root, {"01-knowledge-base/real.md": "`04-active-work/missing.md`\n"})
+            os.symlink("real.md", os.path.join(root, "01-knowledge-base/alias.md"))
+            result = repo_check.check(root, today=TODAY)
+        self.assertEqual(len(result.errors), 1)
+        self.assertEqual(result.docs_scanned, 1)
+
+    def test_symlinked_doc_is_skipped_in_a_git_checkout_and_in_the_index(self):
+        repo = ScratchRepo({"01-knowledge-base/real.md": "`04-active-work/missing.md`\n"})
+        self.addCleanup(repo.cleanup)
+        os.symlink("real.md", os.path.join(repo.root, "01-knowledge-base/alias.md"))
+        repo.stage("01-knowledge-base/alias.md")
+        for staged in (False, True):
+            result = repo_check.check(repo.root, today=TODAY, staged=staged)
+            self.assertEqual((len(result.errors), result.docs_scanned), (1, 1), staged)
+
+    def test_doc_that_is_not_utf8_is_reported_without_a_traceback(self):
+        with tempfile.TemporaryDirectory() as root:
+            write_tree(root, {"01-knowledge-base/ok.md": "# Ok\n"})
+            with open(os.path.join(root, "01-knowledge-base/bad.md"), "wb") as handle:
+                handle.write(b"\xff\xfe not utf-8\n")
+            errors = repo_check.check(root, today=TODAY).errors
+        self.assertEqual(len(errors), 1)
+        self.assertTrue(errors[0].startswith("01-knowledge-base/bad.md: unreadable. Fix: "), errors[0])
+
+    def test_unreadable_doc_in_the_index_is_reported(self):
+        repo = ScratchRepo({"01-knowledge-base/ok.md": "# Ok\n"})
+        self.addCleanup(repo.cleanup)
+        with open(os.path.join(repo.root, "01-knowledge-base/bad.md"), "wb") as handle:
+            handle.write(b"\xff\xfe not utf-8\n")
+        repo.stage("01-knowledge-base/bad.md")
+        errors = repo_check.check(repo.root, today=TODAY, staged=True).errors
+        self.assertEqual(len(errors), 1)
+        self.assertIn("bad.md: unreadable. Fix: ", errors[0])
+
+    def test_broken_git_directory_is_a_one_line_error_not_a_traceback(self):
+        with tempfile.TemporaryDirectory() as root:
+            os.makedirs(os.path.join(root, ".git"))
+            code, out, err = invoke(root)
+        self.assertEqual(code, 2)
+        self.assertEqual(out, [])
+        self.assertEqual(len(err), 1)
+        self.assertTrue(err[0].startswith("repo-check: cannot list files with git"), err[0])
+
+    @unittest.skipIf(hasattr(os, "geteuid") and os.geteuid() == 0, "root reads any file")
+    def test_doc_without_read_permission_is_reported_by_main(self):
+        with tempfile.TemporaryDirectory() as root:
+            write_tree(root, {"01-knowledge-base/locked.md": "# Locked\n"})
+            os.chmod(os.path.join(root, "01-knowledge-base/locked.md"), 0)
+            code, out, err = invoke(root)
+        self.assertEqual(code, 1)
+        self.assertEqual(len(err), 1)
+        self.assertIn("locked.md: unreadable. Fix: ", err[0])
+        self.assertNotIn("Traceback", "\n".join(out + err))
 
 
 GIT_ENV = {
@@ -468,11 +529,9 @@ class StagedModeTests(unittest.TestCase):
 
     def test_staged_mode_needs_a_git_repository(self):
         with tempfile.TemporaryDirectory() as root:
-            err = io.StringIO()
-            with contextlib.redirect_stderr(err):
-                code = repo_check.main(["--root", root, "--staged"])
+            code, _, err = invoke(root, "--staged")
         self.assertEqual(code, 2)
-        self.assertIn("--staged needs a git repository", err.getvalue())
+        self.assertIn("--staged needs a git repository", err[0])
 
 
 REPO_ROOT = os.path.dirname(HERE)
