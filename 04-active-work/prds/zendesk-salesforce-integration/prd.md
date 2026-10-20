@@ -338,6 +338,6 @@ Key flows:
 
 **Technical and operational**
 
-- `04-active-work/roadmap-items/zendesk-jira-integration-prd.md` — Reference PRD and pattern for Zendesk external system integration
+- `04-active-work/prds/zendesk-jira-integration/prd.md` — Reference PRD and pattern for Zendesk external system integration
 - `01-knowledge-base/processes/agent-toolkit-zendesk.md` — Agent Toolkit product context
 - `01-knowledge-base/processes/support-workflows.md` — Escalation workflow context

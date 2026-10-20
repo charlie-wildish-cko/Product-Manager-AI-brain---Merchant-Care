@@ -592,7 +592,7 @@ Full notes, per-call, with evidence tiers: `04-active-work/research/support-plat
 | **Tines**                                  | Plain    | Reference call we ran | Fin-to-Plain escalation running in production, integration architecture validated with us directly                                                                                        |
 | **Zilch** (Sept 2026)                      | Intercom | Reference call we ran | Intercom can deliver a strong partnership, at ~250 BPO agents plus 40 internal staff and hundreds of thousands of contacts a month. Warns it cannot group team members into organisations |
 | Intercom vendor call (Sept 2026)           | Intercom | Vendor call           | Strong ticketing and native connectors. Copilot is a black box, config is UI-only, object model is restrictive                                                                            |
-| `evidence/plain-checkout-proof-points.pdf` | Plain    | Vendor marketing      | Nothing independent. Deliberately excluded from the core slides. SpaceX AI, Sanity, Yapily, Sourcegraph and others                                                                        |
+| `04-active-work/research/evidence/plain-checkout-proof-points.pdf` | Plain    | Vendor marketing      | Nothing independent. Deliberately excluded from the core slides. SpaceX AI, Sanity, Yapily, Sourcegraph and others                                                                        |
 
 **Three cross-cutting findings worth knowing before questions.**
 
@@ -616,7 +616,7 @@ Detail: `04-active-work/research/zendesk-current-config-flow-map.md`, sourced fr
 - Archived RFC with the full Build / Buy / Keep evaluation, the scored candidate matrix, the written recommendation and the rejection reasoning for Zendesk, Intercom, Pylon and Build: `05-archive/2026/investigations/zendesk-platform-decision-rfc.md`. Archived 2026-09-22 once the decision was made
 - Operations business case with POC detail: `04-active-work/research/plain-business-case-draft-v1.md`
 - Zendesk market and AI strategy research: `05-archive/2026/investigations/Zendesk Viability_ AI, Pricing, Market.md`
-- Target architecture: `04-active-work/meeting-notes/2026-09/2026-09-15-plain-vision-architecture.md` and `2026-08/2026-08-20-fin-in-plain-world.md`
+- Target architecture: `04-active-work/meeting-notes/2026-09/2026-09-15-plain-vision-architecture.md` and `04-active-work/meeting-notes/2026-08/2026-08-20-fin-in-plain-world.md`
 - Multi-team routing requirements shared with both vendors: `04-active-work/research/multi-team-routing-overview-plain-intercom.md`
 - Roadmap anchor: `2026 deliverables.md`, Help Desk Platform Evaluation (Q3 discovery and POC, Q4 decision and approval)
 
@@ -660,7 +660,7 @@ More. Weights were published before any vendor was scored. Every score carries a
 Uber did, at a scale more than 15 times our 2030 peak. It started on Zendesk in 2010, while it was launching city by city, and later built its own support platform (more than 30 back-end services) once it was handling hundreds of thousands of tickets a day across 400+ cities. On top of that it built COTA, an ML system that helps resolve over 90% of inbound tickets and saves "tens of millions of dollars every year", developed by four dedicated teams. We handle about 165 contacts a day today and about 5,900 at our 2030 peak. Uber is the evidence for the rule on Slide 8: buy while volume is small, build once volume makes a dedicated team cheaper than the vendor. Sources: Uber Engineering, ["Architecting Uber Support with Customer Obsession Engineering"](https://www.uber.com/en-IN/blog/customer-obsession-engineering/) and ["COTA"](https://www.uber.com/blog/cota/)  ·  Zendesk, ["Uber customer story"](https://www.zendesk.com/customer/uber/).
 
 **"Vercel's results look strong. Where do the numbers come from?"**
-Only use what our own call supports. The "first response time down 30%, 67% Enterprise, 78% Pro" figures come from Plain's own marketing material (`evidence/plain-checkout-proof-points.pdf`), not from our Vercel call, and were removed from Slide 11. The "19% more tickets per agent" figure appears in both the business case and that same marketing file, so its independent source is unconfirmed. Full call notes and evidence tiers: `04-active-work/research/support-platform-assessment-customer-references.md`.
+Only use what our own call supports. The "first response time down 30%, 67% Enterprise, 78% Pro" figures come from Plain's own marketing material (`04-active-work/research/evidence/plain-checkout-proof-points.pdf`), not from our Vercel call, and were removed from Slide 11. The "19% more tickets per agent" figure appears in both the business case and that same marketing file, so its independent source is unconfirmed. Full call notes and evidence tiers: `04-active-work/research/support-platform-assessment-customer-references.md`.
 
 **"What if Fin becomes the constraint?"**
 The architecture on Slide 7 is designed for it. Customer identity, taxonomy and AI invocation sit in a layer we own, and a gateway mirrors Fin conversations into Plain threads. Replacing Fin later is a change to one block in that layer, not another platform migration.

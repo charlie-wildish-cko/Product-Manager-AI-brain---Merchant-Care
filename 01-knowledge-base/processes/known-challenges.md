@@ -109,7 +109,7 @@ These are not currently the same place.
 
 ### Chosen Approach (in progress — see PRD)
 
-> Full detail: `04-active-work/roadmap-items/fin-email-auth-data-policy-prd.md`
+> Full detail: `04-active-work/prds/fin-email-auth-data-policy/prd.md`
 
 The solution is in active development. Key decisions made:
 

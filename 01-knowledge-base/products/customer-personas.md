@@ -426,4 +426,4 @@ Jordan's Ray card is declined abroad. She opens the app expecting in-app chat an
 
 **Owner**: Charlie Wildish
 **Last Updated**: March 2026
-**Source files**: `customer-segments.md`, `platform-segment.md`, `support-taxonomy.md`, `agent-toolkit-zendesk.md`, `04-active-work/Agent interview transcripts/` (8 interviews, Aug–Sep 2024; researcher: Alcinda); `04-active-work/merchant-interview-transcripts-2025/` (7 merchant interviews, Jun–Nov 2025: Plutus, Findo, Kiwi, Curve, Guesty, Sunday, Golf Manager); `04-active-work/Consumer persona behavioural.png`, `04-active-work/Consumer persona goals.png` (B2C segment research, March 2026)
+**Source files**: `customer-segments.md`, `platform-segment.md`, `support-taxonomy.md`, `agent-toolkit-zendesk.md`, `04-active-work/Agent interview transcripts/` (8 interviews, Aug–Sep 2024; researcher: Alcinda); `04-active-work/merchant-interview-transcripts-2025/` (7 merchant interviews, Jun–Nov 2025: Plutus, Findo, Kiwi, Curve, Guesty, Sunday, Golf Manager); `05-archive/Consumer persona behavioural.png`, `05-archive/Consumer persona goals.png` (B2C segment research, March 2026)
