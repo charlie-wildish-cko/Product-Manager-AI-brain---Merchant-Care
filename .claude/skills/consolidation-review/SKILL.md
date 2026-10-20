@@ -8,7 +8,7 @@ tools: Read, Bash, Write, Edit, Agent
 
 Finds files that say the same thing in more than one place — not stale or dead files (that's `workspace-review`'s job), but genuine content overlap: two docs covering the same topic, a fact duplicated and drifting apart, or a new doc that should have been a section in an existing one.
 
-Scope: `01-knowledge-base/` and `04-active-work/`. Excludes bulk-imported reference dumps that are expected to have repetitive structure, not authored duplication: `01-knowledge-base/Support content/`, `01-knowledge-base/Tech Docs/`, `01-knowledge-base/Support content/API reference/`. Excludes `05-archive/` — frozen historical snapshots are not consolidation candidates.
+Scope: `01-knowledge-base/` and `04-active-work/`. Excludes bulk-imported reference dumps that are expected to have repetitive structure, not authored duplication: `01-knowledge-base/Support content/`, `01-knowledge-base/Support content/Tech Docs/`, `01-knowledge-base/Support content/API reference/`. Excludes `05-archive/` — frozen historical snapshots are not consolidation candidates.
 
 ---
 
@@ -170,6 +170,6 @@ Do NOT run `git commit`.
 ## Notes
 
 - This skill does not overlap with `workspace-review`: that skill judges individual files against the roadmap (keep/update/archive/delete based on recency and relevance); this skill judges files against *each other* for content duplication. Run either independently.
-- Never merge a file out of `04-active-work/roadmap-items/`, `04-active-work/merchant-interview-transcripts-2025/`, or `04-active-work/stakeholder-updates/` without flagging it explicitly in the report first — these are primary source or in-flight work, not reference docs, even if they look topically similar to something else.
+- Never merge a file out of `04-active-work/prds/` or `04-active-work/merchant-interview-transcripts-2025/` without flagging it explicitly in the report first — these are primary source or in-flight work, not reference docs, even if they look topically similar to something else.
 - If a cluster's canonical-file choice is ambiguous (e.g. two files of similar completeness, both recently updated), surface both options in the report and ask Charlie to pick rather than guessing.
 - `2026 deliverables.md`, `CLAUDE.md`, and template files in `03-templates/` are never merge targets or candidates — they are structural/reference files, not content that duplicates other content.
