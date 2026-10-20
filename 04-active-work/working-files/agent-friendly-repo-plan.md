@@ -1,12 +1,9 @@
 # Agent-friendly repo: plan for review
 
-Status: draft for Charlie's approval. Nothing in the repo has been changed yet except this file.
+Status: Approved by Charlie. Scope approved: phases 1 and 2 only, then stop for review. This PR is phase 1.
 Anchor: repo tooling, not a named deliverable in `2026 deliverables.md`. It supports the contact-rate goal only indirectly, by cutting rework in every Care Product session.
 
-## 0. Urgent, outside the refactor
-
-1. The GitHub repo `charlie-wildish-cko/Product-Manager-AI-brain---Merchant-Care` is public. Measured: the GitHub API returns `private: false`, and the raw URL for `04-active-work/research/evidence/2025-06-27-zendesk-signed-contract-Q-540753.pdf` on `main` returns HTTP 200. The same tree holds a Plain contract summary, 15 interview transcripts with named people, and 160 meeting notes. Making the repo private stops new exposure only. The PDF stays in git history and in any fork or cache. History removal is your call and needs a force-push, so I have not touched it.
-2. `.claude/settings.local.json` holds a plaintext GitHub token. It is untracked and gitignored, so it is not in the repo. The GitHub MCP server already reports it expired. Rotate it and move it to the keychain.
+Security items found during the audit were raised with Charlie separately and are not tracked in this file.
 
 ## 1. Evidence
 
@@ -85,7 +82,6 @@ Cost estimate (guess): about 10 new files, about 210 file edits (160 via codemod
 
 ## 5. Decisions only you can make
 
-- Public repo and history: go private, and whether to scrub the contract PDF from history.
 - `Care Agent SOPs/` (untracked, 527 files) duplicates the tracked `checkout-support-site-internal/` (529 files, 511 shared article IDs). CLAUDE.md points agents at the untracked copy. Which one is canonical?
 - Em-dash rule: drop it or ratchet it.
 - Execution mode: Autopilot-stack or Autopilot-full.
