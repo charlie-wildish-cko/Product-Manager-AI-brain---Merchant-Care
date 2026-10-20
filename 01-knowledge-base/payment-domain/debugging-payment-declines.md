@@ -5,7 +5,7 @@ How I diagnose declines and payout failures from the **Payment Search API** reco
 Sections 1–7 are written for **payins**. Section 8 covers **card and bank payouts**, which diverge structurally from payins (a second, Checkout-side decline layer exists before the issuer/network layer, and the record shows less of the picture — see §8).
 
 This doc cross-references:
-- Field schema: `01-knowledge-base/metrics/payment search API schema.md`
+- Field schema: `01-knowledge-base/metrics/payment-search-api-schema.md`
 - Code references: `Tech Docs/Articles/2 Developer resources/5 Codes/` (API response codes, AVS, CVV, ECI, Recommendation codes)
 - Per-code lookup, payins and payouts: `decline-code-reference.md` (its `50xxx` section and payout notes on `20xxx`/`30xxx` are the counterpart to this doc's §8)
 
