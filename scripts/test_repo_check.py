@@ -196,22 +196,84 @@ class CommandLineTests(unittest.TestCase):
         self.assertEqual(lines, ["repo-check: ok, 1 docs scanned, 0 references checked."])
 
 
-class GitAwareTests(unittest.TestCase):
-    def test_gitignored_targets_are_not_checked_and_untracked_files_resolve(self):
-        with tempfile.TemporaryDirectory() as root:
-            subprocess.run(["git", "init", "-q", root], check=True)
-            os.makedirs(os.path.join(root, "04-active-work"))
-            files = {
-                ".gitignore": "local-only/\n",
-                "doc.md": "`local-only/data.md`\n`04-active-work/new.md`\n`04-active-work/missing.md`\n",
-                "04-active-work/new.md": "# New\n",
-            }
-            for rel, content in files.items():
-                with open(os.path.join(root, rel), "w", encoding="utf-8") as handle:
-                    handle.write(content)
-            errors, _, _ = repo_check.check(root, today=TODAY)
+GIT_ENV = {
+    key: value
+    for key, value in os.environ.items()
+    if key not in ("GIT_DIR", "GIT_INDEX_FILE", "GIT_WORK_TREE", "GIT_PREFIX")
+}
+GIT_ENV.update(
+    GIT_AUTHOR_NAME="t",
+    GIT_AUTHOR_EMAIL="t@example.com",
+    GIT_COMMITTER_NAME="t",
+    GIT_COMMITTER_EMAIL="t@example.com",
+    GIT_CONFIG_NOSYSTEM="1",
+)
+
+
+def git(root, *args, **kwargs):
+    return subprocess.run(
+        ["git", "-c", "commit.gpgsign=false", "-c", "init.defaultBranch=main", "-C", root] + list(args),
+        env=GIT_ENV,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        **kwargs
+    )
+
+
+class ScratchRepo(object):
+    def __init__(self, files):
+        self.dir = tempfile.TemporaryDirectory()
+        self.root = self.dir.name
+        git(self.root, "init", "-q").check_returncode()
+        self.write(files)
+        self.commit()
+
+    def write(self, files):
+        write_tree(self.root, files)
+
+    def stage(self, *paths):
+        git(self.root, "add", "--", *paths).check_returncode()
+
+    def commit(self):
+        git(self.root, "add", "-A").check_returncode()
+        git(self.root, "commit", "-q", "-m", "base").check_returncode()
+
+    def errors(self, **kwargs):
+        return repo_check.check(self.root, today=TODAY, **kwargs).errors
+
+    def cleanup(self):
+        self.dir.cleanup()
+
+
+BASE = {
+    "04-active-work/target.md": "# Target\n",
+    "01-knowledge-base/clean.md": "# Clean\n",
+    "01-knowledge-base/other.md": "# Other\n",
+}
+
+
+class TrackedFilesTests(unittest.TestCase):
+    def setUp(self):
+        self.repo = ScratchRepo(BASE)
+        self.addCleanup(self.repo.cleanup)
+
+    def test_untracked_target_is_broken_so_local_and_ci_agree(self):
+        self.repo.write(
+            {"04-active-work/new.md": "# New\n", "01-knowledge-base/doc.md": "`04-active-work/new.md`\n"}
+        )
+        self.repo.stage("01-knowledge-base/doc.md")
+        errors = self.repo.errors()
         self.assertEqual(len(errors), 1)
-        self.assertIn('doc.md:3: broken path "04-active-work/missing.md"', errors[0])
+        self.assertIn('doc.md:1: broken path "04-active-work/new.md"', errors[0])
+
+    def test_tracked_target_resolves(self):
+        self.repo.write({"01-knowledge-base/clean.md": "`04-active-work/target.md`\n"})
+        self.assertEqual(self.repo.errors(), [])
+
+    def test_target_deleted_from_the_working_tree_is_broken(self):
+        self.repo.write({"01-knowledge-base/clean.md": "`04-active-work/target.md`\n"})
+        os.remove(os.path.join(self.repo.root, "04-active-work/target.md"))
+        self.assertEqual(len(self.repo.errors()), 1)
 
 
 if __name__ == "__main__":
