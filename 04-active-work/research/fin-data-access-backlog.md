@@ -5,7 +5,7 @@ confluence_parent_page_id: 8041431176
 title: Fin Data Access Backlog
 ---
 
-> **Deliverable**: AI First Resolution Using Fin (Continuous)
+> **Deliverable**: AI First Resolution Using Fin (Q2 to Q3)
 > **Flywheel**: Handle + Fuel
 > **Strategic goal**: Reduce cost of support
 > **Metrics**: Fin involvement rate · AI resolution rate · Cost per contact
