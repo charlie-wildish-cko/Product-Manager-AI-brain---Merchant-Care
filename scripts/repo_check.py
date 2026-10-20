@@ -89,19 +89,41 @@ def has_git(root):
     return os.path.exists(os.path.join(root, ".git"))
 
 
-def list_files(root, staged):
+class Tree(NamedTuple):
+    files: Set[str]
+    symlinks: Set[str]
+
+
+def list_tree(root, staged):
     if has_git(root):
-        listed = set(git_lines(root, "ls-files", "-z", "--cached"))
-        return listed if staged else listed - set(git_lines(root, "ls-files", "-z", "--deleted"))
+        files, symlinks = set(), set()
+        for entry in git_lines(root, "ls-files", "-s", "-z"):
+            meta, _, path = entry.partition("\t")
+            files.add(path)
+            if meta.split()[0] == "120000":
+                symlinks.add(path)
+        if not staged:
+            files -= set(git_lines(root, "ls-files", "-z", "--deleted"))
+        return Tree(files, symlinks)
     if staged:
         raise RepoCheckError("repo-check: --staged needs a git repository.")
-    found = set()
+    files, symlinks = set(), set()
     for base, dirs, names in os.walk(root):
         rel = os.path.relpath(base, root).replace(os.sep, "/")
         dirs[:] = [d for d in dirs if d != ".git" and posixpath.join(rel, d) != ".claude/worktrees"]
         for name in names:
-            found.add(posixpath.normpath(posixpath.join(rel, name)))
-    return found
+            path = posixpath.normpath(posixpath.join(rel, name))
+            files.add(path)
+            if os.path.islink(os.path.join(root, path)):
+                symlinks.add(path)
+    return Tree(files, symlinks)
+
+
+def decode(raw):
+    try:
+        return raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
 
 
 def read_index(root, paths):
@@ -115,9 +137,10 @@ def read_index(root, paths):
         header = data[pos:end].split()
         pos = end + 1
         if header[-1] == b"missing":
+            contents[path] = None
             continue
         size = int(header[2])
-        contents[path] = data[pos:pos + size].decode("utf-8", "replace")
+        contents[path] = decode(data[pos:pos + size])
         pos += size + 1
     return contents
 
@@ -125,8 +148,11 @@ def read_index(root, paths):
 def read_working_tree(root, paths):
     contents = {}
     for path in paths:
-        with open(os.path.join(root, path), encoding="utf-8", errors="replace") as handle:
-            contents[path] = handle.read()
+        try:
+            with open(os.path.join(root, path), "rb") as handle:
+                contents[path] = decode(handle.read())
+        except OSError:
+            contents[path] = None
     return contents
 
 
@@ -283,15 +309,19 @@ def parent_dirs(files):
 
 def check(root, today=None, staged=False):
     today = today or datetime.date.today()
-    files = list_files(root, staged)
+    tree = list_tree(root, staged)
+    files = tree.files
     dirs = parent_dirs(files)
     top_dirs = {d for d in dirs if "/" not in d}
     index = index_by_basename(files)
-    docs = sorted(f for f in files if is_authored(f) and "\n" not in f)
+    docs = sorted(f for f in files - tree.symlinks if is_authored(f) and "\n" not in f)
     texts = (read_index if staged else read_working_tree)(root, docs)
 
     errors, unresolved, checked = [], [], 0
     for doc in docs:
+        if texts[doc] is None:
+            errors.append((doc, 0, "%s: unreadable. Fix: make it readable UTF-8 text or remove the file." % doc))
+            continue
         lines = texts[doc].split("\n")
         exceptions = parse_exceptions(doc, lines, today)
         allowed = exceptions.valid_lines
@@ -341,8 +371,11 @@ def main(argv=None):
     except RepoCheckError as error:
         print(error, file=sys.stderr)
         return 2
+    except (OSError, subprocess.CalledProcessError) as error:
+        print("repo-check: cannot list files with git (%s)." % error.__class__.__name__, file=sys.stderr)
+        return 2
     for error in result.errors:
-        print(error)
+        print(error, file=sys.stderr)
     status = "%d error(s)" % len(result.errors) if result.errors else "ok"
     print("repo-check: %s, %d docs scanned, %d references checked." % (status, result.docs_scanned, result.refs_checked))
     return 1 if result.errors else 0
