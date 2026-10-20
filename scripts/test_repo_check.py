@@ -54,7 +54,7 @@ class ReferenceTests(unittest.TestCase):
         for error, line in zip(errors, (3, 5, 8, 9, 10)):
             self.assertTrue(error.startswith("%s:%d: broken path" % (doc, line)), error)
             self.assertIn("04-active-work/roadmap-items/", error)
-            self.assertIn("../../04-active-work/prds/", error.split("Fix:")[1])
+            self.assertTrue(error.endswith("Fix: update the path or remove the reference."), error)
 
     def test_placeholders_are_skipped(self):
         errors, scanned, checked = run("placeholders")
@@ -70,7 +70,7 @@ class ReferenceTests(unittest.TestCase):
             errors,
             [
                 '.claude/skills/demo/SKILL.md:4: broken path "04-active-work/prds/gamma/prd.md".'
-                " Fix: point it at 04-active-work/prds/alpha/prd.md or remove the reference."
+                " Fix: update the path or remove the reference."
             ],
         )
 
@@ -120,6 +120,45 @@ class ExceptionTests(unittest.TestCase):
         self.assertIn("doc.md:7: exception has no valid until date.", messages[2])
         self.assertIn("doc.md:9: unknown repo-check directive.", messages[3])
         self.assertEqual(len(errors) - len(messages), 3)
+
+
+class SuggestionTests(unittest.TestCase):
+    def fix_for(self, target, files, doc="04-active-work/prds/reflex/overview.md"):
+        tree = dict(files)
+        tree[doc] = "`%s`\n" % target if "/" in target and not target.startswith(".") else "[x](%s)\n" % target
+        errors = check_files(tree).errors
+        self.assertEqual(len(errors), 1, errors)
+        return errors[0].split("Fix: ")[1]
+
+    def test_deleted_sibling_target_never_suggests_a_different_file_in_the_directory(self):
+        fix = self.fix_for("./phased-plan.md", {"04-active-work/prds/reflex/prd.md": "# PRD\n"})
+        self.assertEqual(fix, "update the path or remove the reference.")
+
+    def test_bare_name_whose_target_moved_to_a_differently_named_file_gets_no_suggestion(self):
+        files = {"04-active-work/prds/fin-email-auth-data-policy/prd.md": "# PRD\n"}
+        fix = self.fix_for("fin-email-auth-data-policy-prd.md", files)
+        self.assertEqual(fix, "update the path or remove the reference.")
+
+    def test_unique_file_with_the_same_basename_elsewhere_is_suggested(self):
+        fix = self.fix_for("04-active-work/old/phased-plan.md", {"04-active-work/prds/reflex/phased-plan.md": "# P\n"})
+        self.assertEqual(fix, "point it at 04-active-work/prds/reflex/phased-plan.md or remove the reference.")
+
+    def test_suggestion_for_a_relative_reference_is_relative_to_the_doc(self):
+        fix = self.fix_for("../old/phased-plan.md", {"04-active-work/research/phased-plan.md": "# P\n"})
+        self.assertEqual(fix, "point it at ../../research/phased-plan.md or remove the reference.")
+
+    def test_basename_shared_by_several_files_is_ambiguous_and_not_suggested(self):
+        files = {"04-active-work/a/prd.md": "# A\n", "04-active-work/b/prd.md": "# B\n"}
+        self.assertEqual(self.fix_for("04-active-work/c/prd.md", files), "update the path or remove the reference.")
+
+    def test_similar_basename_is_suggested_at_point_eight_and_not_below(self):
+        near = {"04-active-work/prds/reflex/phased-plans.md": "# P\n"}
+        far = {"04-active-work/prds/reflex/phased-roadmap.md": "# P\n"}
+        self.assertEqual(
+            self.fix_for("04-active-work/old/phased-plan.md", near),
+            "point it at 04-active-work/prds/reflex/phased-plans.md or remove the reference.",
+        )
+        self.assertEqual(self.fix_for("04-active-work/old/phased-plan.md", far), "update the path or remove the reference.")
 
 
 class ExceptionScopeTests(unittest.TestCase):
