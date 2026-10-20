@@ -11,7 +11,7 @@ Sources: 127 past sessions (user messages mined by two independent readers over 
 
 | Mistake class | Sessions (half A / half B) | Hard number from the repo |
 |---|---|---|
-| Change not propagated to every doc that restates a fact | 14 / 9 | `$0.90 per resolution` is in 18 files. Ray timeline is in 9 live files. CLAUDE.md names a deliverable, "Improve Fin Resolution Through Procedures", that does not exist in `2026 deliverables.md` (the item is "AI First Resolution Using Fin"). "Standard" tier: 19 live lines in 15 files after the rename to Growth. |
+| Change not propagated to every doc that restates a fact | 14 / 9 | `$0.90 per resolution` is in 18 files. Ray timeline is in 9 live files. CLAUDE.md named a deliverable, "Improve Fin Resolution Through Procedures", that does not exist in `2026 deliverables.md` (the item is "AI First Resolution Using Fin"), and phase 1 fixed it. "Standard" tier: 19 live lines in 15 files after the rename to Growth. |
 | Wrong or unlabelled source of truth | 0 / 11 | 214 of 711 active docs link an external authority (Google Doc, Confluence, Airtable, GitHub). 10 carry a sync date or source-of-truth note. |
 | Moved or renamed a file, did not update referrers | seen in 5+ commits | 606 path refs checked, 46 distinct targets missing (71 refs). Live docs still cite `roadmap-items/`, renamed 21 weeks ago. |
 | Domain facts wrong, current state not in the repo | 11 / 9 | No current-state fact sheet. Decisions live in Google Docs and chat. |
@@ -71,7 +71,7 @@ How each class is handled, highest level that works:
 
 Each check is proven by making it fail on a real past mistake before it ships.
 
-1. **Subtract.** Untrack the 4 dead worktree gitlinks and `.obsidian/`. Reconcile the two `payment search API schema` files (they differ by 241 diff lines, not identical). Delete `workspace-review-2026-07-10.md` (29 dead refs). Fix the phantom deliverable name. Collapse the 3,829 per-file ignore lines in `.gitignore` to directory rules. Proof: git status clean, `git ls-files` count drops.
+1. **Subtract.** Untrack the 4 dead worktree gitlinks and `.obsidian/`. Delete the older `payment search API schema.md` and its stale PDF (the kept `payment-search-api-schema.md` holds all its fields). Delete `workspace-review-2026-07-10.md` (29 dead refs). Fix the phantom deliverable name. Add `.obsidian/` and `.claude/worktrees/` to `.gitignore`. The collapse of the 3,829 per-file ignore lines to directory rules is deferred, because directory rules change new-file behaviour and the decision on which SOPs copy is canonical is pending. Proof: git status clean, `git ls-files` count drops.
 2. **repo-check v0.** Broken-path check plus tests. Fixes the 46 dead targets. Proof: it fails on the `roadmap-items/` refs on the pre-fix commit.
 3. **Facts, glossary, sources.** The stale-value, banned-alias, and quarter checks. Fixes the Standard, 258/262/290, and $0.90 sites. Proof: it fails on the "Standard" and phantom-deliverable lines at HEAD today.
 4. **Front matter and gates.** Codemod defaults onto about 156 docs. You set about 20 values by hand (owner, copies, superseded PRDs). Add the new-file and owner gates. Proof: replay the slide-content duplicate and the "suggest, don't edit" case.
