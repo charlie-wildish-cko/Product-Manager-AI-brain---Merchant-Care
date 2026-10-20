@@ -359,6 +359,7 @@ Care agents today log into both Zendesk and Jira to escalate, track, and relay u
 
 **Technical and operational**
 
+- Jira Merchant Care requirements document from the discovery workshop (March 2025), source of the requirements in this PRD. The file was removed from the repo in commit a54cc62.
 - `01-knowledge-base/processes/support-workflows.md` — escalation to Engineering workflow context
 - `01-knowledge-base/teams.md` — team naming reference
 

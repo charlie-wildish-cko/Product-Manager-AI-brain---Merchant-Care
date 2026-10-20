@@ -328,7 +328,7 @@ Per-segment targets (at 96% lever execution): Standard 74.9%, Enterprise 78.8%, 
 
 **Links**
 
-- [support_contacts_flat_table_2025_last_6m.csv](../../../05-archive/2026/data-exports/support_contacts_flat_table_2025_last_6m.csv) — Source for volume model
+- [support_contacts_flat_table_2025_last_6m.csv](../../../05-archive/2026/data-exports/support_contacts_flat_table_2025_last_6m.csv) — Source for volume model (archived)
 - [support_contacts_flat_table_2025_metric_definitions.md](../../../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) — Metric definitions
 - [fin-email-auth-data-policy-prd.md](../fin-email-auth-data-policy/prd.md) — Fin on email: auth and data policy
 - [zendesk-org-domain-mapping-prd.md](../zendesk-org-domain-mapping/prd.md) — Org identification
