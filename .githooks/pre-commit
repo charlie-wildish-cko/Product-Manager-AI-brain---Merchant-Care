@@ -1,2 +1,6 @@
 #!/bin/sh
-exec python3 scripts/repo_check.py
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "repo-check: python3 not found. Install python3 or run git commit --no-verify." >&2
+  exit 1
+fi
+exec python3 scripts/repo_check.py --staged

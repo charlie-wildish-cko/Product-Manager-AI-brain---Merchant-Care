@@ -59,6 +59,10 @@ class Exceptions(NamedTuple):
     errors: List[tuple]
 
 
+class RepoCheckError(Exception):
+    pass
+
+
 class Result(NamedTuple):
     errors: List[str]
     docs_scanned: int
@@ -76,10 +80,12 @@ def has_git(root):
     return os.path.exists(os.path.join(root, ".git"))
 
 
-def list_files(root):
+def list_files(root, staged):
     if has_git(root):
         listed = set(git_lines(root, "ls-files", "-z", "--cached"))
-        return listed - set(git_lines(root, "ls-files", "-z", "--deleted"))
+        return listed if staged else listed - set(git_lines(root, "ls-files", "-z", "--deleted"))
+    if staged:
+        raise RepoCheckError("repo-check: --staged needs a git repository.")
     found = set()
     for base, dirs, names in os.walk(root):
         rel = os.path.relpath(base, root).replace(os.sep, "/")
@@ -87,6 +93,32 @@ def list_files(root):
         for name in names:
             found.add(posixpath.normpath(posixpath.join(rel, name)))
     return found
+
+
+def read_index(root, paths):
+    request = "".join(":%s\n" % path for path in paths).encode("utf-8")
+    data = subprocess.run(
+        ["git", "-C", root, "cat-file", "--batch"], input=request, stdout=subprocess.PIPE, check=True
+    ).stdout
+    contents, pos = {}, 0
+    for path in paths:
+        end = data.index(b"\n", pos)
+        header = data[pos:end].split()
+        pos = end + 1
+        if header[-1] == b"missing":
+            continue
+        size = int(header[2])
+        contents[path] = data[pos:pos + size].decode("utf-8", "replace")
+        pos += size + 1
+    return contents
+
+
+def read_working_tree(root, paths):
+    contents = {}
+    for path in paths:
+        with open(os.path.join(root, path), encoding="utf-8", errors="replace") as handle:
+            contents[path] = handle.read()
+    return contents
 
 
 def is_authored(rel):
@@ -205,18 +237,18 @@ def gitignored(root, paths):
     return {part for part in proc.stdout.decode("utf-8", "replace").split("\0") if part}
 
 
-def check(root, today=None):
+def check(root, today=None, staged=False):
     today = today or datetime.date.today()
-    files = list_files(root)
+    files = list_files(root, staged)
     files_by_ext = {}
     for path in sorted(files):
         files_by_ext.setdefault(posixpath.splitext(path)[1].lower(), []).append(path)
-    docs = sorted(f for f in files if is_authored(f))
+    docs = sorted(f for f in files if is_authored(f) and "\n" not in f)
+    texts = (read_index if staged else read_working_tree)(root, docs)
 
     errors, unresolved, checked = [], [], 0
     for doc in docs:
-        with open(os.path.join(root, doc), encoding="utf-8", errors="replace") as handle:
-            lines = handle.read().split("\n")
+        lines = texts[doc].split("\n")
         exceptions = parse_exceptions(doc, lines, today)
         allowed = exceptions.valid_lines
         errors.extend(exceptions.errors)
@@ -242,8 +274,17 @@ def check(root, today=None):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Check authored docs for broken repo path references.")
     parser.add_argument("--root", default=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    parser.add_argument(
+        "--staged",
+        action="store_true",
+        help="read docs and resolve targets from the git index instead of the working tree",
+    )
     args = parser.parse_args(argv)
-    result = check(os.path.abspath(args.root))
+    try:
+        result = check(os.path.abspath(args.root), staged=args.staged)
+    except RepoCheckError as error:
+        print(error, file=sys.stderr)
+        return 2
     for error in result.errors:
         print(error)
     status = "%d error(s)" % len(result.errors) if result.errors else "ok"
