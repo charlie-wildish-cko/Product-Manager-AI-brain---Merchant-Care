@@ -2,12 +2,12 @@
 
 **Email subject:** Reminder – Changes to Checkout.com support
 
-**Email preview:** We're phasing out email as a support channel from Q3 2026
+**Email preview:** We're phasing out email as a support channel from [date TBC]
 
 
 **REMINDER – CHANGES TO CHECKOUT.COM SUPPORT**
 
-We'd like to remind you that from **Q3 2026**, we're phasing out email as a support channel.
+We'd like to remind you that from **[date TBC]**, we're phasing out email as a support channel.
 
 With our AI Assistant, in addition to our existing webform, you now have flexible, more secure help options through authenticated Dashboard channels.
 
