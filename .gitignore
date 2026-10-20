@@ -15,8 +15,6 @@ Thumbs.db
 *~
 .cursor/
 .obsidian/
-
-# Claude Code worktrees
 .claude/worktrees/
 
 # Sensitive Information
@@ -54,7 +52,6 @@ build/
 # **/private-notes/
 # **/*-personal.md
 
-# Imported support content (refreshed by /sync-support-content)
 01-knowledge-base/Support content/API reference/code_samples/
 01-knowledge-base/Support content/API reference/components/
 01-knowledge-base/Support content/API reference/future/
@@ -68,6 +65,5 @@ build/
 01-knowledge-base/Support content/checkout-support-site-main/README.md
 01-knowledge-base/Support content/checkout-support-site-main/Support articles/
 
-# Imported Care Agent SOPs
 01-knowledge-base/processes/Care Agent SOPs/INDEX.md
 01-knowledge-base/processes/Care Agent SOPs/zendesk-kb/
