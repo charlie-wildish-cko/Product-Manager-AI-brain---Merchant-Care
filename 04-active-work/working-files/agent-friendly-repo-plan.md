@@ -45,9 +45,9 @@ Not real problems here, so the plan skips them:
 
 Design run twice by independent runners (opus, fable) with different constraints. Base: the front-matter design. Grafts: skill output contracts and skill config from the folder design. Rejected: the folder-per-initiative move (about 95 file moves, unproven grain) and the index.
 
-- `00-facts/facts.yaml`. One entry per current-state fact, decision, or assumption: product count (derived from the CSV), unit costs, Ray timeline, team composition, current-state facts. Docs link or restate, and a check lists every stale restatement. <!-- repo-check: ignore reason="planned file, created in a later phase of this plan" until=2026-12-31 -->
-- `00-facts/glossary.yaml`. Only terms with banned aliases (Standard to Growth, Moron to Meron, entity to customer). The 200-term payment glossary stays where it is. <!-- repo-check: ignore reason="planned file, created in a later phase of this plan" until=2026-12-31 -->
-- `00-facts/sources.yaml`. Every external authority and every external ID the skills hardcode (Drive folder, Airtable IDs, Look 18808, Confluence parents, the Plain deck). <!-- repo-check: ignore reason="planned file, created in a later phase of this plan" until=2026-12-31 -->
+- 00-facts/facts.yaml. One entry per current-state fact, decision, or assumption: product count (derived from the CSV), unit costs, Ray timeline, team composition, current-state facts. Docs link or restate, and a check lists every stale restatement.
+- 00-facts/glossary.yaml. Only terms with banned aliases (Standard to Growth, Moron to Meron, entity to customer). The 200-term payment glossary stays where it is.
+- 00-facts/sources.yaml. Every external authority and every external ID the skills hardcode (Drive folder, Airtable IDs, Look 18808, Confluence parents, the Plain deck).
 - Front matter on about 156 authored docs: `status`, `owner` (charlie or shared), `audience`, `deliverable`, `verified_on`, optional `canonical_source` plus `synced_on`, `superseded_by`. Imported content (3,872 files), the archive, transcripts, and old meeting notes get a path class and no front matter.
 - `scripts/repo_check.py`, one script, one error format: `path:line: problem. Fix: action`. It runs as a Claude Code hook on write, as a pre-commit hook for your Obsidian edits, and in CI.
 - Skill contract: no skill chooses a save path. Each updates the named doc in place or replies in chat. IDs come from `sources.yaml`.
