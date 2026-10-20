@@ -45,7 +45,8 @@ AUTHORED_DIRS = ("01-knowledge-base/", "02-workflows/", "03-templates/", "04-act
 EXTENSIONS = "md|csv|tsv|json|html|yaml|yml|pdf|png"
 
 EXT_RE = re.compile(r"\.(?:%s)$" % EXTENSIONS, re.IGNORECASE)
-PLACEHOLDER_RE = re.compile(r"[<>\[\]{}*]")
+NUMBERED_DIR_RE = re.compile(r"^[0-9]{2}-")
+PLACEHOLDER_RE = re.compile(r"[<>\[\]{}*]|YYYY")
 SCHEME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*:")
 CODE_SPAN_RE = re.compile(r"`([^`\n]+)`")
 LINK_RE = re.compile(r"\[[^\]]*\]\((<[^>]+>|[^)\s]+)(?:\s+\"[^\"]*\")?\)")
@@ -59,6 +60,11 @@ MAX_EXCEPTION_DAYS = 180
 class Exceptions(NamedTuple):
     valid_lines: Set[int]
     errors: List[tuple]
+
+
+class Ref(NamedTuple):
+    target: str
+    is_dir: bool
 
 
 class RepoCheckError(Exception):
@@ -132,23 +138,28 @@ def is_authored(rel):
     return len(parts) == 4 and parts[:2] == [".claude", "skills"] and parts[3] == "SKILL.md"
 
 
-def clean_target(raw):
+def clean_target(raw, top_dirs):
     target = unquote(raw.strip().strip("<>")).split("#", 1)[0].strip()
-    if not target or not EXT_RE.search(target) or PLACEHOLDER_RE.search(target):
+    if not target or PLACEHOLDER_RE.search(target):
         return None
     if SCHEME_RE.match(target) or target.startswith(("/", "~")):
         return None
-    return target
+    if EXT_RE.search(target):
+        return Ref(target, False)
+    first = target.split("/", 1)[0]
+    if target.endswith("/") and (first in top_dirs or first == ".claude" or NUMBERED_DIR_RE.match(first)):
+        return Ref(target, True)
+    return None
 
 
-def extract_refs(line):
+def extract_refs(line, top_dirs):
     found = []
     for pattern, kind in ((LINK_RE, "link"), (CODE_SPAN_RE, "code")):
         for match in pattern.finditer(line):
-            target = clean_target(match.group(1))
-            if target and (kind == "link" or "/" in target):
-                found.append((match.start(), target))
-    return list(dict.fromkeys(target for _, target in sorted(found)))
+            ref = clean_target(match.group(1), top_dirs)
+            if ref and (kind == "link" or "/" in ref.target):
+                found.append((match.start(), ref))
+    return list(dict.fromkeys(ref for _, ref in sorted(found)))
 
 
 def candidates(doc, target):
@@ -228,6 +239,19 @@ def suggest(files_by_ext, doc, target):
     return best
 
 
+def probe_path(candidate, ref):
+    return candidate + "/" if ref.is_dir else candidate
+
+
+def ignored_trees(root):
+    try:
+        with open(os.path.join(root, ".gitignore"), encoding="utf-8", errors="replace") as handle:
+            patterns = {line.strip().lstrip("/") for line in handle if line.strip() and not line.startswith("#")}
+    except OSError:
+        return set()
+    return parent_dirs(patterns)
+
+
 def gitignored(root, paths):
     if not paths or not has_git(root):
         return set()
@@ -239,9 +263,21 @@ def gitignored(root, paths):
     return {part for part in proc.stdout.decode("utf-8", "replace").split("\0") if part}
 
 
+def parent_dirs(files):
+    found = set()
+    for path in files:
+        parent = posixpath.dirname(path)
+        while parent and parent not in found:
+            found.add(parent)
+            parent = posixpath.dirname(parent)
+    return found
+
+
 def check(root, today=None, staged=False):
     today = today or datetime.date.today()
     files = list_files(root, staged)
+    dirs = parent_dirs(files)
+    top_dirs = {d for d in dirs if "/" not in d}
     files_by_ext = {}
     for path in sorted(files):
         files_by_ext.setdefault(posixpath.splitext(path)[1].lower(), []).append(path)
@@ -257,24 +293,30 @@ def check(root, today=None, staged=False):
         for number, line in enumerate(lines, 1):
             if number in allowed:
                 continue
-            for target in extract_refs(strip_markers(line)):
+            for ref in extract_refs(strip_markers(line), top_dirs):
                 checked += 1
-                if not any(c in files for c in candidates(doc, target)):
-                    unresolved.append((doc, number, target))
+                known = dirs if ref.is_dir else files
+                if not any(c in known for c in candidates(doc, ref.target)):
+                    unresolved.append((doc, number, ref))
 
     ci = bool(os.environ.get("CI"))
-    ignored = gitignored(root, sorted({c for d, _, t in unresolved for c in candidates(d, t)}))
-    for doc, number, target in unresolved:
-        hits = [c for c in candidates(doc, target) if c in ignored]
+    probes = {probe_path(c, ref) for doc, _, ref in unresolved for c in candidates(doc, ref.target)}
+    matched = gitignored(root, sorted(probes))
+    trees = ignored_trees(root)
+    for doc, number, ref in unresolved:
+        hits = [
+            c for c in candidates(doc, ref.target)
+            if probe_path(c, ref) in matched or (ref.is_dir and c in trees)
+        ]
         if hits:
             if ci or any(os.path.exists(os.path.join(root, c)) for c in hits):
                 continue
-            message = '%s:%d: broken path "%s" (ignored by .gitignore, not found on disk). Fix: restore it locally, update the path or remove the reference.' % (doc, number, target)
+            message = '%s:%d: broken path "%s" (ignored by .gitignore, not found on disk). Fix: restore it locally, update the path or remove the reference.' % (doc, number, ref.target)
             errors.append((doc, number, message))
             continue
-        best = suggest(files_by_ext, doc, target)
-        fix = "point it at %s or remove the reference." % best if best else "remove the reference."
-        errors.append((doc, number, '%s:%d: broken path "%s". Fix: %s' % (doc, number, target, fix)))
+        best = None if ref.is_dir else suggest(files_by_ext, doc, ref.target)
+        fix = "point it at %s or remove the reference." % best if best else "update the path or remove the reference."
+        errors.append((doc, number, '%s:%d: broken path "%s". Fix: %s' % (doc, number, ref.target, fix)))
     errors.sort(key=lambda e: (e[0], e[1]))
     return Result([e[2] for e in errors], len(docs), checked)
 
