@@ -31,6 +31,7 @@ Charlie PM brain/
 ├── 03-templates/                   # Reusable document templates (PRD, memo, RFC, postmortem, etc.) and the Checkout.com Brand Identity (LIFT) design system
 ├── 04-active-work/                 # Active work — prds/, strategy/, research/, working-files/, meeting-notes/
 ├── 05-archive/                     # Completed work, by year/quarter
+├── scripts/                        # repo-check (broken path references), its tests, hook installer
 │
 └── .claude/skills/                 # Slash-command skills (see below)
 ```
