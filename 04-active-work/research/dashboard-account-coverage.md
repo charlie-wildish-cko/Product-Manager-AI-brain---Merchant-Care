@@ -6,7 +6,7 @@
 
 The result: half of all email contacts cannot receive AI-assisted, data-informed responses. They either wait for a human agent or receive generic answers.
 
-See also: [customer-comms-identity-problem-statement.md](../../05-archive/2026/investigations/customer-comms-identity-problem-statement.md) — broader identity and comms fragmentation context.
+See also: [customer-comms-identity-problem-statement.md](../../05-archive/2026/investigations/customer-comms-identity-problem-statement.md) — broader identity and comms fragmentation context (archived).
 
 ---
 
