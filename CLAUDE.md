@@ -36,6 +36,7 @@ Every document, analysis, or recommendation must connect to:
 03-templates/        # Reusable document templates (PRD, memo, user story, etc.)
 04-active-work/      # Active work — prds/, strategy/, research/, working-files/
 05-archive/          # Completed work by year/quarter
+scripts/             # repo-check (broken path references), its tests, hook installer
 ```
 
 **Keep `README.md` in sync with this structure** — when a top-level directory is added, removed, or its purpose changes, update `README.md`'s directory tree and key reference table in the same pass, not as separate cleanup later.
