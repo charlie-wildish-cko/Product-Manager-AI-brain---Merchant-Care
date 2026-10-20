@@ -1,17 +1,30 @@
 #!/usr/bin/env python3
 """Check authored docs for broken repo path references (rule R5).
 
-A reference is a markdown link target or a backticked token that ends in a
-known file extension. Backticked tokens must also contain a slash. A reference
-resolves when a tracked file exists at that path from the repo root or from the
-doc's own directory, so an untracked file fails locally exactly as it fails in
-CI. A target that .gitignore matches must exist on disk. It is skipped when the
-CI environment variable is set, because ignored trees do not exist in a
-checkout. Placeholders, external URLs, anchors and absolute paths are not
-checked.
+A reference is a markdown link target or a backticked token. A file reference
+ends in a known file extension, and a backticked one must also contain a slash.
+A directory reference ends in a slash and starts with an existing top-level
+directory, a two-digit prefix such as 04-, or .claude.
 
-Error format, one per line:
-    path:line: broken path "<target>". Fix: point it at <closest path> or remove the reference.
+A reference resolves when a tracked file exists at that path (for a directory,
+under that path) from the repo root or from the doc's own directory, so an
+untracked file fails locally exactly as it fails in CI. A target that
+.gitignore matches must exist on disk. It is skipped when the CI environment
+variable is set, because ignored trees do not exist in a checkout. A directory
+with no tracked files counts as an ignored tree when .gitignore lists a path
+beneath it. Placeholders (<x>, {x}, [x], *, YYYY), external URLs, anchors and
+absolute paths are not checked. Symlinked docs are skipped.
+
+Modes:
+    python3 scripts/repo_check.py            reads the working tree (CI)
+    python3 scripts/repo_check.py --staged   reads docs and resolves targets
+                                             from the index (pre-commit)
+
+Error format, one per line on stderr. The summary line goes to stdout:
+    path:line: broken path "<target>". Fix: point it at <path> or remove the reference.
+    path:line: broken path "<target>". Fix: update the path or remove the reference.
+A path is suggested only when exactly one tracked file has the same basename,
+or exactly one has a basename at least 0.8 similar.
 
 An exception is an HTML comment. Alone on its own line it covers the next line
 only. Trailing a line it covers that line only:
@@ -19,7 +32,12 @@ only. Trailing a line it covers that line only:
 The keyword must be exactly "ignore". A missing reason, a date that is not
 strict YYYY-MM-DD, an expired date and a date more than 180 days away are errors.
 
-Exit code is 1 when any error is reported and 0 otherwise.
+Not covered: bare unformatted paths, wikilinks, reference-style link
+definitions, HTML hrefs, backticked filenames without a slash, and file
+extensions outside the EXTENSIONS list.
+
+Exit code is 1 when any error is reported, 2 when git or the arguments fail,
+and 0 otherwise.
 """
 
 import argparse
