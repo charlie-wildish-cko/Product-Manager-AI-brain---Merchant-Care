@@ -55,6 +55,7 @@ REASON_RE = re.compile(r"\breason=\"([^\"]*)\"")
 UNTIL_RE = re.compile(r"\buntil=(\S+)")
 ISO_DATE_RE = re.compile(r"([0-9]{4})-([0-9]{2})-([0-9]{2})", re.ASCII)
 MAX_EXCEPTION_DAYS = 180
+MIN_NAME_SIMILARITY = 0.8
 
 
 class Exceptions(NamedTuple):
@@ -224,17 +225,24 @@ def parse_exceptions(rel, lines, today):
     return Exceptions(valid, errors)
 
 
-def suggest(files_by_ext, doc, target):
-    pool = files_by_ext.get(posixpath.splitext(target)[1].lower(), [])
-    intended = posixpath.normpath(posixpath.join(posixpath.dirname(doc), target)) if target.startswith(".") else target
-    base = posixpath.basename(intended)
-    same_name = [p for p in pool if posixpath.basename(p) == base]
-    if same_name:
-        best = max(same_name, key=lambda p: difflib.SequenceMatcher(None, intended, p).ratio())
-    else:
-        close = difflib.get_close_matches(intended, pool, n=1, cutoff=0.75)
-        best = close[0] if close else None
-    if best and (target.startswith(".") or "/" not in target):
+def index_by_basename(files):
+    index = {}
+    for path in sorted(files):
+        index.setdefault(posixpath.basename(path).lower(), []).append(path)
+    return index
+
+
+def suggest(index, doc, target):
+    name = posixpath.basename(target).lower()
+    matches = index.get(name)
+    if matches is None:
+        names = [n for n in index if n.endswith(posixpath.splitext(name)[1])]
+        close = difflib.get_close_matches(name, names, n=1, cutoff=MIN_NAME_SIMILARITY)
+        matches = index[close[0]] if close else []
+    if len(matches) != 1:
+        return None
+    best = matches[0]
+    if target.startswith(".") or "/" not in target:
         best = posixpath.relpath(best, posixpath.dirname(doc) or ".")
     return best
 
@@ -278,9 +286,7 @@ def check(root, today=None, staged=False):
     files = list_files(root, staged)
     dirs = parent_dirs(files)
     top_dirs = {d for d in dirs if "/" not in d}
-    files_by_ext = {}
-    for path in sorted(files):
-        files_by_ext.setdefault(posixpath.splitext(path)[1].lower(), []).append(path)
+    index = index_by_basename(files)
     docs = sorted(f for f in files if is_authored(f) and "\n" not in f)
     texts = (read_index if staged else read_working_tree)(root, docs)
 
@@ -314,7 +320,7 @@ def check(root, today=None, staged=False):
             message = '%s:%d: broken path "%s" (ignored by .gitignore, not found on disk). Fix: restore it locally, update the path or remove the reference.' % (doc, number, ref.target)
             errors.append((doc, number, message))
             continue
-        best = None if ref.is_dir else suggest(files_by_ext, doc, ref.target)
+        best = None if ref.is_dir else suggest(index, doc, ref.target)
         fix = "point it at %s or remove the reference." % best if best else "update the path or remove the reference."
         errors.append((doc, number, '%s:%d: broken path "%s". Fix: %s' % (doc, number, ref.target, fix)))
     errors.sort(key=lambda e: (e[0], e[1]))
