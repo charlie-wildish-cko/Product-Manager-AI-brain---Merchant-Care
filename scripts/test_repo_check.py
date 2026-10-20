@@ -17,6 +17,21 @@ def run(name):
     return repo_check.check(os.path.join(FIXTURES, name), today=TODAY)
 
 
+def write_tree(root, files):
+    for rel, content in files.items():
+        path = os.path.join(root, rel)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(content)
+
+
+def check_files(files, **kwargs):
+    kwargs.setdefault("today", TODAY)
+    with tempfile.TemporaryDirectory() as root:
+        write_tree(root, files)
+        return repo_check.check(root, **kwargs)
+
+
 class ReferenceTests(unittest.TestCase):
     def test_broken_ref_reports_line_and_closest_path(self):
         errors, _, _ = run("closest_path")
@@ -104,6 +119,63 @@ class ExceptionTests(unittest.TestCase):
         self.assertIn("doc.md:7: exception has no valid until date.", messages[2])
         self.assertIn("doc.md:9: unknown repo-check directive.", messages[3])
         self.assertEqual(len(errors) - len(messages), 3)
+
+
+class ExceptionScopeTests(unittest.TestCase):
+    def marker(self, until="2026-11-01", keyword="ignore"):
+        return '<!-- repo-check: %s reason="planned" until=%s -->' % (keyword, until)
+
+    def test_marker_on_its_own_line_covers_only_the_next_line(self):
+        doc = "\n".join(
+            [
+                self.marker(),
+                "`04-active-work/a.md` `04-active-work/b.md`",
+                "`04-active-work/c.md`",
+            ]
+        )
+        errors, _, _ = check_files({"doc.md": doc})
+        self.assertEqual(len(errors), 1)
+        self.assertIn('doc.md:3: broken path "04-active-work/c.md"', errors[0])
+
+    def test_trailing_marker_covers_only_its_own_line(self):
+        doc = "\n".join(
+            [
+                "`04-active-work/a.md` " + self.marker(),
+                "`04-active-work/b.md`",
+            ]
+        )
+        errors, _, _ = check_files({"doc.md": doc})
+        self.assertEqual(len(errors), 1)
+        self.assertIn('doc.md:2: broken path "04-active-work/b.md"', errors[0])
+
+    def test_until_accepts_only_strict_iso_dates(self):
+        for until in ("20261101", "2026-1-5", "2026-11-01T00:00", "2026-13-01", "２０２６-１１-０１"):
+            errors, _, _ = check_files({"doc.md": self.marker(until) + "\n`04-active-work/a.md`\n"})
+            self.assertEqual(len(errors), 2, until)
+            self.assertIn("no valid until date", errors[0], until)
+
+    def test_until_is_capped_at_180_days(self):
+        latest = TODAY + datetime.timedelta(days=180)
+        ok, _, _ = check_files({"doc.md": self.marker(latest.isoformat()) + "\n`04-active-work/a.md`\n"})
+        self.assertEqual(ok, [])
+        late = (latest + datetime.timedelta(days=1)).isoformat()
+        errors, _, _ = check_files({"doc.md": self.marker(late) + "\n`04-active-work/a.md`\n"})
+        self.assertEqual(len(errors), 2)
+        self.assertIn("more than 180 days", errors[0])
+        self.assertIn(latest.isoformat(), errors[0])
+
+    def test_keyword_must_be_exactly_ignore(self):
+        errors, _, _ = check_files({"doc.md": self.marker(keyword="ignoreall") + "\n`04-active-work/a.md`\n"})
+        self.assertEqual(len(errors), 2)
+        self.assertIn("unknown repo-check directive", errors[0])
+
+    def test_marker_text_inside_a_code_span_is_not_a_marker(self):
+        doc = "Write `%s` above a line.\n" % self.marker(keyword="allow")
+        self.assertEqual(check_files({"doc.md": doc})[0], [])
+
+    def test_backticked_path_inside_a_marker_is_not_checked(self):
+        doc = '<!-- repo-check: ignore reason="see `04-active-work/x.md`" until=2026-11-01 -->\ntext\n'
+        self.assertEqual(check_files({"doc.md": doc})[0], [])
 
 
 class CommandLineTests(unittest.TestCase):

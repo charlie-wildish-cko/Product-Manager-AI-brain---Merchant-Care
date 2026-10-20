@@ -10,9 +10,11 @@ that .gitignore excludes are not checked.
 Error format, one per line:
     path:line: broken path "<target>". Fix: point it at <closest path> or remove the reference.
 
-An exception is an HTML comment on the offending line or the line above:
+An exception is an HTML comment. Alone on its own line it covers the next line
+only. Trailing a line it covers that line only:
     <!-- repo-check: ignore reason="why" until=YYYY-MM-DD -->
-A missing reason, a missing or invalid date, and an expired date are errors.
+The keyword must be exactly "ignore". A missing reason, a date that is not
+strict YYYY-MM-DD, an expired date and a date more than 180 days away are errors.
 
 Exit code is 1 when any error is reported and 0 otherwise.
 """
@@ -47,6 +49,8 @@ LINK_RE = re.compile(r"\[[^\]]*\]\((<[^>]+>|[^)\s]+)(?:\s+\"[^\"]*\")?\)")
 MARKER_RE = re.compile(r"<!--\s*repo-check:(.*?)-->")
 REASON_RE = re.compile(r"\breason=\"([^\"]*)\"")
 UNTIL_RE = re.compile(r"\buntil=(\S+)")
+ISO_DATE_RE = re.compile(r"([0-9]{4})-([0-9]{2})-([0-9]{2})", re.ASCII)
+MAX_EXCEPTION_DAYS = 180
 
 
 class Exceptions(NamedTuple):
@@ -121,31 +125,56 @@ def candidates(doc, target):
     return options
 
 
+def mask_code_spans(line):
+    return CODE_SPAN_RE.sub(lambda match: " " * len(match.group(0)), line)
+
+
+def strip_markers(line):
+    masked = mask_code_spans(line)
+    kept, pos = [], 0
+    for marker in MARKER_RE.finditer(masked):
+        kept.append(line[pos:marker.start()])
+        pos = marker.end()
+    kept.append(line[pos:])
+    return "".join(kept)
+
+
+def parse_iso_date(text):
+    match = ISO_DATE_RE.fullmatch(text)
+    if not match:
+        return None
+    try:
+        return datetime.date(*(int(part) for part in match.groups()))
+    except ValueError:
+        return None
+
+
 def parse_exceptions(rel, lines, today):
     valid, errors = set(), []
+    latest = today + datetime.timedelta(days=MAX_EXCEPTION_DAYS)
     for number, line in enumerate(lines, 1):
-        stripped = CODE_SPAN_RE.sub("", line)
-        for marker in MARKER_RE.finditer(stripped):
+        masked = mask_code_spans(line)
+        alone = not strip_markers(line).strip()
+        for marker in MARKER_RE.finditer(masked):
             body = marker.group(1).strip()
             where = "%s:%d:" % (rel, number)
             reason = REASON_RE.search(body)
             until = UNTIL_RE.search(body)
-            if not body.startswith("ignore"):
+            if body.split(None, 1)[:1] != ["ignore"]:
                 errors.append((rel, number, '%s unknown repo-check directive. Fix: use <!-- repo-check: ignore reason="..." until=YYYY-MM-DD -->.' % where))
                 continue
             if not reason or not reason.group(1).strip():
                 errors.append((rel, number, '%s exception has no reason. Fix: add reason="why this reference is allowed".' % where))
                 continue
-            try:
-                expiry = datetime.date.fromisoformat(until.group(1)) if until else None
-            except ValueError:
-                expiry = None
+            expiry = parse_iso_date(until.group(1)) if until else None
             if expiry is None:
                 errors.append((rel, number, "%s exception has no valid until date. Fix: add until=YYYY-MM-DD." % where))
             elif expiry < today:
                 errors.append((rel, number, "%s exception expired on %s. Fix: repair the reference or renew the date with a reason." % (where, expiry.isoformat())))
+            elif expiry > latest:
+                errors.append((rel, number, "%s exception until=%s is more than %d days away. Fix: use a date on or before %s." % (where, expiry.isoformat(), MAX_EXCEPTION_DAYS, latest.isoformat())))
             else:
-                valid.add(number)
+                valid.add(number + 1 if alone else number)
     return Exceptions(valid, errors)
 
 
@@ -191,9 +220,9 @@ def check(root, today=None):
         allowed = exceptions.valid_lines
         errors.extend(exceptions.errors)
         for number, line in enumerate(lines, 1):
-            if number in allowed or number - 1 in allowed:
+            if number in allowed:
                 continue
-            for target in extract_refs(line):
+            for target in extract_refs(strip_markers(line)):
                 checked += 1
                 if not any(c in files for c in candidates(doc, target)):
                     unresolved.append((doc, number, target))
