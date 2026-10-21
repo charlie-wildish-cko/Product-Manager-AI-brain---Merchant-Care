@@ -2,7 +2,7 @@
 
 **Deliverable**: Reduce Agent Effort on Dispatch and Email Clean Up Rules (Q2 2026)
 **Flywheel**: Agent Experience + Governance
-**Goal served**: Reduce cost of support (removes manual DPO triage from agent workload); supports existing DSAR referral process ([data-subject-access-requests-dsar.md](../../01-knowledge-base/processes/Care%20Agent%20SOPs/zendesk-kb/complaints/data-subject-access-requests-dsar.md)), which requires agents to identify these tickets manually today.
+**Goal served**: Reduce cost of support (removes manual DPO triage from agent workload); supports existing DSAR referral process ([Data Subject Access Requests (DSAR)](../../01-knowledge-base/Support%20content/checkout-support-site-internal/Support%20articles/Case%20Management/Complaints/Data%20Subject%20Access%20Requests%20%28DSAR%29%20-%2033629378044306/index.md)), which requires agents to identify these tickets manually today.
 
 ---
 
