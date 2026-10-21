@@ -358,7 +358,7 @@ Prioritisation: Must have (P0), Should have (P1), Nice to have (P2).
 
 - `01-knowledge-base/processes/known-challenges.md` — Email authentication gap and AI resolution rate constraint
 - `01-knowledge-base/processes/ai-agent-operations.md` — Fin AI Agent operations, email pilot findings
-- `04-active-work/roadmap-items/zendesk-org-domain-mapping-prd.md` — Domain mapping and identification (classifier dependency)
+- `04-active-work/prds/zendesk-org-domain-mapping/prd.md` — Domain mapping and identification (classifier dependency)
 
 **Technical and commercial:**
 

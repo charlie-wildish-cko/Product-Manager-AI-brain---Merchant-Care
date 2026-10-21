@@ -138,7 +138,7 @@ stakeholder-updates/
 
 **Pro tip**: Create a "parking lot" document for ideas and tasks that aren't yet prioritized but you don't want to forget.
 
-**Example**: `active-work/parking-lot.md`
+**Example**: active-work/parking-lot.md
 ```markdown
 # Ideas & Future Work
 

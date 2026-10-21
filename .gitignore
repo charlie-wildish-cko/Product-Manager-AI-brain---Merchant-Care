@@ -16,6 +16,7 @@ Thumbs.db
 .cursor/
 .obsidian/
 .claude/worktrees/
+.claude/settings.local.json
 
 # Sensitive Information
 # Add patterns for any files containing sensitive data
@@ -40,6 +41,7 @@ scripts/daily-sync.log
 # Python
 venv/
 .venv/
+__pycache__/
 
 # Build/Cache
 node_modules/

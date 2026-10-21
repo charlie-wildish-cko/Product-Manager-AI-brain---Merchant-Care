@@ -255,7 +255,7 @@ A maintained document (or Zendesk org tag) recording:
 
 ## Appendix
 
-- `04-active-work/roadmap-items/blue-emi-zendesk-support-prd.md` — Blue EMI Zendesk infrastructure (multi-entity merchant context)
+- `05-archive/2026/prds/blue-emi-zendesk-support/prd.md` — Blue EMI Zendesk infrastructure (multi-entity merchant context) (archived)
 - Zendesk documentation: [Organizations and user association](https://support.zendesk.com/hc/en-us/articles/4408882195482)
 
 | Behaviour | Detail |

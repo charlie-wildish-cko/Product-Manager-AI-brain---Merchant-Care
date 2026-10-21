@@ -42,9 +42,9 @@ We are reducing Checkout's cost of support and giving merchants a faster support
 
 **Problem statement:** We need to reduce cost of support and provide a faster experience; 80% Fin involvement (Fin as first touchpoint for most contacts) with 70% resolution at that involvement drives overall AI resolution. Today Fin is Dashboard chat only (9.2% involvement). Email (Merchant) and Webform have 0% Fin; those merchants never see Fin.
 
-**Who is affected:** All merchant segments (Standard, Enterprise, Premium) and Care Operations (own 80% target). Premium/Enterprise use email most; Standard sends 26.6% via email today despite no Dedicated Email entitlement per [care-success-plans.md](../../01-knowledge-base/products/care-success-plans.md).
+**Who is affected:** All merchant segments (Standard, Enterprise, Premium) and Care Operations (own 80% target). Premium/Enterprise use email most; Standard sends 26.6% via email today despite no Dedicated Email entitlement per [care-success-plans.md](../../../01-knowledge-base/products/care-success-plans.md).
 
-**Evidence:** Channel split (source: `support_contacts_flat_table_2025_last_6m.csv`, last 6 months; definitions: [support_contacts_flat_table_2025_metric_definitions.md](../../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md)):
+**Evidence:** Channel split (source: `support_contacts_flat_table_2025_last_6m.csv`, last 6 months; definitions: [support_contacts_flat_table_2025_metric_definitions.md](../../../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md)):
 
 
 | Channel                         | % of contacts | Fin today                   | Gap                             |
@@ -98,7 +98,7 @@ Per-segment targets (at 96% lever execution): Standard 74.9%, Enterprise 78.8%, 
 **User stories**
 
 - **As a merchant (any segment) who previously used the Dashboard Webform,** I want the support entry point to guide me to Fin chat first, so that I get an instant response. *AC:* Fin chat is primary CTA; Webform secondary/fallback; Fin creates Zendesk ticket on escalation with same fields as Webform; Webform remains as fallback.
-- **As an Enterprise or Premium merchant,** I want Fin to respond to my email support queries (where appropriate) before a human, so that I get faster answers. *AC:* Fin invoked on Email (Merchant) for Enterprise/Premium only; exclusion rules applied ([fin-email-auth-data-policy-prd.md](fin-email-auth-data-policy-prd.md)); Fin attempts resolution and only creates ticket if it cannot resolve; involvement on email tracked by segment.
+- **As an Enterprise or Premium merchant,** I want Fin to respond to my email support queries (where appropriate) before a human, so that I get faster answers. *AC:* Fin invoked on Email (Merchant) for Enterprise/Premium only; exclusion rules applied ([fin-email-auth-data-policy-prd.md](../fin-email-auth-data-policy/prd.md)); Fin attempts resolution and only creates ticket if it cannot resolve; involvement on email tracked by segment.
 - **As a Care Operations manager,** I want Fin involvement rate by Merchant segment and channel in one dashboard, so that I can track progress to 80% and see where adoption lags. *AC:* Reportable metric by segment and channel; baseline Q1 2026; weekly reporting. **As a Care Product Manager,** I want unreachable contacts tagged and the ceiling (~81%) visible so leadership understands 100% is not achievable. *AC:* `fin_unreachable` tag; ceiling in dashboard.
 
 **Support-facing summary**
@@ -118,7 +118,7 @@ Per-segment targets (at 96% lever execution): Standard 74.9%, Enterprise 78.8%, 
 
 - Involvement rate instrumentation (by segment and channel) before levers launch.
 - Standard support model enforcement (redirect Standard email to Fin Dashboard; policy/routing).
-- Fin on email (Premium/Enterprise), Email (Merchant) only; auth and data policy per [fin-email-auth-data-policy-prd.md](fin-email-auth-data-policy-prd.md).
+- Fin on email (Premium/Enterprise), Email (Merchant) only; auth and data policy per [fin-email-auth-data-policy-prd.md](../fin-email-auth-data-policy/prd.md).
 - Webform → Fin chat migration (Fin replicates Webform behaviour; primary entry; Webform fallback).
 - Account unlock form → Fin.
 - Maintain Fin (Dashboard) chat.
@@ -165,8 +165,8 @@ Per-segment targets (at 96% lever execution): Standard 74.9%, Enterprise 78.8%, 
 **Must Have (P0)**
 
 - **FR-1 — Involvement rate instrumentation:** Fin involvement rate measurable by Merchant segment and channel before levers launch. *AC:* Metric defined (Fin-touched / total contacts); denominator = all support contacts (Zendesk + Fin-only resolved); locked with Care Ops; Intercom/Zendesk reporting in place.
-- **FR-2 — Standard support model enforcement:** Per [care-success-plans.md](../../01-knowledge-base/products/care-success-plans.md), Standard has no Dedicated Email. Enforce by redirecting Standard email to Fin (Dashboard) (e.g. auto-reply/redirect). Policy and routing change; Zendesk trigger. *AC:* Standard email no longer accepted; redirect to Dashboard; runbook and message agreed with Care Ops.
-- **FR-3 — Fin on email (Premium/Enterprise):** Fin as first responder on Email (Merchant) from Premium and Enterprise. Email (Internal) out of scope. Auth and data policy per [fin-email-auth-data-policy-prd.md](fin-email-auth-data-policy-prd.md). *AC:* Fin invoked on eligible tickets; exclusion rules applied; resolution attempted before human ticket; involvement on email tracked by segment.
+- **FR-2 — Standard support model enforcement:** Per [care-success-plans.md](../../../01-knowledge-base/products/care-success-plans.md), Standard has no Dedicated Email. Enforce by redirecting Standard email to Fin (Dashboard) (e.g. auto-reply/redirect). Policy and routing change; Zendesk trigger. *AC:* Standard email no longer accepted; redirect to Dashboard; runbook and message agreed with Care Ops.
+- **FR-3 — Fin on email (Premium/Enterprise):** Fin as first responder on Email (Merchant) from Premium and Enterprise. Email (Internal) out of scope. Auth and data policy per [fin-email-auth-data-policy-prd.md](../fin-email-auth-data-policy/prd.md). *AC:* Fin invoked on eligible tickets; exclusion rules applied; resolution attempted before human ticket; involvement on email tracked by segment.
 - **FR-4 — Per-segment targets confirmed:** Validate per-segment targets vs actual baseline and confirm 80% aggregate achievable before Q2. *AC:* Targets confirmed with Care Ops/leadership.
 
 **Definition of done (P0):** Involvement rate instrumented and reported; policy for sharing payments data over email using Fin approved by InfoSec and ARB; per-segment targets confirmed.
@@ -184,11 +184,11 @@ Per-segment targets (at 96% lever execution): Standard 74.9%, Enterprise 78.8%, 
 
 ### Non-functional requirements
 
-- **NFR-1:** Involvement rate dashboard refresh at least weekly; single source of truth = support contacts flat table (and live equivalent). Fin-only resolved counted in both denominator and numerator; logic aligned with [support_contacts_flat_table_2025_metric_definitions.md](../../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md).
+- **NFR-1:** Involvement rate dashboard refresh at least weekly; single source of truth = support contacts flat table (and live equivalent). Fin-only resolved counted in both denominator and numerator; logic aligned with [support_contacts_flat_table_2025_metric_definitions.md](../../../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md).
 
 **Constraints**
 
-- Channel entitlements fixed by segment ([care-success-plans.md](../../01-knowledge-base/products/care-success-plans.md)); Standard no dedicated email; email Fin = Premium/Enterprise only.
+- Channel entitlements fixed by segment ([care-success-plans.md](../../../01-knowledge-base/products/care-success-plans.md)); Standard no dedicated email; email Fin = Premium/Enterprise only.
 - Payments data over email: Phase 3 gated on policy approved by InfoSec and ARB; Phase 2 = Fin on email without payments data (auth classifier only).
 - Structural ceiling: 18.7% unreachable; tag `fin_unreachable`; remain in denominator.
 - Go-live gates: No Phase 3 without policy approval; no Webform migration until Fin replicates behaviour and playbooks updated and agents briefed.
@@ -197,7 +197,7 @@ Per-segment targets (at 96% lever execution): Standard 74.9%, Enterprise 78.8%, 
 
 ## Design and User Experience
 
-**Key UX principles:** Fin is the entry point, not an optional step after a ticket exists. On email, Fin responds before a human is assigned. For Webform migration, Fin replicates Webform behaviour (intake, fields, routing) then becomes primary entry; Webform remains fallback. Email Fin responses include Dashboard and self-serve links. See [fin-email-auth-data-policy-prd.md](fin-email-auth-data-policy-prd.md) for email auth and data UX.
+**Key UX principles:** Fin is the entry point, not an optional step after a ticket exists. On email, Fin responds before a human is assigned. For Webform migration, Fin replicates Webform behaviour (intake, fields, routing) then becomes primary entry; Webform remains fallback. Email Fin responses include Dashboard and self-serve links. See [fin-email-auth-data-policy-prd.md](../fin-email-auth-data-policy/prd.md) for email auth and data UX.
 
 ---
 
@@ -297,7 +297,7 @@ Per-segment targets (at 96% lever execution): Standard 74.9%, Enterprise 78.8%, 
 | ---------------------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | Policy for payments data over email (Fin) approved   | InfoSec / ARB                      | Blocks Phase 3                                                                                       |
 | Fin email auth classifier + domain mapping           | Engineering                        | Blocks email lever                                                                                   |
-| Zendesk org domain mapping                           | Engineering                        | Blocks email identification ([zendesk-org-domain-mapping-prd.md](zendesk-org-domain-mapping-prd.md)) |
+| Zendesk org domain mapping                           | Engineering                        | Blocks email identification ([zendesk-org-domain-mapping-prd.md](../zendesk-org-domain-mapping/prd.md)) |
 | Fin replicates Webform behaviour                     | Zendesk Admins / Fin config        | Blocks Phase 4                                                                                       |
 | Resolution rate metric (definition, instrumentation) | Product Data Science + Content/Fin | Needed to track 70% at 80%                                                                           |
 
@@ -328,13 +328,13 @@ Per-segment targets (at 96% lever execution): Standard 74.9%, Enterprise 78.8%, 
 
 **Links**
 
-- [support_contacts_flat_table_2025_last_6m.csv](../../01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv) — Source for volume model
-- [support_contacts_flat_table_2025_metric_definitions.md](../../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) — Metric definitions
-- [fin-email-auth-data-policy-prd.md](fin-email-auth-data-policy-prd.md) — Fin on email: auth and data policy
-- [zendesk-org-domain-mapping-prd.md](zendesk-org-domain-mapping-prd.md) — Org identification
-- [care-success-plans.md](../../01-knowledge-base/products/care-success-plans.md) — Channel entitlements
-- [content-strategy-2026.md](../../01-knowledge-base/strategy/content-strategy-2026.md) — Resolution rate target 70% at 80%
-- [ai-agent-operations.md](../../01-knowledge-base/processes/ai-agent-operations.md) — Fin operations
+- [support_contacts_flat_table_2025_last_6m.csv](../../../05-archive/2026/data-exports/support_contacts_flat_table_2025_last_6m.csv) — Source for volume model (archived)
+- [support_contacts_flat_table_2025_metric_definitions.md](../../../01-knowledge-base/metrics/support_contacts_flat_table_2025_metric_definitions.md) — Metric definitions
+- [fin-email-auth-data-policy-prd.md](../fin-email-auth-data-policy/prd.md) — Fin on email: auth and data policy
+- [zendesk-org-domain-mapping-prd.md](../zendesk-org-domain-mapping/prd.md) — Org identification
+- [care-success-plans.md](../../../01-knowledge-base/products/care-success-plans.md) — Channel entitlements
+- [content-strategy-2026.md](../../../01-knowledge-base/strategy/content-strategy-2026.md) — Resolution rate target 70% at 80%
+- [ai-agent-operations.md](../../../01-knowledge-base/processes/ai-agent-operations.md) — Fin operations
 
 ### Volume model (detailed)
 
@@ -381,7 +381,7 @@ At 80% per lever: 69.0%; at 90%: 76.4%. Model assumptions: channel mix static (r
 
 ### Document Review Panel feedback
 
-*Applied from [document-review-panel.md](../../02-workflows/document-review-panel.md).*
+*Applied from [document-review-panel.md](../../../02-workflows/document-review-panel.md).*
 
 - **Sam (PM):** One sentence for support and support-facing summary added.
 - **Jordan (Eng):** Failure modes and Webform DoD and runbook gates applied.

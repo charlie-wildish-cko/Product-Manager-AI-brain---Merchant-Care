@@ -300,7 +300,7 @@ Phased by capability risk: read-only first, write actions on a pilot cohort seco
 - Agent Consultant vision and interaction model: `./vision.md`
 - Agent Consultant product reference: `01-knowledge-base/products/agent-consultant.md`
 - Agent automation backlog: Confluence page 7847149938
-- Contact volume actuals: `01-knowledge-base/metrics/support_contacts_flat_table_2025_last_6m.csv`
+- Contact volume actuals (archived): `05-archive/2026/data-exports/support_contacts_flat_table_2025_last_6m.csv`
 - Support taxonomy: `01-knowledge-base/processes/support-taxonomy.md`
 - Care product flywheel model: `01-knowledge-base/strategy/care-product-model.md`
 
