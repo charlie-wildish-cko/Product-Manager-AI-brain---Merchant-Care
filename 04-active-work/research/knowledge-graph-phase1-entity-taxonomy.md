@@ -489,7 +489,7 @@ With entity classes and relationship schema defined (Phases 1 + 1b), Phase 2 map
 
 **KB articles** (879): Reflex AI Engine generates suggested edges; Content team reviews. Same approach as originally scoped.
 
-**SOPs** (~526 articles in Zendesk KB, 125 folders): Reflex generates suggested `REQUIRES_KNOWLEDGE` (Reason × Human L1 → SOP) edges; Process Architect reviews. This is new scope for Phase 2 — not a later phase — because SOP gaps and KB article gaps are the same class of problem requiring the same fix mechanism.
+**SOPs** (528 articles in the Zendesk KB, organised by category): Reflex generates suggested `REQUIRES_KNOWLEDGE` (Reason × Human L1 → SOP) edges; Process Architect reviews. This is new scope for Phase 2 — not a later phase — because SOP gaps and KB article gaps are the same class of problem requiring the same fix mechanism.
 
 **Playbooks and policy rules**: Inventory required before tagging can begin. Process Architect and Operations Excellence to enumerate. Likely smaller in volume; high priority because gaps here create escalation inconsistency and quality failures.
 
