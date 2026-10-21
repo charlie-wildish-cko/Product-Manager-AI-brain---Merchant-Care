@@ -75,7 +75,7 @@ Invoke with `/<skill-name> [args]`. Full definitions in `.claude/skills/`.
 | Team structure & stakeholders | `01-knowledge-base/teams.md` |
 | Support taxonomy & contact volumes | `01-knowledge-base/processes/support-taxonomy.md` |
 | Fin Attribute definitions (Intercom-ready) | `01-knowledge-base/processes/fin-attributes-definitions.md` |
-| Care Agent SOPs & KB index | `01-knowledge-base/processes/Care Agent SOPs/INDEX.md` |
+| Internal support articles / Care Agent KB (528 articles, organised by category) | `01-knowledge-base/Support content/checkout-support-site-internal/Support articles/` |
 | Product catalogue | `01-knowledge-base/Checkout Products and teams.csv` |
 | Product definitions + contact risk tags | `01-knowledge-base/products/product-definitions.md` |
 | Payment domain terminology (200 terms) | `01-knowledge-base/payment-domain/checkout-terminology.md` |

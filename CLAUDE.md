@@ -55,7 +55,7 @@ scripts/             # repo-check (broken path references), its tests, hook inst
 | Support workflows & operations | `01-knowledge-base/processes/support-workflows.md` |
 | Ticket taxonomy & contact volumes | `01-knowledge-base/processes/support-taxonomy.md` |
 | Fin Attribute value definitions (Intercom-ready format) | `01-knowledge-base/processes/fin-attributes-definitions.md` |
-| Care Agent SOPs & KB (526 articles, 125 folders from Zendesk KB) | `01-knowledge-base/processes/Care Agent SOPs/INDEX.md` |
+| Internal support articles / Care Agent KB (528 articles in 31 top-level category folders, no index file) | `01-knowledge-base/Support content/checkout-support-site-internal/Support articles/` |
 | Merchant segments | `01-knowledge-base/products/customer-segments.md` |
 | Product catalogue (products, teams, pillars) | `01-knowledge-base/Checkout Products and teams.csv` |
 | Product definitions with contact risk tags | `01-knowledge-base/products/product-definitions.md` |
@@ -202,7 +202,7 @@ Sync the Airtable Product Catalogue to local files: updates `Checkout Products a
 - Skill: `/sync-product-catalogue`
 
 ### Sync Support Content
-Refresh local copies of support content (external support site, internal Care Agent SOPs, Tech Docs, API reference) from their GitHub source repos in the `cko-web` org. Source mapping and re-pull mechanics: `01-knowledge-base/processes/support-content-sources.md`.
+Refresh local copies of support content (external support site, internal support articles, Tech Docs, API reference) from their GitHub source repos in the `cko-web` org. Source mapping and re-pull mechanics: `01-knowledge-base/processes/support-content-sources.md`.
 - Skill: `/sync-support-content [all|external|internal|tech-docs|api-reference]` — defaults to `all`
 
 ### Taxonomy Classification QA
