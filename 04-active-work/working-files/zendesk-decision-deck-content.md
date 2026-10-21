@@ -313,7 +313,7 @@ Plain's price covers every channel, AI feature and API with no add-ons, and repl
 
 **Visual**: Grouped columns for 2026 and 2030, Plain in the accent colour, Zendesk as a stacked column (seats plus bolt-ons). Keep the four vendors visually close: the point of this slide is to take cost off the table, not to sell a saving. No hero number.
 
-**Source**: signed Zendesk order form `04-active-work/research/evidence/2025-06-27-zendesk-signed-contract-Q-540753.pdf`  ·  Plain quote per `04-active-work/research/plain-business-case-draft-v1.md`  ·  Pylon public pricing (featurebase.app/blog/pylon-pricing). Five-year model in Appendix C.
+**Source**: signed Zendesk order form (27 June 2025, removed from the repo; held by Procurement)  ·  Plain quote per `04-active-work/research/plain-business-case-draft-v1.md`  ·  Pylon public pricing (featurebase.app/blog/pylon-pricing). Five-year model in Appendix C.
 
 ---
 
