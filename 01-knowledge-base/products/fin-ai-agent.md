@@ -68,7 +68,7 @@ See dedicated section below — this is the most complex training layer.
 
 ## 2. Procedures and Tasks
 
-The primary automation layer for Checkout.com's Q2 2026 deliverable ("Improve Fin Resolution Through Procedures").
+The primary automation layer for Checkout.com's Q2 to Q3 2026 deliverable ("AI First Resolution Using Fin").
 
 ### Procedures
 Fin's equivalent of SOPs — they define the steps Fin follows to resolve a specific contact type, including API calls, data retrieval, and response logic. Key capabilities:
@@ -283,4 +283,4 @@ Copilot is Intercom's AI assistant for **human agents** — not for customers. I
 - [KPI Definitions](../metrics/kpi-definitions.md) — AI Agent resolution rate, Fin Involvement Rate, CSAT
 - `04-active-work/prds/fin-involvement-rate/prd.md` — PRD for increasing Fin Involvement Rate
 - `04-active-work/research/fin-email-behaviour-spec.md` — email channel behaviour specification
-- `2026 deliverables.md` — "Improve Fin Resolution Through Procedures" (Q2 2026)
+- `2026 deliverables.md` — "AI First Resolution Using Fin" (Q2 to Q3 2026)

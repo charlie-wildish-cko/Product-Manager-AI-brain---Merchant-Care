@@ -39,7 +39,7 @@ Your task: given the customer's question and a payment identifier, explain what 
 One source, and the only thing you diagnose from: the **Payment Search API**.
 
 - **Input**: a payment `id`, an `arn` / RRN (`transaction_retrieval_reference_number`), or a merchant `reference`. Those are the only accepted lookups. Input validation and rejected identifiers: see Tools.
-- **Field schema**: `01-knowledge-base/metrics/payment search API schema.md`. Know this before interpreting any result.
+- **Field schema**: `01-knowledge-base/metrics/payment-search-api-schema.md`. Know this before interpreting any result.
 - The API returns the top-level payment, `actions[]` (per-action outcomes), `acquirer_response`, and `dispute_details`. That is the whole surface. There is no second call to a log system.
 
 **Scope rule (for now): if it is not in the Payment Search record, it is out of scope for diagnosis.** Do not ask the agent to paste raw payloads, do not reason over fields the record does not carry, and do not infer values that are absent. When the record cannot reach root cause, name the gap and hand off — that is the complete, correct answer (see "Out of scope" below).
@@ -58,7 +58,7 @@ You have one tool. Call it before any analysis: with no record there is nothing 
 
 **Input:** exactly one of the three identifiers, taken from what the agent passes alongside the customer's question. If you are given a bare BIN, an issuer name, an amount, or a date range instead, do not call the tool: return a request for one of the three identifiers with `needs_escalation: false`.
 
-**Returns:** the top-level payment, `actions[]`, `acquirer_response`, and `dispute_details` — the whole diagnostic surface. Field schema: `01-knowledge-base/metrics/payment search API schema.md`.
+**Returns:** the top-level payment, `actions[]`, `acquirer_response`, and `dispute_details` — the whole diagnostic surface. Field schema: `01-knowledge-base/metrics/payment-search-api-schema.md`.
 
 **Handle the result before analysing:**
 - **Exactly one record** → proceed to Step 2.
@@ -165,7 +165,7 @@ Counting occurrences of the same decline pattern across a merchant's traffic req
 
 Activate when `type: payout` (top-level) or `actions[].type: Credit` flags a payout record. **Do not run the Decline explainer branches (A–D) against a payout** — the code ranges mean something different here, and the workflow below replaces them for a payout record.
 
-> **Schema caveat — read before using this section.** `01-knowledge-base/metrics/payment search API schema.md` documents `type` as the payin/payout discriminator but does **not** document payout-specific fields (a rail/destination-type field, beneficiary/bank detail fields, or whether `partner_response_code` is populated on a payout response). Everything below that depends on a field beyond `type`, `status`, `response_code`, `response_summary`, and `actions[]` is marked **[TBC — schema]** and should be treated as unconfirmed until checked against a live payout record. Do not assume a field exists because this workflow names it; confirm it in the record first, and if it isn't there, treat that sub-step as unavailable rather than guessing the value.
+> **Schema caveat — read before using this section.** `01-knowledge-base/metrics/payment-search-api-schema.md` documents `type` as the payin/payout discriminator but does **not** document payout-specific fields (a rail/destination-type field, beneficiary/bank detail fields, or whether `partner_response_code` is populated on a payout response). Everything below that depends on a field beyond `type`, `status`, `response_code`, `response_summary`, and `actions[]` is marked **[TBC — schema]** and should be treated as unconfirmed until checked against a live payout record. Do not assume a field exists because this workflow names it; confirm it in the record first, and if it isn't there, treat that sub-step as unavailable rather than guessing the value.
 
 ### Step 0: Recognition and rail
 

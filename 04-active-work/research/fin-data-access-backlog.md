@@ -5,7 +5,7 @@ confluence_parent_page_id: 8041431176
 title: Fin Data Access Backlog
 ---
 
-> **Deliverable**: AI First Resolution Using Fin (Continuous)
+> **Deliverable**: AI First Resolution Using Fin (Q2 to Q3)
 > **Flywheel**: Handle + Fuel
 > **Strategic goal**: Reduce cost of support
 > **Metrics**: Fin involvement rate · AI resolution rate · Cost per contact
@@ -20,7 +20,7 @@ Fin's resolution rate is constrained by the data it can access. Today, Fin can a
 
 This backlog tracks the data sources Fin should be able to access (via API or MCP) to answer data-dependent queries without human escalation. Each entry maps to a contact type from the support taxonomy and is prioritised by contact volume × data availability.
 
-**How data access works in Fin**: Data is surfaced through **Procedures** — Fin's equivalent of SOPs. A Procedure defines the steps Fin follows to resolve a specific contact type, including which API calls to make, what data to retrieve, and how to present the result. Data sources in this backlog are accessed via Procedures, not by Fin making ad hoc API calls. Each entry should eventually map to one or more Procedures. See also: `2026 deliverables.md` → Improve Fin Resolution Through Procedures (Q2).
+**How data access works in Fin**: Data is surfaced through **Procedures** — Fin's equivalent of SOPs. A Procedure defines the steps Fin follows to resolve a specific contact type, including which API calls to make, what data to retrieve, and how to present the result. Data sources in this backlog are accessed via Procedures, not by Fin making ad hoc API calls. Each entry should eventually map to one or more Procedures. See also: `2026 deliverables.md` → AI First Resolution Using Fin (Q2 to Q3).
 
 **Also relevant for**: Agent Consultant (data retrieval capability) — entries marked with ✦ are shared-value items where the same integration benefits both Fin and agents. Engineering should build these as shared data services rather than duplicating integration work.
 

@@ -14,6 +14,8 @@ Thumbs.db
 *.swo
 *~
 .cursor/
+.obsidian/
+.claude/worktrees/
 
 # Sensitive Information
 # Add patterns for any files containing sensitive data
@@ -3878,7 +3880,3 @@ build/
 01-knowledge-base/processes/Care Agent SOPs/zendesk-kb/webhooks/webhook-introduction.md
 01-knowledge-base/processes/Care Agent SOPs/zendesk-kb/webhooks/webhook-ip-address-allowlisting.md
 01-knowledge-base/processes/Care Agent SOPs/zendesk-kb/webhooks/webhooks-not-received.md
-.claude/worktrees/compassionate-ardinghelli-ec2a59
-.claude/worktrees/flamboyant-dijkstra
-.claude/worktrees/sweet-sinoussi-67ff5d
-.claude/worktrees/zealous-vaughan-23b051

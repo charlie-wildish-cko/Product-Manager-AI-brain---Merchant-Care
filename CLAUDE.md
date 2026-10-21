@@ -283,7 +283,7 @@ Channels: Email (Zendesk) · Dashboard webform (Zendesk) · AI deflection (Inter
 | Customer 360 | Centralised customer context across all Checkout sources | Merchant 360 |
 | Platform / ISV | Vertical SaaS businesses that embed Checkout payments as PayFacs for their Platform merchants | Sub-merchant (use "Platform merchant") |
 | Fin involvement rate | % of contacts where Fin was applied as the first point of contact. Distinct from AI resolution rate (% resolved without escalation to a human). | — |
-| Fin Procedures | Fin's equivalent of SOPs: define the steps Fin follows to resolve a specific contact type, including API calls, data retrieval, and response logic. Data integrations are accessed via Procedures, not ad hoc. Related deliverable: Improve Fin Resolution Through Procedures (Q2 2026) | — |
+| Fin Procedures | Fin's equivalent of SOPs: define the steps Fin follows to resolve a specific contact type, including API calls, data retrieval, and response logic. Data integrations are accessed via Procedures, not ad hoc. Related deliverable: AI First Resolution Using Fin (Q2 to Q3 2026) | — |
 
 **Unit cost benchmarks**: Fin costs $0.90/resolution; human agent ~$40/contact (44x difference). Use these when framing AI investment cases.
 
