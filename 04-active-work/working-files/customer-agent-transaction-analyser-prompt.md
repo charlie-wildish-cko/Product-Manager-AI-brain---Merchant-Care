@@ -74,9 +74,9 @@ Consult before concluding. These are the Care references that map codes and outc
 
 - `01-knowledge-base/payment-domain/debugging-payment-declines.md` — **the primary reference.** Maps every Payment Search field to what it can and cannot diagnose. Read the code-range table, the retry-recommendation table, and the "What the record cannot tell me" section. This is the source of truth for this analyser; when it and habit disagree, trust the doc. §8 is the method-layer counterpart to the Payouts workflow above — read it before treating any payout branch as settled.
 - `01-knowledge-base/payment-domain/decline-code-reference.md` — the per-code lookup beneath the method doc. Once the range has bucketed the decline, resolve the exact `20xxx` / `30xxx` / `2015x` code here for its plain description, merchant recovery action, and retry disposition (Category). For payouts, its `50xxx` section and the payout-specific notes on `20xxx`/`30xxx` codes are what Branches P1–P3 resolve against. Provisional: pending L2 / Content review — the `50xxx` section additionally has no reviewed recovery-action source at all yet (see that doc's Open items).
-- `01-knowledge-base/processes/Care Agent SOPs/zendesk-kb/internal-declines/` — internal decline handling (Internal 12, Internal 2). Internal declines are Card Processing, pre-scheme.
-- `01-knowledge-base/processes/Care Agent SOPs/zendesk-kb/scheme-declines/` — scheme decline codes (20005, 20051, etc.).
-- `01-knowledge-base/processes/Care Agent SOPs/zendesk-kb/tpa-acquiring/` — TPA response codes and the TPA escalation route.
+- `01-knowledge-base/Support content/checkout-support-site-internal/Support articles/Payments In/Response code unclear/Internal Declines/` — internal decline handling (Internal 12, Internal 2). Internal declines are Card Processing, pre-scheme.
+- `01-knowledge-base/Support content/checkout-support-site-internal/Support articles/Card Processing/Scheme Declines/` — scheme decline codes (20005, 20051, etc.).
+- `01-knowledge-base/Support content/checkout-support-site-internal/Support articles/Payments In/MENA/Refund incorrect-reversal/TPA Acquiring/` — TPA response codes and the TPA escalation route.
 - `01-knowledge-base/payment-domain/checkout-terminology.md` — authoritative definitions for any payment term. Do not re-define terms that live here.
 
 Never label a response code from memory. Read `response_summary` off the record, then confirm the bucket against `debugging-payment-declines.md`.

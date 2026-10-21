@@ -421,7 +421,7 @@ A mandatory taxonomy tag field in Zendesk Guide authoring workflow. Publishing a
 **Product release trigger (end state)**
 When a product changes, the graph flags every article with a `COVERED_BY` or `INVOLVES` edge to that product entity for review — before the change ships. Prevents content drift from product changes that invalidate articles without triggering updates.
 
-**Extended scope — SOPs and playbooks**: The same LLM-assisted tagging approach applies to SOP content (`01-knowledge-base/processes/Care Agent SOPs/`). Reflex reads each SOP against the entity taxonomy and outputs suggested `REQUIRES_KNOWLEDGE` edges (Reason × Human L1 → SOP). Process Architect reviews. This is Phase 2 work alongside KB article tagging — not a later phase.
+**Extended scope — SOPs and playbooks**: The same LLM-assisted tagging approach applies to SOP content (`01-knowledge-base/Support content/checkout-support-site-internal/Support articles/`). Reflex reads each SOP against the entity taxonomy and outputs suggested `REQUIRES_KNOWLEDGE` edges (Reason × Human L1 → SOP). Process Architect reviews. This is Phase 2 work alongside KB article tagging — not a later phase.
 
 **Product release trigger (end state)**: When a product changes, the graph flags every Knowledge Asset (KB article, SOP, playbook, policy rule) with a `REQUIRES_KNOWLEDGE` edge to the affected entity for review — before the change ships. Previously this was scoped to KB articles only. The expanded model catches SOPs and playbooks that are equally at risk of staleness from product changes.
 
@@ -455,7 +455,7 @@ When a product changes, the graph flags every article with a `COVERED_BY` or `IN
 - [ ] Reason count reconciled against `support_contacts_flat_table_2025_last_6m.csv`
 - [ ] Taxonomy mapping gaps investigated for all 7 unmapped product categories — add Reasons or confirm contacts are absorbed elsewhere
 - [ ] Error / State list cross-referenced against API reference — bind to formal codes
-- [ ] Action Type categories reviewed against Care Agent SOPs (`INDEX.md`) — confirm coverage
+- [ ] Action Type categories reviewed against the internal support articles (`checkout-support-site-internal/Support articles/`) — confirm coverage
 - [ ] Single named owner assigned per entity class
 - [ ] Published to Confluence as living document before Phase 2 tagging begins
 

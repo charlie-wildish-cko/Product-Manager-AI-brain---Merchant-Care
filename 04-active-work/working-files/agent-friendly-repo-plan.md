@@ -82,6 +82,6 @@ Cost estimate (guess): about 10 new files, about 210 file edits (160 via codemod
 
 ## 5. Decisions only you can make
 
-- `Care Agent SOPs/` (untracked, 527 files) duplicates the tracked `checkout-support-site-internal/` (529 files, 511 shared article IDs). CLAUDE.md points agents at the untracked copy. Which one is canonical?
+- `Care Agent SOPs/` (untracked, 527 files) duplicates the tracked `checkout-support-site-internal/` (529 files, 511 shared article IDs). CLAUDE.md pointed agents at the untracked copy. Resolved: `checkout-support-site-internal/` is canonical (decided 2026-10-21). The old folder stays on disk, deprecated. Deleting it is Charlie's call.
 - Em-dash rule: drop it or ratchet it.
 - Execution mode: Autopilot-stack or Autopilot-full.
