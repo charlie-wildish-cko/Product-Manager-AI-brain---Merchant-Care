@@ -5,7 +5,7 @@ All four content sets referenced in `CLAUDE.md`'s Key Reference Files table are 
 | Content | Repo | Path in repo | Local copy |
 |---|---|---|---|
 | External support articles (public, support.checkout.com) | [cko-web/checkout-support-site](https://github.com/cko-web/checkout-support-site) | `Support articles/` | `01-knowledge-base/Support content/checkout-support-site-main/Support articles/` |
-| Internal support articles (Care Agent SOPs) | [cko-web/checkout-support-site-internal](https://github.com/cko-web/checkout-support-site-internal) | `Support articles/` | `01-knowledge-base/Support content/checkout-support-site-internal/Support articles/` |
+| Internal support articles (Care Agent KB, canonical) | [cko-web/checkout-support-site-internal](https://github.com/cko-web/checkout-support-site-internal) | `Support articles/` | `01-knowledge-base/Support content/checkout-support-site-internal/Support articles/` |
 | Tech Docs | [cko-web/checkout-docs-site](https://github.com/cko-web/checkout-docs-site) | `docs/NAS/` (Articles, GetStarted, Home) | `01-knowledge-base/Support content/Tech Docs/` |
 | API reference (OpenAPI spec) | [cko-web/checkout-api-reference](https://github.com/cko-web/checkout-api-reference) | `nas_spec/` (swagger.yaml, paths/, components/) | `01-knowledge-base/Support content/API reference/` |
 
@@ -14,8 +14,8 @@ All four content sets referenced in `CLAUDE.md`'s Key Reference Files table are 
 Both support-site repos (external and internal) are the same docs-as-code setup: content is authored in Zendesk, synced automatically to the repo's `staging` branch every day at 7AM, and edits flow back to Zendesk via PR merge into `staging`. `staging` — not `main` — is the branch that reflects current published content; `main` has branch protection and nothing deploys from it.
 
 - External repo syncs from the public Zendesk help center (support.checkout.com).
-- Internal repo syncs from the internal Zendesk help center (Care Agent KB) — this is the same mechanism as `01-knowledge-base/processes/Care Agent SOPs/`, which was previously described as "sourced from Zendesk KB" without a GitHub pointer. They're the same underlying content; the repo is just the docs-as-code mirror of it.
-- Categories in the internal repo (`Support articles/<Category>/...`, e.g. "Case Management", "Access and Permissions") don't match the flattened 125-folder taxonomy under `Care Agent SOPs/zendesk-kb/` (e.g. `billing-descriptor/`, `bin-enablement/`) — different reorganization was applied locally at some point. Treat the GitHub pull as the freshest source; reconciling the two folder taxonomies is a separate cleanup task, not done as part of a content refresh.
+- Internal repo syncs from the internal Zendesk help center (Care Agent KB). The tracked copy under `01-knowledge-base/Support content/checkout-support-site-internal/` is the canonical internal support content (decision 2026-10-21). Organise lookups by its `Support articles/<Category>/...` folders, for example "Case Management" or "Access and Permissions". It has no index file.
+- `01-knowledge-base/processes/Care Agent SOPs/` is a deprecated, untracked, flattened copy of the same Zendesk KB (526 articles in 125 topic folders under `zendesk-kb/`, plus `INDEX.md`). It stays on disk and is no longer maintained or synced. Do not cite it in new work. 511 of its article ids exist in the canonical copy. 15 exist only in the old copy, so a reader who needs one of those reads the old folder until it is deleted.
 
 ## Re-pulling content
 
