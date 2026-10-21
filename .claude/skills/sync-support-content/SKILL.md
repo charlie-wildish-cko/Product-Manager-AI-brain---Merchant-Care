@@ -6,7 +6,7 @@ tools: Read, Write, Edit, Bash
 
 # Sync Support Content
 
-Pull the latest content from the `cko-web` GitHub org repos that back `01-knowledge-base/Support content/` and `01-knowledge-base/processes/Care Agent SOPs/`, and drop it in place so the local copies stop drifting from what's actually published.
+Pull the latest content from the `cko-web` GitHub org repos that back `01-knowledge-base/Support content/`, and drop it in place so the local copies stop drifting from what's actually published. This skill does not sync the deprecated, untracked `01-knowledge-base/processes/Care Agent SOPs/` folder. The tracked `internal` copy is canonical.
 
 Source-of-truth mapping (full detail in `01-knowledge-base/processes/support-content-sources.md` — read that file first if anything below is unclear or the repo layout has changed):
 
